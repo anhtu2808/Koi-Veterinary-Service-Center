@@ -4,22 +4,33 @@ body {
 
 .navbar,
 .footer {
-    background-color: #1F2B6C;
+    background-color: var( --color-primary);
 }
 
 .navbar .nav-link {
     color: white;
 }
-
+.text{
+    font-weight: bold;
+}
+.navbar{
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
 .header-info {
-    background-color: #F0F4F8;
-    padding: 10px 0;
+    padding: 0.75rem 0;
 }
 
 .header-info div {
     font-size: 0.9rem;
-    color: #2C3A5B;
+    color: var(--color-secondary);
 }
+
+.user-icon i {
+    font-size: 2rem; /* Điều chỉnh kích thước theo ý muốn */
+}
+
+
 
 .contact-title {
     color: #6C7A9C;
@@ -37,8 +48,41 @@ body {
 .footer {
     padding: 2rem 0;
     color: white;
+    
 }
-
+.footer p{
+    font-size: 14px;
+}
 .footer a {
     color: white;
 }
+
+
+
+.input-group {
+    background-color: var(--color-accent); /* Màu nền giống hình */
+    border-radius: 10px; /* Bo góc nhẹ */
+    padding: 3px; /* Giảm khoảng cách bên trong */
+    max-width: 240px; /* Giới hạn chiều rộng */
+}
+
+input.form-control {
+    border: none; /* Bỏ đường viền */
+    background: transparent; /* Làm nền trong suốt */
+    color: var(--color-primary); /* Màu chữ */
+    font-weight: bold;
+    font-size: 0.9em; /* Giảm kích thước chữ */
+   
+}
+
+button.btn-submit {
+    background: none; /* Không nền */
+    border: none; /* Không đường viền */
+    color: var(--color-primary); /* Màu nút */
+ 
+}
+
+button.btn-submit i {
+    font-size: 1.2em; /* Giảm kích thước biểu tượng */
+}
+
