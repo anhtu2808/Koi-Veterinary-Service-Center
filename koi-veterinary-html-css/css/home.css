@@ -1,0 +1,44 @@
+body {
+    background-color: var(--color-accent);
+}
+
+.navbar,
+.footer {
+    background-color: #1F2B6C;
+}
+
+.navbar .nav-link {
+    color: white;
+}
+
+.header-info {
+    background-color: #F0F4F8;
+    padding: 10px 0;
+}
+
+.header-info div {
+    font-size: 0.9rem;
+    color: #2C3A5B;
+}
+
+.contact-title {
+    color: #6C7A9C;
+}
+
+.contact-info .card {
+    background-color: #EBF1FB;
+}
+
+.contact-info .card-dark {
+    background-color: #2C3A5B;
+    color: white;
+}
+
+.footer {
+    padding: 2rem 0;
+    color: white;
+}
+
+.footer a {
+    color: white;
+}
