@@ -1,3 +1,23 @@
 .login-container{
     margin: 0 auto;
 }
+.login-google-btn {
+    background-color:#E3F3FB;
+    color: #424242;
+    font-size: 1.8vh;
+   
+}
+.login-google-btn:hover {
+    background-color:#E3F3FB;
+    color: #424242;
+   
+}
+.google-logo{
+    width: 7%;
+}
+.login-left{
+    margin-top:20vh !important;
+}
+.devider-text{
+    font-size :1.8vh;
+}

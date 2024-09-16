@@ -1,5 +1,13 @@
 :root {
+<<<<<<< HEAD
   --color-primary: #1F2B6C;
   --color-accent: #ffffff;
   --color-secondary: rgba(21, 158, 236, 0.5);
 }
+=======
+    --color-primary: #1F2B6C;
+    --color-accent: #DFEAFF;
+    --color-secondary: rgba(21, 158, 236, 0.5);
+    font-family: 'Inter', sans-serif !important; 
+  }
+>>>>>>> b9513165206757e7ae6977e8768c56c80e17302f
