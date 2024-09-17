@@ -1,11 +1,11 @@
-h1{
+.profile__h1{
     display: flex;
     justify-content: center;
     align-items: center;
     color: rgb(6, 44, 91);
 }
 
-.col-md-6 span {
+.column__right {
     display: block; /* Đảm bảo rằng span chiếm toàn bộ chiều rộng */
     background-color: #f0f0f0; 
     padding: 15px; 
@@ -13,7 +13,7 @@ h1{
     margin-top: 10px; 
 }
 
-.col-md-12{
+.column__left{
     display: flex;
     flex-direction: column;    
     justify-content: center;
@@ -24,7 +24,7 @@ img{
     padding-bottom: 3vh;
 }
 
-.previous-step{
+.profile__previous{
     background-color: rgb(194, 216, 255);
     position: fixed;
     bottom: 5vh;
