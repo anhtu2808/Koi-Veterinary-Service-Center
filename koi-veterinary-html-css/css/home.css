@@ -1,5 +1,5 @@
 body {
-    background-color: var(--color-accent);
+    background-color: white;
 }
 
 .navbar,
@@ -26,8 +26,23 @@ body {
     color: var(--color-secondary);
 }
 
+
+
 .user-icon i {
-    font-size: 2rem; /* Điều chỉnh kích thước theo ý muốn */
+    font-size: 2rem;
+    color: white;
+    transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.user-icon i:hover {
+   
+    transform: scale(1.2); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.user-icon i:active {
+    transform: scale(1); 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
 }
 
 
@@ -60,29 +75,29 @@ body {
 
 
 .input-group {
-    background-color: var(--color-accent); /* Màu nền giống hình */
-    border-radius: 10px; /* Bo góc nhẹ */
-    padding: 3px; /* Giảm khoảng cách bên trong */
-    max-width: 240px; /* Giới hạn chiều rộng */
+    background-color: var(--color-accent);
+    border-radius: 0.75rem; 
+    padding: 3px; 
+    max-width: 240px; 
 }
 
 input.form-control {
-    border: none; /* Bỏ đường viền */
-    background: transparent; /* Làm nền trong suốt */
-    color: var(--color-primary); /* Màu chữ */
+    border: none; 
+    background: transparent;
+    color: var(--color-primary);
     font-weight: bold;
-    font-size: 0.9em; /* Giảm kích thước chữ */
+    font-size: 0.9em;
    
 }
 
 button.btn-submit {
-    background: none; /* Không nền */
-    border: none; /* Không đường viền */
-    color: var(--color-primary); /* Màu nút */
+    background: none;
+    border: none;
+    color: var(--color-primary); 
  
 }
 
 button.btn-submit i {
-    font-size: 1.2em; /* Giảm kích thước biểu tượng */
+    font-size: 1.2em; 
 }
 
