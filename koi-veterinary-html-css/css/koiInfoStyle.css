@@ -132,7 +132,7 @@ button.item:hover {
 .btn-primary {
     background-color: #DFEAFF;
     border-color: #DFEAFF;
-    color: #1E2A6A;
+    color: var(--color-primary);
     font-weight: bold;
 
 }
