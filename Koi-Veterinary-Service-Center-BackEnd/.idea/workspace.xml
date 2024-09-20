@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7b15048-724f-47b6-a328-981adfb9308d" name="Changes" comment="" />
+    <list default="true" id="f7b15048-724f-47b6-a328-981adfb9308d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/java/com/koicenter/koicenterbackend/controller/AuthenticateController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/java/com/koicenter/koicenterbackend/model/request/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/java/com/koicenter/koicenterbackend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/java/com/koicenter/koicenterbackend/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/java/com/koicenter/koicenterbackend/model/request/UserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/java/com/koicenter/koicenterbackend/model/request/UserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/java/com/koicenter/koicenterbackend/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/java/com/koicenter/koicenterbackend/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../Koi-Center-Backend/src/main/resources/application.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,25 +59,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.KoiVeterinaryServiceCenterBackEndApplication.executor": "Run",
-    "git-widget-placeholder": "backend",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Dell/Desktop/My Project/Koi-Veterinary-Service-Center/Koi-Veterinary-Service-Center-BackEnd",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.KoiVeterinaryServiceCenterBackEndApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;backend&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Dell/Desktop/My Project/Koi-Veterinary-Service-Center/Koi-Veterinary-Service-Center-BackEnd&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="KoiVeterinaryServiceCenterBackEndApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -100,6 +107,7 @@
       <workItem from="1726750088946" duration="1533000" />
       <workItem from="1726751646778" duration="133000" />
       <workItem from="1726751800819" duration="176000" />
+      <workItem from="1726758202593" duration="14000" />
     </task>
     <servers />
   </component>
