@@ -9,3 +9,12 @@ spring:
       ddl-auto: update
 
 
+openapi:
+  service:
+    api-docs: Koi-Vetenarian-Service API
+    server: http://localhost:8080
+    title: Koi-Vetenarian-Service API
+    version: 1.0.0
+springdoc:
+  swagger-ui:
+    enabled: true
