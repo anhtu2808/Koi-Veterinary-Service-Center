@@ -1,0 +1,239 @@
+import React from "react";
+import "./FAQ.css";
+
+function FAQ() {
+  return (
+    <div>
+      <div class="container my-5">
+        <h1 class="text-center mb-4">Câu hỏi thường gặp</h1>
+        <div class="phancach">
+          <ul class="ngang row">
+            <li class="col-md-2">
+              <img
+                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png"
+                width="100%"
+                height="100%"
+                alt=""
+                title=""
+              />
+              <h5>Di động</h5>
+            </li>
+            <li class="col-md-2">
+              <img
+                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
+                width="100%"
+                height="100%"
+                alt=""
+                title=""
+              />
+              <h5>Di động</h5>
+            </li>
+            <li class="col-md-2">
+              <img
+                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
+                width="100%"
+                height="100%"
+                alt=""
+                title=""
+              />
+              <h5>Di động</h5>
+            </li>
+            <li class="col-md-2">
+              <img
+                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
+                width="100%"
+                height="100%"
+                alt=""
+                title=""
+              />
+              <h5>Di động</h5>
+            </li>
+            <li class="col-md-2">
+              <img
+                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
+                width="100%"
+                height="100%"
+                alt=""
+                title=""
+              />
+              <h5>Di động</h5>
+            </li>
+          </ul>
+        </div>
+        <div class="row justify-content-center phancach">
+          <div class="col-md-8">
+            <div class="input-group mb-4">
+              <span class="input-group-text">
+                <i class="fas fa-search"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                id="searchInput"
+                placeholder="Tìm kiếm câu hỏi..."
+                aria-label="Tìm kiếm câu hỏi"
+              />
+            </div>
+            <div class="accordion" id="faqAccordion">
+              <div class="accordion" id="faqAccordion">
+                {/* <!-- Accordion item 1 --> */}
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      1. Làm thế nào để kiểm tra các gói Mobile Internet dành
+                      cho thuê bao của tôi? Và muốn đăng ký gói Mobile Internet
+                      làm như thế nào?
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="headingOne"
+                    data-bs-parent="#faqAccordion"
+                  >
+                    <div class="accordion-body text">
+                      <div>
+                        <p>Quý khách chọn 1 trong 4 cách sau:</p>
+
+                        <ol>
+                          <li>
+                            <p>
+                              <strong>Cách 1:</strong> Đăng nhập tài khoản đã
+                              tạo trước đó vào ứng dụng My Viettel, chọn Tab GÓI
+                              CƯỚC/ DATA sẽ hiển thị tên gói Mobile internet và
+                              lưu lượng còn lại và ngày hết hạn gói data mà thuê
+                              bao đã đăng ký. Quý khách click vào thông tin data
+                              và thực hiện bấm Đổi gói, My Viettel hiển thị list
+                              các gói cước data kèm với giá gói và lưu lượng đi
+                              kèm. Quý khách xem ưu đãi gói cước nào phù hợp với
+                              nhu cầu sử dụng thì chỉ cần tick chọn vào gói đó
+                              và nhấn nút ĐĂNG KÝ.
+                            </p>
+                          </li>
+                          <li>
+                            <p>
+                              <strong>Cách 2:</strong> Bấm *098# bấm phím gọi và
+                              tiếp tục làm theo các hướng dẫn.
+                            </p>
+                          </li>
+                          <li>
+                            <p>
+                              <strong>Cách 3:</strong> Vào trang web{" "}
+                              <a href="https://vietteltelecom.vn">
+                                https://vietteltelecom.vn
+                              </a>{" "}
+                              hoặc{" "}
+                              <a href="https://viettel.vn">
+                                https://viettel.vn
+                              </a>{" "}
+                              và đăng nhập tài khoản là số thuê bao Quý khách
+                              muốn tra cứu, chọn mục MY VIETTEL/ QUẢN LÝ TÀI
+                              KHOẢN/ THÔNG TIN THUÊ BAO. Trong mục THÔNG TIN TÀI
+                              KHOẢN sẽ hiển thị tên gói Mobile internet và lưu
+                              lượng còn lại và hạn sử dụng gói data. Để đăng ký
+                              gói Mobile internet, Quý khách xem trong phần tiện
+                              ích, webportal hiển thị list các gói data với
+                              thông tin tên gói và ưu đãi đi kèm. Quý khách kiểm
+                              tra gói cước nào phù hợp với nhu cầu sử dụng thì
+                              chỉ cần nhấn nút ĐĂNG KÝ tại gói đó. Quý khách cần
+                              đọc kỹ thông tin gói cước trước khi đăng ký để
+                              tránh nhầm lẫn.
+                            </p>
+                          </li>
+                          <li>
+                            <p>
+                              <strong>Cách 4:</strong> Để kiểm tra gói mobile
+                              internet, Quý khách soạn tin nhắn KTMI gửi 191.
+                              Thông tin phản hồi từ 191 hiển thị thông tin tên
+                              gói data, lưu lượng data đi kèm, hạn sử dụng gói
+                              data. Để đăng ký gói cước khác, quý khách soạn tin
+                              TEN GOI CUOC gửi 191. Áp dụng khi Quý khách đã có
+                              tên gói Mobile internet muốn đăng ký.
+                            </p>
+                          </li>
+                        </ol>
+
+                        <p>
+                          Lưu ý: Với ứng dụng My Viettel và trang web{" "}
+                          <a href="https://vietteltelecom.vn">
+                            https://vietteltelecom.vn
+                          </a>
+                          , <a href="https://viettel.vn">https://viettel.vn</a>,
+                          nếu chưa có tài khoản để đăng nhập, Quý khách cần tạo
+                          tài khoản trước theo các bước trên ứng dụng/trang web
+                          có hướng dẫn.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <!-- Accordion item 2 --> */}
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo"
+                        aria-expanded="false"
+                        aria-controls="collapseTwo"
+                      >
+                        Câu hỏi 2: Làm sao để đặt lại mật khẩu?
+                      </button>
+                    </h2>
+                    <div
+                      id="collapseTwo"
+                      class="accordion-collapse collapse"
+                      aria-labelledby="headingTwo"
+                      data-bs-parent="#faqAccordion"
+                    >
+                      <div class="accordion-body">
+                        Để đặt lại mật khẩu, bạn cần truy cập trang quên mật
+                        khẩu, nhập email đã đăng ký và làm theo hướng dẫn được
+                        gửi đến email của bạn.
+                      </div>
+                    </div>
+                  </div>
+                  {/* <!-- Accordion item 3 --> */}
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree"
+                        aria-expanded="false"
+                        aria-controls="collapseThree"
+                      >
+                        Câu hỏi 3: Làm thế nào để liên hệ hỗ trợ?
+                      </button>
+                    </h2>
+                    <div
+                      id="collapseThree"
+                      class="accordion-collapse collapse"
+                      aria-labelledby="headingThree"
+                      data-bs-parent="#faqAccordion"
+                    >
+                      <div class="accordion-body">
+                        Bạn có thể liên hệ hỗ trợ qua email support@example.com
+                        hoặc gọi đến số hotline 1900 1234 trong giờ hành chính.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default FAQ;

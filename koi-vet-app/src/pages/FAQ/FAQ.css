@@ -42,3 +42,7 @@
 .input-group-text i {
     color: #6c757d; /* Màu icon */
 }
+
+.text{
+    text-align: left;
+}
