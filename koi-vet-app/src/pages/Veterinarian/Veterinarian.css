@@ -51,9 +51,10 @@
 }
 
 .btn-view-profile:hover {
-    background-color: var(--color-btn-hover); 
+    background-color: var(--color-secondary); 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
     transform: translateY(-3px); 
+    color: #333;
 }
 
 .btn-view-profile:active {

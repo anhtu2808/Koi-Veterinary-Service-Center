@@ -4,11 +4,11 @@ import "./FAQ.css";
 function FAQ() {
   return (
     <div>
-      <div class="container my-5">
-        <h1 class="text-center mb-4">Câu hỏi thường gặp</h1>
-        <div class="phancach">
-          <ul class="ngang row">
-            <li class="col-md-2">
+      <div className="container my-5">
+        <h1 className="text-center mb-4">Câu hỏi thường gặp</h1>
+        <div className="phancach">
+          <ul className="ngang row">
+            <li className="col-md-2">
               <img
                 src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png"
                 width="100%"
@@ -18,7 +18,7 @@ function FAQ() {
               />
               <h5>Di động</h5>
             </li>
-            <li class="col-md-2">
+            <li className="col-md-2">
               <img
                 src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
                 width="100%"
@@ -28,7 +28,7 @@ function FAQ() {
               />
               <h5>Di động</h5>
             </li>
-            <li class="col-md-2">
+            <li className="col-md-2">
               <img
                 src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
                 width="100%"
@@ -38,7 +38,7 @@ function FAQ() {
               />
               <h5>Di động</h5>
             </li>
-            <li class="col-md-2">
+            <li className="col-md-2">
               <img
                 src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
                 width="100%"
@@ -48,7 +48,7 @@ function FAQ() {
               />
               <h5>Di động</h5>
             </li>
-            <li class="col-md-2">
+            <li className="col-md-2">
               <img
                 src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
                 width="100%"
@@ -60,27 +60,27 @@ function FAQ() {
             </li>
           </ul>
         </div>
-        <div class="row justify-content-center phancach">
-          <div class="col-md-8">
-            <div class="input-group mb-4">
-              <span class="input-group-text">
-                <i class="fas fa-search"></i>
+        <div className="row justify-content-center phancach">
+          <div className="col-md-8">
+            <div className="input-group mb-4">
+              <span className="input-group-text">
+                <i className="fas fa-search"></i>
               </span>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="searchInput"
                 placeholder="Tìm kiếm câu hỏi..."
                 aria-label="Tìm kiếm câu hỏi"
               />
             </div>
-            <div class="accordion" id="faqAccordion">
-              <div class="accordion" id="faqAccordion">
+            <div className="accordion" id="faqAccordion">
+              <div className="accordion" id="faqAccordion">
                 {/* <!-- Accordion item 1 --> */}
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingOne">
+                <div className="accordion-item">
+                  <h2 className="accordion-header" id="headingOne">
                     <button
-                      class="accordion-button"
+                      className="accordion-button"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#collapseOne"
@@ -94,11 +94,11 @@ function FAQ() {
                   </h2>
                   <div
                     id="collapseOne"
-                    class="accordion-collapse collapse show"
+                    className="accordion-collapse collapse show"
                     aria-labelledby="headingOne"
                     data-bs-parent="#faqAccordion"
                   >
-                    <div class="accordion-body text">
+                    <div className="accordion-body text">
                       <div>
                         <p>Quý khách chọn 1 trong 4 cách sau:</p>
 
@@ -174,10 +174,10 @@ function FAQ() {
                     </div>
                   </div>
                   {/* <!-- Accordion item 2 --> */}
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="headingTwo">
                       <button
-                        class="accordion-button collapsed"
+                        className="accordion-button collapsed"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseTwo"
@@ -189,11 +189,11 @@ function FAQ() {
                     </h2>
                     <div
                       id="collapseTwo"
-                      class="accordion-collapse collapse"
+                      className="accordion-collapse collapse"
                       aria-labelledby="headingTwo"
                       data-bs-parent="#faqAccordion"
                     >
-                      <div class="accordion-body">
+                      <div className="accordion-body">
                         Để đặt lại mật khẩu, bạn cần truy cập trang quên mật
                         khẩu, nhập email đã đăng ký và làm theo hướng dẫn được
                         gửi đến email của bạn.
@@ -201,10 +201,10 @@ function FAQ() {
                     </div>
                   </div>
                   {/* <!-- Accordion item 3 --> */}
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="headingThree">
                       <button
-                        class="accordion-button collapsed"
+                        className="accordion-button collapsed"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseThree"
@@ -216,11 +216,11 @@ function FAQ() {
                     </h2>
                     <div
                       id="collapseThree"
-                      class="accordion-collapse collapse"
+                      className="accordion-collapse collapse"
                       aria-labelledby="headingThree"
                       data-bs-parent="#faqAccordion"
                     >
-                      <div class="accordion-body">
+                      <div className="accordion-body">
                         Bạn có thể liên hệ hỗ trợ qua email support@example.com
                         hoặc gọi đến số hotline 1900 1234 trong giờ hành chính.
                       </div>

@@ -48,15 +48,17 @@
 
   .submit{
     width: 300px;
-    background-color: rgb(5, 26, 133);
-    border: solid 1px;
+    background-color: rgb(194, 216, 255);
+    border: solid 1px rgb(194, 216, 255);
+    color: black;
   }
 
   .button{
     width: 200px;
     height: 50PX;
-    background-color: rgb(5, 26, 133);
-    border: solid 1px;
-    color: #fff;
+    background-color:rgb(194, 216, 255);
+    border: solid 1px rgb(194, 216, 255);
+    color: black;
+    margin: 0 10px;
   }
   

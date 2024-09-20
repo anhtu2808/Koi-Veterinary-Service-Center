@@ -3,7 +3,7 @@ body {
   background-color: var(--color-accent);
   padding: 40px 0;
 }
-.container {
+.pond {
   background-color: white;
   border-radius: 15px;
   padding: 30px;
@@ -25,21 +25,25 @@ input, textarea {
   margin-bottom: 15px;
   width: 100%;
 }
-.btn {
+.button {
   background-color: var(--color-primary);
-  color: white;
+  color: black;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
-.btn:hover {
+.button:hover {
   background-color: #2a3a8c;
 }
-.btn-secondary {
+.button {
   background-color: var(--color-secondary);
 }
-.btn-secondary:hover {
+.button:hover {
   background-color: rgba(21, 158, 236, 0.7);
+}
+
+.text{
+  text-align: left;
 }
