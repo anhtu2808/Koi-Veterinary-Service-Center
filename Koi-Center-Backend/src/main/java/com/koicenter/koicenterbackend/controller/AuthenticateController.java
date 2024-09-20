@@ -28,7 +28,6 @@ public class AuthenticateController {
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody @Valid LoginRequest loginRequest) {
         boolean checkLogin = authenticateService.checkLogin(loginRequest);
-
         if (checkLogin) {
             String token = jwtUtilHelper.generateToken(loginRequest.getUsername());
             return ResponseObject.APIRepsonse("200", "Login Successfully", HttpStatus.OK, token);
