@@ -5,61 +5,8 @@ function FAQ() {
   return (
     <div>
       <div className="container my-5">
-        <h1 className="text-center mb-4">Câu hỏi thường gặp</h1>
-        <div className="phancach">
-          <ul className="ngang row">
-            <li className="col-md-2">
-              <img
-                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png"
-                width="100%"
-                height="100%"
-                alt=""
-                title=""
-              />
-              <h5>Di động</h5>
-            </li>
-            <li className="col-md-2">
-              <img
-                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
-                width="100%"
-                height="100%"
-                alt=""
-                title=""
-              />
-              <h5>Di động</h5>
-            </li>
-            <li className="col-md-2">
-              <img
-                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
-                width="100%"
-                height="100%"
-                alt=""
-                title=""
-              />
-              <h5>Di động</h5>
-            </li>
-            <li className="col-md-2">
-              <img
-                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
-                width="100%"
-                height="100%"
-                alt=""
-                title=""
-              />
-              <h5>Di động</h5>
-            </li>
-            <li className="col-md-2">
-              <img
-                src="   https://cdn-icons-png.flaticon.com/512/3895/3895203.png "
-                width="100%"
-                height="100%"
-                alt=""
-                title=""
-              />
-              <h5>Di động</h5>
-            </li>
-          </ul>
-        </div>
+        <h1 className="text-center mb-2">Câu hỏi thường gặp</h1>
+        
         <div className="row justify-content-center phancach">
           <div className="col-md-8">
             <div className="input-group mb-4">
@@ -98,7 +45,7 @@ function FAQ() {
                     aria-labelledby="headingOne"
                     data-bs-parent="#faqAccordion"
                   >
-                    <div className="accordion-body text">
+                    <div className="accordion-body text-start">
                       <div>
                         <p>Quý khách chọn 1 trong 4 cách sau:</p>
 

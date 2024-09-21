@@ -1,5 +1,7 @@
 import React from "react";
-
+import logo from "../../assets/img/logo.png";
+import "../../pages/Home/Home.css"
+import { Link } from "react-router-dom";
 function Header() {
   return (
     <>
@@ -7,7 +9,7 @@ function Header() {
       <div className="header-info text-center">
         <div className="row">
           <div className="col-md-4 align-content-center">
-            <img src="../assets/img/logo.png" alt="logo" />
+            <Link to="/"><img src={logo} alt="logo" /></Link>
           </div>
           <div className="col-md-8 row justify-content-end">
             <div className="col-md-3">
