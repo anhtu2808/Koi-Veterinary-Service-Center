@@ -1,7 +1,7 @@
 package com.koicenter.koicenterbackend.service;
 
-import com.koicenter.koicenterbackend.model.Role;
 import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.RegisterRequest;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

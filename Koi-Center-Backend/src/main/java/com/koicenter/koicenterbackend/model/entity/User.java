@@ -1,7 +1,7 @@
 package com.koicenter.koicenterbackend.model.entity;
 
 
-import com.koicenter.koicenterbackend.model.Role;
+import com.koicenter.koicenterbackend.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,5 +25,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     Role role;
     boolean status;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    Customer customer;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    Veterinarian veterinarian;
 
 }
