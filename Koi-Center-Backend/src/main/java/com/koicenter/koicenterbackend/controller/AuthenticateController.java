@@ -47,11 +47,6 @@ public class AuthenticateController {
     }
 
 
-    @PostMapping("/logout")
-    public ResponseEntity<ResponseObject> logout(@RequestBody @Valid LoginRequest loginRequest) {
-        return null;
-    }
-
 
 }
 
