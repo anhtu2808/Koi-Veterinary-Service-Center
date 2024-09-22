@@ -1,15 +1,17 @@
 import './App.css';
-import Footer from './components/Footer/Footer';
-import Header from './components/Header/Header';
 import FAQ from './pages/FAQ/FAQ';
 import UserLayout from './pages/layout/UserLayout';
 import Login from './pages/Login/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Register from './pages/Register/Register';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
         <Route path="/*" element={
             <UserLayout>
               <Routes>
@@ -20,6 +22,7 @@ function App() {
             </UserLayout>
           } />
       </Routes>
+      <ToastContainer />
     </Router>
   );
 }
