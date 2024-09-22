@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import register from "../../assets/img/login_side.png";
 import { createUserAPI } from "../../apis";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ function Register() {
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const { navigate } = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(email, password, username, fullname, phone, address);
@@ -17,7 +19,7 @@ function Register() {
     if (response?.status === 201) {
 
       toast.success("Register successfully!");
-
+      navigate("/login");
     }
   };
   return (
