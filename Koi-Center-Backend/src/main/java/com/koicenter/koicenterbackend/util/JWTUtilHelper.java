@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.util;
 
 
 import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.repository.LoggedOutTokenRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -20,6 +21,10 @@ import java.util.UUID;
 public class JWTUtilHelper {
     @Autowired
     UserRepository userRepository;
+
+
+    @Autowired
+    LoggedOutTokenRepository loggedOutTokenRepository;
 
     @Value("${myapp.api-key}")
     private String privateKey;
@@ -40,5 +45,29 @@ public class JWTUtilHelper {
                 .signWith(key).compact();
         return jws;
     }
+
+
+
+    public boolean verifyToken(String token) {
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
+            Jwts.parser()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false; // Return false if the token verification fails
+        }
+    }
+
+    public boolean isTokenLoggedOut(String token) {
+        return loggedOutTokenRepository.findByToken(token).isPresent();
+    }
+
+
+
+
+
 
 }
