@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import register from "../../assets/img/login_side.png";
+import { createUserAPI } from "../../apis";
+import { toast } from "react-toastify";
 
 function Register() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(email, password, username, fullname, phone, address);
+    const response = await createUserAPI(email, password, username, fullname, phone, address);
+    if (response?.status === 201) {
+
+      toast.success("Register successfully!");
+
+    }
+  };
   return (
     <div className="">
       <div className="row">
@@ -14,65 +32,53 @@ function Register() {
               <h2>Registration</h2>
             </div>
           </div>
-          <form action="#!" className="mx-5">
+          <form action="#!" className="mx-5" onSubmit={handleSubmit}>
             <div className="row gy-2 overflow-hidden">
               <div className="col-12">
                 <div className="form-floating mb-3">
-                  <input
-                    type="email"
-                    className="form-control"
-                    name="email"
-                    id="email"
-                    placeholder="abc@email.com"
-                    required
-                  />
-                  <label for="email" className="form-label">
+                  <input type="email" className="form-control" name="email" id="email" placeholder="abc@email.com" required onChange={(e) => setEmail(e.target.value)} />
+                  <label htmlFor="email" className="form-label">
                     Email
                   </label>
                 </div>
               </div>
               <div className="col-12">
                 <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    id="fullname"
-                    placeholder="Full name"
-                    required
-                  />
-                  <label for="username" className="form-label">
-                    Full name
-                  </label>
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="username"
-                    id="username"
-                    placeholder="Username"
-                    required
-                  />
-                  <label for="username" className="form-label">
+                  <input type="text" className="form-control" name="username" id="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} required />
+                  <label htmlFor="username" className="form-label">
                     Username
                   </label>
                 </div>
               </div>
               <div className="col-12">
                 <div className="form-floating mb-3">
-                  <input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    id="password"
-                    value=""
-                    placeholder="Password"
-                    required
-                  />
-                  <label for="password" className="form-label">
+                  <input type="text" className="form-control" name="name" id="fullname" placeholder="Full name" onChange={(e) => setFullname(e.target.value)} required />
+                  <label htmlFor="fullname" className="form-label">
+                    Full name
+                  </label>
+                </div>
+              </div>
+
+              <div className="col-12">
+                <div className="form-floating mb-3">
+                  <input type="text" className="form-control" name="phone" id="phone" value={phone} placeholder="Phone" onChange={(e) => setPhone(e.target.value)} required />
+                  <label htmlFor="password" className="form-label">
+                    Phone
+                  </label>
+                </div>
+              </div>
+              <div className="col-12">
+                <div className="form-floating mb-3">
+                  <input type="text" className="form-control" name="address" id="address" value={address} placeholder="Address" onChange={(e) => setAddress(e.target.value)} required />
+                  <label htmlFor="password" className="form-label">
+                    Address
+                  </label>
+                </div>
+              </div>
+              <div className="col-12">
+                <div className="form-floating mb-3">
+                  <input type="password" className="form-control" name="password" id="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
+                  <label htmlFor="password" className="form-label">
                     Password
                   </label>
                 </div>
@@ -89,7 +95,7 @@ function Register() {
                     />
                     <label
                       className="form-check-label text-secondary"
-                      for="rememberMe"
+                      htmlFor="rememberMe"
                     >
                       Keep me logged in
                     </label>
@@ -101,7 +107,7 @@ function Register() {
               </div>
               <div className="col-12">
                 <div className="d-grid my-3">
-                  <button className="btn-dark btn btn-lg" type="submit">
+                  <button className="btn-dark btn btn-lg" type="submit" >
                     SIGN UP
                   </button>
                 </div>
@@ -109,8 +115,7 @@ function Register() {
               <div className="col-12">
                 <p className="m-0 text-secondary text-center">
                   Don't have an account?{" "}
-                  <a
-                    href="#!"
+                  <a href="#!"
                     className="link-dark text-decoration-underline    "
                   >
                     Sign up
