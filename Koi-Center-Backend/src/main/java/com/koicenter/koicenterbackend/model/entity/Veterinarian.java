@@ -20,6 +20,7 @@ public class Veterinarian {
     String description;
     String google_meet;
     String phone;
+    
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
