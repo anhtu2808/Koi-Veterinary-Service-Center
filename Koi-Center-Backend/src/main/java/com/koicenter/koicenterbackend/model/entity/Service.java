@@ -16,7 +16,8 @@ import java.util.List;
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String service_id;
+    @Column(name = "service_id")
+    String serviceId;
     String service_name;
     String description;
     float base_price;
@@ -24,7 +25,8 @@ public class Service {
     float pond_price;
     float tank_price;
     @Enumerated(EnumType.STRING)
-    ServiceType service_for;
+            @Column(name = "service_for")
+    ServiceType serviceFor;
     String image;
 
     @OneToMany(mappedBy = "service")
