@@ -42,7 +42,6 @@ public class AuthenticateController {
           return ResponseObject.APIRepsonse("200", "Logout Successfully", HttpStatus.OK, "");
       }else {
           return ResponseObject.APIRepsonse("401", "Logout Failed", HttpStatus.UNAUTHORIZED, "");
-
       }
     }
 }
