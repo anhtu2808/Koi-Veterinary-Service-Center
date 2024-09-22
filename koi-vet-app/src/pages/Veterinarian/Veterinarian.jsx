@@ -1,6 +1,7 @@
 import React from "react";
 import veterinarian from "../../assets/img/veterinarian.png";
 import "./Veterinarian.css";
+import { Link } from "react-router-dom";
 
 function Veterinarian() {
   return (
@@ -24,11 +25,11 @@ function Veterinarian() {
                   <i className="fas fa-phone"></i>
                   <i className="fas fa-envelope"></i>
                 </div>
-                <a href="#">
+                <Link hrefLang="#">
                   <button className="btn-view-profile mt-3">
                     View Profile
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -45,11 +46,11 @@ function Veterinarian() {
                   <i className="fas fa-phone"></i>
                   <i className="fas fa-envelope"></i>
                 </div>
-                <a href="#">
+                <Link hrefLang="#">
                   <button className="btn-view-profile mt-3">
                     View Profile
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -66,11 +67,11 @@ function Veterinarian() {
                   <i className="fas fa-phone"></i>
                   <i className="fas fa-envelope"></i>
                 </div>
-                <a href="#">
+                <Link hrefLang="#">
                   <button className="btn-view-profile mt-3">
                     View Profile
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -89,11 +90,11 @@ function Veterinarian() {
                   <i className="fas fa-phone"></i>
                   <i className="fas fa-envelope"></i>
                 </div>
-                <a href="#">
+                <Link hrefLang="#">
                   <button className="btn-view-profile mt-3">
                     View Profile
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -110,11 +111,11 @@ function Veterinarian() {
                   <i className="fas fa-phone"></i>
                   <i className="fas fa-envelope"></i>
                 </div>
-                <a href="#">
+                <Link hrefLang="#">
                   <button className="btn-view-profile mt-3">
                     View Profile
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -131,11 +132,11 @@ function Veterinarian() {
                   <i className="fas fa-phone"></i>
                   <i className="fas fa-envelope"></i>
                 </div>
-                <a href="#">
+                <Link hrefLang="#">
                   <button className="btn-view-profile mt-3">
                     View Profile
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

@@ -35,34 +35,22 @@ function Header() {
         <div className="container">
           <div className="row col-md-6">
             <div className="col-md-2">
-              <a className="nav-link" href="">
-                Home
-              </a>
+            <Link to="/" className="nav-link">Home</Link>
             </div>
             <div className="col-md-2">
-              <a className="nav-link" href="">
-                About us
-              </a>
+            <Link to="/" className="nav-link">About us</Link>
             </div>
             <div className="col-md-2">
-              <a className="nav-link" href="">
-                Services
-              </a>
+            <Link to="/" className="nav-link">Services</Link>
             </div>
             <div className="col-md-2">
-              <a className="nav-link" href="">
-                Doctors
-              </a>
+            <Link to="/" className="nav-link">Veterinarians</Link>
             </div>
             <div className="col-md-2">
-              <a className="nav-link" href="">
-                News
-              </a>
+            <Link to="/" className="nav-link">News</Link>
             </div>
             <div className="col-md-2">
-              <a className="nav-link" href="">
-                Contact
-              </a>
+            <Link to="/" className="nav-link">Contacts</Link>
             </div>
           </div>
           <div className="row col-md-6 justify-content-end">
@@ -72,9 +60,7 @@ function Header() {
               </button>
             </div>
             <div className="col-auto user-icon">
-              <a href="" className="nav-link">
-                <i className="fas fa-user"></i>
-              </a>
+            <Link to="/" className="nav-link"><i className="fas fa-user"></i></Link>
             </div>
           </div>
         </div>
