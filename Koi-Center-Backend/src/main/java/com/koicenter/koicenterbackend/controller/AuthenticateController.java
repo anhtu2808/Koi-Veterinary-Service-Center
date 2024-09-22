@@ -35,7 +35,7 @@ public class AuthenticateController {
         }
         return ResponseObject.APIRepsonse("401", "Invalid username or password", HttpStatus.UNAUTHORIZED, "");
     }
-<<<<<<< Updated upstream
+
     @PostMapping("/logout")
     public ResponseEntity<ResponseObject> logout(@RequestBody @Valid LogoutRequest logoutRequest) {
       boolean check =  authenticateService.logout(logoutRequest.getToken());
@@ -45,13 +45,13 @@ public class AuthenticateController {
           return ResponseObject.APIRepsonse("401", "Logout Failed", HttpStatus.UNAUTHORIZED, "");
       }
     }
-=======
+
 
     @PostMapping("/logout")
     public ResponseEntity<ResponseObject> logout(@RequestBody @Valid LoginRequest loginRequest) {
         return null;
     }
 
->>>>>>> Stashed changes
+
 }
 
