@@ -58,21 +58,20 @@ const handleLogin = async (e) => {
                       <div className="col-12">
                         <div className="form-floating mb-3">
                           <input type="text" className="form-control" name="username" id="username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                          <label for="username" className="form-label">Username</label>
                           <label htmlFor="username" className="form-label">Username</label>
                         </div>
                       </div>
                       <div className="col-12">
                         <div className="form-floating mb-3">
                           <input type="password" className="form-control" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-                          <label for="password" className="form-label">Password</label>
+                          <label htmlFor="password" className="form-label">Password</label>
                         </div>
                       </div>
                       <div className="col-12">
                         <div className="d-flex gap-2 justify-content-between">
                           <div className="form-check">
                             <input className="form-check-input" type="checkbox" value="" name="rememberMe" id="rememberMe" />
-                            <label className="form-check-label text-secondary" for="rememberMe">
+                            <label className="form-check-label text-secondary" htmlFor="rememberMe">
                               Keep me logged in
                             </label>
                           </div>
