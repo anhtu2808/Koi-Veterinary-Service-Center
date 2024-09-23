@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/veterinarian")
 @RequiredArgsConstructor
@@ -22,5 +24,12 @@ public class VeterinarianController {
     public ResponseEntity<ResponseObject> getVeterinarianById (@PathVariable String vetId){
         log.info("toi day ");
         return ResponseObject.APIRepsonse("200","Get ID Veterinarian Succesfully ", HttpStatus.OK,veterinarianService.getVeterinarianById(vetId));
+    }
+
+
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> getAllVeterinarian(){
+        List listVet = veterinarianService.getAllVet();
+        return ResponseObject.APIRepsonse("200","List of veterinarians retrieved successfully", HttpStatus.OK, listVet);
     }
 }
