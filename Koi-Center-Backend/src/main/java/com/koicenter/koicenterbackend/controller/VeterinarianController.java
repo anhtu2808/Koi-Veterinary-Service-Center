@@ -29,7 +29,7 @@ public class VeterinarianController {
 
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAllVeterinarian() {
-        List listVet = veterinarianService.getAllVet();
+        List<VeterinarianResponse> listVet = veterinarianService.getAllVet();
         return ResponseObject.APIRepsonse("200", "List of veterinarians retrieved successfully", HttpStatus.OK, listVet);
     }
 

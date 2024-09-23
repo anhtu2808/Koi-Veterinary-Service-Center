@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.model.response;
 
 
+import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,12 +9,14 @@ import lombok.*;
 @Getter
 @Setter
 @Data
+@Builder
 public class VeterinarianResponse {
     private String vetId;            // Mapped from `vet_id` in Veterinarian
-    private boolean status;          // Mapped from `status` in Veterinarian
+    private String Vetstatus;          // Mapped from `status` in Veterinarian
     private String description;      // Mapped from `description` in Veterinarian
     private String googleMeet;       // Mapped from `google_meet` in Veterinarian
     private String phone;            // Mapped from `phone` in Veterinarian
+    private String imageVeterinarian;
 
     // Fields from User entity (OneToOne relationship)
     private String userId;           // Mapped from `user_id` in User

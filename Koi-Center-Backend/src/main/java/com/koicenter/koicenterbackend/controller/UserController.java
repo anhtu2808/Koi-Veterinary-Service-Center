@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.request.RegisterRequest;
+
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,5 +42,6 @@ public class UserController {
             return ResponseObject.APIRepsonse("404", "User does not exist!", HttpStatus.NOT_FOUND, "");
         }
     }
+
 
 }

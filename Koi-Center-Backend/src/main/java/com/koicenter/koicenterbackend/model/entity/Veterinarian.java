@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.entity;
 
+import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +17,9 @@ public class Veterinarian {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String vet_id;
-    boolean status;
+
+    @Enumerated(EnumType.STRING)
+    VeterinarianStatus VeterinarianStatus;
     String description;
     String google_meet;
     String phone;
