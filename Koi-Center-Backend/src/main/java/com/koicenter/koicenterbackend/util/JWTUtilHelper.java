@@ -57,7 +57,7 @@ public class JWTUtilHelper {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            return false; // Return false if the token verification fails
+            return false;
         }
     }
 
