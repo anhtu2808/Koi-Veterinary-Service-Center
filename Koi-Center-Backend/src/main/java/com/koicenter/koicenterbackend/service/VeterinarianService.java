@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
+import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ public class VeterinarianService {
     public Veterinarian getVeterinarianById ( String veterinarianId){
         return veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
     }
-
     public List getAllVet() {
         return veterinarianRepository.findAllVet();
     }

@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
 import com.koicenter.koicenterbackend.service.VeterinarianService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,10 @@ public class VeterinarianController {
         return ResponseObject.APIRepsonse("200","Get ID Veterinarian Succesfully ", HttpStatus.OK,veterinarianService.getVeterinarianById(vetId));
     }
 
-
     @GetMapping("")
-    public ResponseEntity<ResponseObject> getAllVeterinarian(){
+    public ResponseEntity<ResponseObject> getAllVeterinarian() {
         List listVet = veterinarianService.getAllVet();
-        return ResponseObject.APIRepsonse("200","List of veterinarians retrieved successfully", HttpStatus.OK, listVet);
+        return ResponseObject.APIRepsonse("200", "List of veterinarians retrieved successfully", HttpStatus.OK, listVet);
     }
+
 }
