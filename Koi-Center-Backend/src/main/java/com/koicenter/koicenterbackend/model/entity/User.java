@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.validator.constraints.Length;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     String user_id;
     @NotNull
+    @Length(min = 5, max = 20)
     String username;
     @NotNull
     String password;
