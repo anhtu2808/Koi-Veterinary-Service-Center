@@ -3,6 +3,7 @@ package com.koicenter.koicenterbackend.model.entity;
 
 import com.koicenter.koicenterbackend.model.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String user_id;
+    @NotNull
     String username;
+    @NotNull
     String password;
     String email;
     String full_name;

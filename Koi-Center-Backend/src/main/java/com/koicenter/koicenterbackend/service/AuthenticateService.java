@@ -11,6 +11,7 @@ import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.util.JWTUtilHelper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,12 +36,12 @@ public class AuthenticateService {
 
         User user = userRepository.findByUsername(loginRequest.getUsername());
         if(user == null) {
-            throw new AppException(ErrorCode.INVALID_LOGIN.getCode(),ErrorCode.INVALID_LOGIN.getMessage());
+            throw new AppException(ErrorCode.INVALID_LOGIN.getCode(),ErrorCode.INVALID_LOGIN.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         boolean authenticated = passwordEncoder.matches(loginRequest.getPassword(), user.getPassword());
 
         if (!authenticated) {
-            throw new AppException(ErrorCode.INVALID_LOGIN.getCode(),ErrorCode.INVALID_LOGIN.getMessage());
+            throw new AppException(ErrorCode.INVALID_LOGIN.getCode(),ErrorCode.INVALID_LOGIN.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         return true;
     }
@@ -50,7 +51,7 @@ public class AuthenticateService {
           loggedOutTokenRepository.save(loggedOutToken);
           return true;
       }else {
-          throw new AppException(ErrorCode.INVALID_LOGOUT.getCode(), "Invalid token");
+          throw new AppException(ErrorCode.INVALID_LOGOUT.getCode(), "Invalid token", HttpStatus.UNAUTHORIZED);
       }
     }
 
