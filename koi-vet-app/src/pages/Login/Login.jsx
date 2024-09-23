@@ -59,6 +59,7 @@ const handleLogin = async (e) => {
                         <div className="form-floating mb-3">
                           <input type="text" className="form-control" name="username" id="username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                           <label for="username" className="form-label">Username</label>
+                          <label htmlFor="username" className="form-label">Username</label>
                         </div>
                       </div>
                       <div className="col-12">
