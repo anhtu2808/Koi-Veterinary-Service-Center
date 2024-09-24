@@ -36,6 +36,7 @@ public class JWTUtilHelper {
 
         String jws = Jwts.builder().subject(data)
                 .claim("user_id", user.getUser_id())
+                .claim("role", user.getRole())
                 .issuer("KoiCenter.com")
                 .issuedAt(new Date())
                 .claim("jti", UUID.randomUUID().toString())

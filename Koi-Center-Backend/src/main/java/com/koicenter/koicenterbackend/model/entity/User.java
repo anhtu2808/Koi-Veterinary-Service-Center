@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     String user_id;
     @NotNull
-    @Length(min = 5, max = 20)
+
     String username;
     @NotNull
     String password;

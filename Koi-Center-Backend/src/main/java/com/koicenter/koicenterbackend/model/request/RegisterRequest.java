@@ -12,6 +12,4 @@ public class RegisterRequest {
     String password;
     String username;
     String fullname;
-    String phone;
-    String address;
 }
