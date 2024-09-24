@@ -20,7 +20,7 @@ public class VeterinarianController {
     VeterinarianService veterinarianService;
     @GetMapping("/{vetId}")
     public ResponseEntity<ResponseObject> getVeterinarianById (@PathVariable String vetId){
-        log.info("toi day ");
         return ResponseObject.APIRepsonse("200","Get ID Veterinarian Succesfully ", HttpStatus.OK,veterinarianService.getVeterinarianById(vetId));
     }
+
 }
