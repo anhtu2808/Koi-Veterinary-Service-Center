@@ -36,6 +36,7 @@ public class SecurityConfig {
                                     "/swagger-ui/**",
                                     "/webjars/**",
                                     "/api/v1/veterinarian/**",
+                                    "api/v1/service/appointmentType/**",
                                     "/swagger-ui.html").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/service/{serviceId}").permitAll()
