@@ -15,10 +15,11 @@ import java.util.List;
 public class Medicine {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String medicine_id;
+    @Column(name = "medicine_id")
+    String medicineId;
     String name;
     String description;
 
     @OneToMany(mappedBy = "medicine")
-    List<Prescription> prescriptions;
+    List<TreatmentMedicine> treatmentMedicines;
 }

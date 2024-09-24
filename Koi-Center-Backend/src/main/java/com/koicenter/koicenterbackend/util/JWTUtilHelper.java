@@ -35,7 +35,7 @@ public class JWTUtilHelper {
         User user = userRepository.findByUsername(data);
 
         String jws = Jwts.builder().subject(data)
-                .claim("user_id", user.getUser_id())
+                .claim("user_id", user.getUserId())
                 .issuer("KoiCenter.com")
                 .issuedAt(new Date())
                 .claim("jti", UUID.randomUUID().toString())

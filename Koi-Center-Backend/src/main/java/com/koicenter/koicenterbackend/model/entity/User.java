@@ -17,11 +17,13 @@ import lombok.experimental.FieldDefaults;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String user_id;
+    @Column(name = "user_id")
+    String userId;
     String username;
     String password;
     String email;
-    String full_name;
+    @Column(name = "full_name")
+    String fullName;
     @Enumerated(EnumType.STRING)
     Role role;
     boolean status;

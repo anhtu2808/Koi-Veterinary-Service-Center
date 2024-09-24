@@ -15,10 +15,12 @@ import java.util.List;
 public class Veterinarian {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String vet_id;
+    @Column(name = "vet_id")
+    String vetId;
     boolean status;
     String description;
-    String google_meet;
+    @Column(name = "google_meet")
+    String googleMeet;
     String phone;
 
     @OneToOne

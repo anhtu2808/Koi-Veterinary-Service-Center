@@ -1,5 +1,7 @@
 package com.koicenter.koicenterbackend.service;
 
+import com.koicenter.koicenterbackend.exception.AppException;
+import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.enums.ServiceType;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,6 @@ public class ServiceService {
     }
 
     public com.koicenter.koicenterbackend.model.entity.Service getServiceById(String id){
-        return servicesRepository.findById(id).orElseThrow(() -> new RuntimeException("Service not found"));
+        return servicesRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_EXITS.getCode(),ErrorCode.SERVICE_NOT_EXITS.getMessage()));
     }
 }
