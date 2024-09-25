@@ -5,11 +5,14 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.LoggedOutToken;
 import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.LoginRequest;
 import com.koicenter.koicenterbackend.repository.LoggedOutTokenRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.util.JWTUtilHelper;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +25,7 @@ import java.util.Map;
 @Service
 public class AuthenticateService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthenticateService.class);
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
@@ -57,4 +61,14 @@ public class AuthenticateService {
     }
 
 
+    public String loginGoogleToken(Map<String, Object> credential) {
+        User user = new User();
+        user.setUsername(credential.get("email").toString());
+        user.setFull_name(credential.get("given_name").toString());
+        user.setImage(credential.get("picture").toString());
+        user.setEmail(credential.get("email").toString());
+        user.setStatus(true);
+        user.setRole(Role.CUSTOMER);
+       return jWTUtilHelper.generateTokenGmail( userRepository.save(user));
+    }
 }

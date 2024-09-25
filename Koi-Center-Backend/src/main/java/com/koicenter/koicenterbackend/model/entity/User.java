@@ -20,10 +20,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String user_id;
-    @NotNull
+
 
     String username;
-    @NotNull
+
     String password;
     String email;
     String full_name;

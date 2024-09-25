@@ -1,8 +1,6 @@
 package com.koicenter.koicenterbackend.controller;
 
 
-
-
 import com.koicenter.koicenterbackend.model.GoogleUserInfo;
 import com.koicenter.koicenterbackend.model.request.LoginRequest;
 import com.koicenter.koicenterbackend.model.request.LogoutRequest;
@@ -25,7 +23,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 @RestController
-    @RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthenticateController {
 
 
@@ -35,37 +33,36 @@ public class AuthenticateController {
 
     @Autowired
     AuthenticateService authenticateService;
+
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody @Valid LoginRequest loginRequest) {
         boolean checkLogin = authenticateService.checkLogin(loginRequest);
         if (checkLogin) {
             String token = jwtUtilHelper.generateToken(loginRequest.getUsername());
             return ResponseObject.APIRepsonse("200", "Login Successfully", HttpStatus.OK, token);
-        }else{
+        } else {
             return ResponseObject.APIRepsonse("401", "Invalid username or password", HttpStatus.UNAUTHORIZED, "");
         }
     }
+
     @PostMapping("/logout")
     public ResponseEntity<ResponseObject> logout(@RequestBody @Valid LogoutRequest logoutRequest) {
-      boolean check =  authenticateService.logout(logoutRequest.getToken());
-      if(check){
-          return ResponseObject.APIRepsonse("200", "Logout Successfully", HttpStatus.OK, "");
-      }else {
-          return ResponseObject.APIRepsonse("401", "Logout Failed", HttpStatus.UNAUTHORIZED, "");
-      }
+        boolean check = authenticateService.logout(logoutRequest.getToken());
+        if (check) {
+            return ResponseObject.APIRepsonse("200", "Logout Successfully", HttpStatus.OK, "");
+        } else {
+            return ResponseObject.APIRepsonse("401", "Logout Failed", HttpStatus.UNAUTHORIZED, "");
+        }
     }
 
     @GetMapping("/loginGoogle")
     public ResponseEntity<ResponseObject> loginWithGoogle(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-
         Map<String, Object> credential = oAuth2AuthenticationToken.getPrincipal().getAttributes();
-        if (!credential.isEmpty() && credential.get("email_verified") == "true") {
-            String token = jwtUtilHelper.generateToken(credential.get("email").toString());
-            return ResponseObject.APIRepsonse("200", "Login Successfully", HttpStatus.OK, token);
-        } else {
-            return ResponseObject.APIRepsonse("401", "Invalid username or password", HttpStatus.UNAUTHORIZED, "");
-        }
-
+        String token = "";
+           token =  authenticateService.loginGoogleToken(credential);
+        return ResponseObject.APIRepsonse("200", "Login Successfully", HttpStatus.OK, token);
     }
+
+
 }
 
