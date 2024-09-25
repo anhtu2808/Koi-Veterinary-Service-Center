@@ -27,6 +27,7 @@ public class User {
     String password;
     String email;
     String full_name;
+    String image;
     @Enumerated(EnumType.STRING)
     Role role;
     boolean status;

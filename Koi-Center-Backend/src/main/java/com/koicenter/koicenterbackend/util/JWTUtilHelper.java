@@ -30,23 +30,26 @@ public class JWTUtilHelper {
     private String privateKey;
 
 
-    public String generateToken(String data){
+    public String generateToken(String data) {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
         User user = userRepository.findByUsername(data);
+        User userFoundByEmail = userRepository.findByEmail(data);
+        String jws = null;
+        if (userFoundByEmail != null || user != null) {
+            jws = Jwts.builder().subject(data)
+                    .claim("user_id", user.getUser_id())
+                    .claim("role", user.getRole())
+                    .issuer("KoiCenter.com")
+                    .issuedAt(new Date())
+                    .claim("jti", UUID.randomUUID().toString())
+                    .expiration(new Date(
+                            Instant.now().plus(3, ChronoUnit.DAYS).toEpochMilli()
+                    ))
+                    .signWith(key).compact();
 
-        String jws = Jwts.builder().subject(data)
-                .claim("user_id", user.getUser_id())
-                .claim("role", user.getRole())
-                .issuer("KoiCenter.com")
-                .issuedAt(new Date())
-                .claim("jti", UUID.randomUUID().toString())
-                .expiration(new Date(
-                        Instant.now().plus(3, ChronoUnit.DAYS).toEpochMilli()
-                ))
-                .signWith(key).compact();
+        }
         return jws;
     }
-
 
 
     public boolean verifyToken(String token) {
@@ -65,10 +68,6 @@ public class JWTUtilHelper {
     public boolean isTokenLoggedOut(String token) {
         return loggedOutTokenRepository.findByToken(token).isPresent();
     }
-
-
-
-
 
 
 }

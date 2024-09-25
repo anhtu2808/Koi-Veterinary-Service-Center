@@ -9,6 +9,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,6 +24,9 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
                 .csrf(csrf -> csrf.disable())
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(customSuccessHandler()) // Use a custom success handler
+                )
                 .authorizeRequests(auth -> {
                     auth
                             .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
@@ -41,6 +46,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/service/{serviceId}").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarian").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
+                            .requestMatchers(HttpMethod.GET, "api/v1/auth/login/google").permitAll()
                             .anyRequest().authenticated();
                 });
         return http.build();
@@ -60,5 +66,12 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customSuccessHandler() {
+        SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
+        successHandler.setDefaultTargetUrl("/api/v1/auth/loginGoogle"); // Redirect to your desired URL
+        return successHandler;
     }
 }

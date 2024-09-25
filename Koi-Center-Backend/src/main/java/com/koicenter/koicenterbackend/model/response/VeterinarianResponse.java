@@ -17,7 +17,6 @@ public class VeterinarianResponse {
     private String googleMeet;       // Mapped from `google_meet` in Veterinarian
     private String phone;            // Mapped from `phone` in Veterinarian
     private String imageVeterinarian;
-
     // Fields from User entity (OneToOne relationship)
     private String userId;           // Mapped from `user_id` in User
     private String username;         // Mapped from `username` in User
@@ -25,4 +24,5 @@ public class VeterinarianResponse {
     private String fullName;         // Mapped from `full_name` in User
     private String role;             // Mapped from `role` in User (Enum)
     private boolean userStatus;      // Mapped from `status` in User
+
 }

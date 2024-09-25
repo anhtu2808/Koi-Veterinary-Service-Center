@@ -7,8 +7,25 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  security:
+    oauth2:
+          client:
+            registration:
+              google:
+                client-id: 728423231627-uq6u2avoi2eajd3f7pqacvj71g7on032.apps.googleusercontent.com
+                client-secret: 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
+                scope:
+                  - openid
+                  - profile
+                  - email
+                redirect-uri: http://localhost:8080/login/oauth2/code/google
 
-
+            provider:
+              google:
+                authorization-uri: https://accounts.google.com/o/oauth2/auth
+                token-uri: https://oauth2.googleapis.com/token
+                user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+                user-name-attribute: sub
 openapi:
   service:
     api-docs: Koi-Vetenarian-Service API
@@ -18,3 +35,5 @@ openapi:
 springdoc:
   swagger-ui:
     enabled: true
+
+
