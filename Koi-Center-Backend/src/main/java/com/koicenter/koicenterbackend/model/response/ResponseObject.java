@@ -16,8 +16,6 @@ public class ResponseObject {
     String message;
     Object data;
 
-
-
     public static ResponseEntity<ResponseObject> APIRepsonse(String status, String message, HttpStatus httpStatus, Object data) {
         return ResponseEntity.status(httpStatus).body(
                 new ResponseObject(status, message, data)
