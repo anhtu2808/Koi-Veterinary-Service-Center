@@ -9,7 +9,9 @@ public enum ErrorCode {
     USER_EXISTED("401","User already existed"),
     INVALID_LOGIN("401","Invalid username or password"),
     INVALID_LOGOUT("401","Logout failed"),
+    INVALID_TOKEN("401","Invalid token"),
     SERVICE_NOT_EXITS("401","Service not exits"),
+
     ;
     private String code;
     private String message;

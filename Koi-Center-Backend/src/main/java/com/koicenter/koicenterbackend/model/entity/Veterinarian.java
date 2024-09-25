@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.entity;
 
+import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,9 +16,12 @@ import java.util.List;
 public class Veterinarian {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+
+    @Enumerated(EnumType.STRING)
+    VeterinarianStatus VeterinarianStatus;
+
     @Column(name = "vet_id")
     String vetId;
-    boolean status;
     String description;
     @Column(name = "google_meet")
     String googleMeet;

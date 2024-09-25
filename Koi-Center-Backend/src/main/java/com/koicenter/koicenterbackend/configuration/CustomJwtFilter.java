@@ -25,7 +25,7 @@ public class CustomJwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(getTokenFromHeader(request) != null && !jwtUtilsHelper.isTokenLoggedOut(getTokenFromHeader(request))) {
-            if(jwtUtilsHelper.verifyToken(getTokenFromHeader(request))  ){
+            if(jwtUtilsHelper.verifyToken(getTokenFromHeader(request))){
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("","",new ArrayList<>());
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(authenticationToken);

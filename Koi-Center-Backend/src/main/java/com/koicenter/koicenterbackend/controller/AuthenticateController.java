@@ -32,8 +32,9 @@ public class AuthenticateController {
         if (checkLogin) {
             String token = jwtUtilHelper.generateToken(loginRequest.getUsername());
             return ResponseObject.APIRepsonse("200", "Login Successfully", HttpStatus.OK, token);
+        }else{
+            return ResponseObject.APIRepsonse("401", "Invalid username or password", HttpStatus.UNAUTHORIZED, "");
         }
-        return ResponseObject.APIRepsonse("401", "Invalid username or password", HttpStatus.UNAUTHORIZED, "");
     }
 
     @PostMapping("/logout")

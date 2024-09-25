@@ -40,9 +40,10 @@ public class SecurityConfig {
                                     "/swagger-ui.html").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/service/{serviceId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/veterinarian").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
                             .anyRequest().authenticated();
                 });
-
         return http.build();
     }
 

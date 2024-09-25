@@ -34,7 +34,8 @@ public class JWTUtilHelper {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
         User user = userRepository.findByUsername(data);
 
-        String jws = Jwts.builder().subject(data)
+        String jws = Jwts.builder().subject(data)    
+                .claim("role", user.getRole())
                 .claim("user_id", user.getUserId())
                 .issuer("KoiCenter.com")
                 .issuedAt(new Date())
@@ -57,7 +58,7 @@ public class JWTUtilHelper {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            return false; // Return false if the token verification fails
+            return false;
         }
     }
 
