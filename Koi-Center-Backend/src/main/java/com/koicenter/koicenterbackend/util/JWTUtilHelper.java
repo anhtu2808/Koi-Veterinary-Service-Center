@@ -34,9 +34,9 @@ public class JWTUtilHelper {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
         User user = userRepository.findByUsername(data);
 
-        String jws = Jwts.builder().subject(data)
-                .claim("user_id", user.getUser_id())
+        String jws = Jwts.builder().subject(data)    
                 .claim("role", user.getRole())
+                .claim("user_id", user.getUserId())
                 .issuer("KoiCenter.com")
                 .issuedAt(new Date())
                 .claim("jti", UUID.randomUUID().toString())

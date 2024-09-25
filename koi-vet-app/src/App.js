@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './pages/Register/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import HomePage from './pages/HomePage/HomePage';
+import Medicine from './pages/Medicine/Medicine';
 function App() {
   return (
     <Router>
@@ -16,7 +18,8 @@ function App() {
             <UserLayout>
               <Routes>
                 <Route path="/faq" element={<FAQ/>} /> {/* Trang chủ User */}
-                
+                <Route path="/homepage" element={<HomePage/>} />
+                <Route path="/medicine" element={<Medicine/>} />
                 {/* Thêm các route khác của User ở đây */}
               </Routes>
             </UserLayout>

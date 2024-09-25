@@ -1,9 +1,6 @@
 package com.koicenter.koicenterbackend.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,9 +13,12 @@ import lombok.experimental.FieldDefaults;
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String delivery_id;
-    float from_place;
-    float to_place;
+    @Column(name = "delivery_id")
+    String deliveryId;
+    @Column(name = "from_place")
+    float fromPlace;
+    @Column(name = "to_place")
+    float toPlace;
     float price;
 
 }

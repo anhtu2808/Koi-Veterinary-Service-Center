@@ -18,12 +18,17 @@ public class Service {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "service_id")
     String serviceId;
-    String service_name;
+    @Column(name = "service_name")
+    String serviceName;
     String description;
-    float base_price;
-    float delivery_price;
-    float pond_price;
-    float tank_price;
+    @Column(name = "base_price")
+    float basePrice;
+    @Column(name = "delivery_price")
+    float deliveryPrice;
+    @Column(name = "pond_price")
+    float pondPrice;
+    @Column(name = "tank_price")
+    float tankPrice;
     @Enumerated(EnumType.STRING)
             @Column(name = "service_for")
     ServiceType serviceFor;

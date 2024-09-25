@@ -20,18 +20,24 @@ import java.util.List;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String appointment_id;
-    LocalDate appointment_date;
+    @Column(name = "appointment_id")
+    String appointmentId;
+    @Column(name = "appointment_date")
+    LocalDate appointmentDate;
     @Enumerated(EnumType.STRING)
     AppointmentStatus status;
-    LocalTime start_time;
-    LocalTime end_time;
+    @Column(name = "start_time")
+    LocalTime startTime;
+    @Column(name = "end_time")
+    LocalTime endTime;
     String location;
     String result;
-    LocalDateTime created_at;
+    @Column(name = "created_at")
+    LocalDateTime createdAt;
     @Enumerated(EnumType.STRING)
     AppointmentType type;
-    float deposited_money;
+    @Column(name = "deposited_money")
+    float depositedMoney;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
@@ -48,22 +54,9 @@ public class Appointment {
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     Service service;
 
-    @ManyToMany
-    @JoinTable(
-            name = "appointment_pond",
-            joinColumns = @JoinColumn(name = "appointment_id"),
-            inverseJoinColumns = @JoinColumn(name = "pond_id")
-    )
-    List<Pond> ponds;
-
-    @ManyToMany
-    @JoinTable(
-            name = "appointment_koi",
-            joinColumns = @JoinColumn(name = "appointment_id"),
-            inverseJoinColumns = @JoinColumn(name = "koi_id")
-    )
-    List<Koi> kois;
+    @OneToMany(mappedBy = "appointment")
+    List<PondTreatment> pondTreatments;
 
     @OneToMany(mappedBy = "appointment")
-    List<Prescription> prescriptions;
+    List<KoiTreatment> koiTreatments;
 }

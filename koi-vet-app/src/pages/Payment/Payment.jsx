@@ -14,7 +14,7 @@ function Payment() {
             </div>
             <div className="card-body">
               <div className="mb-3">
-                <label for="fullName" className="form-label">
+                <label htmlFor="fullName" className="form-label">
                   Full Name
                 </label>
                 <div className="input-group">
@@ -30,7 +30,7 @@ function Payment() {
                 </div>
               </div>
               <div className="mb-3">
-                <label for="phoneNumber" className="form-label">
+                <label htmlFor="phoneNumber" className="form-label">
                   Phone Number
                 </label>
                 <div className="input-group">
@@ -46,7 +46,7 @@ function Payment() {
                 </div>
               </div>
               <div className="mb-3">
-                <label for="address" className="form-label">
+                <label htmlFor="address" className="form-label">
                   Address
                 </label>
                 <div className="input-group">
@@ -70,7 +70,7 @@ function Payment() {
             </div>
             <div className="card-body">
               <div className="mb-3">
-                <label for="koiHealth" className="form-label">
+                <label htmlFor="koiHealth" className="form-label">
                   Health Description
                 </label>
                 <textarea
@@ -91,7 +91,7 @@ function Payment() {
             </div>
             <div className="card-body">
               <div className="mb-3">
-                <label for="doctorName" className="form-label">
+                <label htmlFor="doctorName" className="form-label">
                   Doctor's Name
                 </label>
                 <div className="input-group">
@@ -107,7 +107,7 @@ function Payment() {
                 </div>
               </div>
               <div className="mb-3">
-                <label for="dateTime" className="form-label">
+                <label htmlFor="dateTime" className="form-label">
                   Appointment Date and Time
                 </label>
                 <div className="input-group">
@@ -122,7 +122,7 @@ function Payment() {
                 </div>
               </div>
               <div className="mb-4">
-                <label for="serviceType" className="form-label">
+                <label htmlFor="serviceType" className="form-label">
                   Service Type
                 </label>
                 <select className="form-select" id="serviceType">
@@ -160,7 +160,7 @@ function Payment() {
                     id="momo"
                     value="momo"
                   />
-                  <label className="form-check-label" for="momo">
+                  <label className="form-check-label" htmlFor="momo">
                     <i className="fas fa-mobile-alt me-2"></i> Momo
                   </label>
                 </div>
@@ -172,7 +172,7 @@ function Payment() {
                     id="vnpay"
                     value="vnpay"
                   />
-                  <label className="form-check-label" for="vnpay">
+                  <label className="form-check-label" htmlFor="vnpay">
                     <i className="fas fa-credit-card me-2"></i> VNPay
                   </label>
                 </div>

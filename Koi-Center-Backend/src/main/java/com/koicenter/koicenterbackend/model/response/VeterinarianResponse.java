@@ -1,8 +1,15 @@
 package com.koicenter.koicenterbackend.model.response;
 
 
+
 import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,6 +17,8 @@ import lombok.*;
 @Setter
 @Data
 @Builder
+FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class VeterinarianResponse {
     private String vetId;            // Mapped from `vet_id` in Veterinarian
     private String Vetstatus;          // Mapped from `status` in Veterinarian
@@ -25,4 +34,8 @@ public class VeterinarianResponse {
     private String fullName;         // Mapped from `full_name` in User
     private String role;             // Mapped from `role` in User (Enum)
     private boolean userStatus;      // Mapped from `status` in User
+
+    UserResponse userResponse;
+
+
 }

@@ -15,11 +15,16 @@ import java.time.LocalDateTime;
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String invoice_id;
-    LocalDateTime update_date;
-    float total_price;
-    boolean payment_status;
-    LocalDateTime create_at;
+    @Column(name = "invoice_id")
+    String invoiceId;
+    @Column(name = "update_date")
+    LocalDateTime updatDate;
+    @Column(name = "total_price")
+    float totalPrice;
+    @Column(name = "payment_status")
+    boolean paymentStatus;
+    @Column(name = "create_at")
+    LocalDateTime createAt;
 
     @OneToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "appointment_id")

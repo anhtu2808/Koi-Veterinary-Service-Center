@@ -15,12 +15,14 @@ import java.util.List;
 public class Koi {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String koi_id;
+    @Column(name = "koi_id")
+    String koiId;
     String breed;
     int age;
     float height;
     float weight;
-    String health_status;
+    @Column(name = "health_status")
+    String healthStatus;
     String notes;
     String image;
 
@@ -28,7 +30,8 @@ public class Koi {
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     Customer customer;
 
-    @ManyToMany(mappedBy = "kois")
-    List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "koi")
+    List<KoiTreatment> koiTreatments;
 
 }
