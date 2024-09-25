@@ -35,6 +35,7 @@ public class AuthenticateController {
         }
         return ResponseObject.APIRepsonse("401", "Invalid username or password", HttpStatus.UNAUTHORIZED, "");
     }
+
     @PostMapping("/logout")
     public ResponseEntity<ResponseObject> logout(@RequestBody @Valid LogoutRequest logoutRequest) {
       boolean check =  authenticateService.logout(logoutRequest.getToken());
@@ -44,5 +45,8 @@ public class AuthenticateController {
           return ResponseObject.APIRepsonse("401", "Logout Failed", HttpStatus.UNAUTHORIZED, "");
       }
     }
+
+
+
 }
 

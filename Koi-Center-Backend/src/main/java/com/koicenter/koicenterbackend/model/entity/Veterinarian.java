@@ -22,7 +22,7 @@ public class Veterinarian {
     @Column(name = "google_meet")
     String googleMeet;
     String phone;
-
+    String image;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     User user;
