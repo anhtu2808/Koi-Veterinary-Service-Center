@@ -35,8 +35,11 @@ public class SecurityConfig {
                                     "/configuration/security",
                                     "/swagger-ui/**",
                                     "/webjars/**",
+                                    "/api/v1/veterinarian/**",
+                                    "api/v1/service/appointmentType/**",
                                     "/swagger-ui.html").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/service/{serviceId}").permitAll()
                             .anyRequest().authenticated();
                 });
 
@@ -46,7 +49,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://127.0.0.1:5501"); // Allow frontend origin
+        configuration.addAllowedOrigin("*"); // Allow frontend origin
         configuration.addAllowedMethod("*"); // Allow all methods
         configuration.addAllowedHeader("*"); // Allow all headers
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -1,0 +1,33 @@
+.profile__h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(6, 44, 91);
+}
+
+.column__right {
+    display: block; /* Đảm bảo rằng span chiếm toàn bộ chiều rộng */
+    background-color: #f0f0f0; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-top: 10px; 
+}
+
+.column__left{
+    display: flex;
+    flex-direction: column;    
+    justify-content: center;
+    align-items: center;
+}
+
+img{
+    padding-bottom: 3vh;
+}
+
+.profile__previous{
+    background-color: rgb(194, 216, 255);
+    position: fixed;
+    bottom: 5vh;
+    border-radius: 20px;
+    display: flex;
+}

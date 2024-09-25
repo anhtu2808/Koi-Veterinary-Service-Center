@@ -1,0 +1,49 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-accent);
+  padding: 40px 0;
+}
+.pond {
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+h1 {
+  color: var(--color-primary);
+  margin-bottom: 30px;
+}
+h3 {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+input, textarea {
+  border: 1px solid var(--color-secondary);
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+.button {
+  background-color: var(--color-primary);
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.button:hover {
+  background-color: #2a3a8c;
+}
+.button {
+  background-color: var(--color-secondary);
+}
+.button:hover {
+  background-color: rgba(21, 158, 236, 0.7);
+}
+
+.text{
+  text-align: left;
+}

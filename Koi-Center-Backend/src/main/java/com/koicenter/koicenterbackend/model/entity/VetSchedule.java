@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.koicenter.koicenterbackend.model.enums.StatusVetSchedule;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,7 @@ public class VetSchedule {
 
     @ManyToOne
     @JoinColumn(name = "vet_id", referencedColumnName = "vet_id")
+
     Veterinarian veterinarian;
 
 }
