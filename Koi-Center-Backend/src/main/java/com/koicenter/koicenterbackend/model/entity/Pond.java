@@ -15,7 +15,8 @@ import java.util.List;
 public class Pond {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String pond_id;
+    @Column(name = "pond_id")
+    String pondId;
     String status;
     float depth;
     float perimeter;
@@ -27,6 +28,6 @@ public class Pond {
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     Customer customer;
 
-    @ManyToMany(mappedBy = "ponds")
-    List<Appointment> appointments;
+    @OneToMany(mappedBy = "pond")
+    List<PondTreatment> pondTreatments;
 }
