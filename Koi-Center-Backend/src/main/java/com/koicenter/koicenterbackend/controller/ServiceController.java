@@ -16,7 +16,7 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
 
-    @GetMapping("/all") //service_for khac ONLINE
+    @GetMapping("") //service_for khac ONLINE
     public ResponseEntity<ResponseObject> getAllServicesNotOnline() {
         List<Service> services = serviceService.getAllServiceByType();
         return ResponseObject.APIRepsonse("200", "Get service list success", HttpStatus.OK, services);

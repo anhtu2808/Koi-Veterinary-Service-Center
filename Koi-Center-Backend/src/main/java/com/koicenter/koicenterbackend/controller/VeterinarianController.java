@@ -27,7 +27,7 @@ public class VeterinarianController {
     }
 
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<ResponseObject> getAllVeterinarian() {
         List<VeterinarianResponse> listVet = veterinarianService.getAllVet();
         log.info("toi dang o day ",listVet);
