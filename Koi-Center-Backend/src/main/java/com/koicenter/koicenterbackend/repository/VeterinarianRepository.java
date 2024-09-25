@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface VeterinarianRepository extends JpaRepository<Veterinarian, String> {
-    @Query(value = "SELECT * FROM Koi_Vetenarian_Service_Center.user u JOIN Koi_Vetenarian_Service_Center.veterinarian v ON u.user_id = v.user_id", nativeQuery = true)
-    List findAllVet();
+    @Query(value = "SELECT u.user_id,u.role,u.status,u.username,u.email,u.full_name,v.vet_id,v.description,v.google_meet,v.phone,v.image,v.veterinarian_status FROM Koi_Vetenarian_Service_Center.user u JOIN Koi_Vetenarian_Service_Center.veterinarian v ON u.user_id = v.user_id", nativeQuery = true)
+    List<Object[]> findAllVet();
 }

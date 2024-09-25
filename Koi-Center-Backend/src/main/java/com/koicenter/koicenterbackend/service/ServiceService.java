@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.enums.ServiceType;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class ServiceService {
     }
 
     public com.koicenter.koicenterbackend.model.entity.Service getServiceById(String id){
-        return servicesRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_EXITS.getCode(),ErrorCode.SERVICE_NOT_EXITS.getMessage()));
+        return servicesRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_EXITS.getCode(), ErrorCode.SERVICE_NOT_EXITS.getMessage(),HttpStatus.NOT_FOUND));
     }
     public List<com.koicenter.koicenterbackend.model.entity.Service> getServiceFor(String servicefor){
         List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();

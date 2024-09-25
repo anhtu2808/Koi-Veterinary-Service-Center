@@ -27,9 +27,10 @@ public class VeterinarianController {
     }
 
 
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<ResponseObject> getAllVeterinarian() {
         List<VeterinarianResponse> listVet = veterinarianService.getAllVet();
+        log.info("toi dang o day ",listVet);
         return ResponseObject.APIRepsonse("200", "List of veterinarians retrieved successfully", HttpStatus.OK, listVet);
     }
 
