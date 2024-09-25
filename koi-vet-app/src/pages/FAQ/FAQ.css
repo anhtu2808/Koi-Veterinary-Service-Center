@@ -1,0 +1,45 @@
+.ngang{
+    justify-content: space-between; 
+        display: flex;
+        text-align: center;
+}
+.ngang .col-md-2{
+    list-style-type: none
+}
+.col-md-2 .h5 .ques{
+    text-align: center;
+    text-decoration: none;
+}
+.container .h2{
+    text-align: center;
+}
+
+.phancach{
+    padding-top: 10%;
+}
+
+
+.accordion-item {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 10px; /* Khoảng cách giữa các items */
+}
+
+.accordion-button {
+    border-radius: 8px; /* Bo tròn các góc của button */
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa; /* Màu nền khi mở rộng */
+    color: #495057; /* Màu chữ khi mở rộng */
+}
+
+.input-group-text {
+    background-color: #e9ecef; /* Màu nền của khu vực icon tìm kiếm */
+    border: none; /* Bỏ đường viền */
+}
+
+.input-group-text i {
+    color: #6c757d; /* Màu icon */
+}
+
