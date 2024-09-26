@@ -1,6 +1,6 @@
 import React from "react";
 import veterinarian from "../../assets/img/veterinarian.png";
-import "./Veterinarian.css";
+import "./VeterinarianPage.css";
 import { Link } from "react-router-dom";
 
 function Veterinarian() {

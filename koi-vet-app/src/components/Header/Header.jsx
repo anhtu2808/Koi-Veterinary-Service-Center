@@ -33,27 +33,27 @@ function Header() {
       {/* <!-- Navbar --> */}
       <nav className="navbar">
         <div className="container">
-          <div className="row col-md-6">
-            <div className="col-md-2">
+          <div className="row col-md-7">
+            <div className="col-md-2 text-center">
             <Link to="/" className="nav-link">Home</Link>
             </div>
-            <div className="col-md-2">
+            <div className="col-md-2 text-center">
             <Link to="/" className="nav-link">About us</Link>
             </div>
-            <div className="col-md-2">
+            <div className="col-md-2 text-center">
             <Link to="/" className="nav-link">Services</Link>
             </div>
-            <div className="col-md-2">
-            <Link to="/" className="nav-link">Veterinarians</Link>
+            <div className="col-md-2 text-center">
+            <Link to="/veterinarians" className="nav-link">Veterinarians</Link>
             </div>
-            <div className="col-md-2">
+            <div className="col-md-2 text-center">
             <Link to="/" className="nav-link">News</Link>
             </div>
-            <div className="col-md-2">
+            <div className="col-md-2 text-center">
             <Link to="/" className="nav-link">Contacts</Link>
             </div>
           </div>
-          <div className="row col-md-6 justify-content-end">
+          <div className="row col-md-5 justify-content-end">
             <div className="col-auto">
               <button className="btn btn-outline-primary" type="submit">
                 <i className="fas fa-search"></i>

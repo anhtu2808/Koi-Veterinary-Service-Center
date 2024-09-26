@@ -26,7 +26,7 @@ public class VeterinarianResponse {
     private String googleMeet;       // Mapped from `google_meet` in Veterinarian
     private String phone;            // Mapped from `phone` in Veterinarian
     private String imageVeterinarian;
-String userId ;
+    String userId ;
 
     UserResponse userResponse;
 

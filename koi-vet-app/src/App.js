@@ -8,6 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage/HomePage';
 import Medicine from './pages/Medicine/Medicine';
+import DocterDashboard from './pages/DoctorDashboard/DocterDashboard';
+import VeterinarianPage from './pages/VeterinarianPage/VeterinarianPage';
 function App() {
   return (
     <Router>
@@ -18,13 +20,16 @@ function App() {
             <UserLayout>
               <Routes>
                 <Route path="/faq" element={<FAQ/>} /> {/* Trang chủ User */}
-                <Route path="/homepage" element={<HomePage/>} />
+                <Route path="/" element={<HomePage/>} />
                 <Route path="/medicine" element={<Medicine/>} />
                 {/* Thêm các route khác của User ở đây */}
+                <Route path='/veterinarians' element={<VeterinarianPage/>}/>
               </Routes>
             </UserLayout>
           } />
+         <Route path="/doctor/*" element={<DocterDashboard />} />  
       </Routes>
+
       <ToastContainer />
     </Router>
   );

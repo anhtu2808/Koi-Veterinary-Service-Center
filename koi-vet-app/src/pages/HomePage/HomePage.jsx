@@ -30,7 +30,7 @@ function HomePage() {
             <div className="row">  
                 <div className="col-md-4 mb-4">  
                     <div className="service-card bg-blue-100 hover:bg-blue-200 p-4 rounded-lg shadow-md">  
-                        <div className="text-center">  
+                        <div className="text-center-custom text-center">  
                             <i className="fas fa-mobile-alt text-4xl mb-4 text-primary"></i>  
                             <h3 className="h5 font-weight-semibold mb-2">Booking Mobile Service</h3>  
                             <p className="text-gray-600">Book a mobile service for convenient healthcare at your doorstep.</p>  
@@ -39,7 +39,7 @@ function HomePage() {
                 </div>  
                 <div className="col-md-4 mb-4">  
                     <div className="service-card bg-green-100 hover:bg-green-200 p-4 rounded-lg shadow-md">  
-                        <div className="text-center">  
+                        <div className="text-center-custom text-center">  
                             <i className="fas fa-video text-4xl mb-4 text-success"></i>  
                             <h3 className="h5 font-weight-semibold mb-2">Online Consultation</h3>  
                             <p className="text-gray-600">Connect with healthcare professionals through online video consultations.</p>  
@@ -48,7 +48,7 @@ function HomePage() {
                 </div>  
                 <div className="col-md-4 mb-4">  
                     <div className="service-card bg-purple-100 hover:bg-purple-200 p-4 rounded-lg shadow-md">  
-                        <div className="text-center">  
+                        <div className="text-center-custom text-center">  
                             <i className="fas fa-hospital text-4xl mb-4 text-info"></i>  
                             <h3 className="h5 font-weight-semibold mb-2">Booking Service at Center</h3>  
                             <p className="text-gray-600">Schedule an appointment at our healthcare center for in-person services.</p>  
@@ -56,9 +56,9 @@ function HomePage() {
                     </div>  
                 </div>  
             </div>  
-            <h2 className="h4 text-center text-gray-800 mt-5">A Great Place to Receive Care</h2>  
-            <p className="text-center text-gray-600 mb-4">Our expert team is dedicated to ensuring the health and longevity of your beloved Koi through personalized, state-of-the-art medical services. Trust us to provide the best care, because at KOIMED, we care as much about your Koi as you do.</p>  
-            <div className="text-center">  
+            <h2 className="h4 text-center-custom text-center text-gray-800 mt-5">A Great Place to Receive Care</h2>  
+            <p className="text-center-custom text-center text-gray-600 mb-4">Our expert team is dedicated to ensuring the health and longevity of your beloved Koi through personalized, state-of-the-art medical services. Trust us to provide the best care, because at KOIMED, we care as much about your Koi as you do.</p>  
+            <div className="text-center-custom text-center">  
                 {/* <a href="#" className="btn btn-primary">Learn More</a> */}
                 <Link href="#" className="btn btn-primary">
                         Learn More
@@ -73,8 +73,8 @@ function HomePage() {
 <div className="container">
 
     <div className="container py-5">
-        <h6 className="text-center text-uppercase text-primary mb-2">Care you can believe in</h6>
-        <h2 className="text-center mb-5">Our Services</h2>
+        <h6 className="text-center-custom text-center text-uppercase text-primary mb-2">Care you can believe in</h6>
+        <h2 className="text-center-custom text-center mb-5">Our Services</h2>
         <div className="row">
             <div className="col-md-4">
                 <div className="list-group">
@@ -96,7 +96,10 @@ function HomePage() {
                     </Link>
                 </div>
                 <div className="mt-4">
+                    <Link to="/services">
                     <button className="btn btn-primary w-100">View All</button>
+                    </Link>
+                  
                 </div>
             </div>
             <div className="col-md-8">
@@ -112,8 +115,8 @@ function HomePage() {
 
     <div className="container my-4">  
         <div className="row">  
-            <h6 className="text-center text-uppercase text-primary mb-2">Better information, Better health</h6>  
-            <h2 className="text-center mb-5 text-nav" >News</h2>  
+            <h6 className="text-center-custom text-center text-uppercase text-primary mb-2">Better information, Better health</h6>  
+            <h2 className="text-center-custom text-center mb-5 text-nav" >News</h2>  
     
             <div className="col-md-6 mb-4">  
                 <div className="card news-card" onclick="console.log('Clicked on article: Popular koi varieties and their characteristics')">  
@@ -203,11 +206,11 @@ function HomePage() {
     <section className="py-5 bg-light">
         
         <div className="container">
-            <h6 className="text-center text-uppercase text-primary mb-2">Care you can believe in</h6>
-            <h2 className="text-center mb-5">Our Services</h2>
+            <h6 className="text-center-custom text-center text-uppercase text-primary mb-2">Care you can believe in</h6>
+            <h2 className="text-center-custom text-center mb-5">Our Services</h2>
             <div className="row">
                 <div className="col-md-3 mb-3">
-                    <div className="card text-center h-100">
+                    <div className="card text-center-custom text-center h-100">
                         <div className="card-body">
                             <div className="display-4 mb-4"><i className="fa-solid fa-phone"></i></div>
                             <h3 className="card-title">Phone </h3>
@@ -217,7 +220,7 @@ function HomePage() {
                     </div>
                 </div>
                 <div className="col-md-3 mb-3">
-                    <div className="card text-center h-100">
+                    <div className="card text-center-custom text-center h-100">
                         <div className="card-body">
                             <div className="display-4 mb-4"><i className="fa-solid fa-location-dot"></i></div>
                             <h3 className="card-title">Location</h3>
@@ -227,7 +230,7 @@ function HomePage() {
                     </div>
                 </div>
                 <div className="col-md-3 mb-3  ">
-                    <div className="card text-center h-100  ">
+                    <div className="card text-center-custom text-center h-100  ">
                         <div className="card-body">
                             <div className="display-4 mb-4"><i className="fa-regular fa-envelope"></i></div>
                             <h3 className="card-title">EMAIL</h3>
@@ -237,7 +240,7 @@ function HomePage() {
                     </div>
                 </div>
                 <div className="col-md-3 mb-3 " >
-                    <div className="card text-center h-100" >
+                    <div className="card text-center-custom text-center h-100" >
                         <div className="card-body">
                             <div className="display-4 mb-4"><i className="fa-regular fa-clock"></i></div>
                             <h3 className="card-title">Working Hours</h3>
