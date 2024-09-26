@@ -30,7 +30,7 @@ public class VeterinarianService {
         Veterinarian veterinarian=  veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
         VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
         veterinarianResponse.setVetId(veterinarian.getVetId());
-        veterinarianResponse.setVetstatus(veterinarian.getVetstatus());
+        veterinarianResponse.setVetstatus(veterinarian.getStatus());
         veterinarianResponse.setDescription(veterinarian.getDescription());
         veterinarianResponse.setGoogleMeet(veterinarian.getGoogleMeet());
         veterinarianResponse.setPhone(veterinarian.getPhone());
