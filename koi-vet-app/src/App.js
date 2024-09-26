@@ -10,12 +10,14 @@ import HomePage from './pages/HomePage/HomePage';
 import Medicine from './pages/Medicine/Medicine';
 import DocterDashboard from './pages/DoctorDashboard/DocterDashboard';
 import VeterinarianPage from './pages/VeterinarianPage/VeterinarianPage';
+import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
+        <Route path="/unauthorized" element={<UnauthorizedPage/>}/>
         <Route path="/*" element={
             <UserLayout>
               <Routes>

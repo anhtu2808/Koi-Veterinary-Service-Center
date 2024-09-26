@@ -22,6 +22,9 @@ const Veterinarian = ({image,vetId,name}) => {
                     View Profile
                   </button>
                 </Link>
+                <button className="btn-view-profile  mt-3">
+                   Choose
+                  </button>
               </div>
             </div>
           </div>

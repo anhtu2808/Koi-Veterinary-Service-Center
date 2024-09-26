@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import veterinarian from "../../assets/img/veterinarian.png";
 import "./VeterinarianPage.css";
-import { Link } from "react-router-dom";
 import { fetchVetsAPI } from "../../apis";
 import Veterinarian from "../../components/Veterinarian/Veterinarian";
 
@@ -12,7 +11,7 @@ function VeterinarianPage() {
     const fetchVeterinarians =  async () =>{
       const response = await fetchVetsAPI();
       console.log({response});
-      setVeterinarians(response);
+      setVeterinarians(response?.data);
     }
     fetchVeterinarians();
   },[])
@@ -34,10 +33,7 @@ function VeterinarianPage() {
             return <Veterinarian image={vet.image} vetId={vet.vetId} name={vet?.user?.full_name} />
            })
           }
-         
         </div>
-      
-
         <div className="d-flex justify-content-between mt-4">
           <button className="btn-nav">
             <i className="fas fa-arrow-left"></i> Previous Step

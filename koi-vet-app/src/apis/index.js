@@ -7,12 +7,12 @@ export const fetchLoginAPI =   async (username, password) => {
         username: username,
         password: password
     })
-    return response.data.data;
+    return response.data;
 }
 
 export const fetchLogoutAPI = async () => {
     const response = await api.post('/auth/logout');
-    return response.data.data;
+    return response.data;
 }
 
 
@@ -27,22 +27,22 @@ export const createUserAPI = async (email, password, username, fullname, phone, 
         phone,
         address,
       });
-      return response.data.data;
+      return response.data;
   };
 
 export const fetchMyInfoAPI = async () => {
     const response = await api.get('/users/myInfo');
-    return response.data.data;
+    return response.data
 }
 
 
 //* Vet API */
 export const fetchVetsAPI = async () => {
     const response = await api.get('/veterinarians');
-    return response.data.data;
+    return response.data;
   }
 
 export const fetchVetByVetIdAPI = async (vetId) =>{
     const response = await api.get(`/veterinarians/${vetId}`);
-    return response.data.data;
+    return response.data;
 }
