@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import veterinarian from "../../assets/img/veterinarian.png";
 import "./VeterinarianPage.css";
 import { Link } from "react-router-dom";
+import { fetchVetsAPI } from "../../apis";
 
 function Veterinarian() {
+
+  
+  useEffect(()=>{
+    const fetchVeterinarians =  async () =>{
+      const response = await fetchVetsAPI();
+      console.log(response);
+      return response;
+    }
+    fetchVeterinarians();
+  },[])
+
   return (
     <div className="container text-center my-5">
       <div className="container mt-5">

@@ -28,7 +28,7 @@ public class Veterinarian {
     String googleMeet;
     String phone;
     String image;
-     String Vetstatus;
+     String status;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     User user;
