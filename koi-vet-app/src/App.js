@@ -14,6 +14,7 @@ import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import MyProfile from './pages/MyProfile/MyProfile';
 import ServicePage from './pages/ServicePage/ServicePage';
 
+import VetProfile from './pages/VetProfile/VetProfile';
 function App() {
   return (
     <Router>
@@ -31,6 +32,7 @@ function App() {
                 <Route path='/veterinarians' element={<VeterinarianPage/>}/>
                 <Route path='/profile' element={<MyProfile/>} />
                 <Route path='/services' element={<ServicePage/>}/>
+                <Route path='/vet-profile' element={<VetProfile/>} />
               </Routes>
             </UserLayout>
           } />
