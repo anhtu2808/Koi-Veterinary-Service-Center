@@ -1,15 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-const Veterinarian = (image,vetId) => {
+import tempt_img from '../../assets/img/veterinarian.png'
+const Veterinarian = (image,vetId,fullname) => {
   return (
     <>
+   
     {/* <!-- Doctor Card 1 --> */}
     <div className="col-md-4 mb-4">
             <div className="doctor-card">
-              <img src={image} alt="Doctor 1" />
+              <img src={tempt_img} alt="Doctor 1" />
               <div className="p-3">
-                <h5>Pham Nhat Vuong</h5>
+                <h5>fu</h5>
                 <p>CVIS & VFDS</p>
                 <div className="icon-group">
                   <i className="fas fa-user"></i>
