@@ -35,14 +35,14 @@ public class SecurityConfig {
                                     "/configuration/security",
                                     "/swagger-ui/**",
                                     "/webjars/**",
-                                    "/api/v1/service",
-                                    "/api/v1/veterinarian/**",
-                                    "api/v1/service/appointmentType/**",
+                                    "/api/v1/services",
+                                    "/api/v1/veterinarians/**",
+                                    "api/v1/services/appointmentType/**",
                                     "/swagger-ui.html").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/v1/user/register").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/service/{serviceId}").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/veterinarian").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/v1/user/myInfo").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/services/{serviceId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
                             .anyRequest().authenticated();
                 });
         return http.build();
