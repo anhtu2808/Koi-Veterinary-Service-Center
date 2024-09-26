@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import tempt_img from '../../assets/img/veterinarian.png'
-const Veterinarian = (image,vetId,fullname) => {
+const Veterinarian = ({image,vetId,name}) => {
   return (
     <>
    
@@ -10,7 +10,7 @@ const Veterinarian = (image,vetId,fullname) => {
             <div className="doctor-card">
               <img src={tempt_img} alt="Doctor 1" />
               <div className="p-3">
-                <h5>fu</h5>
+                <h5>{name}</h5>
                 <p>CVIS & VFDS</p>
                 <div className="icon-group">
                   <i className="fas fa-user"></i>
