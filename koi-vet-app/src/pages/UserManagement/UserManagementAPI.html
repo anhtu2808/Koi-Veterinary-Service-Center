@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="./UserManagement.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">YOURLOGO</div>
+            <a href="#" class="menu-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#" class="menu-item"><i class="fas fa-users"></i> Users</a>
+            <a href="#" class="menu-item"><i class="far fa-calendar-alt"></i> All Appointment</a>
+            <a href="#" class="menu-item"><i class="far fa-images"></i> Photos</a>
+            <a href="#" class="menu-item"><i class="fas fa-sitemap"></i> Hierarchy</a>
+            <a href="#" class="menu-item"><i class="far fa-envelope"></i> Message</a>
+            <a href="#" class="menu-item"><i class="far fa-question-circle"></i> Help</a>
+            <a href="#" class="menu-item"><i class="fas fa-cog"></i> Setting</a>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>Users Dashboard</h1>
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User Avatar">
+                    <span>Hello, Lekan</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <button>Add user +</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Create Date</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>David Wagner</div>
+                            <div style="color: #666; font-size: 12px;">david.wagner@example.com</div>
+                        </td>
+                        <td>24 DEC 2015</td>
+                        <td><span class="role admin">Super Admin</span></td>
+                        <td class="action-icons">
+                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>Ina Megan</div>
+                            <div style="color: #666; font-size: 12px;">ina.megan@example.com</div>
+                        </td>
+                        <td>24 DEC 2015</td>
+                        <td><span class="role admin">Admin</span></td>
+                        <td class="action-icons">
+                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>Devin Harmon</div>
+                            <div style="color: #666; font-size: 12px;">devin.harmon@example.com</div>
+                        </td>
+                        <td>18 DEC 2015</td>
+                        <td><span class="role admin">HR Admin</span></td>
+                        <td class="action-icons">
+                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>Lena Page</div>
+                            <div style="color: #666; font-size: 12px;">lena.page@example.com</div>
+                        </td>
+                        <td>8 DEC 2016</td>
+                        <td><span class="role employee">Employee</span></td>
+                        <td class="action-icons">
+                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <span>Items per page:</span>
+                <select>
+                    <option>10</option>
+                    <option>20</option>
+                    <option>30</option>
+                </select>
+                <span>1-4 of 15</span>
+                <i class="fas fa-chevron-left"></i>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
