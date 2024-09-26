@@ -30,7 +30,7 @@ function VeterinarianPage() {
           {
            veterinarians?.map((vet) => {
             console.log({vet});
-            return <Veterinarian image={vet.image} vetId={vet.vetId} name={vet?.user?.full_name} />
+            return <Veterinarian image={vet.image} vetId={vet.vetId} name={vet?.user?.full_name} isBooking={false} />
            })
           }
         </div>

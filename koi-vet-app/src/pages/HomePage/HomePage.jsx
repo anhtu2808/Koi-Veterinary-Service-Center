@@ -10,7 +10,7 @@ function HomePage() {
             alt="Hero" className="w-100 h-100 object-fit-cover"/>
         <div className="container">
             <div className="position-absolute top-0 start-0 w-100 h-100 bg-light bg-opacity-75 d-flex align-items-center justify-content-start">
-                <div className="text-start text-dark ms-4"> 
+                <div className="text-start text-dark container ms-4"> 
                     <p className="fs-5 mb-2 text-nav" >Caring for Koi</p>
                     <h1 className="display-4 fw-bold mb-4 text-nav" >Dedicated Care for Koi Fish</h1>
                     <h1 className="display-4 fw-bold mb-4 text-nav" >Ensuring Their Peak Health</h1>

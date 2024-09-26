@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import tempt_img from '../../assets/img/veterinarian.png'
-const Veterinarian = ({image,vetId,name}) => {
+const Veterinarian = ({image,vetId,name,isBooking}) => {
   return (
     <>
    
@@ -22,9 +22,12 @@ const Veterinarian = ({image,vetId,name}) => {
                     View Profile
                   </button>
                 </Link>
-                <button className="btn-view-profile  mt-3">
+                {isBooking?<button className="btn-view-profile  mt-3">
                    Choose
                   </button>
+                  
+                  :null}
+                
               </div>
             </div>
           </div>
