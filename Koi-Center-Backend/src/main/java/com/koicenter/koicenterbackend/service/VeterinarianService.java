@@ -45,7 +45,7 @@ public class VeterinarianService {
         userResponse.setStatus(user.isStatus());
         userResponse.setRole(user.getRole());
 
-        veterinarianResponse.setUserResponse(userResponse);
+        veterinarianResponse.setUser(userResponse);
         return veterinarianResponse ;
     }
 
@@ -71,7 +71,7 @@ public List<VeterinarianResponse> getAllVet() {
                     .phone(objects[9].toString())
                     .imageVeterinarian(objects[10]!= null ? objects[10].toString() : null)
                     .Vetstatus(objects[11].toString())
-                    .userResponse(userResponse)
+                    .user(userResponse)
                     .build();
 
             responseList.add(veterinarianResponse);

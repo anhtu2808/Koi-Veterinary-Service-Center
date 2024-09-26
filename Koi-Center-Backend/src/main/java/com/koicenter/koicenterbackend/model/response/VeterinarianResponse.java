@@ -28,7 +28,7 @@ public class VeterinarianResponse {
     private String imageVeterinarian;
     String userId ;
 
-    UserResponse userResponse;
+    UserResponse user;
 
 
 }
