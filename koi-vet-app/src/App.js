@@ -12,6 +12,8 @@ import DocterDashboard from './pages/DoctorDashboard/DocterDashboard';
 import VeterinarianPage from './pages/VeterinarianPage/VeterinarianPage';
 import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import MyProfile from './pages/MyProfile/MyProfile';
+import ServicePage from './pages/ServicePage/ServicePage';
+
 function App() {
   return (
     <Router>
@@ -28,6 +30,7 @@ function App() {
                 {/* Thêm các route khác của User ở đây */}
                 <Route path='/veterinarians' element={<VeterinarianPage/>}/>
                 <Route path='/profile' element={<MyProfile/>} />
+                <Route path='/services' element={<ServicePage/>}/>
               </Routes>
             </UserLayout>
           } />
