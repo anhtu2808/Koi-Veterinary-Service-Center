@@ -20,7 +20,8 @@ public class Veterinarian {
     String vetId;
 
     @Enumerated(EnumType.STRING)
-    VeterinarianStatus VeterinarianStatus;
+    VeterinarianStatus veterinarianStatus;
+
 
 
     String description;
