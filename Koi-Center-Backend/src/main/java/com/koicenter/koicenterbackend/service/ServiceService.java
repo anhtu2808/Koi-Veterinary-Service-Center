@@ -21,7 +21,7 @@ public class ServiceService {
     }
 
     public List<com.koicenter.koicenterbackend.model.entity.Service> getAllServiceByType(){
-        return servicesRepository.findByServiceForNot(ServiceType.ONLINE);
+        return servicesRepository.findByServiceFor(ServiceType.ONLINE);
     }
 
     public com.koicenter.koicenterbackend.model.entity.Service getServiceById(String id){
