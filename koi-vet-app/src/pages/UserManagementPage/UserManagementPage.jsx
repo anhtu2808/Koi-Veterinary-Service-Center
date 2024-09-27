@@ -6,7 +6,6 @@ function UserManagement() {
   return (
     <div className="container-fluid all">
         <div className="row">
-            <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div className="position-sticky pt-3">
                     <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
