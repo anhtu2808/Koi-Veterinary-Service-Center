@@ -7,7 +7,7 @@ export const fetchUserProfile = createAsyncThunk('user/fetchUserProfile', async 
 });
 const initialState = {
   isAuthorized: !!localStorage.getItem('token'), // Kiểm tra xem user đã đăng nhập chưa
-  user: {},
+  user: {},       
   loading: false,
   error: null,
 };

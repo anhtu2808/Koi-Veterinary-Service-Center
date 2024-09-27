@@ -13,8 +13,9 @@ import VeterinarianPage from './pages/VeterinarianPage/VeterinarianPage';
 import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import MyProfile from './pages/MyProfile/MyProfile';
 import ServicePage from './pages/ServicePage/ServicePage';
-
 import VetProfile from './pages/VetProfile/VetProfile';
+import UserManagement from './pages/UserManagementPage/UserManagementPage';
+import AllAppointment from './pages/AllAppointmentPage/AllAppointment';
 function App() {
   return (
     <Router>
@@ -33,6 +34,8 @@ function App() {
                 <Route path='/profile' element={<MyProfile/>} />
                 <Route path='/services' element={<ServicePage/>}/>
                 <Route path='/vet-profile' element={<VetProfile/>} />
+                <Route path='/usermanagement' element={<UserManagement/>} />
+                <Route path='/allappointment' element={<AllAppointment/>} />
               </Routes>
             </UserLayout>
           } />
