@@ -4,7 +4,7 @@ import "./AllAppointment.css"
 
 function AllAppointment() {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid all">
         <div className="row">
             <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div className="position-sticky pt-3">
@@ -79,7 +79,7 @@ function AllAppointment() {
                 </div>
 
                 <div className="table-responsive">
-                    <table className="table table-striped table-sm">
+                    <table className="table table-striped table-sm tableleft">
                         <thead>
                             <tr>
                                 <th>Appoint ID</th>

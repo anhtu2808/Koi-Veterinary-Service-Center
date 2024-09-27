@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function UserManagement() {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid all">
         <div className="row">
             <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div className="position-sticky pt-3">
@@ -79,7 +79,7 @@ function UserManagement() {
                 </div>
 
                 <div className="table-responsive">
-                    <table className="table table-striped table-sm">
+                    <table className="table table-striped table-sm tableleft">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -95,7 +95,7 @@ function UserManagement() {
                                     <div className="text-muted small">david.wagner@example.com</div>
                                 </td>
                                 <td>24 DEC 2015</td>
-                                <td><span className="role admin">Super Admin</span></td>
+                                <td><span className="status">Super Admin</span></td>
                                 <td>
                                     <button className="btn btn-sm btn-outline-secondary"><i className="fas fa-edit"></i></button>
                                     <button className="btn btn-sm btn-outline-secondary"><i className="fas fa-trash"></i></button>
@@ -108,7 +108,7 @@ function UserManagement() {
                                     <div className="text-muted small">ina.megan@example.com</div>
                                 </td>
                                 <td>24 DEC 2015</td>
-                                <td><span className="role admin">Admin</span></td>
+                                <td><span className="status">Admin</span></td>
                                 <td>
                                     <button className="btn btn-sm btn-outline-secondary"><i className="fas fa-edit"></i></button>
                                     <button className="btn btn-sm btn-outline-secondary"><i className="fas fa-trash"></i></button>
@@ -121,7 +121,7 @@ function UserManagement() {
                                     <div className="text-muted small">devin.harmon@example.com</div>
                                 </td>
                                 <td>18 DEC 2015</td>
-                                <td><span className="role admin">HR Admin</span></td>
+                                <td><span className="status">HR Admin</span></td>
                                 <td>
                                     <button className="btn btn-sm btn-outline-secondary"><i className="fas fa-edit"></i></button>
                                     <button className="btn btn-sm btn-outline-secondary"><i className="fas fa-trash"></i></button>
@@ -134,7 +134,7 @@ function UserManagement() {
                                     <div className="text-muted small">lena.page@example.com</div>
                                 </td>
                                 <td>8 DEC 2016</td>
-                                <td><span className="role employee">Employee</span></td>
+                                <td><span className="status">Employee</span></td>
                                 <td>
                                     <button className="btn btn-sm btn-outline-secondary"><i className="fas fa-edit"></i></button>
                                     <button className="btn btn-sm btn-outline-secondary"><i className="fas fa-trash"></i></button>

@@ -1,5 +1,5 @@
 
-* {
+ .all{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,9 +8,8 @@
 body {
     background-color: #f8f9fa;
 }
-.container {
-    display: flex;
-}
+
+
 .sidebar {
     width: 240px;
     background-color: white;
@@ -77,7 +76,7 @@ body {
     border-radius: 0 5px 5px 0;
     cursor: pointer;
 }
-table {
+.tableleft {
     width: 100%;
     border-collapse: collapse;
     background-color: white;

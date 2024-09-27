@@ -1,122 +1,121 @@
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            display: flex;
-        }
-        .sidebar {
-            width: 240px;
-            background-color: white;
-            height: 100vh;
-            padding: 20px;
-            border-right: 1px solid #e0e0e0;
-        }
-        .logo {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            color: #666;
-            text-decoration: none;
-            margin-bottom: 5px;
-        }
-        .menu-item.active {
-            background-color: #e8f0fe;
-            color: #1a73e8;
-            border-radius: 5px;
-        }
-        .menu-item i {
-            margin-right: 10px;
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .search-bar {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        .search-bar input {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px 0 0 5px;
-        }
-        .search-bar button {
-            padding: 10px 20px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        th {
-            background-color: #f1f3f4;
-            font-weight: 600;
-        }
-        .role {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-        }
-        .role.admin {
-            background-color: #e8f0fe;
-            color: #1a73e8;
-        }
-        .role.employee {
-            background-color: #fce8e6;
-            color: #ea4335;
-        }
-        .action-icons i {
-            margin-right: 10px;
-            color: #5f6368;
-            cursor: pointer;
-        }
-        .pagination {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-top: 20px;
-        }
-        .pagination select, .pagination span {
-            margin-right: 10px;
-        }
+.all{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+body {
+    background-color: #f8f9fa;
+}
+
+
+.sidebar {
+    width: 240px;
+    background-color: white;
+    height: 100vh;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+}
+.logo {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: #666;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+.menu-item.active {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    border-radius: 5px;
+}
+.menu-item i {
+    margin-right: 10px;
+}
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.user-info {
+    display: flex;
+    align-items: center;
+}
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.search-bar {
+    display: flex;
+    margin-bottom: 20px;
+}
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px 0 0 5px;
+}
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+.tableleft {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+th {
+    background-color: #f1f3f4;
+    font-weight: 600;
+}
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+.status {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+}
+.role.employee {
+    background-color: #fce8e6;
+    color: #ea4335;
+}
+.action-icons i {
+    margin-right: 10px;
+    color: #5f6368;
+    cursor: pointer;
+}
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+}
+.pagination select, .pagination span {
+    margin-right: 10px;
+}
