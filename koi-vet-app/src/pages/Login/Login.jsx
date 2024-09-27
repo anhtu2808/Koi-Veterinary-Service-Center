@@ -16,9 +16,11 @@ const handleLogin = async (e) => {
  
   console.log(username, password);
   const response = await fetchLoginAPI(username, password);
+ 
   console.log(response)
-  if(response?.data?.status === 200) {
+  if(response?.status === "200") {
     toast.success("Login successfully")
+    localStorage.setItem("accessToken", response.data);
     navigate("/")
   }
 }

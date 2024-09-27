@@ -1,8 +1,17 @@
 // src/pages/MyInfo/MyProfile.js
-import React from "react";
+import React, { useEffect } from "react";
 import "./MyProfile.css"; // Import file CSS
+import { fetchMyInfoAPI } from "../../apis";
 
 const MyProfile = () => {
+
+  useEffect(()=>{
+    const fetchMyInfo = async () => {
+      const response = await fetchMyInfoAPI();
+      console.log(response);
+    }
+    fetchMyInfo();
+  })
   return (
     <div className="container my-profile-container">
       <div className="card shadow my-profile-card">

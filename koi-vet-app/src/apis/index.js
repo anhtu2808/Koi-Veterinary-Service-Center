@@ -31,7 +31,7 @@ export const createUserAPI = async (email, password, username, fullname, phone, 
   };
 
 export const fetchMyInfoAPI = async () => {
-    const response = await api.get('/users/myInfo');
+    const response = await api.post('/users/myInfo');
     return response.data
 }
 
@@ -66,3 +66,7 @@ export const fecthServiceByServiceIdAPI = async (serviceId) => {
     const response = await api.get(`/services/${serviceId}`);
     return response.data;
 }
+export const fetchServiceByTypeAPI = async (type) => {
+    const response = await api.get(`/services?type${type}`);
+    return response.data;
+} 

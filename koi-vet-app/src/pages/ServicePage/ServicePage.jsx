@@ -30,26 +30,7 @@ function ServicePage() {
             services.map((service) => {
                 return <Service image={service.image} serviceId={service.serviceId} description={service.description} serviceName={service.serviceName} />
             })
-           }
-
-            <div className="container text-center my-5">
-                <div className="row justify-content-center">
-                    <div className="col-md-6">
-                        <label className="input-label" htmlFor="service-input">Another Service</label>
-                        <input type="text" id="service-input" className="custom-input" placeholder="Enter your requirement"/>
-                    </div>
-                </div>
-            </div>
-
-
-            <div className="d-flex justify-content-between mt-4">
-                <button className="btn-nav">
-                    <i className="fas fa-arrow-left"></i> Previous Step
-                </button>
-                <button className="btn-nav">
-                    Next Step <i className="fas fa-arrow-right"></i>
-                </button>
-            </div>
+        }
         </div>
         </div>
     </div>
