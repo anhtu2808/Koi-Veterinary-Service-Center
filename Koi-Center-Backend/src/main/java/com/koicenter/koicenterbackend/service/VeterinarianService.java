@@ -34,7 +34,7 @@
             Veterinarian veterinarian=  veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
             VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
             veterinarianResponse.setVetId(veterinarian.getVetId());
-            veterinarianResponse.setVetStatus(veterinarian.getVeterinarianStatus());
+            veterinarianResponse.setVetStatus(veterinarian.getVeterinarianStatus().toString());
             veterinarianResponse.setDescription(veterinarian.getDescription());
             veterinarianResponse.setGoogleMeet(veterinarian.getGoogleMeet());
             veterinarianResponse.setPhone(veterinarian.getPhone());
@@ -75,7 +75,7 @@
                         .googleMeet(objects[8].toString())
                         .phone(objects[9].toString())
                         .imageVeterinarian(objects[10]!= null ? objects[10].toString() : null)
-                        .vetStatus(VeterinarianStatus.valueOf(objects[11].toString()))
+                        .vetStatus(String.valueOf(VeterinarianStatus.valueOf(objects[11].toString())))
                         .user(userResponse)
                         .build();
 
