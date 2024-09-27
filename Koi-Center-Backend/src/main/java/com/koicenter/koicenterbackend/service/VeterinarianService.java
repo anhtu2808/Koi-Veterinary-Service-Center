@@ -28,6 +28,7 @@
         UserRepository userRepository;
 
 
+
         //GET Veteriance ID
         public VeterinarianResponse getVeterinarianById ( String veterinarianId){
             Veterinarian veterinarian=  veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
@@ -67,6 +68,7 @@
                         .full_name(objects[5].toString())
                         .build();
 
+
                 VeterinarianResponse veterinarianResponse = VeterinarianResponse.builder()
                         .vetId(objects[6].toString())
                         .description(objects[7].toString())
@@ -76,6 +78,7 @@
                         .vetStatus(VeterinarianStatus.valueOf(objects[11].toString()))
                         .user(userResponse)
                         .build();
+
 
                 responseList.add(veterinarianResponse);
             } catch (Exception e) {

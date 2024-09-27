@@ -21,13 +21,15 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VeterinarianResponse {
 
-     String vetId;            // Mapped from `vet_id` in Veterinarian
-     VeterinarianStatus vetStatus;          // Mapped from `status` in Veterinarian
-     String description;      // Mapped from `description` in Veterinarian
-     String googleMeet;       // Mapped from `google_meet` in Veterinarian
-     String phone;            // Mapped from `phone` in Veterinarian
-     String imageVeterinarian;
+    private String vetId;            // Mapped from `vet_id` in Veterinarian
+    private String Vetstatus;          // Mapped from `status` in Veterinarian
+    private String description;      // Mapped from `description` in Veterinarian
+    private String googleMeet;       // Mapped from `google_meet` in Veterinarian
+    private String phone;            // Mapped from `phone` in Veterinarian
+    private String imageVeterinarian;
     String userId ;
+
     UserResponse user;
+
 
 }
