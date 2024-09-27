@@ -15,7 +15,8 @@ import java.util.List;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String customer_id;
+    @Column(name = "customer_id")
+    String customerId;
     String address;
     String phone;
     String image;

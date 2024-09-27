@@ -40,13 +40,14 @@ public class SecurityConfig {
                                     "/configuration/security",
                                     "/swagger-ui/**",
                                     "/webjars/**",
-                                    "/api/v1/veterinarian/**",
+                                    "/api/v1/services",
+                                    "/api/v1/veterinarians/**",
+                                    "api/v1/services/appointmentType/**",
                                     "/swagger-ui.html").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/service/{serviceId}").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/veterinarian").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/services/{serviceId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
-                            .requestMatchers(HttpMethod.GET, "api/v1/auth/login/google").permitAll()
                             .anyRequest().authenticated();
                 });
         return http.build();
@@ -67,6 +68,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
+
 
     @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {

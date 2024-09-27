@@ -1,9 +1,6 @@
 package com.koicenter.koicenterbackend.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,8 +16,10 @@ import java.time.LocalDate;
 public class Faq {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String faq_id;
+    @Column(name = "faq_id")
+    String faqId;
     String question;
     String answer;
-    LocalDate created_at;
+    @Column(name = "created_at")
+    LocalDate createdAt;
 }

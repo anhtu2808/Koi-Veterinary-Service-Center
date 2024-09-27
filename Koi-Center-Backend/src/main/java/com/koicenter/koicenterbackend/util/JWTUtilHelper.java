@@ -31,28 +31,13 @@ public class JWTUtilHelper {
     private String privateKey;
 
 
-    public String generateToken(String data) {
+    public String generateToken(String data){
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
         User user = userRepository.findByUsername(data);
-        String jws = Jwts.builder().subject(data)
-                    .claim("user_id", user.getUser_id())
-                    .claim("role", user.getRole())
-                    .issuer("KoiCenter.com")
-                    .issuedAt(new Date())
-                    .claim("jti", UUID.randomUUID().toString())
-                    .expiration(new Date(
-                            Instant.now().plus(3, ChronoUnit.DAYS).toEpochMilli()
-                    ))
-                    .signWith(key).compact();
-        return jws;
-    }
 
-    public String generateTokenGmail(User data) {
-        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
-
-        String jws = Jwts.builder().subject(data.toString())
-                .claim("user_id", data.getUser_id())
-                .claim("role", Role.CUSTOMER)
+        String jws = Jwts.builder().subject(data)    
+                .claim("role", user.getRole())
+                .claim("user_id", user.getUserId())
                 .issuer("KoiCenter.com")
                 .issuedAt(new Date())
                 .claim("jti", UUID.randomUUID().toString())
@@ -62,6 +47,7 @@ public class JWTUtilHelper {
                 .signWith(key).compact();
         return jws;
     }
+
 
 
     public boolean verifyToken(String token) {
@@ -79,6 +65,24 @@ public class JWTUtilHelper {
 
     public boolean isTokenLoggedOut(String token) {
         return loggedOutTokenRepository.findByToken(token).isPresent();
+    }
+
+
+
+    public String generateTokenGmail(User data) {
+        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
+
+        String jws = Jwts.builder().subject(data.getEmail())
+                .claim("user_id", data.getUserId())
+                .claim("role", Role.CUSTOMER)
+                .issuer("KoiCenter.com")
+                .issuedAt(new Date())
+                .claim("jti", UUID.randomUUID().toString())
+                .expiration(new Date(
+                        Instant.now().plus(3, ChronoUnit.DAYS).toEpochMilli()
+                ))
+                .signWith(key).compact();
+        return jws;
     }
 
 

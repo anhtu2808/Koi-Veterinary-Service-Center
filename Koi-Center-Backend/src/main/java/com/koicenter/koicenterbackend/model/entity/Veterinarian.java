@@ -16,14 +16,19 @@ import java.util.List;
 public class Veterinarian {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String vet_id;
+    @Column(name = "vet_id")
+    String vetId;
 
     @Enumerated(EnumType.STRING)
     VeterinarianStatus VeterinarianStatus;
-    String description;
-    String google_meet;
-    String phone;
 
+
+    String description;
+    @Column(name = "google_meet")
+    String googleMeet;
+    String phone;
+    String image;
+     String status;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     User user;

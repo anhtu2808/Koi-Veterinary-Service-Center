@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.koicenter.koicenterbackend.model.enums.StatusVetSchedule;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,17 +18,21 @@ import java.time.LocalTime;
 public class VetSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String schedule_id;
-
+    @Column(name = "schedule_id")
+    String scheduleId;
     LocalDate date;
-    LocalTime start_time;
-    LocalTime end_time;
+    @Column(name = "start_time")
+    LocalTime startTime;
+    @Column(name = "end_time")
+    LocalTime endTime;
+    int customerBookingCount;
 
     @Enumerated(EnumType.STRING)
     StatusVetSchedule status;
 
     @ManyToOne
     @JoinColumn(name = "vet_id", referencedColumnName = "vet_id")
+
     Veterinarian veterinarian;
 
 }
