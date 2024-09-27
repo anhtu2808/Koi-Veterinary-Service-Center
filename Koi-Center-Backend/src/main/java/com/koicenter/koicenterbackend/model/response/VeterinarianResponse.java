@@ -20,14 +20,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VeterinarianResponse {
-    private String vetId;            // Mapped from `vet_id` in Veterinarian
-    private String Vetstatus;          // Mapped from `status` in Veterinarian
-    private String description;      // Mapped from `description` in Veterinarian
-    private String googleMeet;       // Mapped from `google_meet` in Veterinarian
-    private String phone;            // Mapped from `phone` in Veterinarian
-    private String imageVeterinarian;
-String userId ;
-
+     String vetId;            // Mapped from `vet_id` in Veterinarian
+     VeterinarianStatus vetStatus;          // Mapped from `status` in Veterinarian
+     String description;      // Mapped from `description` in Veterinarian
+     String googleMeet;       // Mapped from `google_meet` in Veterinarian
+     String phone;            // Mapped from `phone` in Veterinarian
+     String imageVeterinarian;
+    String userId ;
     UserResponse user;
 
 

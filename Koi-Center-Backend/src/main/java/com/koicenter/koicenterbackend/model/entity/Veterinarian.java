@@ -20,7 +20,7 @@ public class Veterinarian {
     String vetId;
 
     @Enumerated(EnumType.STRING)
-    VeterinarianStatus VeterinarianStatus;
+    VeterinarianStatus veterinarianStatus;
 
 
     String description;
@@ -28,7 +28,6 @@ public class Veterinarian {
     String googleMeet;
     String phone;
     String image;
-     String status;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     User user;
