@@ -7,6 +7,7 @@ function UserManagement() {
     <div className="container-fluid all">
         <div className="row">
             <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div className="position-sticky pt-3">
                     <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
                         <span className="fs-4">YOURLOGO</span>
@@ -55,7 +56,6 @@ function UserManagement() {
                     </ul>
                 </div>
             </nav>
-
             <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 className="h2">Users Dashboard</h1>
