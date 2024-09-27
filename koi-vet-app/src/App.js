@@ -16,6 +16,7 @@ import ServicePage from './pages/ServicePage/ServicePage';
 import VetProfile from './pages/VetProfile/VetProfile';
 import UserManagement from './pages/UserManagementPage/UserManagementPage';
 import AllAppointment from './pages/AllAppointmentPage/AllAppointment';
+import BookingPage from './pages/BookingPage/BookingPage';
 function App() {
   return (
     <Router>
@@ -36,6 +37,7 @@ function App() {
                 <Route path='/vet-profile' element={<VetProfile/>} />
                 <Route path='/usermanagement' element={<UserManagement/>} />
                 <Route path='/allappointment' element={<AllAppointment/>} />
+                <Route path='/booking' element={<BookingPage/>} />
               </Routes>
             </UserLayout>
           } />
