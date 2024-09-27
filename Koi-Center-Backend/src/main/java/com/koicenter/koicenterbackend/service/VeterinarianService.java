@@ -82,8 +82,9 @@
                 log.error("Error processing  in veterinarianService this is Query data: {}", e.getMessage());
             }
         }
+        return responseList;
     }
-    return responseList;
+
 }
 
 
