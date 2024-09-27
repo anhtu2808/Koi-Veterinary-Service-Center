@@ -1,6 +1,8 @@
 package com.koicenter.koicenterbackend.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.koicenter.koicenterbackend.model.entity.Customer;
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,10 +18,11 @@ import lombok.experimental.FieldDefaults;
 public class UserResponse {
     String user_id;
     String username;
-    String password;
     String email;
     String full_name;
     Role role;
     boolean status;
+    Customer customer;
+    Veterinarian veterinarian;
 
 }
