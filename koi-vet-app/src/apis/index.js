@@ -11,7 +11,7 @@ export const fetchLoginAPI =   async (username, password) => {
 }
 
 export const fetchLogoutAPI = async () => {
-    const response = await api.post('/auth/logout');
+    const response = await api.post('/auth/logout',{token: localStorage.getItem('accessToken')});
     return response.data;
 }
 

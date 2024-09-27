@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/img/logo.png";
 import "../../pages/Home/Home.css";
-import { Link, NavLink } from "react-router-dom"; // Sử dụng NavLink để kiểm soát trạng thái "active"
+import { Link, NavLink, useNavigate } from "react-router-dom"; // Sử dụng NavLink để kiểm soát trạng thái "active"
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLogoutAPI } from "../../apis";
+import { toast } from "react-toastify";
+import { clearUser } from "../../store/userSlice";
 
 function Header() {
+  const isAuthorized = useSelector((state) => state.user.isAuthorized);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    const response = await fetchLogoutAPI();
+    localStorage.removeItem("accessToken");
+    if (response.status === "200") {
+      dispatch(clearUser());
+      navigate("/login");
+    }
+  };
+
+  const handleButtonLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <>
       {/* Header Info */}
@@ -39,7 +60,6 @@ function Header() {
       {/* Navbar Bootstrap */}
       <nav className="navbar navbar-expand-lg navbar-dark ">
         <div className="container">
-          
           <button
             className="navbar-toggler"
             type="button"
@@ -87,9 +107,23 @@ function Header() {
             </ul>
             {/* User Actions */}
             <div className="d-flex">
-              <button className="btn btn-outline-light me-2" type="button">
-                Logout
-              </button>
+              {isAuthorized ? (
+                <button
+                  className="btn btn-outline-light me-2"
+                  type="button"
+                  onClick={() => handleLogout()}
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  className="btn btn-outline-light me-2"
+                  type="button"
+                  onClick={() => handleButtonLogin()}
+                >
+                  Login
+                </button>
+              )}
               <Link to="/profile" className="btn btn-outline-light">
                 <i className="fas fa-user"></i>
               </Link>
