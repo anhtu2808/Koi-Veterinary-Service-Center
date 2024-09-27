@@ -29,7 +29,6 @@ public class Service {
     float pondPrice;
     @Column(name = "tank_price")
     float tankPrice;
-
     @Enumerated(EnumType.STRING)
             @Column(name = "service_for")
     ServiceType serviceFor;

@@ -17,6 +17,7 @@
     import java.util.ArrayList;
     import java.util.List;
 
+
     @Slf4j
     @Service
     @RequiredArgsConstructor
@@ -25,6 +26,7 @@
         @Autowired
         VeterinarianRepository veterinarianRepository;
         UserRepository userRepository;
+
 
         //GET Veteriance ID
         public VeterinarianResponse getVeterinarianById ( String veterinarianId){
@@ -80,7 +82,8 @@
                 log.error("Error processing  in veterinarianService this is Query data: {}", e.getMessage());
             }
         }
-        return responseList;
     }
+    return responseList;
+}
 
-    }
+
