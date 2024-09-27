@@ -37,7 +37,7 @@ function App() {
                 <Route path='/vet-profile' element={<VetProfile/>} />
                 <Route path='/usermanagement' element={<UserManagement/>} />
                 <Route path='/allappointment' element={<AllAppointment/>} />
-                <Route path='/booking' element={<BookingPage/>} />
+                <Route path='/booking/*' element={<BookingPage/>} />
               </Routes>
             </UserLayout>
           } />

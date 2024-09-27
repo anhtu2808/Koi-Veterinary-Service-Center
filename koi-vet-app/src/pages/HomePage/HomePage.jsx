@@ -1,8 +1,18 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../HomePage/HomePage.css"
+import { useDispatch } from 'react-redux';
+import { nextStep, setBookingData } from '../../store/bookingSlice';
 
 function HomePage() {
+        const dispatch = useDispatch();
+        const navigate = useNavigate();
+        const handleBooking = (type) => {
+            dispatch(setBookingData({ type: type }))
+            dispatch(nextStep())
+            navigate('/booking')
+            
+        }
   return (
     <>
     <section className="position-relative" >
@@ -28,7 +38,8 @@ function HomePage() {
 
         <div className="container px-6 py-8">  
             <div className="row">  
-                <div className="col-md-4 mb-4">  
+            
+                <div className="col-md-4 mb-4" onClick={()=> handleBooking('mobile')}>  
                     <div className="service-card bg-blue-100 hover:bg-blue-200 p-4 rounded-lg shadow-md">  
                         <div className="text-center-custom text-center">  
                             <i className="fas fa-mobile-alt text-4xl mb-4 text-primary"></i>  
@@ -37,7 +48,7 @@ function HomePage() {
                         </div>  
                     </div>  
                 </div>  
-                <div className="col-md-4 mb-4">  
+                <div className="col-md-4 mb-4" onClick={()=>handleBooking('online')}>  
                     <div className="service-card bg-green-100 hover:bg-green-200 p-4 rounded-lg shadow-md">  
                         <div className="text-center-custom text-center">  
                             <i className="fas fa-video text-4xl mb-4 text-success"></i>  
@@ -46,7 +57,7 @@ function HomePage() {
                         </div>  
                     </div>  
                 </div>  
-                <div className="col-md-4 mb-4">  
+                <div className="col-md-4 mb-4" onClick={()=>handleBooking('service')}>  
                     <div className="service-card bg-purple-100 hover:bg-purple-200 p-4 rounded-lg shadow-md">  
                         <div className="text-center-custom text-center">  
                             <i className="fas fa-hospital text-4xl mb-4 text-info"></i>  
