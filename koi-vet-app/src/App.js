@@ -21,6 +21,9 @@ import { useEffect } from 'react';
 import { fetchMyInfoAPI } from './apis';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './store/userSlice';
+import UserProtectedRoute from './components/ProtectedRoute/UserProtectedRoute';
+import AdminLayout from './pages/layout/AdminLayout';
+
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
   const dispatch = useDispatch()
@@ -53,16 +56,29 @@ function App() {
               <Route path="/medicine" element={<Medicine />} />
               {/* Thêm các route khác của User ở đây */}
               <Route path='/veterinarians' element={<VeterinarianPage />} />
-              <Route path='/profile' element={<MyProfile />} />
               <Route path='/services' element={<ServicePage />} />
               <Route path='/vet-profile' element={<VetProfile />} />
               <Route path='/usermanagement' element={<UserManagement />} />
               <Route path='/allappointment' element={<AllAppointment />} />
-              <Route path='/booking' element={<BookingPage />} />
+              
+              {/* Protected routes */}
+              <Route element={<UserProtectedRoute />}>
+                <Route path='/profile' element={<MyProfile />} />
+                <Route path='/booking' element={<BookingPage />} />
+              </Route>
             </Routes>
           </UserLayout>
         } />
-        <Route path="/doctor/*" element={<DocterDashboard />} />
+        <Route path="/admin/*" element={
+          <AdminLayout>
+            <Routes>
+              <Route path="/" element={<DocterDashboard />} />
+              <Route path="/usermanagement" element={<UserManagement />} />
+              <Route path="/allappointment" element={<AllAppointment />} />
+              {/* Add more admin routes as needed */}
+            </Routes>
+          </AdminLayout>
+        } />
       </Routes>
 
       <ToastContainer />
