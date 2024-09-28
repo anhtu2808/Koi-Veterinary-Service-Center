@@ -70,3 +70,40 @@ export const fetchServiceByTypeAPI = async (type) => {
     const response = await api.get(`/services/appointmentType/${type}`);
     return response.data;
 } 
+
+
+
+//Appointment API
+export const fetchAllAppointmentAPI = async () => {
+    const response = await api.get(`/appointments`);
+    return response.data;
+}
+export const fetchAppointmentByCustomerIdAPI= async (customerId) => {
+    const response = await api.get(`/appointments/getByCustomerId?customerId=${customerId}`);
+    return response.data;
+}
+
+//Pond API
+export const  fetchPondByCustomerIdAPI = async (customerId) => {
+    const response = await api.get(`/customer/${customerId}/pond`);
+    return response.data;
+}
+
+export const fetchKoiByPondIdAPI = async (pondId) => {
+    const response = await api.get(`/customer/${pondId}/koi`);
+    return response.data;
+}
+
+
+
+
+//Koi API
+export const fetchKoiByKoiIdAPI = async (koiId) => {
+    const response = await api.get(`/koi/${koiId}`);
+    return response.data;
+}
+export const fetchKoiByCustomerIdAPI = async (customerId) => {
+    const response = await api.get(`/customer/${customerId}/koi`);
+    return response.data;
+}
+
