@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AllAppointment.css";
-import { fetchAllAppointmentDetail } from "../../apis";
+import { fetchAllAppointmentByVetIdAPI } from "../../apis";
 
 function AllAppointment() {
   const [appointments, setAppointments] = useState([]);
@@ -17,7 +17,7 @@ function AllAppointment() {
 
   useEffect(() => {
     const fetchAppointmentDetail = async () => {
-      const response = await fetchAllAppointmentDetail("VET002");
+      const response = await fetchAllAppointmentByVetIdAPI("VET002");
       setAppointments(response?.data);
     };
     fetchAppointmentDetail();
