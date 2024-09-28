@@ -53,7 +53,12 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians/{vetId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "api/v1/appointments").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
+                            .requestMatchers(HttpMethod.GET, "api/v1/appointments/getByCustomerId").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/appointments/detail").permitAll()
+                            .requestMatchers(HttpMethod.GET, "api/v1/appointments/detailByVetId").permitAll()
+
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/pond").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/pond/{pondId}").permitAll()

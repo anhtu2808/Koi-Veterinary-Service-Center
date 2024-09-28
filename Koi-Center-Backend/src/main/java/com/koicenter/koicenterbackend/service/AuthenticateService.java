@@ -35,7 +35,7 @@ public class AuthenticateService {
     JWTUtilHelper jWTUtilHelper;
 
 
-    public boolean checkLogin(@Valid LoginRequest loginRequest) {
+    public boolean checkLogin(LoginRequest loginRequest) {
 
         User user = userRepository.findByUsername(loginRequest.getUsername());
         if (user == null) {
