@@ -132,7 +132,13 @@ const Login = () => {
             <div className="col-12">
               <p className="m-0 text-secondary text-center">
                 Don't have an account?{" "}
-                <Link  className="link-dark text-decoration-underline" to="/register"> Sign up</Link>
+                <Link
+                  className="link-dark text-decoration-underline"
+                  to="/register"
+                >
+                  {" "}
+                  Sign up
+                </Link>
               </p>
             </div>
           </div>

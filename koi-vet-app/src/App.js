@@ -14,7 +14,7 @@ import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import MyProfile from './pages/MyProfile/MyProfile';
 import ServicePage from './pages/ServicePage/ServicePage';
 import VetProfile from './pages/VetProfile/VetProfile';
-import UserManagement from './pages/UserManagementPage/UserManagementPage';
+import UserManagementPage from './pages/UserManagementPage/UserManagementPage';
 import AllAppointment from './pages/AllAppointmentPage/AllAppointment';
 import BookingPage from './pages/BookingPage/BookingPage';
 import { useEffect } from 'react';
@@ -58,8 +58,6 @@ function App() {
               <Route path='/veterinarians' element={<VeterinarianPage />} />
               <Route path='/services' element={<ServicePage />} />
               <Route path='/vet-profile' element={<VetProfile />} />
-              <Route path='/usermanagement' element={<UserManagement />} />
-              <Route path='/allappointment' element={<AllAppointment />} />
               
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>
@@ -73,7 +71,7 @@ function App() {
           <AdminLayout>
             <Routes>
               <Route path="/" element={<DocterDashboard />} />
-              <Route path="/usermanagement" element={<UserManagement />} />
+              <Route path="/usermanagement" element={<UserManagementPage />} />
               <Route path="/allappointment" element={<AllAppointment />} />
               {/* Add more admin routes as needed */}
             </Routes>
