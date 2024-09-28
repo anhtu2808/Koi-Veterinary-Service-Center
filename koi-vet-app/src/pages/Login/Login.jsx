@@ -5,7 +5,7 @@ import logo from "../../assets/img/logo.png";
 import logim_side from "../../assets/img/login_side.png";
 import { toast } from "react-toastify";
 import { fetchLoginAPI } from "../../apis";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setIsAuthorized } from "../../store/userSlice";
 
@@ -21,7 +21,7 @@ const Login = () => {
     const response = await fetchLoginAPI(username, password);
 
     console.log(response);
-    if (response?.status === "200") {
+    if (response?.status === 200) {
       dispatch(setIsAuthorized(true));
       toast.success("Login successfully");
       localStorage.setItem("accessToken", response.data);
@@ -132,12 +132,7 @@ const Login = () => {
             <div className="col-12">
               <p className="m-0 text-secondary text-center">
                 Don't have an account?{" "}
-                <a
-                  href="#!"
-                  className="link-dark text-decoration-underline    "
-                >
-                  Sign up
-                </a>
+                <Link  className="link-dark text-decoration-underline" to="/register"> Sign up</Link>
               </p>
             </div>
           </div>

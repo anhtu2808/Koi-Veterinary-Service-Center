@@ -67,6 +67,6 @@ export const fecthServiceByServiceIdAPI = async (serviceId) => {
     return response.data;
 }
 export const fetchServiceByTypeAPI = async (type) => {
-    const response = await api.get(`/services?type${type}`);
+    const response = await api.get(`/services/appointmentType/${type}`);
     return response.data;
 } 

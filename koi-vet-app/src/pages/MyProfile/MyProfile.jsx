@@ -1,17 +1,11 @@
 // src/pages/MyInfo/MyProfile.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./MyProfile.css"; // Import file CSS
-import { fetchMyInfoAPI } from "../../apis";
+import { useSelector } from "react-redux";
 
 const MyProfile = () => {
 
-  useEffect(()=>{
-    const fetchMyInfo = async () => {
-      const response = await fetchMyInfoAPI();
-      console.log(response);
-    }
-    fetchMyInfo();
-  })
+  const myInfo = useSelector(state => state?.user)
   return (
     <div className="container my-profile-container">
       <div className="card shadow my-profile-card">
@@ -29,8 +23,8 @@ const MyProfile = () => {
               />
             </div>
             <div className="col-md-8">
-              <h4>John Doe</h4>
-              <p className="text-muted">john.doe@example.com</p>
+              <h4>{myInfo.fullName}</h4>
+              <p className="text-muted">{myInfo.email}</p>
               <p className="text-muted">+84 123 456 789</p>
             </div>
           </div>
@@ -39,23 +33,23 @@ const MyProfile = () => {
           <div className="row mt-4">
             <div className="col-md-6 mb-3">
               <h5 className="my-profile-title">Full Name:</h5>
-              <p>John Doe</p>
+              <p>{myInfo.fullName}</p>
             </div>
             <div className="col-md-6 mb-3">
               <h5 className="my-profile-title">Username:</h5>
               <p>john_doe</p>
             </div>
             <div className="col-md-6 mb-3">
-              <h5 className="my-profile-title">Email:</h5>
-              <p>john.doe@example.com</p>
+              <h5 className="my-profile-title">Email</h5>
+              <p>{myInfo.email}</p>
             </div>
             <div className="col-md-6 mb-3">
               <h5 className="my-profile-title">Phone:</h5>
-              <p>+84 123 456 789</p>
+              <p>{myInfo.phone}</p>
             </div>
             <div className="col-md-12">
               <h5 className="my-profile-title">Address:</h5>
-              <p>123 Main St, Thu Duc City, Ho Chi Minh City</p>
+              <p>{myInfo.address}</p>
             </div>
           </div>
         </div>

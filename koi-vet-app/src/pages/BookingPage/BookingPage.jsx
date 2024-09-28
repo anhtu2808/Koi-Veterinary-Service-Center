@@ -10,9 +10,9 @@ function BookingPage() {
   const renderStepComponent = () => {
     switch (step) {
       case 1:
-        return ;
+        return  <ServiceStep/> ;
       case 2:
-        return <ServiceStep/>;
+        return <></>;
       case 3:
         return <></>;
       case 4:
