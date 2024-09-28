@@ -55,6 +55,19 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians/{vetId}").permitAll()
 
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
+
+                            .requestMatchers(HttpMethod.GET, "/api/v1/pond").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/pond/{pondId}").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/pond/{pondId}").permitAll()
+
+                            .requestMatchers(HttpMethod.GET, "/api/v1/koi").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/koi/{koiId}").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/koi/{koiId}").permitAll()
+
+
+                            .requestMatchers(HttpMethod.GET, "/api/v1/customer").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/ponds").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/kois").permitAll()
                             .anyRequest().authenticated();
                 });
         return http.build();
