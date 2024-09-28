@@ -35,11 +35,11 @@ public class VeterinarianService {
         veterinarianResponse.setGoogleMeet(veterinarian.getGoogleMeet());
         veterinarianResponse.setPhone(veterinarian.getPhone());
         veterinarianResponse.setUserId(veterinarian.getUser().getUserId());
-        
-                User user = userRepository.findById(veterinarian.getUser().getUserId()).orElseThrow(() -> new RuntimeException("User not found "));
+
+        User user = userRepository.findById(veterinarian.getUser().getUserId()).orElseThrow(() -> new RuntimeException("User not found "));
         UserResponse userResponse = new UserResponse();
         userResponse.setUser_id(user.getUserId());
-        userResponse.setFull_name(user.getFullName());
+        userResponse.setFullName(user.getFullName());
         userResponse.setUsername(user.getUsername());
         userResponse.setEmail(user.getEmail());
         userResponse.setStatus(user.isStatus());
@@ -49,37 +49,40 @@ public class VeterinarianService {
         return veterinarianResponse ;
     }
 
-public List<VeterinarianResponse> getAllVet() {
-    List<Object[]> list = veterinarianRepository.findAllVet();
-    List<VeterinarianResponse> responseList = new ArrayList<>();
+    public List<VeterinarianResponse> getAllVet() {
+        List<User> users = userRepository.findByRole(Role.VETERINARIAN);
+        List<VeterinarianResponse> responseList = new ArrayList<>();
+        for (User user : users) {
 
-    for (Object[] objects : list) {
-        try {
-            UserResponse userResponse = UserResponse.builder()
-                    .user_id(objects[0].toString())
-                    .role(Role.valueOf(objects[1].toString())) // Sửa chỉ số để lấy vai trò
-                    .status((Boolean) objects[2]) // Sửa chỉ số để lấy trạng thái
-                    .username(objects[3].toString())
-                    .email(objects[4].toString())
-                    .full_name(objects[5].toString())
-                    .build();
+                try {
+                    Veterinarian veterinarian = veterinarianRepository.findByUserId(user.getUserId());
+                    if (veterinarian != null) {
+                        UserResponse userResponse = UserResponse.builder()
+                                .user_id(user.getUserId())
+                                .role(user.getRole())
+                                .status(user.isStatus())
+                                .username(user.getUsername())
+                                .email(user.getEmail())
+                                .fullName(user.getFullName())
+                                .build();
 
-            VeterinarianResponse veterinarianResponse = VeterinarianResponse.builder()
-                    .vetId(objects[6].toString())
-                    .description(objects[7].toString())
-                    .googleMeet(objects[8].toString())
-                    .phone(objects[9].toString())
-                    .imageVeterinarian(objects[10]!= null ? objects[10].toString() : null)
-                    .Vetstatus(objects[11].toString())
-                    .userResponse(userResponse)
-                    .build();
+                        VeterinarianResponse veterinarianResponse = VeterinarianResponse.builder()
+                                .vetId(veterinarian.getVetId())
+                                .description(veterinarian.getDescription())
+                                .googleMeet(veterinarian.getGoogleMeet())
+                                .phone(veterinarian.getPhone())
+                                .imageVeterinarian(veterinarian.getImage() != null ? veterinarian.getImage() : null)
+                                .Vetstatus(veterinarian.getVeterinarianStatus().toString())
+                                .userResponse(userResponse)
+                                .build();
+                        responseList.add(veterinarianResponse);
+                    }
+                } catch (Exception e) {
+                    log.error("Error while retrieving Veterinarian: {}", e.getMessage());
+                }
 
-            responseList.add(veterinarianResponse);
-        } catch (Exception e) {
-            log.error("Error processing  in veterinarianService this is Query data: {}", e.getMessage());
         }
+        return responseList;
     }
-    return responseList;
-}
 
 }

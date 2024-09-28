@@ -12,12 +12,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ResponseObject> handleAppException(AppException ex) {
-        ResponseObject response = new ResponseObject(ex.getErrorCode(), ex.getMessage(), null);
         return ResponseObject.APIRepsonse(ex.getErrorCode(), ex.getMessage(), HttpStatus.UNAUTHORIZED, null);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseObject> handleGeneralException(Exception ex) {
-        return ResponseObject.APIRepsonse("500", "An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        return ResponseObject.APIRepsonse(500, "An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 }

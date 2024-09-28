@@ -23,7 +23,7 @@ public class VeterinarianController {
     VeterinarianService veterinarianService;
     @GetMapping("/{vetId}")
     public ResponseEntity<ResponseObject> getVeterinarianById (@PathVariable String vetId){
-        return ResponseObject.APIRepsonse("200","Get ID Veterinarian Succesfully ", HttpStatus.OK,veterinarianService.getVeterinarianById(vetId));
+        return ResponseObject.APIRepsonse(200,"Get ID Veterinarian Succesfully ", HttpStatus.OK,veterinarianService.getVeterinarianById(vetId));
     }
 
 
@@ -31,8 +31,6 @@ public class VeterinarianController {
     public ResponseEntity<ResponseObject> getAllVeterinarian() {
         List<VeterinarianResponse> listVet = veterinarianService.getAllVet();
         log.info("toi dang o day ",listVet);
-        return ResponseObject.APIRepsonse("200", "List of veterinarians retrieved successfully", HttpStatus.OK, listVet);
+        return ResponseObject.APIRepsonse(200, "List of veterinarians retrieved successfully", HttpStatus.OK, listVet);
     }
-
-
 }

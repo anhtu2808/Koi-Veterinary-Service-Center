@@ -31,9 +31,9 @@ public class AuthenticateController {
         boolean checkLogin = authenticateService.checkLogin(loginRequest);
         if (checkLogin) {
             String token = jwtUtilHelper.generateToken(loginRequest.getUsername());
-            return ResponseObject.APIRepsonse("200", "Login Successfully", HttpStatus.OK, token);
+            return ResponseObject.APIRepsonse(200, "Login Successfully", HttpStatus.OK, token);
         }else{
-            return ResponseObject.APIRepsonse("401", "Invalid username or password", HttpStatus.UNAUTHORIZED, "");
+            return ResponseObject.APIRepsonse(401, "Invalid username or password", HttpStatus.UNAUTHORIZED, "");
         }
     }
 
@@ -41,9 +41,9 @@ public class AuthenticateController {
     public ResponseEntity<ResponseObject> logout(@RequestBody @Valid LogoutRequest logoutRequest) {
       boolean check =  authenticateService.logout(logoutRequest.getToken());
       if(check){
-          return ResponseObject.APIRepsonse("200", "Logout Successfully", HttpStatus.OK, "");
+          return ResponseObject.APIRepsonse(200, "Logout Successfully", HttpStatus.OK, "");
       }else {
-          return ResponseObject.APIRepsonse("401", "Logout Failed", HttpStatus.UNAUTHORIZED, "");
+          return ResponseObject.APIRepsonse(401, "Logout Failed", HttpStatus.UNAUTHORIZED, "");
       }
     }
 
@@ -53,7 +53,7 @@ public class AuthenticateController {
         System.out.println(credential);
         String token = "";
         token =  authenticateService.loginGoogleToken(credential);
-        return ResponseObject.APIRepsonse("200", "Login Successfully", HttpStatus.OK, token);
+        return ResponseObject.APIRepsonse(200, "Login Successfully", HttpStatus.OK, token);
     }
 }
 

@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.RegisterRequest;
+import com.koicenter.koicenterbackend.model.response.UserResponse;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -62,7 +63,7 @@ public class UserService {
     }
 
 
-    public User getMyInfo(HttpServletRequest request) {
+    public UserResponse getMyInfo(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
@@ -81,9 +82,17 @@ public class UserService {
 
         return getUserByUsernameV2(username);
     }
-    private User getUserByUsernameV2(String username) {
-        return userRepository.findByUsername(username);
+
+    private UserResponse getUserByUsernameV2(String username) {
+        User user =  userRepository.findByUsername(username);
+       UserResponse  userResponse = new UserResponse().builder()
+                .user_id(user.getUserId())
+                .username(user.getUsername())
+                .fullName(user.getFullName())
+                .role(user.getRole())
+                .status(user.isStatus())
+               .email(user.getEmail())
+                .build();
+       return userResponse;
     }
-
-
 }
