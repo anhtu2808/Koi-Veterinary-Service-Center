@@ -48,14 +48,14 @@ public class AuthenticateController {
     }
 
 
-    @GetMapping("/loginGoogle")
-    public ResponseEntity<ResponseObject> loginWithGoogle(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-        Map<String, Object> credential = oAuth2AuthenticationToken.getPrincipal().getAttributes();
-        System.out.println(credential);
-        String token = "";
-        token =  authenticateService.loginGoogleToken(credential);
-        return ResponseObject.APIRepsonse(200, "Login Successfully", HttpStatus.OK, token);
-    }
+//    @GetMapping("/loginGoogle")
+//    public ResponseEntity<ResponseObject> loginWithGoogle(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+//        Map<String, Object> credential = oAuth2AuthenticationToken.getPrincipal().getAttributes();
+//        System.out.println(credential);
+//        String token = "";
+//        token =  authenticateService.loginGoogleToken(credential);
+//        return ResponseObject.APIRepsonse(200, "Login Successfully", HttpStatus.OK, token);
+//    }
 
 
 

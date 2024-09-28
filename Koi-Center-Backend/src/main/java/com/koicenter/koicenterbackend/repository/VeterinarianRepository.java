@@ -15,7 +15,11 @@ public interface VeterinarianRepository extends JpaRepository<Veterinarian, Stri
 
     @Query("SELECT v FROM Veterinarian v WHERE v.user.userId = :userId")
     Veterinarian findByUserId(@Param("userId") String userId);
-    @Query(value = "SELECT u.user_id,u.role,u.status,u.username,u.email,u.full_name,v.vet_id,v.description,v.google_meet,v.phone,v.image,v.veterinarian_status FROM koi_vet_db.user u JOIN koi_vet_db.veterinarian v ON u.user_id = v.user_id", nativeQuery = true)
-    List<Object[]> findAllVet();
+
+
+    @Query(value = "SELECT s.service_name FROM veterinarian_service vs " +
+            "JOIN service s ON vs.service_id = s.service_id " +
+            "WHERE vs.vet_id = :vetId", nativeQuery = true)
+    List<String> findServiceNamesByVetId(@Param("vetId") String vetId);
 
 }
