@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './store/userSlice';
 import UserProtectedRoute from './components/ProtectedRoute/UserProtectedRoute';
 import AdminLayout from './pages/layout/AdminLayout';
+import PondInformation from './pages/PondInformation/PondInformation';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -73,6 +74,8 @@ function App() {
               <Route path="/" element={<DocterDashboard />} />
               <Route path="/usermanagement" element={<UserManagementPage />} />
               <Route path="/allappointment" element={<AllAppointment />} />
+              <Route path="/pondinformation/:pondId" element={<PondInformation />} />
+
               {/* Add more admin routes as needed */}
             </Routes>
           </AdminLayout>

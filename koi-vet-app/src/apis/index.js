@@ -93,6 +93,10 @@ export const fetchKoiByPondIdAPI = async (pondId) => {
     const response = await api.get(`/customer/${pondId}/koi`);
     return response.data;
 }
+export const updatePondInformationAPI = async (pondId, data) => {
+    const response = await api.put(`/pond/${pondId}`, data);
+    return response.data;
+}
 
 
 
@@ -106,4 +110,10 @@ export const fetchKoiByCustomerIdAPI = async (customerId) => {
     const response = await api.get(`/customer/${customerId}/koi`);
     return response.data;
 }
+
+export const updateKoiInformationAPI = async (koiId, data) => {
+    const response = await api.put(`/koi/${koiId}`, data);
+    return response.data;
+}
+
 
