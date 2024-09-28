@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AllAppointment.css";
+import { fetchAllAppointmentDetail } from "../../apis";
 
 function AllAppointment() {
+  const [appointments, setAppointments] = useState([]);
+
+  //   useEffect(() => {
+  //     const fecthServices = async () => {
+  //         const response = await fecthAllServicesAPI();
+  //         console.log(response)
+  //         setServices(response?.data);
+  //     }
+  //     fecthServices();
+  // }, [])
+
+  useEffect(() => {
+    const fetchAppointmentDetail = async () => {
+      const response = await fetchAllAppointmentDetail("VET002");
+      setAppointments(response?.data);
+    };
+    fetchAppointmentDetail();
+  }, []);
+
   return (
     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -48,159 +68,48 @@ function AllAppointment() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>H0001</td>
-              <td>David Wagner</td>
-              <td>Khám cá nè</td>
-              <td>FPT University</td>
-              <td>26/09/2024</td>
-              <td>
-                <span className="status">Complete</span>
-              </td>
-              <td>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-trash"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>H0002</td>
-              <td>David Wagner</td>
-              <td>Khám cá nè</td>
-              <td>FPT University</td>
-              <td>26/09/2024</td>
-              <td>
-                <span className="status">Complete</span>
-              </td>
-              <td>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-trash"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>H0003</td>
-              <td>David Wagner</td>
-              <td>Khám cá nè</td>
-              <td>FPT University</td>
-              <td>26/09/2024</td>
-              <td>
-                <span className="status">Complete</span>
-              </td>
-              <td>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-trash"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>H0004</td>
-              <td>David Wagner</td>
-              <td>Khám cá nè</td>
-              <td>FPT University</td>
-              <td>26/09/2024</td>
-              <td>
-                <span className="status">Complete</span>
-              </td>
-              <td>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-trash"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>H0005</td>
-              <td>David Wagner</td>
-              <td>Khám cá nè</td>
-              <td>FPT University</td>
-              <td>26/09/2024</td>
-              <td>
-                <span className="status">Complete</span>
-              </td>
-              <td>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-trash"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>H0006</td>
-              <td>David Wagner</td>
-              <td>Khám cá nè</td>
-              <td>FPT University</td>
-              <td>26/09/2024</td>
-              <td>
-                <span className="status">Complete</span>
-              </td>
-              <td>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-trash"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>H0007</td>
-              <td>David Wagner</td>
-              <td>Khám cá nè</td>
-              <td>FPT University</td>
-              <td>26/09/2024</td>
-              <td>
-                <span className="status">Complete</span>
-              </td>
-              <td>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-trash"></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-              </td>
-            </tr>
+            {/* <tr>
+                <td>H0001</td>
+                <td>David Wagner</td>
+                <td>Khám cá nè</td>
+                <td>FPT University</td>
+                <td>26/09/2024</td>
+                <td>
+                  <span className="status">Complete</span>
+                </td>
+                <td>
+                  <button className="btn btn-sm btn-outline-secondary">
+                    <i className="fas fa-edit"></i>
+                  </button>
+                  <button className="btn btn-sm btn-outline-secondary">
+                    <i className="fas fa-trash"></i>
+                  </button>
+                  <button className="btn btn-sm btn-outline-secondary">
+                    <i className="fas fa-ellipsis-v"></i>
+                  </button>
+                </td>
+              </tr> */}
+            {appointments.map((appointmentDetail) => (
+              <tr key={appointmentDetail.appointmentId}>
+                <td>{appointmentDetail.appointmentId}</td>
+                <td>{appointmentDetail.customerId}</td>
+                <td>{appointmentDetail.serviceId}</td>
+                <td>{appointmentDetail.location}</td>
+                <td>{appointmentDetail.appointmentDate}</td>
+                <td>{appointmentDetail.status}</td>
+                <td>
+                  <button className="btn btn-sm btn-outline-secondary">
+                    <i className="fas fa-edit"></i>
+                  </button>
+                  <button className="btn btn-sm btn-outline-secondary">
+                    <i className="fas fa-trash"></i>
+                  </button>
+                  <button className="btn btn-sm btn-outline-secondary">
+                    <i className="fas fa-ellipsis-v"></i>
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

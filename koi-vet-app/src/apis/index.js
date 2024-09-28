@@ -70,3 +70,14 @@ export const fetchServiceByTypeAPI = async (type) => {
     const response = await api.get(`/services/appointmentType/${type}`);
     return response.data;
 } 
+
+
+
+
+
+// Appointment API
+export const fetchAllAppointmentDetail = async (vetId) => {
+const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
+return response.data;
+}
+
