@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -29,6 +31,7 @@ public class VeterinarianResponse {
     private String imageVeterinarian;
     String userId ;
 
+    List<String> serviceNames;
     UserResponse user;
 
 
