@@ -21,11 +21,11 @@ public class UserResponse {
     String user_id;
     String username;
     String email;
-    String full_name;
+    String fullName;
     Role role;
     boolean status;
-
     Customer customer;
     Veterinarian veterinarian;
+
 
 }

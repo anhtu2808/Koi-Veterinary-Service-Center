@@ -15,9 +15,9 @@ function Header() {
   const handleLogout = async () => {
     const response = await fetchLogoutAPI();
     localStorage.removeItem("accessToken");
-    if (response.status === "200") {
+    if (response.status === 200) {
       dispatch(clearUser());
-      navigate("/login");
+      // navigate("/login");
     }
   };
 
