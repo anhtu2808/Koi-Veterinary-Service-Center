@@ -4,11 +4,12 @@ import "../../pages/Home/Home.css";
 import { Link, NavLink, useNavigate } from "react-router-dom"; // Sử dụng NavLink để kiểm soát trạng thái "active"
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLogoutAPI } from "../../apis";
-import { toast } from "react-toastify";
 import { clearUser } from "../../store/userSlice";
+import { ROLE } from "../../utils/constants";
 
 function Header() {
   const isAuthorized = useSelector((state) => state.user.isAuthorized);
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -124,9 +125,15 @@ function Header() {
                   Login
                 </button>
               )}
+              {user.role === ROLE.CUSTOMER &&
               <Link to="/profile" className="btn btn-outline-light">
-                <i className="fas fa-user"></i>
-              </Link>
+              <i className="fas fa-user"></i>
+            </Link>}
+            {user.role === ROLE.VETERINARIAN &&
+            <Link to="/admin" className="btn btn-outline-light">
+            <i className="fas fa-user"></i>
+            </Link>}
+              
             </div>
           </div>
         </div>

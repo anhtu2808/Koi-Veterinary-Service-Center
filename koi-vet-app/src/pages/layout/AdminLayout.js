@@ -6,7 +6,7 @@ import SideBar from '../../components/SideBar/SideBar'
 function AdminLayout({ children }) {
   return (
     <>
-      <Header />
+
       <div className="container-fluid">
         <div className="row">
           <SideBar />
@@ -15,7 +15,7 @@ function AdminLayout({ children }) {
           </main>
         </div>
       </div>
-      <Footer />
+    
     </>
   )
 }

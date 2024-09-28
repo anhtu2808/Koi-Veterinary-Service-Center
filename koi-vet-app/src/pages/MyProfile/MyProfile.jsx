@@ -56,6 +56,7 @@ const MyProfile = () => {
         <div className="card-footer text-center my-profile-card-footer">
           <button className="my-profile-edit-btn">Edit Information</button>
         </div>
+        
       </div>
     </div>
   );
