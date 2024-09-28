@@ -24,9 +24,9 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
                 .csrf(csrf -> csrf.disable())
-                .oauth2Login(oauth2 -> oauth2
-                        .successHandler(customSuccessHandler()) // Use a custom success handler
-                )
+//                .oauth2Login(oauth2 -> oauth2
+//                        .successHandler(customSuccessHandler()) // Use a custom success handler
+//                )
                 .authorizeRequests(auth -> {
                     auth
                             .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
@@ -53,7 +53,6 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians/{vetId}").permitAll()
-
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
                             .anyRequest().authenticated();
                 });
@@ -77,10 +76,10 @@ public class SecurityConfig {
     }
 
 
-    @Bean
-    public AuthenticationSuccessHandler customSuccessHandler() {
-        SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
-        successHandler.setDefaultTargetUrl("/api/v1/auth/loginGoogle"); // Redirect to your desired URL
-        return successHandler;
-    }
+//    @Bean
+//    public AuthenticationSuccessHandler customSuccessHandler() {
+//        SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
+//        successHandler.setDefaultTargetUrl("/api/v1/auth/loginGoogle"); // Redirect to your desired URL
+//        return successHandler;
+//    }
 }
