@@ -29,5 +29,41 @@ public class AppointmentController {
     }
 
     // Get appointment by customerId
+    @GetMapping("/getByCustomerId")
+    public ResponseEntity<ResponseObject> getAppointmentById(@RequestParam("customerId") String customerId) {
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentsByCustomerId(customerId);
 
+        if (listAppointment != null && !listAppointment.isEmpty()) {
+            return ResponseEntity.ok(new ResponseObject(200, "Success", listAppointment));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject(404, "No appointments found for customer ID: " + customerId, null));
+        }
+    }
+
+
+
+
+    // api get Appointment detail
+    @GetMapping("/detail")
+    public ResponseEntity<ResponseObject> getAppointmentDetailById(@RequestParam String appointmentId) {
+        AppointmentResponse listAppointment = appointmentService.getAppointmentByAppointmentId(appointmentId);
+        if (listAppointment != null) {
+            return ResponseObject.APIRepsonse(200, "Appointment found", HttpStatus.OK, listAppointment);
+        } else {
+            return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND, null);
+        }
+    }
+
+
+    @GetMapping("/detailByVetId")
+    public ResponseEntity<ResponseObject> getAllAppointmentByVetId(@RequestParam String vetId) {
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentByVetId(vetId);
+        if (listAppointment != null && !listAppointment.isEmpty()) {
+            return ResponseObject.APIRepsonse(200, "Success", HttpStatus.OK, listAppointment);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject(404, "No appointments found", null));
+        }
+    }
 }

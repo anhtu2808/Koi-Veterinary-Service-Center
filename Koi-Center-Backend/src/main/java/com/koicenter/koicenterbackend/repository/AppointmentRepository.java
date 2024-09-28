@@ -16,5 +16,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
     List<Appointment> findAllByCustomerId(@Param("customerId") String customerId);
 
 
+    @Query(value = "SELECT * FROM koi_vet_db.appointment WHERE appointment_id = :appointmentId", nativeQuery = true)
+    Appointment findAppointmentById(@Param("appointmentId") String appointmentId);
+
+
+    @Query(value = "SELECT * FROM koi_vet_db.appointment WHERE vet_id = :vetId", nativeQuery = true)
+    List<Appointment> findAllByVetId(@Param("vetId") String vetId);
 
 }
