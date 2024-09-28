@@ -20,9 +20,9 @@ public class ServiceService {
           return servicesRepository.findAll();
     }
 
-    public List<com.koicenter.koicenterbackend.model.entity.Service> getAllServiceByType(){
-        return servicesRepository.findByServiceFor(ServiceType.ONLINE);
-    }
+//    public List<com.koicenter.koicenterbackend.model.entity.Service> getAllServiceByType(){
+//        return servicesRepository.findByServiceFor(ServiceType.ONLINE);
+//    }
 
     public com.koicenter.koicenterbackend.model.entity.Service getServiceById(String id){
         return servicesRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_EXITS.getCode(), ErrorCode.SERVICE_NOT_EXITS.getMessage(),HttpStatus.NOT_FOUND));

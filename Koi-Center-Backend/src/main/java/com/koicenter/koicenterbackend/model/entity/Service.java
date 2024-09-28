@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koicenter.koicenterbackend.model.enums.ServiceType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,7 @@ public class Service {
     String image;
 
     @OneToMany(mappedBy = "service")
+    @JsonIgnore
     List<Appointment> appointments;
 
     @ManyToMany
@@ -43,5 +45,6 @@ public class Service {
             joinColumns = @JoinColumn(name = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "vet_id")
     )
+    @JsonIgnore
     List<Veterinarian> veterinarians;
 }
