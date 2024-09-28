@@ -68,27 +68,6 @@ function AllAppointment() {
             </tr>
           </thead>
           <tbody>
-            {/* <tr>
-                <td>H0001</td>
-                <td>David Wagner</td>
-                <td>Khám cá nè</td>
-                <td>FPT University</td>
-                <td>26/09/2024</td>
-                <td>
-                  <span className="status">Complete</span>
-                </td>
-                <td>
-                  <button className="btn btn-sm btn-outline-secondary">
-                    <i className="fas fa-edit"></i>
-                  </button>
-                  <button className="btn btn-sm btn-outline-secondary">
-                    <i className="fas fa-trash"></i>
-                  </button>
-                  <button className="btn btn-sm btn-outline-secondary">
-                    <i className="fas fa-ellipsis-v"></i>
-                  </button>
-                </td>
-              </tr> */}
             {appointments.map((appointmentDetail) => (
               <tr key={appointmentDetail.appointmentId}>
                 <td>{appointmentDetail.appointmentId}</td>
@@ -98,6 +77,12 @@ function AllAppointment() {
                 <td>{appointmentDetail.appointmentDate}</td>
                 <td>{appointmentDetail.status}</td>
                 <td>
+                  <Link
+                    to={`/admin/appointment/${appointmentDetail.appointmentId}`}
+                    className="btn btn-sm btn-outline-primary"
+                  >
+                    <i className="fas fa-eye"></i>
+                  </Link>
                   <button className="btn btn-sm btn-outline-secondary">
                     <i className="fas fa-edit"></i>
                   </button>

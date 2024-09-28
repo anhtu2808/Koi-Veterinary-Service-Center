@@ -90,6 +90,22 @@ export const fetchAppointmentByCustomerIdAPI= async (customerId) => {
     return response.data;
 }
 
+export const fetchAppointmentByIdAPI = async (appointmentId) => {
+    const response = await api.get(`appointments/detail?appointmentId=${appointmentId}`);
+    return response.data;
+}
+
+export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
+    const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
+    return response.data;
+}
+
+
+
+
+
+
+
 //Pond API
 export const  fetchPondByCustomerIdAPI = async (customerId) => {
     const response = await api.get(`/customer/${customerId}/pond`);
