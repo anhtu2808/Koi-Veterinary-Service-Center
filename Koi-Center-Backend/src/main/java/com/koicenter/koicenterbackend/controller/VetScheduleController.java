@@ -21,6 +21,6 @@ public class VetScheduleController {
     VetScheduleService vetScheduleService ;
     @GetMapping("/{vetSchedule}")
     public ResponseEntity<ResponseObject> getScheduleForBooking(@RequestBody VetScheduleRequest vetSchedule) {
-        return ResponseObject.APIRepsonse("200","Get Schedule ID Successfully", HttpStatus.OK,vetSchedule);
+        return ResponseObject.APIRepsonse(200,"Get Schedule ID Successfully", HttpStatus.OK,vetSchedule);
     }
 }

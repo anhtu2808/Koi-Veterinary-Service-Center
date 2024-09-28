@@ -30,7 +30,7 @@ public class VeterinarianService {
         Veterinarian veterinarian=  veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
         VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
         veterinarianResponse.setVetId(veterinarian.getVetId());
-        veterinarianResponse.setVetstatus(veterinarian.getStatus());
+        veterinarianResponse.setVetStatus(veterinarian.getStatus());
         veterinarianResponse.setDescription(veterinarian.getDescription());
         veterinarianResponse.setGoogleMeet(veterinarian.getGoogleMeet());
         veterinarianResponse.setPhone(veterinarian.getPhone());
@@ -45,7 +45,7 @@ public class VeterinarianService {
         userResponse.setStatus(user.isStatus());
         userResponse.setRole(user.getRole());
 
-        veterinarianResponse.setUserResponse(userResponse);
+        veterinarianResponse.setUser(userResponse);
         return veterinarianResponse ;
     }
 
@@ -72,8 +72,8 @@ public class VeterinarianService {
                                 .googleMeet(veterinarian.getGoogleMeet())
                                 .phone(veterinarian.getPhone())
                                 .imageVeterinarian(veterinarian.getImage() != null ? veterinarian.getImage() : null)
-                                .Vetstatus(veterinarian.getVeterinarianStatus().toString())
-                                .userResponse(userResponse)
+                                .vetStatus(veterinarian.getVeterinarianStatus().toString())
+                                .user(userResponse)
                                 .build();
                         responseList.add(veterinarianResponse);
                     }
