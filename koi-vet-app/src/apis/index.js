@@ -44,13 +44,8 @@ export const fetchVetsAPI = async () => {
 
 export const fetchVetByVetIdAPI = async (vetId) =>{
     const response = await api.get(`/veterinarians/${vetId}`);
-    return response.data.data;
+    return response.data;
 }
-
-
-
-
-
 
 
 
