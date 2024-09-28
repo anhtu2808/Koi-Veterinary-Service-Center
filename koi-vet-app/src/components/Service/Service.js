@@ -24,7 +24,8 @@ const Service = ({ image, serviceId, serviceName, description, isBooking }) => {
           <div className="p-3">
             <h5>{serviceName}</h5>
             <p>{description}</p>
-            <button onClick={() => handleClickButton()}>Order <i className="btn fas fa-arrow-right"></i></button>
+            <button onClick={() => handleClickButton()}>Order</button> 
+            <button>Detail</button>
           </div>
         </div>
       </div>
