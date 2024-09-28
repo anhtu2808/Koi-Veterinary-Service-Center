@@ -1,0 +1,8 @@
+.booking-title{
+    /* margin-top:5vh; */
+    color: var(--color-primary)
+}
+.booking-container{
+    margin-top: 5vh ;
+    margin-bottom: 5vh;
+}

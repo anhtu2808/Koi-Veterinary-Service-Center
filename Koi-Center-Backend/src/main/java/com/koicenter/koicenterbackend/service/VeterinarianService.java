@@ -80,9 +80,10 @@ public class VeterinarianService {
                 } catch (Exception e) {
                     log.error("Error while retrieving Veterinarian: {}", e.getMessage());
                 }
-
         }
         return responseList;
     }
 
 }
+
+

@@ -1,4 +1,5 @@
 
+
 package com.koicenter.koicenterbackend.exception;
 
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
@@ -20,3 +21,4 @@ public class GlobalExceptionHandler {
         return ResponseObject.APIRepsonse(500, "An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 }
+

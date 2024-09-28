@@ -1,12 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Login.css'
 import google_logo from '../../assets/img/google.png'
 import logo from '../../assets/img/logo.png'
 import logim_side from '../../assets/img/login_side.png'
+import { toast } from 'react-toastify'
+import { fetchLoginAPI } from '../../apis'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-    return (
-       
+const [username, setUsername] = useState("");
+const [password, setPassword] = useState("");
+const navigate = useNavigate();
+const handleLogin = async (e) => {
+  e.preventDefault(); // chặn hành động mặc định của form như refresh lại trang
+ 
+  console.log(username, password);
+  const response = await fetchLoginAPI(username, password);
+ 
+  console.log(response)
+  if(response?.status === "200") {
+    toast.success("Login successfully")
+    localStorage.setItem("accessToken", response.data);
+    navigate("/")
+  }
+}
+
+  return (
+
          
         <div className="row">
             <div className="col-md-6 left-side-container text-start">
@@ -38,25 +58,25 @@ const Login = () => {
                     </div>
 
                 </div>
-                <form action="#!" className="mx-5">
+                <form action="#!" className="mx-5" onSubmit={handleLogin}>
                     <div className="row gy-2 overflow-hidden">
                       <div className="col-12">
                         <div className="form-floating mb-3">
-                          <input type="text" className="form-control" name="username" id="username" placeholder="Username" required />
-                          <label for="username" className="form-label">Username</label>
+                          <input type="text" className="form-control" name="username" id="username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                          <label htmlFor="username" className="form-label">Username</label>
                         </div>
                       </div>
                       <div className="col-12">
                         <div className="form-floating mb-3">
-                          <input type="password" className="form-control" name="password" id="password" value="" placeholder="Password" required />
-                          <label for="password" className="form-label">Password</label>
+                          <input type="password" className="form-control" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+                          <label htmlFor="password" className="form-label">Password</label>
                         </div>
                       </div>
                       <div className="col-12">
                         <div className="d-flex gap-2 justify-content-between">
                           <div className="form-check">
                             <input className="form-check-input" type="checkbox" value="" name="rememberMe" id="rememberMe" />
-                            <label className="form-check-label text-secondary" for="rememberMe">
+                            <label className="form-check-label text-secondary" htmlFor="rememberMe">
                               Keep me logged in
                             </label>
                           </div>

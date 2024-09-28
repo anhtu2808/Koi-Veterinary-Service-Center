@@ -1,6 +1,10 @@
 package com.koicenter.koicenterbackend.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import com.koicenter.koicenterbackend.model.entity.Customer;
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
+
 import com.koicenter.koicenterbackend.model.enums.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,7 +24,8 @@ public class UserResponse {
     String fullName;
     Role role;
     boolean status;
-
+    Customer customer;
+    Veterinarian veterinarian;
 
 
 }

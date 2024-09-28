@@ -47,6 +47,7 @@ public class AuthenticateController {
       }
     }
 
+
     @GetMapping("/loginGoogle")
     public ResponseEntity<ResponseObject> loginWithGoogle(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         Map<String, Object> credential = oAuth2AuthenticationToken.getPrincipal().getAttributes();
@@ -55,5 +56,8 @@ public class AuthenticateController {
         token =  authenticateService.loginGoogleToken(credential);
         return ResponseObject.APIRepsonse(200, "Login Successfully", HttpStatus.OK, token);
     }
+
+
+
 }
 
