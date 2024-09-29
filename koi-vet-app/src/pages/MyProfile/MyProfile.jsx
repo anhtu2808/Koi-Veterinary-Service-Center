@@ -124,9 +124,9 @@ const MyProfile = () => {
         </div>
         <div className="card-footer text-center">
           {isEditing ? (
-            <button className="btn btn-primary" onClick={handleSave}>Save Changes</button>
+            <button className="btn btn-primary" onClick={() => handleSave()}>Save Changes</button>
           ) : (
-            <button className="btn btn-secondary" onClick={handleEdit}>Edit Information</button>
+            <button className="btn btn-secondary" onClick={() => handleEdit()}>Edit Information</button>
           )}
         </div>
       </div>

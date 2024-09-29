@@ -52,7 +52,7 @@ public class PondController {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
         }
     }
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<ResponseObject> createPond (@RequestBody PondRequest pondRequest){
         pondService.createPond(pondRequest);
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");

@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-
-
 const initialState = {
   step: 0,
   bookingData: {
@@ -13,9 +10,9 @@ const initialState = {
     startAt: null,
     endAt: null,
     paymentInfo: {},
-
+    selectedKoi: [],
+    selectedPondIds: [], // Add this line
   },
-
 };
 
 const bookingSlice = createSlice({

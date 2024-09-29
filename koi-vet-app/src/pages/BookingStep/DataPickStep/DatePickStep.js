@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import '../../components/DatePicker/datepicker.css'
-import { fetchScheduleByAppimentTypeAPI } from '../../apis';
+import './datepicker.css'
+import { fetchScheduleByAppimentTypeAPI } from '../../../apis';
 import { useSelector, useDispatch } from 'react-redux';
-import { setBookingData } from '../../store/bookingSlice';
+import { setBookingData } from '../../../store/bookingSlice';
 
 const DatePickStep = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
