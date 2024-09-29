@@ -20,7 +20,7 @@ import BookingPage from './pages/BookingPage/BookingPage';
 import { useEffect } from 'react';
 import { fetchMyInfoAPI } from './apis';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from './store/userSlice';
+import { setCustomer, setUser, setVeterinarian } from './store/userSlice';
 import UserProtectedRoute from './components/ProtectedRoute/UserProtectedRoute';
 import AdminLayout from './pages/layout/AdminLayout';
 import PondInformation from './pages/PondInformation/PondInformation';
@@ -37,6 +37,8 @@ function App() {
         console.log(response);
         if (response.status === 200) {
           dispatch(setUser(response.data))
+          dispatch(setCustomer(response.data.customer))
+          dispatch(setVeterinarian(response.data.veterinarian))
         }
       }
       fetchMyInfo();
