@@ -32,6 +32,7 @@ public class VetSchedule {
 
     @ManyToOne
     @JoinColumn(name = "vet_id", referencedColumnName = "vet_id")
+
     Veterinarian veterinarian;
 
 }

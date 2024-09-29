@@ -21,22 +21,7 @@ public class ServiceService {
     }
 
     public List<com.koicenter.koicenterbackend.model.entity.Service> getAllServiceByType(){
-        List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
-        List<com.koicenter.koicenterbackend.model.entity.Service> serviceForFish = servicesRepository.findByServiceFor(ServiceType.FISH);
-        List<com.koicenter.koicenterbackend.model.entity.Service> servicesForPond = servicesRepository.findByServiceFor(ServiceType.POND);
-        List<com.koicenter.koicenterbackend.model.entity.Service> servicesForOnline = servicesRepository.findByServiceFor(ServiceType.ONLINE);
-        for (com.koicenter.koicenterbackend.model.entity.Service service : serviceForFish) {
-            services.add(service);
-        }
-        for (com.koicenter.koicenterbackend.model.entity.Service service : servicesForPond){
-            services.add(service);
-        }
-        for (com.koicenter.koicenterbackend.model.entity.Service service : servicesForOnline){
-            services.add(service);
-        }
-        return services;
-
-
+        return servicesRepository.findByServiceFor(ServiceType.ONLINE);
     }
 
     public com.koicenter.koicenterbackend.model.entity.Service getServiceById(String id){
