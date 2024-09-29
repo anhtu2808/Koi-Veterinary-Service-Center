@@ -100,6 +100,12 @@ export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
     // return response.data;
 }
 
+//API Schedule
+export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
+    const response = await api.get(`vetSchedules?type=${type}&vetId=${vetId}`);
+    return response.data;
+}
+
 
 
 

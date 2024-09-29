@@ -1,123 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../components/DatePicker/datepicker.css'
-const response  = {
-  "status": "200",
-  "message": "Get Schedule ID Successfully",
-  "data": [
-      {
-          "day": "2024-10-01",
-          "slots": [
-              {
-                  "startTime": "08:00:00",
-                  "endTime": "10:00:00"
-              },
-              {
-                  "startTime": "13:00:00",
-                  "endTime": "15:00:00"
-              },
-              {
-                  "startTime": "16:30:00",
-                  "endTime": "18:00:00"
-              }
-          ]
-      },
-      {
-          "day": "2024-10-02",
-          "slots": [
-              {
-                  "startTime": "09:30:00",
-                  "endTime": "11:30:00"
-              },
-              {
-                  "startTime": "14:00:00",
-                  "endTime": "16:00:00"
-              }
-          ]
-      },
-      {
-          "day": "2024-10-03",
-          "slots": [
-              {
-                  "startTime": "10:00:00",
-                  "endTime": "12:00:00"
-              },
-              {
-                  "startTime": "15:30:00",
-                  "endTime": "17:30:00"
-              }
-          ]
-      },
-      {
-          "day": "2024-10-04",
-          "slots": [
-              {
-                  "startTime": "08:30:00",
-                  "endTime": "10:30:00"
-              },
-              {
-                  "startTime": "11:00:00",
-                  "endTime": "13:00:00"
-              },
-              {
-                  "startTime": "14:30:00",
-                  "endTime": "16:30:00"
-              }
-          ]
-      },
-      {
-          "day": "2024-10-07",
-          "slots": [
-              {
-                  "startTime": "09:00:00",
-                  "endTime": "11:00:00"
-              },
-              {
-                  "startTime": "13:30:00",
-                  "endTime": "15:30:00"
-              },
-              {
-                  "startTime": "16:00:00",
-                  "endTime": "18:00:00"
-              }
-          ]
-      },
-      {
-          "day": "2024-10-08",
-          "slots": [
-              {
-                  "startTime": "10:30:00",
-                  "endTime": "12:30:00"
-              },
-              {
-                  "startTime": "14:00:00",
-                  "endTime": "16:00:00"
-              }
-          ]
-      },
-      {
-          "day": "2024-10-09",
-          "slots": [
-              {
-                  "startTime": "08:00:00",
-                  "endTime": "10:00:00"
-              },
-              {
-                  "startTime": "11:30:00",
-                  "endTime": "13:30:00"
-              },
-              {
-                  "startTime": "15:00:00",
-                  "endTime": "17:00:00"
-              }
-          ]
-      }
-  ]
-}
-
+import { fetchScheduleByAppimentTypeAPI } from '../../apis';
+import { useSelector, useDispatch } from 'react-redux';
+import { setBookingData } from '../../store/bookingSlice';
 
 const DatePickStep = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(null)
+  const [schedule, setSchedule] = useState([])
+  const type = useSelector(state => state.booking.bookingData.type)  
+  const vetId = useSelector(state => state.booking.bookingData.vetId)
+  const dispatch = useDispatch();
+  const bookingData = useSelector(state => state.booking.bookingData);
+  // Lấy dữ liệu schedul theo appointmentType và vetId
+  useEffect(() => {
+    const fetchSchedule = async (type, vetId) => {
+      const response = await fetchScheduleByAppimentTypeAPI(type, vetId);
+      setSchedule(response.data);
+    }
+    fetchSchedule(type, vetId);
+  }, [type, vetId])
   const renderDays = () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -146,7 +48,7 @@ const DatePickStep = () => {
       const dateString = date.toISOString().split('T')[0]; // Lấy chuỗi ngày tháng năm
       const isToday = date.toDateString() === new Date().toDateString();
       const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
-      const isAvailable = response.data.some(item => item.day === dateString);
+      const isAvailable = schedule.some(item => item.day === dateString);
     
       days.push(
         <div
@@ -168,25 +70,51 @@ const DatePickStep = () => {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
+    resetTime();
   }
 
   const handlePreviousMonth = () => {
     setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    resetDate();
+    resetTime();
   }
 
   const handleNextMonth = () => {
     setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    resetDate();
+    resetTime();
+  }
+
+  const resetDate = () => {
+    setSelectedDate(null);
+    dispatch(setBookingData({
+      date: null,
+    }));
+  }
+  const resetTime = () => {
+    dispatch(setBookingData({
+      startAt: null,
+      endAt: null,
+    }));
   }
 
   const formatMonth = (date) => {
     return date.toLocaleString('vi-VN', { month: 'long', year: 'numeric' });
   }
 
+  const handleTimeSlotClick = (startTime, endTime) => {
+    dispatch(setBookingData({
+      date: selectedDate.toISOString().split('T')[0],
+      startAt: startTime,
+      endAt: endTime
+    }));
+  };
+
   const renderTimeSlots = () => {
     if (!selectedDate) return null;
 
     const selectedDateString = selectedDate.toISOString().split('T')[0];
-    const selectedDayData = response.data.find(item => item.day === selectedDateString);
+    const selectedDayData = schedule.find(item => item.day === selectedDateString);
 
     if (!selectedDayData) return <p>No available slots for this date.</p>;
 
@@ -194,7 +122,11 @@ const DatePickStep = () => {
       <div className="slots text-start">
         <h3>Available time slots for {selectedDate.toLocaleDateString('vi-VN')}:</h3>
         {selectedDayData.slots.map((slot, index) => (
-          <div key={index} className="slot">
+          <div
+            key={index}
+            className={`slot ${bookingData.startAt === slot.startTime && bookingData.endAt === slot.endTime ? 'slot-picked' : ''}`}
+            onClick={() => handleTimeSlotClick(slot.startTime, slot.endTime)}
+          >
             {slot.startTime.slice(0, 5)} - {slot.endTime.slice(0, 5)}
           </div>
         ))}
