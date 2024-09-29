@@ -39,14 +39,18 @@ const userSlice = createSlice({
     setVeterinarian: (state, action) => {
       state.veterinarian = action.payload;
     },
-    
+
+    updateUserInfo: (state, action) => {
+      state.customer = { ...state.customer, ...action.payload };
+    },
     
     clearUser: () => initialState, // Reset user về giá trị ban đầu
   },
 });
 
 
-export const { setUser, updateUser, clearUser, setIsAuthorized, setCustomer, setVeterinarian } = userSlice.actions;
+export const { setUser, updateUser, clearUser,
+   setIsAuthorized, setCustomer, setVeterinarian, updateUserInfo } = userSlice.actions;
 
 // Export reducer để sử dụng trong store
 export default userSlice.reducer;
