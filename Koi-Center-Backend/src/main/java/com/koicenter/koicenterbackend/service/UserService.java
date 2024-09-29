@@ -139,4 +139,17 @@ public class UserService {
         }
         return userResponseBuilder.build();
     }
+
+    public User createVeterinarian(User newUser) {
+        User user = new User();
+        user.setUsername(newUser.getUsername());
+        user.setPassword(encoder.encode(newUser.getPassword()));
+        user.setEmail(newUser.getEmail());
+        user.setFullName(newUser.getFullName());
+        user.setRole(Role.VETERINARIAN);
+        user.setStatus(true);
+         return userRepository.save(user);
+
+
+    }
 }
