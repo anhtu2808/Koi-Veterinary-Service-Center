@@ -35,6 +35,10 @@ export const fetchMyInfoAPI = async () => {
     return response.data
 }
 
+export const updateMyInfoAPI = async (userData) => {
+    const response = await api.put('/users/updateMyInfo', userData);
+    return response.data;
+};
 
 //* Vet API */
 export const fetchVetsAPI = async () => {

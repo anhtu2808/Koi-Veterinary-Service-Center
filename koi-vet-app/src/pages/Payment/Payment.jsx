@@ -35,7 +35,7 @@ function Payment() {
               </div>
               <div className="mb-3">
                 <label htmlFor="phoneNumber" className="payment-form-label">
-                  Phone Number
+                value={userInfo.pho}
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
