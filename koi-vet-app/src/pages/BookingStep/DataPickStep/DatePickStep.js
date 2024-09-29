@@ -25,51 +25,51 @@ const DatePickStep = () => {
     const month = currentDate.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     let firstDayOfMonth = new Date(year, month, 1).getDay();
-    // Adjust to make Monday the first day of the week
     firstDayOfMonth = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
     
     const days = [];
-
-    // Add weekday headers
     const weekDays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
     weekDays.forEach(day => {
-      days.push(<div key={`weekday-${day}`} className="weekday">{day}</div>);
+        days.push(<div key={`weekday-${day}`} className="weekday">{day}</div>);
     });
 
-    // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
-      days.push(<div key={`empty-${i}`} className="disabled"></div>);
+        days.push(<div key={`empty-${i}`} className="disabled"></div>);
     }
 
-    // Render days of the month
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month, day);
-      console.log(date)
-      const dateString = date.toISOString().split('T')[0]; // Lấy chuỗi ngày tháng năm
-      const isToday = date.toDateString() === new Date().toDateString();
-      const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
-      const isAvailable = schedule.some(item => item.day === dateString);
-    
-      days.push(
-        <div
-          key={day}
-          className={`
-            ${isAvailable ? 'day' : 'disabled'}
-            ${isToday ? 'current-day' : ''}
-            ${isSelected ? 'chooosed-day' : ''}
-          `.trim()}
-          onClick={() => isAvailable && handleDateClick(date)}
-        >
-          {day}
-        </div>
-      );
+        const date = new Date(year, month, day);
+
+        // Adjust month and day formatting to always have two digits
+        const monthString = (month + 1).toString().padStart(2, '0');
+        const dayString = day.toString().padStart(2, '0');
+        const dateString = `${year}-${monthString}-${dayString}`;
+
+        const isToday = date.toDateString() === new Date().toDateString();
+        const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
+        const isAvailable = schedule.some(item => item.day === dateString);
+
+        days.push(
+            <div
+                key={day}
+                className={`
+                    ${isAvailable ? 'day' : 'disabled'}
+                    ${isToday ? 'current-day' : ''}
+                    ${isSelected ? 'chooosed-day' : ''}
+                `.trim()}
+                onClick={() => isAvailable && handleDateClick(date)}
+            >
+                {day}
+            </div>
+        );
     }
 
     return days;
-  }
+}
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
+    console.log(date);
     resetTime();
   }
 
@@ -104,16 +104,25 @@ const DatePickStep = () => {
 
   const handleTimeSlotClick = (startTime, endTime) => {
     dispatch(setBookingData({
-      date: selectedDate.toISOString().split('T')[0],
+      date: getLocalDateString(selectedDate),
       startAt: startTime,
       endAt: endTime
     }));
   };
 
+  // Lấy ngày tháng theo định dạng yyyy-MM-dd
+  const getLocalDateString = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adjust for zero-based month
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
   const renderTimeSlots = () => {
     if (!selectedDate) return null;
+  
+    const selectedDateString = getLocalDateString(selectedDate);
 
-    const selectedDateString = selectedDate.toISOString().split('T')[0];
+    console.log(selectedDateString);
     const selectedDayData = schedule.find(item => item.day === selectedDateString);
 
     if (!selectedDayData) return <p>No available slots for this date.</p>;
