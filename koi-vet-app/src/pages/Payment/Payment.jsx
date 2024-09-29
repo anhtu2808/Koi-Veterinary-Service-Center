@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useSelector } from "react-redux";
-import { fecthServiceByServiceIdAPI, fetchVetByVetIdAPI } from "../../apis";
+import { createAppointmentAPI, fecthServiceByServiceIdAPI, fetchVetByVetIdAPI } from "../../apis";
 
 function Payment() {
   const userInfo = useSelector(state => state.user)
@@ -10,12 +10,12 @@ function Payment() {
   const [serviceInfo, setServiceInfo] = useState({})
   const [vetInfo, setVetInfo] = useState({})
 
-  // const handlePayment = async (appointmentId, appointmentDate, status, startTime, endTime,
-  //   location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId) => {
-  //   const response = await createAppointmentAPI(appointmentId, appointmentDate, status, startTime, endTime,
-  //     location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId);
-  //   console.log(response)
-  // }
+  const handlePayment = async (appointmentId, appointmentDate, status, startTime, endTime,
+    location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId) => {
+    const response = await createAppointmentAPI(appointmentId, appointmentDate, status, startTime, endTime,
+      location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId);
+    console.log(response)
+  }
   // Combine date and time into a single string
   const combinedDateTime = `${bookingData?.date}T${bookingData?.startAt}`;
   useEffect(() => {
@@ -222,7 +222,23 @@ function Payment() {
                 </div>
               </div>
 
-              <button className="btn payment-btn w-100" id="checkoutBtn">
+              <button className="btn payment-btn w-100" id="checkoutBtn"
+                onClick={handlePayment(
+                  bookingData?.id,
+                  bookingData?.date,
+                  "pending",
+                  bookingData?.startAt,
+                  bookingData?.endAt,
+                  bookingData?.location,
+                  bookingData?.result,
+                  bookingData?.createdAt,
+                  bookingData?.type,
+                  bookingData?.depositedMoney,
+                  bookingData?.customerId,
+                  bookingData?.vetId,
+                  bookingData?.serviceId)}
+
+              >
                 <i className="fas fa-lock me-2"></i> Proceed to Secure Checkout
               </button>
             </div>
