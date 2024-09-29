@@ -82,7 +82,18 @@ function App() {
         } />
       </Routes>
 
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+        theme="light"
+      />
     </Router>
   );
 }

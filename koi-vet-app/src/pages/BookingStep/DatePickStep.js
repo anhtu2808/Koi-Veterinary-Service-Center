@@ -114,43 +114,49 @@ const response  = {
   ]
 }
 
+
 const DatePickStep = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(null)
-
   const renderDays = () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     let firstDayOfMonth = new Date(year, month, 1).getDay();
-    // Điều chỉnh để thứ 2 là ngày đầu tuần
+    // Adjust to make Monday the first day of the week
     firstDayOfMonth = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
     
     const days = [];
 
-    // Thêm tiêu đề cho các ngày trong tuần
+    // Add weekday headers
     const weekDays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
     weekDays.forEach(day => {
       days.push(<div key={`weekday-${day}`} className="weekday">{day}</div>);
     });
 
-    // Thêm ô trống cho các ngày trước ngày đầu tiên của tháng
+    // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(<div key={`empty-${i}`} className="disabled"></div>);
     }
 
-    // Render các ngày trong tháng
+    // Render days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
+      console.log(date)
+      const dateString = date.toISOString().split('T')[0]; // Lấy chuỗi ngày tháng năm
       const isToday = date.toDateString() === new Date().toDateString();
       const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
-      const isDisabled = response.data.some(item => new Date(item.day) === new Date(year, month , day)); //
-      console.log(isDisabled)
+      const isAvailable = response.data.some(item => item.day === dateString);
+    
       days.push(
         <div
           key={day}
-          className={`day ${isToday ? 'current-day' : ''} ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
-          onClick={() => !isDisabled && handleDateClick(date)}
+          className={`
+            ${isAvailable ? 'day' : 'disabled'}
+            ${isToday ? 'current-day' : ''}
+            ${isSelected ? 'chooosed-day' : ''}
+          `.trim()}
+          onClick={() => isAvailable && handleDateClick(date)}
         >
           {day}
         </div>
@@ -162,7 +168,6 @@ const DatePickStep = () => {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    // Xử lý logic khi chọn ngày ở đây
   }
 
   const handlePreviousMonth = () => {
@@ -175,6 +180,27 @@ const DatePickStep = () => {
 
   const formatMonth = (date) => {
     return date.toLocaleString('vi-VN', { month: 'long', year: 'numeric' });
+  }
+
+  const renderTimeSlots = () => {
+    if (!selectedDate) return null;
+
+    const selectedDateString = selectedDate.toISOString().split('T')[0];
+    const selectedDayData = response.data.find(item => item.day === selectedDateString);
+
+    if (!selectedDayData) return <p>No available slots for this date.</p>;
+
+    return (
+      <div className="slots text-start">
+        <h3>Available time slots for {selectedDate.toLocaleDateString('vi-VN')}:</h3>
+        {selectedDayData.slots.map((slot, index) => (
+          <div key={index} className="slot">
+            {slot.startTime.slice(0, 5)} - {slot.endTime.slice(0, 5)}
+          </div>
+        ))}
+        <p>Please select a time slot to continue booking</p>
+      </div>
+    );
   }
 
   return (
@@ -201,14 +227,7 @@ const DatePickStep = () => {
         </div>
         
         <hr />
-        {/* Slot giả lập cho ngày 3 */}
-        <div className="slots text-start">
-          <h3>Khung giờ có sẵn cho ngày 03:</h3>
-          <div className="slot">08:00- 9:30</div>
-          <div className="slot">09:30-10:00</div>
-          <div className="slot">09:30-10:00</div>
-          <p>Chọn khung giờ để tiếp tục đặt lịch khám bệnh</p>
-        </div>
+        {renderTimeSlots()}
       </div>
     </div>
   )
