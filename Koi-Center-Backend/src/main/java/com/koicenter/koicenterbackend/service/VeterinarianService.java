@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -66,6 +67,8 @@ public class VeterinarianService {
                                 .fullName(user.getFullName())
                                 .build();
 
+                        List<String> serviceNames = veterinarianRepository.findServiceNamesByVetId(veterinarian.getVetId());
+
                         VeterinarianResponse veterinarianResponse = VeterinarianResponse.builder()
                                 .vetId(veterinarian.getVetId())
                                 .description(veterinarian.getDescription())
@@ -73,6 +76,7 @@ public class VeterinarianService {
                                 .phone(veterinarian.getPhone())
                                 .imageVeterinarian(veterinarian.getImage() != null ? veterinarian.getImage() : null)
                                 .vetStatus(veterinarian.getVeterinarianStatus().toString())
+                                .serviceNames(serviceNames)
                                 .user(userResponse)
                                 .build();
                         responseList.add(veterinarianResponse);
