@@ -80,6 +80,9 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/pondTreatment").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/pondTreatment/create").permitAll()
 
+                            .requestMatchers(HttpMethod.GET, "/api/v1/koiTreatment").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/koiTreatment/create").permitAll()
+
                             .anyRequest().authenticated();
                 });
         return http.build();
