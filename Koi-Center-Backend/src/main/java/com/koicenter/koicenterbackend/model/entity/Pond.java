@@ -22,9 +22,11 @@ public class Pond {
     float depth;
     float perimeter;
     float temperature;
+    @Lob
     String notes;
     String image;
-
+    String waterQuality; // Chất lượng nước
+    String filterSystem; // Hệ thống lọc
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     @JsonIgnore

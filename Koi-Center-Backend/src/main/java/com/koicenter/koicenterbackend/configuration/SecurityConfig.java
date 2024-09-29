@@ -48,7 +48,8 @@ public class SecurityConfig {
                                     "api/v1/services/appointmentType/**",
                                     "/swagger-ui.html").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/services/{serviceId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/services/{serviceId}","/api/v1/vetSchedules").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/kois/create").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ").permitAll()
@@ -63,6 +64,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/ponds").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/ponds/{pondId}").permitAll()
                             .requestMatchers(HttpMethod.PUT, "/api/v1/ponds/{pondId}").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/ponds/create").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/kois").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/kois/{koiId}").permitAll()
