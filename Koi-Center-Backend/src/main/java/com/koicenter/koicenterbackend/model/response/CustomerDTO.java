@@ -12,5 +12,5 @@ public class CustomerDTO {
     String customerId;
     String address;
     String phone;
-    String image;
+     String image;
 }

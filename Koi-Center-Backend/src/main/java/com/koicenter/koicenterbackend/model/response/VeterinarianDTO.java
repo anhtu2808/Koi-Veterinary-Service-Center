@@ -14,6 +14,6 @@ public class VeterinarianDTO {
     String googleMeet;
     String image;
     String phone;
-    String veterinarianStatus;  // Hoặc dùng enum nếu cần thiết
+    String veterinarianStatus;
     String status;
 }
