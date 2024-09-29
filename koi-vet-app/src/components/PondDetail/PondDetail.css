@@ -1,0 +1,16 @@
+.pond-detail-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .pond-detail-form .form-control:disabled {
+    background-color: #e9ecef;
+    opacity: 1;
+    cursor: not-allowed;
+  }
+  
+  .pond-detail-form .btn {
+    margin-top: 20px;
+  }

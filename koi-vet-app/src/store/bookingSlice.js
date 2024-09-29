@@ -43,6 +43,9 @@ const bookingSlice = createSlice({
 
       }
     },
+    setStep: (state, action) => {
+      state.step = action.payload
+    },
     setBookingData: (state, action) => {
       state.bookingData = { ...state.bookingData, ...action.payload }
     },
@@ -54,5 +57,5 @@ const bookingSlice = createSlice({
   }
 
 })
-export const { nextStep, prevStep, setBookingData, resetBoking } = bookingSlice.actions;
+export const { nextStep, prevStep, setBookingData, resetBoking, setStep } = bookingSlice.actions;
 export default bookingSlice.reducer;
