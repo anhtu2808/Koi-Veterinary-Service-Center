@@ -50,12 +50,12 @@ public class AuthenticateService {
     }
 
     public boolean logout(String token) {
-        if (loggedOutTokenRepository.findByToken(token).isEmpty() && jWTUtilHelper.verifyToken(token)) {
+        if (loggedOutTokenRepository.findByToken(token) == null) {
             LoggedOutToken loggedOutToken = new LoggedOutToken(token, new Date());
             loggedOutTokenRepository.save(loggedOutToken);
             return true;
         } else {
-            throw new AppException(ErrorCode.INVALID_LOGOUT.getCode(), "Invalid token", HttpStatus.UNAUTHORIZED);
+            throw new AppException(ErrorCode.INVALID_LOGOUT.getCode(), "Sign Out Failed", HttpStatus.FORBIDDEN);
         }
     }
 

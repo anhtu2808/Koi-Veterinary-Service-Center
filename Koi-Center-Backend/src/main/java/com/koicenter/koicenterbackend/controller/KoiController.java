@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/koi")
+@RequestMapping("/api/v1/kois")
 public class KoiController {
 
     @Autowired

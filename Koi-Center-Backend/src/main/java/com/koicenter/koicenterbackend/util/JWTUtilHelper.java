@@ -64,7 +64,7 @@ public class JWTUtilHelper {
     }
 
     public boolean isTokenLoggedOut(String token) {
-        return loggedOutTokenRepository.findByToken(token).isPresent();
+        return loggedOutTokenRepository.findByToken(token) == null;
     }
 
 
