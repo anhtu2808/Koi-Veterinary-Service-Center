@@ -5,25 +5,40 @@ import Service from '../../components/Service/Service'
 
 export const ServiceStep = () => {
     const type = useSelector(state => state?.booking?.bookingData?.type)
-    const [services,setServices] = useState([]);
+    const [services, setServices] = useState([]);
+    // useEffect(() => {
+    //     const fetchServiceByType = async (type) => {
+    //         console.log(type);
+    //         const response = await fetchServiceByTypeAPI(type);
+    //         setServices(response.data);
+    //     }
+    //     fetchServiceByType(type);
+    // }, [type])
+
     useEffect(() => {
-        const fetchServiceByType = async (type) => {
-            const response = await fetchServiceByTypeAPI(type);
-            setServices(response.data);
+        const fetchServiceByType = async () => {
+
+            const response = await fetchServiceByTypeAPI("mobile");
+            if(response.status === 200){
+                setServices(response.data)
+            }
         }
-        fetchServiceByType(type);
-    }, [type])
+        fetchServiceByType();
+    }, [])
+   
+
     return (
         <>
-            <div className="container text-center my-5">
-                <div className="container mt-5">
-                    <div className="text-center mb-5">
-                        <img src="process-image.png" alt="Process Step" />
+            <div className="container text-center ">
+                <div className="container ">
+                    <div className="text-center ">
+                      
                         <h3>Choose Service</h3>
                     </div>
 
                     <div className="row">
                         {
+
                             services.map((service) => {
                                 return (
                                     <Service

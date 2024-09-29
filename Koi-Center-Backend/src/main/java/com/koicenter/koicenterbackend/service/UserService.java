@@ -5,9 +5,7 @@ import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.RegisterRequest;
-import com.koicenter.koicenterbackend.model.response.CustomerDTO;
 import com.koicenter.koicenterbackend.model.response.UserResponse;
-import com.koicenter.koicenterbackend.model.response.VeterinarianDTO;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -86,44 +84,15 @@ public class UserService {
     }
 
     private UserResponse getUserByUsernameV2(String username) {
-        User user = userRepository.findByUsername(username);
-
-
-        UserResponse.UserResponseBuilder userResponseBuilder = UserResponse.builder()
+        User user =  userRepository.findByUsername(username);
+       UserResponse  userResponse = new UserResponse().builder()
                 .user_id(user.getUserId())
                 .username(user.getUsername())
                 .fullName(user.getFullName())
                 .role(user.getRole())
                 .status(user.isStatus())
-                .email(user.getEmail());
-
-        if (user.getRole() == Role.CUSTOMER) {
-            CustomerDTO customerDTO = new CustomerDTO(
-                    user.getCustomer().getCustomerId(),
-                    user.getCustomer().getAddress(),
-                    user.getCustomer().getPhone(),
-                    user.getCustomer().getImage()
-            );
-            userResponseBuilder.customer(customerDTO);
-        }
-
-        if (user.getRole() == Role.VETERINARIAN && user.getVeterinarian() != null) {
-            VeterinarianDTO veterinarianDTO = new VeterinarianDTO(
-                    user.getVeterinarian().getVetId(),
-                    user.getVeterinarian().getDescription(),
-                    user.getVeterinarian().getGoogleMeet(),
-                    user.getVeterinarian().getImage(),
-                    user.getVeterinarian().getPhone(),
-                    user.getVeterinarian().getVeterinarianStatus().name(),
-                    user.getVeterinarian().getStatus()
-            );
-            userResponseBuilder.veterinarian(veterinarianDTO);
-        }
-
-
-
-        return userResponseBuilder.build();
+               .email(user.getEmail())
+                .build();
+       return userResponse;
     }
-
-
 }
