@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import Veterinarian from '../../../components/Veterinarian/Veterinarian';
-import { fetchVetsAPI } from '../../../apis';
+import { fetchVetByServiceIdAPI, fetchVetsAPI } from '../../../apis';
+import { useSelector } from 'react-redux';
 
 const VeterinarianStep = () => {
     const [veterinarians, setVeterinarians] =useState([]);
-  
+    const serviceId = useSelector(state => state.booking.bookingData.serviceId);
   useEffect(()=>{
     const fetchVeterinarians =  async () =>{
-      const response = await fetchVetsAPI(); // thay bằng fetchVetByVetByServiceIdAPI
+      const response = await fetchVetByServiceIdAPI(serviceId); // thay bằng fetchVetByVetByServiceIdAPI
       console.log({response});
       setVeterinarians(response?.data);
     }
     fetchVeterinarians();
-  },[])
+  },[serviceId])
 
   return (
     console.log({veterinarians}),

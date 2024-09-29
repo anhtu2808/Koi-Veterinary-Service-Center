@@ -30,7 +30,7 @@ public class ServiceController {
 
     @GetMapping("/appointmentType/{serviceFor}")//Appoinment type de lay ra tung servicefor
     public ResponseEntity<ResponseObject> getServiceFor(@PathVariable String serviceFor){
-        if(serviceFor.toLowerCase().equals("CENTER".toLowerCase()) || serviceFor.toLowerCase().equals("MOBILE".toLowerCase()) || serviceFor.toLowerCase().equals("ONLINE".toLowerCase())) {
+        if(serviceFor.toLowerCase().equals("CENTER".toLowerCase()) || serviceFor.toLowerCase().equals("HOME".toLowerCase()) || serviceFor.toLowerCase().equals("ONLINE".toLowerCase())) {
         return ResponseObject.APIRepsonse(200, "GET Appointment_Type Successfully", HttpStatus.OK, serviceService.getServiceFor(serviceFor));
         }
         else {

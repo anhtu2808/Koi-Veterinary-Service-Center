@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setBookingData } from '../../../store/bookingSlice';
-import './InputPondStep.css'
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setBookingData } from "../../../src/store/bookingSlice";
+import "./InputPondPage.css";
+import { useNavigate } from "react-router-dom";
 
 // Sample pond data
 const samplePondData = [
@@ -13,7 +13,7 @@ const samplePondData = [
     perimeter: 20,
     temperature: 22,
     notes: "Filtered weekly, plants added last month",
-    image: "https://example.com/pond1.jpg"
+    image: "https://example.com/pond1.jpg",
   },
   {
     pondId: 2,
@@ -22,7 +22,7 @@ const samplePondData = [
     perimeter: 15,
     temperature: 21,
     notes: "New filtration system installed",
-    image: "https://example.com/pond2.jpg"
+    image: "https://example.com/pond2.jpg",
   },
   {
     pondId: 3,
@@ -31,36 +31,38 @@ const samplePondData = [
     perimeter: 8,
     temperature: 23,
     notes: "Used for new koi arrivals",
-    image: "https://example.com/pond3.jpg"
-  }
+    image: "https://example.com/pond3.jpg",
+  },
 ];
 
-const InputPondStep = () => {
+const InputPondPage = () => {
   const [existingPonds] = useState(samplePondData);
   const dispatch = useDispatch();
-  const selectedPond = useSelector(state => state.booking.bookingData.selectedPond || []);
+  const selectedPondIds = useSelector(
+    (state) => state.booking.bookingData.selectedPondIds || []
+  );
   const navigate = useNavigate();
 
   const handleSelectPond = (pondId) => {
-    let updatedselectedPond;
-    if (selectedPond.includes(pondId)) {
-      updatedselectedPond = selectedPond.filter(id => id !== pondId);
+    let updatedSelectedPondIds;
+    if (selectedPondIds.includes(pondId)) {
+      updatedSelectedPondIds = selectedPondIds.filter((id) => id !== pondId);
     } else {
-      updatedselectedPond = [...selectedPond, pondId];
+      updatedSelectedPondIds = [...selectedPondIds, pondId];
     }
-    dispatch(setBookingData({ selectedPond: updatedselectedPond }));
+    dispatch(setBookingData({ selectedPondIds: updatedSelectedPondIds }));
   };
 
   const handleAddNewPond = () => {
     // Implement logic to add a new pond
-    navigate("/admin/pondinformation")
+    navigate("/admin/ponddetail");
     console.log("Add new pond clicked");
   };
 
   return (
-    <div className="container mt-4">
+    <div className="col-9">
       <h3 className="mb-4">Select Ponds for Appointment</h3>
-      
+
       {/* Existing Ponds Table */}
       <div className="card mb-4">
         <div className="card-header input-info-title text-white">
@@ -78,18 +80,24 @@ const InputPondStep = () => {
               </tr>
             </thead>
             <tbody>
-              {existingPonds.map(pond => (
+              {existingPonds.map((pond) => (
                 <tr key={pond.pondId}>
                   <td>{pond.name}</td>
                   <td>{pond.depth}</td>
                   <td>{pond.perimeter}</td>
                   <td>{pond.temperature}</td>
                   <td>
-                    <button 
-                      className={`btn btn-sm ${selectedPond.includes(pond.pondId) ? 'btn-success' : 'btn-primary'}`}
+                    <button
+                      className={`btn btn-sm ${
+                        selectedPondIds.includes(pond.pondId)
+                          ? "btn-success"
+                          : "btn-primary"
+                      }`}
                       onClick={() => handleSelectPond(pond.pondId)}
                     >
-                      {selectedPond.includes(pond.pondId) ? 'Selected' : 'Select'}
+                      {selectedPondIds.includes(pond.pondId)
+                        ? "Selected"
+                        : "Select"}
                     </button>
                   </td>
                 </tr>
@@ -100,22 +108,37 @@ const InputPondStep = () => {
       </div>
 
       {/* Selected Ponds Details */}
-      {selectedPond.length > 0 && (
+      {selectedPondIds.length > 0 && (
         <div className="card mb-4">
           <div className="card-header input-info-title text-white">
             <h5 className="mb-0">Selected Pond Details</h5>
           </div>
           <div className="card-body">
-            {selectedPond.map(pondId => {
-              const selectedPond = existingPonds.find(p => p.pondId === pondId);
+            {selectedPondIds.map((pondId) => {
+              const selectedPond = existingPonds.find(
+                (p) => p.pondId === pondId
+              );
               return (
                 <div key={pondId} className="mb-4 pb-3 border-bottom">
                   <h4>{selectedPond.name}</h4>
-                  <p><strong>Depth:</strong> {selectedPond.depth} m</p>
-                  <p><strong>Perimeter:</strong> {selectedPond.perimeter} m</p>
-                  <p><strong>Temperature:</strong> {selectedPond.temperature} °C</p>
-                  <p><strong>Notes:</strong> {selectedPond.notes}</p>
-                  <img src={selectedPond.image} alt={selectedPond.name} className="img-fluid mt-3" style={{maxWidth: '300px'}} />
+                  <p>
+                    <strong>Depth:</strong> {selectedPond.depth} m
+                  </p>
+                  <p>
+                    <strong>Perimeter:</strong> {selectedPond.perimeter} m
+                  </p>
+                  <p>
+                    <strong>Temperature:</strong> {selectedPond.temperature} °C
+                  </p>
+                  <p>
+                    <strong>Notes:</strong> {selectedPond.notes}
+                  </p>
+                  <img
+                    src={selectedPond.image}
+                    alt={selectedPond.name}
+                    className="img-fluid mt-3"
+                    style={{ maxWidth: "300px" }}
+                  />
                 </div>
               );
             })}
@@ -133,4 +156,4 @@ const InputPondStep = () => {
   );
 };
 
-export default InputPondStep;
+export default InputPondPage;

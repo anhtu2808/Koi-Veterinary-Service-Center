@@ -29,7 +29,7 @@ public class ServiceService {
     }
     public List<com.koicenter.koicenterbackend.model.entity.Service> getServiceFor(String servicefor){
         List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
-        if (servicefor.toLowerCase().equals("MOBILE".toLowerCase())){
+        if (servicefor.toLowerCase().equals("HOME".toLowerCase())){
            List<com.koicenter.koicenterbackend.model.entity.Service> serviceForFish = servicesRepository.findByServiceFor(ServiceType.FISH);
            List<com.koicenter.koicenterbackend.model.entity.Service> servicesForPond = servicesRepository.findByServiceFor(ServiceType.POND);
 

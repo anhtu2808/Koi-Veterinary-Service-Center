@@ -25,6 +25,13 @@ import UserProtectedRoute from './components/ProtectedRoute/UserProtectedRoute';
 import AdminLayout from './pages/layout/AdminLayout';
 import PondInformation from './pages/PondInformation/PondInformation';
 import AppointmentDetail from './pages/AppointmentDetail/AppointmentDetail';
+import KoiInformation from './pages/KoiInformation/KoiInformation';
+import InputKoiStep from './pages/BookingStep/InputKoiStep/InputKoiStep';
+import InputPondStep from './pages/BookingStep/InputPontStep/InputPondStep';
+import InputKoiPage from './pages/InputKoiPage/InputKoiPage';
+import InputPondPage from './pages/InputPondPage/InputPondPage';
+import PondDetail from './pages/PondDetail/PondDetail';
+import KoiDetail from './pages/KoiDetail/KoiDetail';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -78,8 +85,16 @@ function App() {
               <Route path="/usermanagement" element={<UserManagementPage />} />
               <Route path="/allappointment" element={<AllAppointment />} />
               <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
-              <Route path="/pondinformation/:pondId" element={<PondInformation />} />
+              <Route path="/pondinformation" element={<PondInformation />} />
+              <Route path="/inputkoipage" element={<InputKoiPage />} />
+              <Route path="/inputpondpage" element={<InputPondPage />} />
+              <Route path="/pondinformation" element={<PondInformation />} />
+              <Route path="/koiinformation" element={<KoiInformation />} />
+              <Route path="/ponddetail" element={<PondDetail />} />
+              <Route path="/koidetail" element={<KoiDetail />} />
 
+              {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
+              {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
               {/* Add more admin routes as needed */}
             </Routes>
           </AdminLayout>

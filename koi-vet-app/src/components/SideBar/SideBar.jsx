@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { fetchLogoutAPI } from "../../apis";
 import { clearUser } from "../../store/userSlice";
 import { ROLE } from "../../utils/constants";
+import logo from "../../assets/img/logo.png";
 
 function SideBar() {
   const isAuthorized = useSelector((state) => state?.user?.isAuthorized);
@@ -23,9 +24,12 @@ function SideBar() {
   return (
     <nav
       id="sidebar"
-      className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
+      className="col-md-3 col-lg-2 d-md-block pt-4 bg-light sidebar collapse"
     >
-      <div className="position-sticky pt-1">
+      <div className="position-sticky pt-4">
+        <Link to="/">
+          <img src={logo} alt="logo" className="img-fluid pb-4" />
+        </Link>
         <ul className="nav flex-column">
           <li className="nav-item py-2">
             <Link className="nav-link active" href="#">
@@ -80,7 +84,10 @@ function SideBar() {
           </li>
 
           {isAuthorized && (
-            <button className="btn btn-primary" onClick={() => handleLogout()}>
+            <button
+              className="btn btn-primary mt-5"
+              onClick={() => handleLogout()}
+            >
               Logout
             </button>
           )}

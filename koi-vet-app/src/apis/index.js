@@ -2,7 +2,7 @@
 import api from "../utils/authorizedAxious"
 
 /* Authentication API*/
-export const fetchLoginAPI =   async (username, password) => {
+export const fetchLoginAPI = async (username, password) => {
     const response = await api.post('/auth/login', {
         username: username,
         password: password
@@ -11,24 +11,24 @@ export const fetchLoginAPI =   async (username, password) => {
 }
 
 export const fetchLogoutAPI = async () => {
-    const response = await api.post('/auth/logout',{token: localStorage.getItem('accessToken')});
+    const response = await api.post('/auth/logout', { token: localStorage.getItem('accessToken') });
     return response.data;
 }
 
 
 /* User API */
 export const createUserAPI = async (email, password, username, fullname, phone, address) => {
-    
-      const response = await api.post('/users/register', {
+
+    const response = await api.post('/users/register', {
         email,
         password,
         username,
         fullname,
         phone,
         address,
-      });
-      return response.data;
-  };
+    });
+    return response.data;
+};
 
 export const fetchMyInfoAPI = async () => {
     const response = await api.post('/users/myInfo');
@@ -44,15 +44,15 @@ export const updateMyInfoAPI = async (userData) => {
 export const fetchVetsAPI = async () => {
     const response = await api.get('/veterinarians');
     return response.data;
-  }
+}
 
-export const fetchVetByVetIdAPI = async (vetId) =>{
+export const fetchVetByVetIdAPI = async (vetId) => {
     const response = await api.get(`/veterinarians/${vetId}`);
     return response.data;
 }
 
-export const fetchVetByVetByServiceIdAPI = async (serviceId) =>{
-    const response = await api.get(`/veterinarians?serviceId=${serviceId}`);
+export const fetchVetByServiceIdAPI = async (serviceId) => {
+    const response = await api.get(`veterinarians/getByServiceId?serviceId=${serviceId}`);
     return response.data;
 }
 
@@ -73,7 +73,7 @@ export const fecthServiceByServiceIdAPI = async (serviceId) => {
 export const fetchServiceByTypeAPI = async (type) => {
     const response = await api.get(`/services/appointmentType/${type}`);
     return response.data;
-} 
+}
 
 
 
@@ -81,15 +81,19 @@ export const fetchServiceByTypeAPI = async (type) => {
 
 // Appointment API
 export const fetchAllAppointmentByVetIdAPI = async (vetId) => {
-const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
-return response.data;
+    const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
+    return response.data;
+}
+export const createAppointmentAPI = async (appointmentCreateRequest) => {
+    const response = await api.post('/appointments/create', appointmentCreateRequest);
+    return response.data;
 }
 
 export const fetchAllAppointmentAPI = async () => {
     const response = await api.get(`/appointments`);
     return response.data;
 }
-export const fetchAppointmentByCustomerIdAPI= async (customerId) => {
+export const fetchAppointmentByCustomerIdAPI = async (customerId) => {
     const response = await api.get(`/appointments/getByCustomerId?customerId=${customerId}`);
     return response.data;
 }
@@ -122,12 +126,12 @@ export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
 
 
 //Pond API
-export const  fetchPondByCustomerIdAPI = async (customerId) => {
+export const fetchPondByCustomerIdAPI = async (customerId) => {
     const response = await api.get(`/customer/${customerId}/pond`);
     return response.data;
 }
 
-export const fetchKoiByPondIdAPI = async (pondId) => {
+export const fetchPondByPondIdAPI = async (pondId) => {
     const response = await api.get(`/customer/${pondId}/koi`);
     return response.data;
 }
