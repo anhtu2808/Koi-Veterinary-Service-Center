@@ -3,8 +3,17 @@ package com.koicenter.koicenterbackend.service;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
+import com.koicenter.koicenterbackend.model.entity.Customer;
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.response.AppointmentResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
+import com.koicenter.koicenterbackend.repository.CustomerRepository;
+import com.koicenter.koicenterbackend.repository.ServicesRepository;
+import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,11 +24,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+
+@Slf4j
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AppointmentService {
     @Autowired
     AppointmentRepository appointmentRepository;
-
+    CustomerRepository customerRepository;
+    ServicesRepository servicesRepository;
+    VeterinarianRepository veterinarianRepository ;
 
     public List<AppointmentResponse> getAllAppointments() {
         List<Appointment> appointments = appointmentRepository.findAll();
@@ -46,7 +61,7 @@ public class AppointmentService {
                     .result(String.valueOf(appointment.getResult()))
                     .startTime(appointment.getStartTime())
                     .status(appointment.getStatus())
-                    .type(String.valueOf(appointment.getType()))
+                    .type(appointment.getType())
                     .customerId(appointment.getCustomer().getCustomerId())
                     .serviceId(appointment.getService().getServiceId())
                     .vetId(appointment.getVeterinarian().getVetId())
@@ -77,7 +92,7 @@ public class AppointmentService {
                     .result(String.valueOf(appointment.getResult()))
                     .startTime(appointment.getStartTime())
                     .status(appointment.getStatus())
-                    .type(String.valueOf(appointment.getType()))
+                    .type(appointment.getType())
                     .customerId(appointment.getCustomer().getCustomerId())
                     .serviceId(appointment.getService().getServiceId())
                     .vetId(appointment.getVeterinarian().getVetId())
@@ -105,7 +120,7 @@ public class AppointmentService {
                 .result(String.valueOf(appointment.getResult()))
                 .startTime(appointment.getStartTime())
                 .status(appointment.getStatus())
-                .type(String.valueOf(appointment.getType()))
+                .type(appointment.getType())
                 .customerId(appointment.getCustomer().getCustomerId())
                 .serviceId(appointment.getService().getServiceId())
                 .vetId(appointment.getVeterinarian().getVetId())
@@ -140,7 +155,7 @@ public class AppointmentService {
                     .result(String.valueOf(appointment.getResult()))
                     .startTime(appointment.getStartTime())
                     .status(appointment.getStatus())
-                    .type(String.valueOf(appointment.getType()))
+                    .type(appointment.getType())
                     .customerId(appointment.getCustomer().getCustomerId())
                     .serviceName(appointment.getService().getServiceName())
                     .customerName(appointment.getCustomer().getUser().getFullName())
@@ -151,6 +166,30 @@ public class AppointmentService {
             appointmentResponses.add(response);
         }
         return appointmentResponses;
+    }
+    //CREATE APPOINTMENT
+    public void createAppointment ( AppointmentResponse appointmentResponse){
+        Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
+        Veterinarian veterinarian =  veterinarianRepository.findByVetId(appointmentResponse.getVetId());
+        log.info("Veterian ID "+ veterinarian.getVetId());
+        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentResponse.getServiceId());
+
+        Appointment appointment = new Appointment();
+
+    appointment.setAppointmentDate(appointmentResponse.getAppointmentDate());
+    appointment.setCreatedAt(appointmentResponse.getCreatedAt());
+    appointment.setEndTime(appointmentResponse.getEndTime());
+    appointment.setStatus(appointmentResponse.getStatus());
+    appointment.setType(appointmentResponse.getType());
+    appointment.setLocation(appointmentResponse.getLocation());
+    appointment.setDepositedMoney(appointment.getDepositedMoney());
+    appointment.setResult(appointmentResponse.getResult());
+    appointment.setStartTime(appointmentResponse.getStartTime());
+    appointment.setType(appointment.getType());
+    appointment.setCustomer(customer);
+    appointment.setVeterinarian(veterinarian);
+    appointment.setService(service);
+    appointmentRepository.save(appointment);
     }
 
 }

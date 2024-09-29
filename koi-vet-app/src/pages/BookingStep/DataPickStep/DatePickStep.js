@@ -8,7 +8,7 @@ const DatePickStep = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(null)
   const [schedule, setSchedule] = useState([])
-  const type = useSelector(state => state.booking.bookingData.type)  
+  const type = useSelector(state => state.booking.bookingData.type)
   const vetId = useSelector(state => state.booking.bookingData.vetId)
   const dispatch = useDispatch();
   const bookingData = useSelector(state => state.booking.bookingData);
@@ -20,44 +20,45 @@ const DatePickStep = () => {
     }
     fetchSchedule(type, vetId);
   }, [type, vetId])
+
+  // Lấy ngày tháng theo định dạng yyyy-MM-dd
+  const getLocalDateString = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adjust for zero-based month
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
   const renderDays = () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     let firstDayOfMonth = new Date(year, month, 1).getDay();
-    // Adjust to make Monday the first day of the week
     firstDayOfMonth = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
-    
-    const days = [];
 
-    // Add weekday headers
+    const days = [];
     const weekDays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
     weekDays.forEach(day => {
       days.push(<div key={`weekday-${day}`} className="weekday">{day}</div>);
     });
 
-    // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(<div key={`empty-${i}`} className="disabled"></div>);
     }
 
-    // Render days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
-      console.log(date)
-      const dateString = date.toISOString().split('T')[0]; // Lấy chuỗi ngày tháng năm
       const isToday = date.toDateString() === new Date().toDateString();
       const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
-      const isAvailable = schedule.some(item => item.day === dateString);
-    
+      const isAvailable = schedule.some(item => item.day === getLocalDateString(date));
+
       days.push(
         <div
           key={day}
           className={`
-            ${isAvailable ? 'day' : 'disabled'}
-            ${isToday ? 'current-day' : ''}
-            ${isSelected ? 'chooosed-day' : ''}
-          `.trim()}
+                    ${isAvailable ? 'day' : 'disabled'}
+                    ${isToday ? 'current-day' : ''}
+                    ${isSelected ? 'chooosed-day' : ''}
+                `.trim()}
           onClick={() => isAvailable && handleDateClick(date)}
         >
           {day}
@@ -70,6 +71,7 @@ const DatePickStep = () => {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
+    console.log(date);
     resetTime();
   }
 
@@ -104,16 +106,19 @@ const DatePickStep = () => {
 
   const handleTimeSlotClick = (startTime, endTime) => {
     dispatch(setBookingData({
-      date: selectedDate.toISOString().split('T')[0],
+      date: getLocalDateString(selectedDate),
       startAt: startTime,
       endAt: endTime
     }));
   };
 
+  
   const renderTimeSlots = () => {
     if (!selectedDate) return null;
 
-    const selectedDateString = selectedDate.toISOString().split('T')[0];
+    const selectedDateString = getLocalDateString(selectedDate);
+
+    console.log(selectedDateString);
     const selectedDayData = schedule.find(item => item.day === selectedDateString);
 
     if (!selectedDayData) return <p>No available slots for this date.</p>;
@@ -142,13 +147,13 @@ const DatePickStep = () => {
         <div className="calendar-header">
           <button onClick={handlePreviousMonth}>
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-left-square-fill previous-month-btn" viewBox="0 0 16 16">
-              <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1"/>
+              <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1" />
             </svg>
           </button>
           <h2>{formatMonth(currentDate)}</h2>
           <button onClick={handleNextMonth}>
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-right-square-fill next-month-btn" viewBox="0 0 16 16">
-              <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1"/>
+              <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1" />
             </svg>
           </button>
         </div>
@@ -157,7 +162,7 @@ const DatePickStep = () => {
         <div className="days-grid">
           {renderDays()}
         </div>
-        
+
         <hr />
         {renderTimeSlots()}
       </div>
