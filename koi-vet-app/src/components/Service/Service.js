@@ -3,13 +3,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import { nextStep, setBookingData } from '../../store/bookingSlice';
 import { useDispatch } from 'react-redux';
 
-const Service = ({ image, serviceId, serviceName, description, isBooking }) => {
+const Service = ({ image, serviceId, serviceName, description, isBooking, serviceFor }) => {
   const navigate = useNavigate();
   console.log(serviceName)
   const dispatch = useDispatch()
   const handleClickButton = () => {
     if (isBooking) {
       dispatch(setBookingData({ serviceId: serviceId }))
+      dispatch(setBookingData({ serviceFor: serviceFor }))
+      dispatch(setBookingData({ serviceName: serviceName }))
+      console.log(serviceFor)
       dispatch(nextStep())
     } else {
       navigate(`/services/${serviceId}`)

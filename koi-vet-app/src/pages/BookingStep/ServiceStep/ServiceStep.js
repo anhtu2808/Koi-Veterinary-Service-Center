@@ -32,13 +32,16 @@ export const ServiceStep = () => {
                         {
 
                             services.map((service) => {
+                                console.log(service.serviceFor)
                                 return (
                                     <Service
+                                        key={service.serviceId}
                                         image={service.image}
                                         serviceId={service.serviceId}
                                         description={service.description}
                                         isBooking={true}
                                         serviceName={service.serviceName}
+                                        serviceFor={service.serviceFor}
                                     />
                                 )
                             })
