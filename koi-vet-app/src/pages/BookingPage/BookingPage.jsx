@@ -10,8 +10,8 @@ import DatePickStep from '../BookingStep/DataPickStep/DatePickStep'
 import Payment from '../Payment/Payment'
 import InputKoiStep from '../BookingStep/InputKoiStep/InputKoiStep'
 import InputPondStep from '../BookingStep/InputPontStep/InputPondStep'
-import PondDetail from '../../components/PondDetail/PondDetail'
-import { BOOKING_TYPE, SERVICE_FOR } from '../../utils/constants'
+
+import { SERVICE_FOR } from '../../utils/constants'
 function BookingPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
