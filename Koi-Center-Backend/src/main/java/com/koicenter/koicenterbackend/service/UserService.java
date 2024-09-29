@@ -8,6 +8,7 @@ import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import com.koicenter.koicenterbackend.model.request.RegisterRequest;
+import com.koicenter.koicenterbackend.model.response.CustomerDTO;
 import com.koicenter.koicenterbackend.model.response.UserResponse;
 
 import com.koicenter.koicenterbackend.model.response.VeterinarianDTO;
