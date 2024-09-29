@@ -2,13 +2,18 @@ package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
+import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
+import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import com.koicenter.koicenterbackend.model.request.RegisterRequest;
 import com.koicenter.koicenterbackend.model.response.CustomerDTO;
 import com.koicenter.koicenterbackend.model.response.UserResponse;
 import com.koicenter.koicenterbackend.model.response.VeterinarianDTO;
+import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
+import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -28,6 +33,11 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
+    @Autowired
+    VeterinarianRepository veterinarianRepository;
 
     @Value("${myapp.api-key}")
     private String privateKey;
@@ -53,13 +63,20 @@ public class UserService {
         user.setRole(Role.CUSTOMER);
         user.setStatus(true);
         userRepository.save(user);
+
+
+        if (user.getRole() == Role.CUSTOMER) {
+            Customer customer = new Customer();
+            customer.setUser(user);
+            customerRepository.save(customer);
+        }
     }
+
 
     public boolean getUserByEmail(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return false;
-
         }
         return true;
     }
@@ -73,12 +90,12 @@ public class UserService {
         String username;
         try {
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
-            Jws<Claims> jws =  Jwts.parser() // Use parserBuilder() instead of parser()
+            Jws<Claims> jws = Jwts.parser() // Use parserBuilder() instead of parser()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-            username= jws.getBody().getSubject();
-        }catch (Exception e) {
+            username = jws.getBody().getSubject();
+        } catch (Exception e) {
             throw new AppException(ErrorCode.INVALID_TOKEN.getCode(), ErrorCode.INVALID_TOKEN.getMessage(), HttpStatus.FORBIDDEN);
         }
 
@@ -87,7 +104,6 @@ public class UserService {
 
     private UserResponse getUserByUsernameV2(String username) {
         User user = userRepository.findByUsername(username);
-
 
         UserResponse.UserResponseBuilder userResponseBuilder = UserResponse.builder()
                 .user_id(user.getUserId())
@@ -119,7 +135,6 @@ public class UserService {
             );
             userResponseBuilder.veterinarian(veterinarianDTO);
         }
-
 
 
         return userResponseBuilder.build();
