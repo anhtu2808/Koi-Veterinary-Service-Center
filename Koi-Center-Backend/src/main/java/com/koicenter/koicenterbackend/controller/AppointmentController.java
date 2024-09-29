@@ -66,4 +66,10 @@ public class AppointmentController {
                     .body(new ResponseObject(404, "No appointments found", null));
         }
     }
+    //CREATE
+    @PostMapping("/create")
+    public ResponseEntity<ResponseObject> createAppointment(@RequestBody AppointmentResponse appointmentResponse){
+        appointmentService.createAppointment(appointmentResponse);
+    return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
+    }
 }

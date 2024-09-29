@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.model.response;
 
 import com.koicenter.koicenterbackend.model.enums.AppointmentStatus;
+import com.koicenter.koicenterbackend.model.enums.AppointmentType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +26,7 @@ public class AppointmentResponse {
      String result;
      LocalTime startTime;
      AppointmentStatus status;
-     String type;
+     AppointmentType type;
      String customerId;
      String serviceId;
      String vetId;
