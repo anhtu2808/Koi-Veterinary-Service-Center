@@ -35,6 +35,10 @@ export const fetchMyInfoAPI = async () => {
     return response.data
 }
 
+export const updateMyInfoAPI = async (userData) => {
+    const response = await api.put('/users/updateMyInfo', userData);
+    return response.data;
+};
 
 //* Vet API */
 export const fetchVetsAPI = async () => {
@@ -98,6 +102,12 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
 export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
     const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
     // return response.data;
+}
+
+//API Schedule
+export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
+    const response = await api.get(`vetSchedules?type=${type}&vetId=${vetId}`);
+    return response.data;
 }
 
 

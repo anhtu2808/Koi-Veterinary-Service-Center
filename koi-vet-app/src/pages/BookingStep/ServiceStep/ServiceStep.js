@@ -1,30 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { fetchServiceByTypeAPI } from '../../apis'
-import Service from '../../components/Service/Service'
+import { fetchServiceByTypeAPI } from '../../../apis'
+import Service from '../../../components/Service/Service'
 
 export const ServiceStep = () => {
     const type = useSelector(state => state?.booking?.bookingData?.type)
     const [services, setServices] = useState([]);
-    // useEffect(() => {
-    //     const fetchServiceByType = async (type) => {
-    //         console.log(type);
-    //         const response = await fetchServiceByTypeAPI(type);
-    //         setServices(response.data);
-    //     }
-    //     fetchServiceByType(type);
-    // }, [type])
 
     useEffect(() => {
         const fetchServiceByType = async () => {
 
-            const response = await fetchServiceByTypeAPI("mobile");
+            const response = await fetchServiceByTypeAPI(type);
             if(response.status === 200){
                 setServices(response.data)
             }
         }
         fetchServiceByType();
-    }, [])
+    }, [type])
    
 
     return (

@@ -1,21 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-
-
 const initialState = {
   step: 0,
   bookingData: {
+    type: null,
     serviceId: null,
-    vetId: "skip",
+    vetId: "SKIP",
     date: null,
     startAt: null,
     endAt: null,
-    userId: null,
     paymentInfo: {},
-
+    selectedKoi: [],
+    selectedPondIds: [], // Add this line
   },
-
 };
 
 const bookingSlice = createSlice({
@@ -34,10 +31,12 @@ const bookingSlice = createSlice({
           state.bookingData.serviceId = null;
           break;
         case 2:
-          state.bookingData.vetId = "skip";
+          state.bookingData.vetId = "SKIP";
           break;
         case 3:
           state.bookingData.date = null;
+          state.bookingData.startAt = null;
+          state.bookingData.endAt = null;
           break;
         default:
           break;

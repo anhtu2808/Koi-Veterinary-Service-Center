@@ -5,3 +5,8 @@ export const ROLE = {
   VETERINARIAN: "VETERINARIAN",
   STAFF: "STAFF",
 };
+export const BOOKING_TYPE = {
+  ONLINE: "ONLINE",
+  HOME: "HOME",
+  CENTER: "CENTER",
+};
