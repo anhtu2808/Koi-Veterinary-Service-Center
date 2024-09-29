@@ -1,0 +1,9 @@
+.input-info-title {
+    background-color: var(--color-primary) !important;
+    color: white;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}

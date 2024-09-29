@@ -167,7 +167,7 @@ function AppointmentDetail() {
 
         {isEditing && (
           <button
-            onClick={() => navigate("/admin/inputpondstep")}
+            onClick={() => navigate("/admin/inputpondpage")}
             type="submit"
             className="btn btn-success buttonInEdit"
           >
@@ -177,7 +177,7 @@ function AppointmentDetail() {
 
         {isEditing && (
           <button
-            onClick={() => navigate("/admin/inputkoistep")}
+            onClick={() => navigate("/admin/inputkoipage")}
             type="submit"
             className="btn btn-success buttonInEdit"
           >

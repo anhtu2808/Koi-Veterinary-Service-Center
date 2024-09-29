@@ -99,7 +99,7 @@ const InputKoiPage = () => {
 
   const handleAddNewKoi = () => {
     // Implement logic to add a new Koi
-    navigate("/admin/koiinformation");
+    navigate("/admin/koidetail");
     console.log("Add new Koi clicked");
   };
 
@@ -109,7 +109,7 @@ const InputKoiPage = () => {
 
       <div className="card mb-4">
         <div className="card-header input-info-title">
-          <h5 className="mb-0">Your Existing Koi</h5>
+          <h5 className="mb-0 title">Your Existing Koi</h5>
         </div>
         <div className="card-body">
           <div className="table-responsive">
@@ -147,7 +147,7 @@ const InputKoiPage = () => {
 
       <div className="card mb-4">
         <div className="card-header input-info-title">
-          <h5 className="mb-0">Selected Koi for Appointment</h5>
+          <h5 className="mb-0 title">Selected Koi for Appointment</h5>
         </div>
         <div className="card-body">
           {selectedKois.length === 0 ? (

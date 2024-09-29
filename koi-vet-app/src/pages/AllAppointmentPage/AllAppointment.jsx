@@ -88,8 +88,8 @@ function AllAppointment() {
             {appointments.map((appointmentDetail) => (
               <tr key={appointmentDetail.appointmentId}>
                 <td>{appointmentDetail.appointmentId}</td>
-                <td>{appointmentDetail.customerId}</td>
-                <td>{appointmentDetail.serviceId}</td>
+                <td>{appointmentDetail.customerName}</td>
+                <td>{appointmentDetail.serviceName}</td>
                 <td>{appointmentDetail.location}</td>
                 <td>{appointmentDetail.appointmentDate}</td>
                 <td>{appointmentDetail.status}</td>
