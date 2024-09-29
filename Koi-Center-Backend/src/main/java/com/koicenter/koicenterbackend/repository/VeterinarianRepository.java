@@ -22,4 +22,6 @@ public interface VeterinarianRepository extends JpaRepository<Veterinarian, Stri
             "WHERE vs.vet_id = :vetId", nativeQuery = true)
     List<String> findServiceNamesByVetId(@Param("vetId") String vetId);
 
+
+
 }

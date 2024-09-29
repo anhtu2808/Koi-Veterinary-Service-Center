@@ -23,12 +23,12 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VeterinarianResponse {
 
-    private String vetId;            // Mapped from `vet_id` in Veterinarian
-    private String vetStatus;          // Mapped from `status` in Veterinarian
-    private String description;      // Mapped from `description` in Veterinarian
-    private String googleMeet;       // Mapped from `google_meet` in Veterinarian
-    private String phone;            // Mapped from `phone` in Veterinarian
-    private String imageVeterinarian;
+     String vetId;
+     String vetStatus;
+     String description;
+     String googleMeet;
+     String phone;
+     String imageVeterinarian;
     String userId ;
 
     List<String> serviceNames;
