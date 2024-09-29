@@ -1,7 +1,10 @@
 import React from "react";
 import "./Payment.css";
+import { useSelector } from "react-redux";
 
 function Payment() {
+  const userInfo = useSelector(state => state.user)
+  const customerInfo = useSelector(state => state.user.customer)
   return (
     <div className="container payment-container">
       <h1 className="payment-title text-center mb-5">Secure Payment</h1>
@@ -25,7 +28,8 @@ function Payment() {
                     type="text"
                     className="form-control payment-form-control"
                     id="fullName"
-                    placeholder="Enter your full name"
+                    value={userInfo.fullName}
+                    disabled
                   />
                 </div>
               </div>

@@ -12,6 +12,9 @@ function BookingPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const step = useSelector(state => state.booking.step)
+  const date = useSelector(state => state.booking.bookingData.date) 
+  const startAt = useSelector(state => state.booking.bookingData.startAt) 
+  const endAt = useSelector(state => state.booking.bookingData.endAt) 
   const handleNextStep = () => {
     dispatch(nextStep())
   }
@@ -65,8 +68,11 @@ function BookingPage() {
           </div> : null}
 
           {step === 3? <div className="col-md-1">
-            <button className="btn btn-primary "  onClick={()=> handleNextStep()}>Next</button>
+            {date && startAt && endAt ? 
+            <button className="btn btn-primary "  onClick={()=> handleNextStep()}>Next</button> : null}
+          
           </div> : null}
+          
          
         </div>
       </div>

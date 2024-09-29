@@ -70,14 +70,32 @@ const DatePickStep = () => {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
+    resetTime();
   }
 
   const handlePreviousMonth = () => {
     setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    resetDate();
+    resetTime();
   }
 
   const handleNextMonth = () => {
     setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    resetDate();
+    resetTime();
+  }
+
+  const resetDate = () => {
+    setSelectedDate(null);
+    dispatch(setBookingData({
+      date: null,
+    }));
+  }
+  const resetTime = () => {
+    dispatch(setBookingData({
+      startAt: null,
+      endAt: null,
+    }));
   }
 
   const formatMonth = (date) => {
