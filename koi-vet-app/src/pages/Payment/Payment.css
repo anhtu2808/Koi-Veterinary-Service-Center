@@ -1,0 +1,125 @@
+/* src/pages/Payment/Payment.css */
+
+/* :root {
+    --color-primary: #1F2B6C;
+    --color-accent: #DFEAFF;
+    --color-secondary: rgba(21, 158, 236, 0.5);
+    --color-text: #34495e;
+} */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-accent);
+    color: var(--color-text);
+}
+
+.payment-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.payment-title {
+    color: var(--color-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.payment-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(31, 43, 108, 0.1);
+    margin-bottom: 30px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.payment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(31, 43, 108, 0.2);
+}
+
+.payment-card-header {
+    background-color: var(--color-primary);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 20px;
+}
+
+.payment-card-body {
+    padding: 30px;
+}
+
+.payment-form-label {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.payment-form-control {
+    border: 2px solid var(--color-accent);
+    border-radius: 8px;
+    padding: 12px;
+    transition: all 0.3s ease;
+}
+
+.payment-form-control:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 0.2rem rgba(21, 158, 236, 0.25);
+}
+
+.payment-input-icon {
+    background-color: var(--color-secondary);
+    border: none;
+    color: var(--color-primary);
+}
+
+.payment-btn {
+    background-color: var(--color-primary);
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.payment-btn:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(21, 158, 236, 0.4);
+}
+
+.payment-summary {
+    background-color: var(--color-accent);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.payment-summary .row {
+    margin-bottom: 10px;
+}
+
+.payment-summary .total {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.payment-options .form-check {
+    margin-bottom: 15px;
+}
+
+.payment-options .form-check-input:checked {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+
+.form-check-label {
+    color: var(--color-text);
+}

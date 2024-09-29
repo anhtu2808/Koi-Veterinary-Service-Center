@@ -1,0 +1,115 @@
+.calendar-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* class màu cho button chuyển tháng */
+.previous-month-btn,
+.next-month-btn {
+    color: var(--color-primary);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    padding: 10px;
+}
+
+.day {
+    background-color: #f0f0f0;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.day:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.disabled {
+    background-color: #ccc;
+    color: #999;
+    pointer-events: none;
+    padding: 15px;
+    cursor:not-allowed;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.chooosed-day {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.current-day {
+    background-color: var(--color-secondary);
+  
+}
+
+.slots {
+    margin-top: 20px;
+}
+
+/* class màu cho slot chưa chọn */
+.slot {
+    padding: 10px 20px;
+    background-color: #ccc;
+    color: #000000;
+    margin: 5px;
+    border-radius: 4px;
+    display: inline-block;
+    /* font-weight: bold; */
+}
+
+.slot:hover {
+    padding: 10px 20px;
+    background-color: var(--color-primary);
+    color: white;
+    margin: 5px;
+    border-radius: 4px;
+    display: inline-block;
+    /* font-weight: bold; */
+}
+
+/* class màu cho slot đã chọn */
+.slot-picked {
+    padding: 10px 20px;
+    background-color: var(--color-primary);
+    color: white;
+    margin: 5px;
+    border-radius: 4px;
+    display: inline-block;
+    /* font-weight: bold; */
+}
+
+.slots p {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #dc3545;
+}
+
+.calendar-header button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    outline: none;
+}

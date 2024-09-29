@@ -1,0 +1,43 @@
+.pond-info-container {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-accent);
+  padding: 40px 0;
+}
+.pond-info-form {
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.pond-info-title {
+  color: var(--color-primary);
+  margin-bottom: 30px;
+}
+.pond-info-subtitle {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+.pond-info-input, .pond-info-textarea {
+  border: 1px solid var(--color-secondary);
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+.pond-info-button {
+  background-color: var(--color-secondary);
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.pond-info-button:hover {
+  background-color: rgba(21, 158, 236, 0.7);
+}
+
+.pond-info-text-left {
+  text-align: left;
+}

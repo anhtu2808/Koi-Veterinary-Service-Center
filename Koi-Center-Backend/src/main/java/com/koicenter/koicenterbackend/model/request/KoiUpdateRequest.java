@@ -1,0 +1,21 @@
+package com.koicenter.koicenterbackend.model.request;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class KoiUpdateRequest {
+    String breed;
+    int age;
+    float height;
+    float weight;
+    String healthStatus;
+    String notes;
+    String image;
+}
