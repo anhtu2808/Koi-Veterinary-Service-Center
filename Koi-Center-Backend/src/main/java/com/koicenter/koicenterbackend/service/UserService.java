@@ -68,10 +68,11 @@ public class UserService {
         if (user.getRole() == Role.CUSTOMER) {
             Customer customer = new Customer();
             customer.setUser(user);
+            customer.setAddress(newUser.getAddress());
+            customer.setPhone(newUser.getPhone());
             customerRepository.save(customer);
         }
     }
-
 
     public boolean getUserByEmail(String email) {
         User user = userRepository.findByEmail(email);
@@ -98,7 +99,6 @@ public class UserService {
         } catch (Exception e) {
             throw new AppException(ErrorCode.INVALID_TOKEN.getCode(), ErrorCode.INVALID_TOKEN.getMessage(), HttpStatus.FORBIDDEN);
         }
-
         return getUserByUsernameV2(username);
     }
 
