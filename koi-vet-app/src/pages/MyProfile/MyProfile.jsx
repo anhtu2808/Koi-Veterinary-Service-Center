@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 const MyProfile = () => {
 
   const myInfo = useSelector(state => state?.user)
+  const customer = useSelector(state => state?.user?.customer)
   return (
     <div className="container my-profile-container">
       <div className="card shadow my-profile-card">
@@ -45,11 +46,11 @@ const MyProfile = () => {
             </div>
             <div className="col-md-6 mb-3">
               <h5 className="my-profile-title">Phone:</h5>
-              <p>{myInfo.phone}</p>
+              <p>{customer.phone}</p>
             </div>
             <div className="col-md-12">
               <h5 className="my-profile-title">Address:</h5>
-              <p>{myInfo.address}</p>
+              <p>{customer.address}</p>
             </div>
           </div>
         </div>

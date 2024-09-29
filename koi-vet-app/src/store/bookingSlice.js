@@ -6,12 +6,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   step: 0,
   bookingData: {
+    type: null,
     serviceId: null,
     vetId: "skip",
     date: null,
     startAt: null,
     endAt: null,
-    userId: null,
     paymentInfo: {},
 
   },

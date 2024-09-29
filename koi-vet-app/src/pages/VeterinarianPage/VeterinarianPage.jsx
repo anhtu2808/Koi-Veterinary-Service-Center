@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import veterinarian from "../../assets/img/veterinarian.png";
 import "./VeterinarianPage.css";
 import { fetchVetsAPI } from "../../apis";
 import Veterinarian from "../../components/Veterinarian/Veterinarian";

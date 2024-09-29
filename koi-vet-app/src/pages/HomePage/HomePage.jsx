@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../HomePage/HomePage.css"
 import { useDispatch } from 'react-redux';
 import { nextStep, resetBoking, setBookingData } from '../../store/bookingSlice';
+import { BOOKING_TYPE } from '../../utils/constants';
 
 function HomePage() {
     const dispatch = useDispatch();
@@ -44,7 +45,7 @@ function HomePage() {
                 <div className="container px-6 py-8">
                     <div className="row">
 
-                        <div className="col-md-4 mb-4" onClick={() => handleBooking('mobile')}>
+                        <div className="col-md-4 mb-4" onClick={() => handleBooking(BOOKING_TYPE.HOME)}>
                             <div className="service-card bg-blue-100 hover:bg-blue-200 p-4 rounded-lg shadow-md">
                                 <div className="text-center-custom text-center">
                                     <i className="fas fa-mobile-alt text-4xl mb-4 text-primary"></i>
@@ -53,7 +54,7 @@ function HomePage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-4 mb-4" onClick={() => handleBooking('online')}>
+                        <div className="col-md-4 mb-4" onClick={() => handleBooking(BOOKING_TYPE.ONLINE)}>
                             <div className="service-card bg-green-100 hover:bg-green-200 p-4 rounded-lg shadow-md">
                                 <div className="text-center-custom text-center">
                                     <i className="fas fa-video text-4xl mb-4 text-success"></i>
@@ -62,7 +63,7 @@ function HomePage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-4 mb-4" onClick={() => handleBooking('service')}>
+                        <div className="col-md-4 mb-4" onClick={() => handleBooking(BOOKING_TYPE.CENTER)}>
                             <div className="service-card bg-purple-100 hover:bg-purple-200 p-4 rounded-lg shadow-md">
                                 <div className="text-center-custom text-center">
                                     <i className="fas fa-hospital text-4xl mb-4 text-info"></i>
