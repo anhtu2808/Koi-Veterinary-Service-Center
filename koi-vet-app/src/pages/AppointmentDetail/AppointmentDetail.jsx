@@ -139,9 +139,41 @@ function AppointmentDetail() {
             <option value="Cancelled">Cancelled</option>
           </select>
         </div>
+
+        <div className="mb-3">
+          <label htmlFor="status" className="form-label">
+            Veterinarian
+          </label>
+          <select
+            className="form-select"
+            id="status"
+            name="status"
+            value={appointment.status}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+          >
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
         {isEditing && (
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="btn btn-success buttonInEdit">
             Save Changes
+          </button>
+        )}
+
+        {isEditing && (
+          <button type="submit" className="btn btn-success buttonInEdit">
+            Pond Information
+          </button>
+        )}
+
+        {isEditing && (
+          <button type="submit" className="btn btn-success buttonInEdit">
+            Koi Information
           </button>
         )}
       </form>
