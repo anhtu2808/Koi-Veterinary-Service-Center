@@ -34,7 +34,8 @@ public class VeterinarianController {
     }
     @PostMapping("/create")
     public ResponseEntity<ResponseObject> createVeterinarian(@RequestBody VeterinarianRequest veterinarianRequest){
-        return ResponseObject.APIRepsonse(200, "CREATE SUCCESSFULLY", HttpStatus.OK, " " );
+        veterinarianService.createVeterinarian(veterinarianRequest);
+        return ResponseObject.APIRepsonse(200, "CREATE VETERINARIAN SUCCESSFULLY", HttpStatus.OK, " " );
 
     }
 

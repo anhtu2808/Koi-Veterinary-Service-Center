@@ -2,8 +2,12 @@ package com.koicenter.koicenterbackend.service;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
+import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
+import com.koicenter.koicenterbackend.model.request.RegisterRequest;
+import com.koicenter.koicenterbackend.model.request.VeterinarianRequest;
 import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
 import com.koicenter.koicenterbackend.model.response.UserResponse;
+import com.koicenter.koicenterbackend.repository.ServicesRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
 import lombok.AccessLevel;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +30,9 @@ public class VeterinarianService {
     @Autowired
     VeterinarianRepository veterinarianRepository;
     UserRepository userRepository;
+    ServicesRepository servicesRepository ;
+    @Autowired
+    private UserService userService;
 
     //GET Veteriance ID
     public VeterinarianResponse getVeterinarianById ( String veterinarianId){
@@ -87,6 +95,38 @@ public class VeterinarianService {
         }
         return responseList;
     }
+    //CREATE VETERINARIAN
+    public void createVeterinarian (VeterinarianRequest veterinarianRequest){
+        User newVeterinarian = new User();
+
+        newVeterinarian.setFullName(veterinarianRequest.getUserRequest().getFullname());
+        newVeterinarian.setEmail(veterinarianRequest.getUserRequest().getEmail());
+        newVeterinarian.setUsername(veterinarianRequest.getUserRequest().getUsername());
+        newVeterinarian.setPassword(veterinarianRequest.getUserRequest().getPassword());
+        newVeterinarian.setImage(veterinarianRequest.getImage());
+
+        newVeterinarian = userService.createVeterinarian(newVeterinarian);
+
+
+        Veterinarian veterinarian = new Veterinarian();
+        veterinarian.setDescription(veterinarianRequest.getDescription());
+        veterinarian.setGoogleMeet(veterinarianRequest.getGoogle_meet());
+        veterinarian.setPhone(veterinarianRequest.getPhone());
+        veterinarian.setImage(veterinarianRequest.getImage());
+        veterinarian.setStatus(veterinarianRequest.getStatus());
+        veterinarian.setVeterinarianStatus(VeterinarianStatus.AVAILABLE);
+        veterinarian.setUser(newVeterinarian);
+
+        List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>() ;
+        for (String service : veterinarianRequest.getService()){
+            services.add(servicesRepository.findByServiceId(service));
+        }
+
+        veterinarian.setServices(services);
+
+        veterinarianRepository.save(veterinarian);
+    }
+
 
 }
 

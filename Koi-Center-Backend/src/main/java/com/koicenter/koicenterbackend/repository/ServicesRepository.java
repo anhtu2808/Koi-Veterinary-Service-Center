@@ -11,4 +11,5 @@ import java.util.List;
 public interface ServicesRepository extends JpaRepository<Service, String> {
     List<Service> findByServiceForNot(ServiceType serviceType);
     List<Service> findByServiceFor(ServiceType serviceType);
+    Service findByServiceId(String serviceId);
 }
