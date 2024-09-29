@@ -5,23 +5,18 @@ import logo from '../../assets/img/logo.png'
 import logim_side from '../../assets/img/login_side.png'
 import { toast } from 'react-toastify'
 import { fetchLoginAPI } from '../../apis'
-import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
 const [username, setUsername] = useState("");
 const [password, setPassword] = useState("");
-const navigate = useNavigate();
+
 const handleLogin = async (e) => {
   e.preventDefault(); // chặn hành động mặc định của form như refresh lại trang
- 
   console.log(username, password);
   const response = await fetchLoginAPI(username, password);
- 
   console.log(response)
-  if(response?.status === "200") {
+  if(response?.status === 201) {
     toast.success("Login successfully")
-    localStorage.setItem("accessToken", response.data);
-    navigate("/")
   }
 }
 

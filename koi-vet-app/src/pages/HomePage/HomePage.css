@@ -8,14 +8,10 @@
 }
 
 .btn-primary{
-    background-color: var(--color-primary) !important;
+    background-color: rgba(21, 158, 236, 0.5);
     border: none;
   }
-  .btn-primary:hover{
-    background-color: #bee3f8 !important;
-    color:#333 !important;
-  }
-  .text-center-custom{
+  .text-center{
     color:#1F2B6C;
   }
 

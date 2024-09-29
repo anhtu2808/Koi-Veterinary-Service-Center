@@ -1,15 +1,15 @@
-import { createAsyncThunk, createSlice ,} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-// Async action to fetch user profile data
-export const fetchUserProfile = createAsyncThunk('user/fetchUserProfile', async () => {
-  const response = await fetchUserProfile(); // Assuming you have an API to fetch the user profile
-  return response;
-});
+
 const initialState = {
-  isAuthorized: !!localStorage.getItem('token'), // Kiểm tra xem user đã đăng nhập chưa
-  user: {},       
-  loading: false,
-  error: null,
+  customerId: null,
+  veterinarianId: null,
+  address: '',
+  phone: '',
+  image: '',
+  username: '',
+  fullname: '',
+  email: '',
 };
 
 const userSlice = createSlice({

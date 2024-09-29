@@ -35,8 +35,5 @@ public class VetScheduleController {
         else {
             return ResponseObject.APIRepsonse("404","Not Found this Type in Appointment_Type",HttpStatus.NOT_FOUND," ");
         }
-    @GetMapping("/{vetSchedule}")
-    public ResponseEntity<ResponseObject> getScheduleForBooking(@RequestBody VetScheduleRequest vetSchedule) {
-        return ResponseObject.APIRepsonse(200,"Get Schedule ID Successfully", HttpStatus.OK,vetSchedule);
     }
 }

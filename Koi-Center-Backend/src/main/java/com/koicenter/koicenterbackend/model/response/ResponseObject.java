@@ -12,11 +12,11 @@ import org.springframework.http.ResponseEntity;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseObject {
-    int status;
+    String status;
     String message;
     Object data;
 
-    public static ResponseEntity<ResponseObject> APIRepsonse(int status, String message, HttpStatus httpStatus, Object data) {
+    public static ResponseEntity<ResponseObject> APIRepsonse(String status, String message, HttpStatus httpStatus, Object data) {
         return ResponseEntity.status(httpStatus).body(
                 new ResponseObject(status, message, data)
         );

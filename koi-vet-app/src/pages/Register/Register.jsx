@@ -11,13 +11,14 @@ function Register() {
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const navigate = useNavigate();
+  const { navigate } = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(email, password, username, fullname, phone, address);
     const response = await createUserAPI(email, password, username, fullname, phone, address);
-    if (response?.data?.status === 200) {
-      toast.success(response?.data?.message);
+    if (response?.status === 201) {
+
+      toast.success("Register successfully!");
       navigate("/login");
     }
   };

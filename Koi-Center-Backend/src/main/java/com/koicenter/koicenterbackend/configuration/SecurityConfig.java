@@ -9,8 +9,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,9 +22,6 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
                 .csrf(csrf -> csrf.disable())
-//                .oauth2Login(oauth2 -> oauth2
-//                        .successHandler(customSuccessHandler()) // Use a custom success handler
-//                )
                 .authorizeRequests(auth -> {
                     auth
                             .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
@@ -41,38 +36,14 @@ public class SecurityConfig {
                                     "/swagger-ui/**",
                                     "/webjars/**",
                                     "/api/v1/services",
-
-                                    "/api/v1/veterinarians/**",
                                     "/api/v1/veterinarians/{vetId}",
-
                                     "api/v1/services/appointmentType/**",
                                     "/swagger-ui.html").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/services/{serviceId}").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ","/api/v1/vetSchedules").permitAll()
-
-                            .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians/{vetId}").permitAll()
-                            .requestMatchers(HttpMethod.GET, "api/v1/appointments").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
-                            .requestMatchers(HttpMethod.GET, "api/v1/appointments/getByCustomerId").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/appointments/detail").permitAll()
-                            .requestMatchers(HttpMethod.GET, "api/v1/appointments/detailByVetId").permitAll()
-
-
-                            .requestMatchers(HttpMethod.GET, "/api/v1/pond").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/pond/{pondId}").permitAll()
-                            .requestMatchers(HttpMethod.PUT, "/api/v1/pond/{pondId}").permitAll()
-
-                            .requestMatchers(HttpMethod.GET, "/api/v1/koi").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/koi/{koiId}").permitAll()
-                            .requestMatchers(HttpMethod.PUT, "/api/v1/koi/{koiId}").permitAll()
-
-
-                            .requestMatchers(HttpMethod.GET, "/api/v1/customer").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/ponds").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/kois").permitAll()
                             .anyRequest().authenticated();
                 });
         return http.build();
@@ -93,12 +64,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
-
-
-//    @Bean
-//    public AuthenticationSuccessHandler customSuccessHandler() {
-//        SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
-//        successHandler.setDefaultTargetUrl("/api/v1/auth/loginGoogle"); // Redirect to your desired URL
-//        return successHandler;
-//    }
 }

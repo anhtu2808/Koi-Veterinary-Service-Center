@@ -4,22 +4,12 @@ import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface VeterinarianRepository extends JpaRepository<Veterinarian, String> {
-
-
-    @Query("SELECT v FROM Veterinarian v WHERE v.user.userId = :userId")
-    Veterinarian findByUserId(@Param("userId") String userId);
-
-
-    @Query(value = "SELECT s.service_name FROM veterinarian_service vs " +
-            "JOIN service s ON vs.service_id = s.service_id " +
-            "WHERE vs.vet_id = :vetId", nativeQuery = true)
-    List<String> findServiceNamesByVetId(@Param("vetId") String vetId);
-
+    @Query(value = "SELECT u.user_id,u.role,u.status,u.username,u.email,u.full_name,v.vet_id,v.description,v.google_meet,v.phone,v.image,v.veterinarian_status FROM koi_vet_db.user u JOIN koi_vet_db.veterinarian v ON u.user_id = v.user_id", nativeQuery = true)
+    List<Object[]> findAllVet();
 }

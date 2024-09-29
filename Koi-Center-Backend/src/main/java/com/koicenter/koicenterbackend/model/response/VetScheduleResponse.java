@@ -3,7 +3,6 @@ package com.koicenter.koicenterbackend.model.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
-
 import com.koicenter.koicenterbackend.model.enums.StatusVetSchedule;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,5 @@ public class VetScheduleResponse {
     LocalTime start_time;
     LocalTime end_time;
     StatusVetSchedule status;
-
     Veterinarian vetId;
-
 }

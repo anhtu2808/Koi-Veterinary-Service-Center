@@ -11,8 +11,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,16 +20,13 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VeterinarianResponse {
-
-    private String vetId;            // Mapped from `vet_id` in Veterinarian
-    private String vetStatus;          // Mapped from `status` in Veterinarian
-    private String description;      // Mapped from `description` in Veterinarian
-    private String googleMeet;       // Mapped from `google_meet` in Veterinarian
-    private String phone;            // Mapped from `phone` in Veterinarian
-    private String imageVeterinarian;
+     String vetId;            // Mapped from `vet_id` in Veterinarian
+     VeterinarianStatus vetStatus;          // Mapped from `status` in Veterinarian
+     String description;      // Mapped from `description` in Veterinarian
+     String googleMeet;       // Mapped from `google_meet` in Veterinarian
+     String phone;            // Mapped from `phone` in Veterinarian
+     String imageVeterinarian;
     String userId ;
-
-    List<String> serviceNames;
     UserResponse user;
 
 

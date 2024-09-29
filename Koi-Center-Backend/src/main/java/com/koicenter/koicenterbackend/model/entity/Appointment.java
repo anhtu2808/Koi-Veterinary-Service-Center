@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
@@ -34,7 +33,7 @@ public class Appointment {
     String location;
     String result;
     @Column(name = "created_at")
-    ZonedDateTime createdAt;
+    LocalDateTime createdAt;
     @Enumerated(EnumType.STRING)
     AppointmentType type;
     @Column(name = "deposited_money")

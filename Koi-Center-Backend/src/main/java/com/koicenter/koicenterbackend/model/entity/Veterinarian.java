@@ -23,13 +23,11 @@ public class Veterinarian {
     VeterinarianStatus veterinarianStatus;
 
 
-
     String description;
     @Column(name = "google_meet")
     String googleMeet;
     String phone;
     String image;
-     String status;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     User user;

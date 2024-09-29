@@ -1,6 +1,5 @@
 package com.koicenter.koicenterbackend.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,10 +26,8 @@ public class Pond {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    @JsonIgnore
     Customer customer;
 
     @OneToMany(mappedBy = "pond")
-    @JsonIgnore
     List<PondTreatment> pondTreatments;
 }
