@@ -1,22 +1,22 @@
 import React from "react";
-import "./Profile.css";
+import "./VetProfile.css";
 import vet from "../../assets/img/veterinarian.png";
 
-function Profile() {
+function VetProfile() {
   return (
-    <div className=" col-md-12 container ">
-      <h1 className="profile__h1">Veterinarian Profile</h1>
+    <div className="vet-profile-container container">
+      <h1 className="vet-profile-title">Veterinarian Profile</h1>
       <div className="row">
         <div className="col-md-6">
-          <div className="column__left">
+          <div className="vet-profile-left">
             <img src={vet} alt="Veterinarian" />
             <h2>Dr. Alexandros</h2>
           </div>
-          <button className="profile__previous btn">Previous Step</button>
+          <button className="vet-profile-previous mt-5">Previous Step</button>
         </div>
 
         <div className="col-md-6">
-          <span className="column__right">
+          <div className="vet-profile-right">
             <h5>Full name: Dr. Alexandros</h5>
 
             <h5>Specialization:</h5>
@@ -80,11 +80,11 @@ function Profile() {
                 Japan Koi Society.
               </li>
             </ul>
-          </span>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default Profile;
+export default VetProfile;
