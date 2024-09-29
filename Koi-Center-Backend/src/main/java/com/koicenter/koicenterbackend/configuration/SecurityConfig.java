@@ -56,13 +56,13 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/myInfo").permitAll()
 
-                            .requestMatchers(HttpMethod.GET, "/api/v1/pond").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/pond/{pondId}").permitAll()
-                            .requestMatchers(HttpMethod.PUT, "/api/v1/pond/{pondId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/ponds").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/ponds/{pondId}").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/ponds/{pondId}").permitAll()
 
-                            .requestMatchers(HttpMethod.GET, "/api/v1/koi").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/koi/{koiId}").permitAll()
-                            .requestMatchers(HttpMethod.PUT, "/api/v1/koi/{koiId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/kois").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/kois/{koiId}").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/kois/{koiId}").permitAll()
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/customer").permitAll()
