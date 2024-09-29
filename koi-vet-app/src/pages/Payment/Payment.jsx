@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useSelector } from "react-redux";
 import { createAppointmentAPI, fecthServiceByServiceIdAPI, fetchVetByVetIdAPI } from "../../apis";
+import { toast } from "react-toastify";
+import { APPOINTMENT_STATUS } from "../../utils/constants";
 
 function Payment() {
   const userInfo = useSelector(state => state.user)
@@ -9,13 +11,38 @@ function Payment() {
   const bookingData = useSelector(state => state?.booking?.bookingData)
   const [serviceInfo, setServiceInfo] = useState({})
   const [vetInfo, setVetInfo] = useState({})
+  const [appointmentCreateRequest, setAppointmentCreateRequest] = useState({
 
-  const handlePayment = async (appointmentId, appointmentDate, status, startTime, endTime,
-    location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId) => {
-    const response = await createAppointmentAPI(appointmentId, appointmentDate, status, startTime, endTime,
-      location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId);
+  });
+
+  useEffect(() => {
+    setAppointmentCreateRequest({
+      "appointmentDate": bookingData.date,
+      "status": bookingData.vetId !== null ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
+      "startTime": bookingData.startAt, // Định dạng thời gian
+      "endTime": bookingData.endAt, // Định dạng thời gian
+      "location": customerInfo.address, // Địa điểm
+      "result": null,  // Kết quả
+      "createdAt": combinedDateTime,  // Định dạng cho ZonedDateTime
+      "type": bookingData.type,  // Enum AppointmentType
+      "depositedMoney": serviceInfo.basePrice,  // Số tiền đã đặt cọc
+      "customerId": customerInfo.customerId,  // ID khách hàng
+      "vetId": bookingData.vetId,  // ID bác sĩ thú y
+      "serviceId": bookingData.serviceId  // ID dịch vụ
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customerInfo, vetInfo, serviceInfo, bookingData])
+  const handlePayment = async (appointmentCreateRequest) => {
+    const response = await createAppointmentAPI(appointmentCreateRequest)
     console.log(response)
+    if (response.status === 200) {
+      toast.success(response.data.message)
+    } else {
+      toast.error(response.data.message)
+    }
   }
+
+
   // Combine date and time into a single string
   const combinedDateTime = `${bookingData?.date}T${bookingData?.startAt}`;
   useEffect(() => {
@@ -223,20 +250,7 @@ function Payment() {
               </div>
 
               <button className="btn payment-btn w-100" id="checkoutBtn"
-                onClick={handlePayment(
-                  bookingData?.id,
-                  bookingData?.date,
-                  "pending",
-                  bookingData?.startAt,
-                  bookingData?.endAt,
-                  bookingData?.location,
-                  bookingData?.result,
-                  bookingData?.createdAt,
-                  bookingData?.type,
-                  bookingData?.depositedMoney,
-                  bookingData?.customerId,
-                  bookingData?.vetId,
-                  bookingData?.serviceId)}
+                onClick={() => handlePayment(appointmentCreateRequest)}
 
               >
                 <i className="fas fa-lock me-2"></i> Proceed to Secure Checkout
