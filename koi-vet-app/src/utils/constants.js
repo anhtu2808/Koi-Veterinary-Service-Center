@@ -20,3 +20,8 @@ export const APPOINTMENT_STATUS = {
   CANCEL: "CANCEL"
 };
 
+export const SERVICE_FOR = {
+  KOI: "FISH",
+  POND: "POND",
+};
+

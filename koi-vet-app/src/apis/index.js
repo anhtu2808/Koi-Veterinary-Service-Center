@@ -51,8 +51,8 @@ export const fetchVetByVetIdAPI = async (vetId) =>{
     return response.data;
 }
 
-export const fetchVetByVetByServiceIdAPI = async (serviceId) =>{
-    const response = await api.get(`/veterinarians?serviceId=${serviceId}`);
+export const fetchVetByServiceIdAPI = async (serviceId) =>{
+    const response = await api.get(`veterinarians/getByServiceId?serviceId=${serviceId}`);
     return response.data;
 }
 
@@ -83,6 +83,26 @@ export const fetchServiceByTypeAPI = async (type) => {
 export const fetchAllAppointmentByVetIdAPI = async (vetId) => {
 const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
 return response.data;
+}
+export const createAppointmentAPI = async (appointmentId, appointmentDate, status, startTime, endTime,
+     location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId) => {
+    const appointmentCreateRequest = {
+        appointmentId,
+        appointmentDate,  // Định dạng chỉ cần ngày
+        status,  // Enum AppointmentStatus
+        startTime,  // Định dạng thời gian
+        endTime,  // Định dạng thời gian
+        location,  // Địa điểm
+        result,  // Kết quả
+        createdAt,  // Định dạng cho ZonedDateTime
+        type,  // Enum AppointmentType
+        depositedMoney,  // Số tiền đã đặt cọc
+        customerId,  // ID khách hàng
+        vetId,  // ID bác sĩ thú y
+        serviceId  // ID dịch vụ
+    }
+    const response = await api.post('/appointments/create', appointmentCreateRequest);
+    return response.data;
 }
 
 export const fetchAllAppointmentAPI = async () => {

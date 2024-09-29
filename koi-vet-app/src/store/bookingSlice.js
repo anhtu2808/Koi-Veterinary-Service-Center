@@ -4,14 +4,15 @@ const initialState = {
   step: 0,
   bookingData: {
     type: null,
-    serviceId: null,
+    serviceFor: null,
     vetId: "SKIP",
     date: null,
     startAt: null,
     endAt: null,
+    serviceId: null,
     paymentInfo: {},
     selectedKoi: [],
-    selectedPondIds: [], // Add this line
+    selectedPond: [], // Add this line
   },
 };
 

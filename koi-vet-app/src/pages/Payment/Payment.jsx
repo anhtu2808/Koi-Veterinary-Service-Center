@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useSelector } from "react-redux";
+import { fecthServiceByServiceIdAPI, fetchVetByVetIdAPI } from "../../apis";
 
 function Payment() {
   const userInfo = useSelector(state => state.user)
   const customerInfo = useSelector(state => state.user.customer)
+  const bookingData = useSelector(state => state?.booking?.bookingData)
+  const [serviceInfo, setServiceInfo] = useState({})
+  const [vetInfo, setVetInfo] = useState({})
+
+  // const handlePayment = async (appointmentId, appointmentDate, status, startTime, endTime,
+  //   location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId) => {
+  //   const response = await createAppointmentAPI(appointmentId, appointmentDate, status, startTime, endTime,
+  //     location, result, createdAt, type, depositedMoney, customerId, vetId, serviceId);
+  //   console.log(response)
+  // }
+  // Combine date and time into a single string
+  const combinedDateTime = `${bookingData?.date}T${bookingData?.startAt}`;
+  useEffect(() => {
+    const fetchServiceInfo = async () => {
+      const response = await fecthServiceByServiceIdAPI(bookingData?.serviceId)
+      setServiceInfo(response?.data)
+    }
+    fetchServiceInfo()
+    const fetchVetInfo = async () => {
+      if (bookingData?.vetId) {
+        const response = await fetchVetByVetIdAPI(bookingData?.vetId)
+        setVetInfo(response?.data)
+      }
+    }
+    fetchServiceInfo()
+    fetchVetInfo()
+    console.log(vetInfo)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bookingData?.serviceId, bookingData?.vetId])
   return (
     <div className="container payment-container">
       <h1 className="payment-title text-center mb-5">Secure Payment</h1>
@@ -35,7 +65,7 @@ function Payment() {
               </div>
               <div className="mb-3">
                 <label htmlFor="phoneNumber" className="payment-form-label">
-                value={userInfo.pho}
+                  Phone Number
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
@@ -46,6 +76,7 @@ function Payment() {
                     className="form-control payment-form-control"
                     id="phoneNumber"
                     placeholder="Enter your phone number"
+                    value={customerInfo?.phone}
                   />
                 </div>
               </div>
@@ -62,6 +93,7 @@ function Payment() {
                     id="address"
                     rows="3"
                     placeholder="Enter your address"
+                    value={customerInfo?.address}
                   ></textarea>
                 </div>
               </div>
@@ -70,7 +102,7 @@ function Payment() {
 
           <div className="payment-card">
             <div className="payment-card-header">
-              <i className="fas fa-fish me-2"></i> Koi Health Status
+              <i className="fas fa-fish me-2"></i> Koi/Pond Health Status
             </div>
             <div className="payment-card-body">
               <div className="mb-3">
@@ -81,7 +113,7 @@ function Payment() {
                   className="form-control payment-form-control"
                   id="koiHealth"
                   rows="5"
-                  placeholder="Describe the health status of your Koi"
+                  placeholder="Please enter describe about health status of your Koi/Pond"
                 ></textarea>
               </div>
             </div>
@@ -107,6 +139,7 @@ function Payment() {
                     className="form-control payment-form-control"
                     id="doctorName"
                     placeholder="Enter doctor's name"
+                    value={vetInfo?.user?.fullName}
                   />
                 </div>
               </div>
@@ -122,19 +155,26 @@ function Payment() {
                     type="datetime-local"
                     className="form-control payment-form-control"
                     id="dateTime"
+                    value={combinedDateTime}
                   />
                 </div>
               </div>
-              <div className="mb-4">
-                <label htmlFor="serviceType" className="payment-form-label">
-                  Service Type
+              <div className="mb-3">
+                <label htmlFor="doctorName" className="payment-form-label">
+                  Service
                 </label>
-                <select className="form-select payment-form-select" id="serviceType">
-                  <option value="">Select Service Type</option>
-                  <option value="consultation">Consultation</option>
-                  <option value="treatment">Treatment</option>
-                  <option value="checkup">Check-up</option>
-                </select>
+                <div className="input-group">
+                  <span className="input-group-text payment-input-icon">
+                    <i class="fas fa-fish"></i>
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control payment-form-control"
+                    id="doctorName"
+                    placeholder="Enter doctor's name"
+                    value={serviceInfo?.serviceName}
+                  />
+                </div>
               </div>
 
               <div className="payment-summary mb-4">
@@ -145,7 +185,7 @@ function Payment() {
                 </div>
                 <div className="row">
                   <div className="col-6">Service Fee:</div>
-                  <div className="col-6 text-end">$10.00</div>
+                  <div className="col-6 text-end">${serviceInfo.basePrice}</div>
                 </div>
                 <hr />
                 <div className="row total">
