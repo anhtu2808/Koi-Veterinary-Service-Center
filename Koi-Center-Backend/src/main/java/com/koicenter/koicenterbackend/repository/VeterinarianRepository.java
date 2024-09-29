@@ -24,4 +24,6 @@ public interface VeterinarianRepository extends JpaRepository<Veterinarian, Stri
     List<String> findServiceNamesByVetId(@Param("vetId") String vetId);
     Veterinarian findByVetId(String vetId);
 
+
+
 }

@@ -157,6 +157,8 @@ public class AppointmentService {
                     .status(appointment.getStatus())
                     .type(appointment.getType())
                     .customerId(appointment.getCustomer().getCustomerId())
+                    .serviceName(appointment.getService().getServiceName())
+                    .customerName(appointment.getCustomer().getUser().getFullName())
                     .serviceId(appointment.getService().getServiceId())
                     .vetId(appointment.getVeterinarian().getVetId())
                     .build();

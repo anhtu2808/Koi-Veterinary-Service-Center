@@ -28,6 +28,8 @@ public class AppointmentResponse {
      AppointmentStatus status;
      AppointmentType type;
      String customerId;
+     String customerName;
      String serviceId;
+     String serviceName;
      String vetId;
 }
