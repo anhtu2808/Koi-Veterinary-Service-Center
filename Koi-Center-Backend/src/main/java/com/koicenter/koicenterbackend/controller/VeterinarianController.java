@@ -1,4 +1,5 @@
 package com.koicenter.koicenterbackend.controller;
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.request.VeterinarianRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
@@ -34,7 +35,8 @@ public class VeterinarianController {
     }
     @PostMapping("/create")
     public ResponseEntity<ResponseObject> createVeterinarian(@RequestBody VeterinarianRequest veterinarianRequest){
-        return ResponseObject.APIRepsonse(200, "CREATE SUCCESSFULLY", HttpStatus.OK, " " );
+        veterinarianService.createVeterinarian(veterinarianRequest);
+        return ResponseObject.APIRepsonse(200, "CREATE VETERINARIAN SUCCESSFULLY", HttpStatus.OK, " " );
 
     }
 
