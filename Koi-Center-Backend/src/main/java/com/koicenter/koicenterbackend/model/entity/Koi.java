@@ -24,6 +24,7 @@ public class Koi {
     float weight;
     @Column(name = "health_status")
     String healthStatus;
+    @Lob        // dùng đẻ chưa các văn  bản dài
     String notes;
     String image;
 

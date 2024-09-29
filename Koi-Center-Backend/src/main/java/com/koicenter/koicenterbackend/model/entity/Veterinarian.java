@@ -22,8 +22,7 @@ public class Veterinarian {
     @Enumerated(EnumType.STRING)
     VeterinarianStatus veterinarianStatus;
 
-
-
+    @Lob
     String description;
     @Column(name = "google_meet")
     String googleMeet;

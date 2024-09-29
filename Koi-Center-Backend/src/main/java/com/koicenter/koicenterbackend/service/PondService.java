@@ -1,10 +1,19 @@
 package com.koicenter.koicenterbackend.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
+import com.koicenter.koicenterbackend.model.entity.Customer;
+import com.koicenter.koicenterbackend.model.entity.Koi;
 import com.koicenter.koicenterbackend.model.entity.Pond;
+import com.koicenter.koicenterbackend.model.entity.PondTreatment;
+import com.koicenter.koicenterbackend.model.request.KoiRequest;
+import com.koicenter.koicenterbackend.model.request.PondRequest;
 import com.koicenter.koicenterbackend.model.request.PondUpdateRequest;
 import com.koicenter.koicenterbackend.repository.PondRepository;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -45,5 +54,23 @@ public class PondService {
         pond.setNotes(request.getNotes());
         pond.setImage(request.getImage());
         return pondRepository.save(pond);
+    }
+
+
+
+    public void createPond (PondRequest pondRequest){
+        Pond pond = new Pond();
+        pond.setStatus(pondRequest.getStatus());
+        pond.setDepth(pondRequest.getDepth());
+        pond.setPerimeter(pondRequest.getPerimeter());
+        pond.setTemperature(pondRequest.getTemperature());
+        pond.setNotes(pondRequest.getNotes());
+        pond.setImage(pondRequest.getImage());
+        pond.setFilterSystem(pondRequest.getFilterSystem());
+        pond.setWaterQuality(pondRequest.getWaterQuality());
+        Customer customer = new Customer();
+        customer.setCustomerId(pondRequest.getCustomerId());
+        pond.setCustomer(customer);
+        pondRepository.save(pond);
     }
 }
