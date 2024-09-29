@@ -48,6 +48,10 @@
     background-color: #ccc;
     color: #999;
     pointer-events: none;
+    padding: 15px;
+    cursor:not-allowed;
+    border-radius: 4px;
+    font-weight: bold;
 }
 
 .chooosed-day {
@@ -57,7 +61,7 @@
 
 .current-day {
     background-color: var(--color-secondary);
-    color: #0000;
+  
 }
 
 .slots {

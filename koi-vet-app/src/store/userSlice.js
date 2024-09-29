@@ -5,8 +5,9 @@ export const fetchUserProfile = createAsyncThunk('user/fetchUserProfile', async 
   const response = await fetchUserProfile(); // Assuming you have an API to fetch the user profile
   return response;
 });
+
 const initialState = {
-  isAuthorized: !!localStorage.getItem('token'), // Kiểm tra xem user đã đăng nhập chưa
+  isAuthorized: localStorage.getItem("accessToken") ? true : false,
   user: {},       
   loading: false,
   error: null,
@@ -16,7 +17,10 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    
+    setIsAuthorized: (state, action) => {
+      state.isAuthorized = action.payload;
+    },
+
     setUser: (state, action) => { // Đổ dữ liệu user vào state
       return { ...state, ...action.payload };
     },
@@ -31,7 +35,7 @@ const userSlice = createSlice({
 });
 
 
-export const { setUser, updateUser, clearUser } = userSlice.actions;
+export const { setUser, updateUser, clearUser, setIsAuthorized } = userSlice.actions;
 
 // Export reducer để sử dụng trong store
 export default userSlice.reducer;

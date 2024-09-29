@@ -24,6 +24,8 @@ public class UserResponse {
     String fullName;
     Role role;
     boolean status;
-    CustomerDTO customer;
-    VeterinarianDTO veterinarian;
+    Customer customer;
+    Veterinarian veterinarian;
+
+
 }
