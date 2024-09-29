@@ -8,8 +8,8 @@ import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import com.koicenter.koicenterbackend.model.request.RegisterRequest;
-import com.koicenter.koicenterbackend.model.response.CustomerDTO;
 import com.koicenter.koicenterbackend.model.response.UserResponse;
+
 import com.koicenter.koicenterbackend.model.response.VeterinarianDTO;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
@@ -103,9 +103,10 @@ public class UserService {
     }
 
     private UserResponse getUserByUsernameV2(String username) {
-        User user = userRepository.findByUsername(username);
 
+        User user = userRepository.findByUsername(username);
         UserResponse.UserResponseBuilder userResponseBuilder = UserResponse.builder()
+
                 .user_id(user.getUserId())
                 .username(user.getUsername())
                 .fullName(user.getFullName())
@@ -135,10 +136,6 @@ public class UserService {
             );
             userResponseBuilder.veterinarian(veterinarianDTO);
         }
-
-
         return userResponseBuilder.build();
     }
-
-
 }

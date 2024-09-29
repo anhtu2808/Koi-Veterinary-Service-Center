@@ -1,3 +1,5 @@
+/* src/pages/Payment/Payment.css */
+
 /* :root {
     --color-primary: #1F2B6C;
     --color-accent: #DFEAFF;
@@ -11,7 +13,7 @@ body {
     color: var(--color-text);
 }
 
-.container {
+.payment-container {
     max-width: 1200px;
     margin: auto;
     padding: 40px 20px;
@@ -26,7 +28,7 @@ body {
     letter-spacing: 2px;
 }
 
-.card {
+.payment-card {
     background-color: #ffffff;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(31, 43, 108, 0.1);
@@ -35,12 +37,12 @@ body {
     transition: all 0.3s ease;
 }
 
-.card:hover {
+.payment-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(31, 43, 108, 0.2);
 }
 
-.card-header {
+.payment-card-header {
     background-color: var(--color-primary);
     color: white;
     font-size: 1.5rem;
@@ -48,34 +50,34 @@ body {
     padding: 20px;
 }
 
-.card-body {
+.payment-card-body {
     padding: 30px;
 }
 
-.form-label {
+.payment-form-label {
     font-weight: 600;
     color: var(--color-primary);
 }
 
-.form-control, .form-select {
+.payment-form-control {
     border: 2px solid var(--color-accent);
     border-radius: 8px;
     padding: 12px;
     transition: all 0.3s ease;
 }
 
-.form-control:focus, .form-select:focus {
+.payment-form-control:focus {
     border-color: var(--color-secondary);
     box-shadow: 0 0 0 0.2rem rgba(21, 158, 236, 0.25);
 }
 
-.input-group-text {
+.payment-input-icon {
     background-color: var(--color-secondary);
     border: none;
     color: var(--color-primary);
 }
 
-.btn-primary {
+.payment-btn {
     background-color: var(--color-primary);
     border: none;
     padding: 12px 30px;
@@ -86,7 +88,7 @@ body {
     transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
+.payment-btn:hover {
     background-color: var(--color-secondary);
     color: var(--color-primary);
     transform: translateY(-2px);
@@ -114,11 +116,6 @@ body {
 }
 
 .payment-options .form-check-input:checked {
-    background-color: var(--color-secondary);
-    border-color: var(--color-secondary);
-}
-
-.form-check-input:checked {
     background-color: var(--color-secondary);
     border-color: var(--color-secondary);
 }

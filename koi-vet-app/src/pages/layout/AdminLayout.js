@@ -1,15 +1,21 @@
 import React from 'react'
+import Header from '../../components/Header/Header'
+import Footer from '../../components/Footer/Footer'
 import SideBar from '../../components/SideBar/SideBar'
 
-
-function UserLayout({ children }) {
+function AdminLayout({ children }) {
   return (
-   <div className="col-md-12">
-    <SideBar/>
-    {children}
+    <>
+
+      <div className="container-fluid">
+        <div className="row">
+          <SideBar />
+          {children}
+        </div>
+      </div>
     
-   </div>
+    </>
   )
 }
 
-export default UserLayout
+export default AdminLayout

@@ -1,7 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import tempt_img from '../../assets/img/veterinarian.png'
+import { useDispatch } from 'react-redux'
+import { nextStep, setBookingData } from '../../store/bookingSlice'
 const Veterinarian = ({image,vetId,name,isBooking}) => {
+  const dispatch = useDispatch()
+  const handleChooseVeterinarian = () => {
+    dispatch(setBookingData({vetId: vetId}))
+    dispatch(nextStep())
+  }
   return (
     <>
    
@@ -22,7 +29,7 @@ const Veterinarian = ({image,vetId,name,isBooking}) => {
                     View Profile
                   </button>
                 </Link>
-                {isBooking?<button className="btn-view-profile  mt-3">
+                {isBooking?<button onClick={()=> handleChooseVeterinarian()} className="btn-view-profile  mt-3">
                    Choose
                   </button>
                   
