@@ -33,7 +33,7 @@ function BookingPage() {
   const renderStepComponent = () => {
     switch (step) {
       case 1:
-        return  <PondDetail/> ;
+        return  <ServiceStep/> ;
       case 2:
         return <VeterinarianStep/>;
       case 3:
