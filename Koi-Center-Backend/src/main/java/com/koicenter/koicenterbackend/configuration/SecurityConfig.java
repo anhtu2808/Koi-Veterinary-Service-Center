@@ -48,7 +48,7 @@ public class SecurityConfig {
                                     "api/v1/services/appointmentType/**",
                                     "/swagger-ui.html").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/services/{serviceId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/services/{serviceId}","/api/v1/vetSchedules").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ").permitAll()
