@@ -131,7 +131,7 @@ export const fetchPondByCustomerIdAPI = async (customerId) => {
     return response.data;
 }
 
-export const fetchKoiByPondIdAPI = async (pondId) => {
+export const fetchPondByPondIdAPI = async (pondId) => {
     const response = await api.get(`/customer/${pondId}/koi`);
     return response.data;
 }

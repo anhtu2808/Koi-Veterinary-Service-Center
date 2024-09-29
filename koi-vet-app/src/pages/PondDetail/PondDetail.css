@@ -1,0 +1,83 @@
+/* .pond-detail-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .pond-detail-form .form-control:disabled {
+    background-color: #e9ecef;
+    opacity: 1;
+    cursor: not-allowed;
+  }
+  
+  .pond-detail-form .btn {
+    margin-top: 20px;
+  } */
+
+  /* PondDetail.css */
+
+.pond-detail-form {
+  background-color: #ffffff; /* Lighter background */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Increased shadow for depth */
+  margin-bottom: 40px; /* Additional spacing */
+  border: 1px solid #e3e6f0; /* Subtle border */
+}
+
+.pond-detail-form .form-label {
+  font-weight: 600;
+  color: #4e73df; /* Add color to labels */
+}
+
+.pond-detail-form .form-control:disabled {
+  background-color: #f1f3f5; /* Slightly darker for readability */
+  cursor: not-allowed;
+}
+
+.pond-detail-form .form-control {
+  border-radius: 6px; /* Rounded input corners */
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s;
+}
+
+.pond-detail-form .form-control:focus {
+  border-color: #4e73df; /* Border color on focus */
+  box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); /* Focus shadow */
+}
+
+.pond-detail-form .btn {
+  margin-top: 20px;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pond-detail-form .btn-primary {
+  background-color: #4e73df; /* Custom primary button color */
+  border: none;
+}
+
+.pond-detail-form .btn-primary:hover {
+  background-color: #2e59d9; /* Darker on hover */
+}
+
+.pond-detail-form .btn-secondary {
+  background-color: #858796; /* Custom secondary button */
+  border: none;
+}
+
+.pond-detail-form .btn-secondary:hover {
+  background-color: #6c757d; /* Darker on hover */
+}
+
+.pond-detail-form .mb-3 {
+  margin-bottom: 16px; /* Uniform spacing between fields */
+}
+
+h3 {
+  font-weight: 700;
+  color: #5a5c69; /* Main heading color */
+}

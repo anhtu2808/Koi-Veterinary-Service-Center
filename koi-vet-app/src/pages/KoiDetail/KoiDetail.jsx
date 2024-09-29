@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./KoiInformation.css";
+import "./KoiDetail.css";
 
 const fishSpecies = [
   "Kohaku",
@@ -19,7 +19,7 @@ const fishSpecies = [
   "Other",
 ];
 
-function KoiInformation() {
+function KoiDetail() {
   const [selectedSpecies, setSelectedSpecies] = useState("");
   const [otherSpecies, setOtherSpecies] = useState("");
   const [color, setColor] = useState("");
@@ -41,12 +41,12 @@ function KoiInformation() {
 
   return (
     <>
-      <div className="container">
+      <div className="col-9">
         <h1>Enter the Koi's Information</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Fish species:</label>
+            <label>Breed:</label>
             <div className="species-grid">
               {fishSpecies.map((species) => (
                 <button
@@ -102,6 +102,36 @@ function KoiInformation() {
           </div>
 
           <div className="form-group">
+            <label>Age</label>
+            <input
+              type="text"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              placeholder="Enter Age"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Health Status</label>
+            <input
+              type="text"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              placeholder="Enter Health Status"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Address Home</label>
+            <input
+              type="text"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              placeholder="Enter Address Home"
+            />
+          </div>
+
+          <div className="form-group">
             <label>Koi health status</label>
             <textarea
               value={healthStatus}
@@ -125,4 +155,4 @@ function KoiInformation() {
   );
 }
 
-export default KoiInformation;
+export default KoiDetail;
