@@ -16,18 +16,26 @@ const Service = ({ image, serviceId, serviceName, description, isBooking }) => {
     }
   }
 
+  const truncateDescription = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
+  }
   
   return (
     <>
       <div className="col-md-4 mb-4">
         <div className="service-card">
-          <img src="https://th.bing.com/th/id/R.321680a19267fb82b0bb4ef9709f5ee1?rik=S69lZlF8h%2fU4iA&pid=ImgRaw&r=0"
+          <img src="https://cafishvet.com/wp-content/uploads/2024/09/Ultrasound-Jessie-Sanders-Fish-Vetranarian-2048x1366.jpg"
             alt="Water Quality Testing" />
-          <div className="p-3">
+          <div className="p-3 d-flex flex-column" style={{ height: '200px' }}>
             <h5>{serviceName}</h5>
-            <p>{description}</p>
-            <button onClick={() => handleClickButton()}>Order</button> 
-            <button>Detail</button>
+            <p className="description flex-grow-1" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {truncateDescription(description, 100)}
+            </p>
+            <div>
+              <button className='btn btn-primary me-2' onClick={() => handleClickButton()}>Order</button> 
+              <button className='btn btn-primary'>Detail</button>
+            </div>
           </div>
         </div>
       </div>
