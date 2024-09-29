@@ -97,7 +97,7 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
 
 export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
     const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
-    return response.data;
+    // return response.data;
 }
 
 
