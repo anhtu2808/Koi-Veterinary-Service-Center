@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AllAppointment.css";
-import { fetchAllAppointmentByVetIdAPI } from "../../apis";
+import {
+  fetchAllAppointmentAPI,
+  fetchAllAppointmentByVetIdAPI,
+} from "../../apis";
+import { ROLE } from "../../utils/constants";
+import { useSelector } from "react-redux";
 
 function AllAppointment() {
   const [appointments, setAppointments] = useState([]);
@@ -15,13 +20,25 @@ function AllAppointment() {
   //     fecthServices();
   // }, [])
 
+  const role = useSelector((state) => state.user.role);
+
   useEffect(() => {
-    const fetchAppointmentDetail = async () => {
-      const response = await fetchAllAppointmentByVetIdAPI("VET002");
+    const fetchAppointmentForVet = async (vetId) => {
+      const response = await fetchAllAppointmentByVetIdAPI(vetId);
       setAppointments(response?.data);
     };
-    fetchAppointmentDetail();
-  }, []);
+
+    const fetchAppointmentForStaff = async () => {
+      const response = await fetchAllAppointmentAPI();
+      setAppointments(response?.data);
+    };
+
+    if (role === ROLE.VETERINARIAN) {
+      fetchAppointmentForVet("VET002");
+    } else if (role === ROLE.STAFF) {
+      fetchAppointmentForStaff();
+    }
+  }, [role]);
 
   return (
     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
@@ -81,17 +98,16 @@ function AllAppointment() {
                     to={`/admin/appointment/${appointmentDetail.appointmentId}`}
                     className="btn btn-sm btn-outline-primary"
                   >
-                    <i className="fas fa-eye"></i>
-                  </Link>
-                  <button className="btn btn-sm btn-outline-secondary">
                     <i className="fas fa-edit"></i>
-                  </button>
+                  </Link>
                   <button className="btn btn-sm btn-outline-secondary">
                     <i className="fas fa-trash"></i>
                   </button>
-                  <button className="btn btn-sm btn-outline-secondary">
-                    <i className="fas fa-ellipsis-v"></i>
-                  </button>
+                  {role === ROLE.STAFF && (
+                    <button className="btn btn-sm btn-outline-secondary">
+                      <i className="fas fa-user-md"></i>
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

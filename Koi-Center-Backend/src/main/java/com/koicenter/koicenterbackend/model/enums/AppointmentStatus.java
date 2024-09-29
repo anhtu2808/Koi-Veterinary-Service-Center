@@ -1,9 +1,11 @@
 package com.koicenter.koicenterbackend.model.enums;
 
 public enum AppointmentStatus {
-    PENDING,
+   // PENDING,
+    CREATED, // CHUA CHON BAC SI THÌ SE LÀ CREATED
+    BOOKING_COMPLETE, // APPOINT DA CO BAC SI
     PROCESS,
-    FINISH,
-    REJECTED,
-    CANCEL
+    READY_FOR_PAYMENT,
+    FINISH,//~~  COMPLETED
+    CANCEL // DAT ROI MA KHONG DI
 }

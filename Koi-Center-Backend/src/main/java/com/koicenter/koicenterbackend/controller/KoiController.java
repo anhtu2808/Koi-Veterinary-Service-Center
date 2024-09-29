@@ -3,20 +3,29 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Koi;
+import com.koicenter.koicenterbackend.model.request.KoiRequest;
 import com.koicenter.koicenterbackend.model.request.KoiUpdateRequest;
 import com.koicenter.koicenterbackend.model.request.PondUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.KoiService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/kois")
+@RequiredArgsConstructor
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class KoiController {
 
     @Autowired
@@ -50,5 +59,10 @@ public class KoiController {
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
         }
+    }
+    @PostMapping("/create")
+    public ResponseEntity<ResponseObject> createPond (@RequestBody KoiRequest koiRequest){
+        koiService.createKoi(koiRequest);
+        return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");
     }
 }
