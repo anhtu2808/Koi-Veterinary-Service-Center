@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setBookingData } from '../../../store/bookingSlice';
-import './InputKoiStep.css'
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setBookingData } from "../../../src/store/bookingSlice";
+import "./InputKoiPage.css";
+import { useNavigate } from "react-router-dom";
 // Import the sample data
 const sampleKoiData = [
   {
@@ -13,7 +13,7 @@ const sampleKoiData = [
     length: 45,
     weight: 2.5,
     color: "White with red patterns",
-    description: "A beautiful Kohaku with vibrant red markings"
+    description: "A beautiful Kohaku with vibrant red markings",
   },
   {
     koiId: 2,
@@ -23,7 +23,7 @@ const sampleKoiData = [
     length: 35,
     weight: 1.8,
     color: "White with red and black patterns",
-    description: "A young Sanke with promising color development"
+    description: "A young Sanke with promising color development",
   },
   {
     koiId: 3,
@@ -33,7 +33,7 @@ const sampleKoiData = [
     length: 50,
     weight: 3.2,
     color: "Black with red and white patterns",
-    description: "An elegant Showa with balanced color distribution"
+    description: "An elegant Showa with balanced color distribution",
   },
   {
     koiId: 4,
@@ -43,7 +43,7 @@ const sampleKoiData = [
     length: 25,
     weight: 0.8,
     color: "Solid platinum",
-    description: "A young Ogon with a lustrous platinum sheen"
+    description: "A young Ogon with a lustrous platinum sheen",
   },
   {
     koiId: 5,
@@ -53,7 +53,7 @@ const sampleKoiData = [
     length: 60,
     weight: 4.0,
     color: "Orange and white with long fins",
-    description: "A majestic Butterfly Koi with flowing fins"
+    description: "A majestic Butterfly Koi with flowing fins",
   },
   {
     koiId: 6,
@@ -63,7 +63,7 @@ const sampleKoiData = [
     length: 40,
     weight: 2.2,
     color: "Blue scales with red highlights",
-    description: "An Asagi with a striking blue netted pattern"
+    description: "An Asagi with a striking blue netted pattern",
   },
   {
     koiId: 7,
@@ -73,15 +73,16 @@ const sampleKoiData = [
     length: 30,
     weight: 1.5,
     color: "White with a red circle on head",
-    description: "A Tancho Kohaku with a perfect circular red patch"
-  }
+    description: "A Tancho Kohaku with a perfect circular red patch",
+  },
 ];
 
-
-const InputKoiStep = () => {
+const InputKoiPage = () => {
   const [existingKoi] = useState(sampleKoiData); // Use sample data
   const dispatch = useDispatch();
-  const selectedKois = useSelector(state => state.booking.bookingData.selectedKoi);
+  const selectedKois = useSelector(
+    (state) => state.booking.bookingData.selectedKoi
+  );
   const navigate = useNavigate();
 
   const handleAddKoi = (koiId) => {
@@ -92,7 +93,7 @@ const InputKoiStep = () => {
   };
 
   const handleRemoveKoi = (koiId) => {
-    const updatedselectedKois = selectedKois.filter(id => id !== koiId);
+    const updatedselectedKois = selectedKois.filter((id) => id !== koiId);
     dispatch(setBookingData({ selectedKoi: updatedselectedKois }));
   };
 
@@ -103,49 +104,49 @@ const InputKoiStep = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="col-md-9">
       <h3 className="mb-4">Select Koi for Appointment</h3>
-      
-      {/* Existing Koi Table */}
+
       <div className="card mb-4">
-        <div className="card-header input-info-title text-white">
+        <div className="card-header input-info-title">
           <h5 className="mb-0">Your Existing Koi</h5>
         </div>
         <div className="card-body">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Age</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {existingKoi.map(koi => (
-                <tr key={koi.koiId}>
-                  <td>{koi.name}</td>
-                  <td>{koi.type}</td>
-                  <td>{koi.age}</td>
-                  <td>
-                    <button 
-                      className="btn btn-sm btn-primary"
-                      onClick={() => handleAddKoi(koi.koiId)}
-                      disabled={selectedKois.includes(koi.koiId)}
-                    >
-                      Add
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Age</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {existingKoi.map((koi) => (
+                  <tr key={koi.koiId}>
+                    <td>{koi.name}</td>
+                    <td>{koi.type}</td>
+                    <td>{koi.age}</td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-primary"
+                        onClick={() => handleAddKoi(koi.koiId)}
+                        disabled={selectedKois.includes(koi.koiId)}
+                      >
+                        Add
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      {/* Selected Koi List */}
       <div className="card mb-4">
-        <div className="card-header input-info-title text-white">
+        <div className="card-header input-info-title">
           <h5 className="mb-0">Selected Koi for Appointment</h5>
         </div>
         <div className="card-body">
@@ -153,12 +154,15 @@ const InputKoiStep = () => {
             <p>No Koi selected yet.</p>
           ) : (
             <ul className="list-group">
-              {selectedKois.map(koiId => {
-                const koi = existingKoi.find(k => k.koiId === koiId);
+              {selectedKois.map((koiId) => {
+                const koi = existingKoi.find((k) => k.koiId === koiId);
                 return (
-                  <li key={koiId} className="list-group-item d-flex justify-content-between align-items-center">
+                  <li
+                    key={koiId}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
                     {koi.name} - {koi.type}
-                    <button 
+                    <button
                       className="btn btn-sm btn-danger"
                       onClick={() => handleRemoveKoi(koiId)}
                     >
@@ -182,4 +186,4 @@ const InputKoiStep = () => {
   );
 };
 
-export default InputKoiStep;
+export default InputKoiPage;

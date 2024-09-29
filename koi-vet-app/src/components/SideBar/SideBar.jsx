@@ -23,9 +23,9 @@ function SideBar() {
   return (
     <nav
       id="sidebar"
-      className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
+      className="col-md-3 col-lg-2 d-md-block pt-4 bg-light sidebar collapse"
     >
-      <div className="position-sticky pt-1">
+      <div className="position-sticky pt-4">
         <ul className="nav flex-column">
           <li className="nav-item py-2">
             <Link className="nav-link active" href="#">

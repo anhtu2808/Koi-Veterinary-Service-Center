@@ -1,0 +1,13 @@
+.input-koi-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.input-info-title {
+    background-color: var(--color-primary) !important;
+    color: white;
+}
+
+.card {
+    margin-bottom: 20px;
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBookingData } from '../../../store/bookingSlice';
 import './InputPondStep.css'
+import { useNavigate } from 'react-router-dom';
 
 // Sample pond data
 const samplePondData = [
@@ -38,6 +39,7 @@ const InputPondStep = () => {
   const [existingPonds] = useState(samplePondData);
   const dispatch = useDispatch();
   const selectedPondIds = useSelector(state => state.booking.bookingData.selectedPondIds || []);
+  const navigate = useNavigate();
 
   const handleSelectPond = (pondId) => {
     let updatedSelectedPondIds;
@@ -51,6 +53,7 @@ const InputPondStep = () => {
 
   const handleAddNewPond = () => {
     // Implement logic to add a new pond
+    navigate("/admin/pondinformation")
     console.log("Add new pond clicked");
   };
 

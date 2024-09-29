@@ -166,13 +166,21 @@ function AppointmentDetail() {
         )}
 
         {isEditing && (
-          <button type="submit" className="btn btn-success buttonInEdit">
+          <button
+            onClick={() => navigate("/admin/inputpondstep")}
+            type="submit"
+            className="btn btn-success buttonInEdit"
+          >
             Pond Information
           </button>
         )}
 
         {isEditing && (
-          <button type="submit" className="btn btn-success buttonInEdit">
+          <button
+            onClick={() => navigate("/admin/inputkoistep")}
+            type="submit"
+            className="btn btn-success buttonInEdit"
+          >
             Koi Information
           </button>
         )}
