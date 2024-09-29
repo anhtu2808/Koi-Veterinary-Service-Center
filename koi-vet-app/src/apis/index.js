@@ -100,8 +100,13 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
 }
 
 export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
+    //eslint-disable-next-line
     const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
     // return response.data;
+}
+export const fetchAppointmentByVetIdAPI = async (vetId) => {
+    const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
+    return response.data;
 }
 
 //API Schedule
@@ -127,7 +132,7 @@ export const fetchKoiByPondIdAPI = async (pondId) => {
     return response.data;
 }
 export const updatePondInformationAPI = async (pondId, data) => {
-    const response = await api.put(`/pond/${pondId}`, data);
+    const response = await api.put(`/ponds/${pondId}`, data);
     return response.data;
 }
 
@@ -136,7 +141,7 @@ export const updatePondInformationAPI = async (pondId, data) => {
 
 //Koi API
 export const fetchKoiByKoiIdAPI = async (koiId) => {
-    const response = await api.get(`/koi/${koiId}`);
+    const response = await api.get(`/kois/${koiId}`);
     return response.data;
 }
 export const fetchKoiByCustomerIdAPI = async (customerId) => {
@@ -145,7 +150,7 @@ export const fetchKoiByCustomerIdAPI = async (customerId) => {
 }
 
 export const updateKoiInformationAPI = async (koiId, data) => {
-    const response = await api.put(`/koi/${koiId}`, data);
+    const response = await api.put(`/kois/${koiId}`, data);
     return response.data;
 }
 
