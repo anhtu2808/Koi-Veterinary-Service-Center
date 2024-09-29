@@ -10,6 +10,7 @@ import DatePickStep from '../BookingStep/DataPickStep/DatePickStep'
 import Payment from '../Payment/Payment'
 import InputKoiStep from '../BookingStep/InputKoiStep/InputKoiStep'
 import InputPondStep from '../BookingStep/InputPontStep/InputPondStep'
+import PondDetail from '../../components/PondDetail/PondDetail'
 function BookingPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -32,14 +33,16 @@ function BookingPage() {
   const renderStepComponent = () => {
     switch (step) {
       case 1:
-        return  <InputKoiStep/> ;
+        return  <PondDetail/> ;
       case 2:
         return <VeterinarianStep/>;
       case 3:
         return <DatePickStep/>;
       case 4:
-        return <ServiceStep/>;
+        return <InputKoiStep/>;
       case 5:
+        return <InputPondStep/>;
+      case 6:
         return <Payment/>;
       default:
         return <Loading />;
@@ -50,6 +53,7 @@ function BookingPage() {
    if(step === 0){
    navigate('/')
    }
+   //eslint-disable-next-line
   },[step])
 
 

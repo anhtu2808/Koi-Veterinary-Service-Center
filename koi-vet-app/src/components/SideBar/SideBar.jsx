@@ -20,9 +20,6 @@ function SideBar() {
     }
   };
 
-  const handleButtonLogin = () => {
-    navigate("/login");
-  };
   return (
     <nav
       id="sidebar"
