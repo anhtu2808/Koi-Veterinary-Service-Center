@@ -1,15 +1,16 @@
 package com.koicenter.koicenterbackend.service;
+
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
-import com.koicenter.koicenterbackend.model.request.RegisterRequest;
 import com.koicenter.koicenterbackend.model.request.VeterinarianRequest;
 import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
 import com.koicenter.koicenterbackend.model.response.UserResponse;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
+//import com.koicenter.koicenterbackend.repository.VeterinarianServiceRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,13 +29,13 @@ public class VeterinarianService {
     @Autowired
     VeterinarianRepository veterinarianRepository;
     UserRepository userRepository;
-    ServicesRepository servicesRepository ;
+    ServicesRepository servicesRepository;
     @Autowired
     private UserService userService;
 
     //GET Veteriance ID
-    public VeterinarianResponse getVeterinarianById ( String veterinarianId){
-        Veterinarian veterinarian=  veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+    public VeterinarianResponse getVeterinarianById(String veterinarianId) {
+        Veterinarian veterinarian = veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
         VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
         veterinarianResponse.setVetId(veterinarian.getVetId());
         veterinarianResponse.setVetStatus(veterinarian.getStatus());
@@ -55,7 +54,7 @@ public class VeterinarianService {
         userResponse.setRole(user.getRole());
 
         veterinarianResponse.setUser(userResponse);
-        return veterinarianResponse ;
+        return veterinarianResponse;
     }
 
     public List<VeterinarianResponse> getAllVet() {
@@ -63,40 +62,41 @@ public class VeterinarianService {
         List<VeterinarianResponse> responseList = new ArrayList<>();
         for (User user : users) {
 
-                try {
-                    Veterinarian veterinarian = veterinarianRepository.findByUserId(user.getUserId());
-                    if (veterinarian != null) {
-                        UserResponse userResponse = UserResponse.builder()
-                                .user_id(user.getUserId())
-                                .role(user.getRole())
-                                .status(user.isStatus())
-                                .username(user.getUsername())
-                                .email(user.getEmail())
-                                .fullName(user.getFullName())
-                                .build();
+            try {
+                Veterinarian veterinarian = veterinarianRepository.findByUserId(user.getUserId());
+                if (veterinarian != null) {
+                    UserResponse userResponse = UserResponse.builder()
+                            .user_id(user.getUserId())
+                            .role(user.getRole())
+                            .status(user.isStatus())
+                            .username(user.getUsername())
+                            .email(user.getEmail())
+                            .fullName(user.getFullName())
+                            .build();
 
-                        List<String> serviceNames = veterinarianRepository.findServiceNamesByVetId(veterinarian.getVetId());
+                    List<String> serviceNames = veterinarianRepository.findServiceNamesByVetId(veterinarian.getVetId());
 
-                        VeterinarianResponse veterinarianResponse = VeterinarianResponse.builder()
-                                .vetId(veterinarian.getVetId())
-                                .description(veterinarian.getDescription())
-                                .googleMeet(veterinarian.getGoogleMeet())
-                                .phone(veterinarian.getPhone())
-                                .imageVeterinarian(veterinarian.getImage() != null ? veterinarian.getImage() : null)
-                                .vetStatus(veterinarian.getVeterinarianStatus().toString())
-                                .serviceNames(serviceNames)
-                                .user(userResponse)
-                                .build();
-                        responseList.add(veterinarianResponse);
-                    }
-                } catch (Exception e) {
-                    log.error("Error while retrieving Veterinarian: {}", e.getMessage());
+                    VeterinarianResponse veterinarianResponse = VeterinarianResponse.builder()
+                            .vetId(veterinarian.getVetId())
+                            .description(veterinarian.getDescription())
+                            .googleMeet(veterinarian.getGoogleMeet())
+                            .phone(veterinarian.getPhone())
+                            .imageVeterinarian(veterinarian.getImage() != null ? veterinarian.getImage() : null)
+                            .vetStatus(veterinarian.getVeterinarianStatus().toString())
+                            .serviceNames(serviceNames)
+                            .user(userResponse)
+                            .build();
+                    responseList.add(veterinarianResponse);
                 }
+            } catch (Exception e) {
+                log.error("Error while retrieving Veterinarian: {}", e.getMessage());
+            }
         }
         return responseList;
     }
+
     //CREATE VETERINARIAN
-    public void createVeterinarian (VeterinarianRequest veterinarianRequest){
+    public void createVeterinarian(VeterinarianRequest veterinarianRequest) {
         User newVeterinarian = new User();
 
         newVeterinarian.setFullName(veterinarianRequest.getUserRequest().getFullname());
@@ -117,8 +117,8 @@ public class VeterinarianService {
         veterinarian.setVeterinarianStatus(VeterinarianStatus.AVAILABLE);
         veterinarian.setUser(newVeterinarian);
 
-        List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>() ;
-        for (String service : veterinarianRequest.getService()){
+        List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
+        for (String service : veterinarianRequest.getService()) {
             services.add(servicesRepository.findByServiceId(service));
         }
 
@@ -128,6 +128,20 @@ public class VeterinarianService {
     }
 
 
+    public List<VeterinarianResponse> getVeterinariansByServiceId(String serviceId) {
+        List<Veterinarian> veterinarians = veterinarianRepository.findByServices_ServiceId(serviceId);
+        List<VeterinarianResponse> responseList = new ArrayList<>();
+        for (Veterinarian veterinarian : veterinarians) {
+
+            VeterinarianResponse x = new VeterinarianResponse();
+                    x.setGoogleMeet(veterinarian.getGoogleMeet());
+                    x.setPhone(veterinarian.getPhone());
+                    x.setVetId(veterinarian.getVetId());
+                    x.setUserId(veterinarian.getUser().getUserId());
+            responseList.add(x);
+        }
+        return responseList;
+    }
 }
 
 
