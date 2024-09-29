@@ -15,6 +15,8 @@ const Service = ({ image, serviceId, serviceName, description, isBooking }) => {
       navigate(`/services/${serviceId}`)
     }
   }
+
+  
   return (
     <>
       <div className="col-md-4 mb-4">

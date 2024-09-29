@@ -73,7 +73,14 @@ export const fetchServiceByTypeAPI = async (type) => {
 
 
 
-//Appointment API
+
+
+// Appointment API
+export const fetchAllAppointmentByVetIdAPI = async (vetId) => {
+const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
+return response.data;
+}
+
 export const fetchAllAppointmentAPI = async () => {
     const response = await api.get(`/appointments`);
     return response.data;
@@ -82,6 +89,22 @@ export const fetchAppointmentByCustomerIdAPI= async (customerId) => {
     const response = await api.get(`/appointments/getByCustomerId?customerId=${customerId}`);
     return response.data;
 }
+
+export const fetchAppointmentByIdAPI = async (appointmentId) => {
+    const response = await api.get(`appointments/detail?appointmentId=${appointmentId}`);
+    return response.data;
+}
+
+export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
+    const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
+    return response.data;
+}
+
+
+
+
+
+
 
 //Pond API
 export const  fetchPondByCustomerIdAPI = async (customerId) => {
