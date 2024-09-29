@@ -16,6 +16,7 @@ function SideBar() {
     if (response.status === 200) {
       dispatch(clearUser());
       navigate("/");
+      window.location.reload();
     }
   };
 

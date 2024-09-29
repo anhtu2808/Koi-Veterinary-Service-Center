@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Veterinarian from '../../components/Veterinarian/Veterinarian';
-import { fetchVetsAPI } from '../../apis';
+import Veterinarian from '../../../components/Veterinarian/Veterinarian';
+import { fetchVetsAPI } from '../../../apis';
 
 const VeterinarianStep = () => {
     const [veterinarians, setVeterinarians] =useState([]);

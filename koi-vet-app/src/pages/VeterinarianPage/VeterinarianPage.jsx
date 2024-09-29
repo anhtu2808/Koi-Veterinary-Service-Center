@@ -33,14 +33,6 @@ function VeterinarianPage() {
            })
           }
         </div>
-        <div className="d-flex justify-content-between mt-4">
-          <button className="btn-nav">
-            <i className="fas fa-arrow-left"></i> Previous Step
-          </button>
-          <button className="btn-nav">
-            Next Step <i className="fas fa-arrow-right"></i>
-          </button>
-        </div>
       </div>
     </div>
   );

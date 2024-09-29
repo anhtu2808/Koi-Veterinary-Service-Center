@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { fetchServiceByTypeAPI } from '../../apis'
-import Service from '../../components/Service/Service'
+import { fetchServiceByTypeAPI } from '../../../apis'
+import Service from '../../../components/Service/Service'
 
 export const ServiceStep = () => {
     const type = useSelector(state => state?.booking?.bookingData?.type)

@@ -48,10 +48,11 @@ function HomePage() {
                         <div className="col-md-4 mb-4" onClick={() => handleBooking(BOOKING_TYPE.HOME)}>
                             <div className="service-card bg-blue-100 hover:bg-blue-200 p-4 rounded-lg shadow-md">
                                 <div className="text-center-custom text-center">
-                                    <i className="fas fa-mobile-alt text-4xl mb-4 text-primary"></i>
-                                    <h3 className="h5 font-weight-semibold mb-2">Booking Mobile Service</h3>
-                                    <p className="text-gray-600">Book a mobile service for convenient healthcare at your doorstep.</p>
+                                    <i className="fas fa-home text-4xl mb-4 text-primary"></i>
+                                    <h3 className="h5 font-weight-semibold mb-2">Booking Home Service</h3>
+                                    <p className="text-gray-600">Book a home service for convenient healthcare at your doorstep.</p>
                                 </div>
+                                
                             </div>
                         </div>
                         <div className="col-md-4 mb-4" onClick={() => handleBooking(BOOKING_TYPE.ONLINE)}>
