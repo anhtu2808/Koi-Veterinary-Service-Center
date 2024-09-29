@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+:root {
+  --color-primary: #1F2B6C;
+  --color-accent: #DFEAFF;
+  --color-secondary: rgba(21, 158, 236, 0.5);
+}
+.container-fluid {
+ padding: 0 !important;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Tắt tràn ngang */
+  width: 100%; /* Đảm bảo body chiếm toàn bộ chiều rộng */
+}
