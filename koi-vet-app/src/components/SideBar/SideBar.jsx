@@ -49,12 +49,6 @@ function SideBar() {
             </li>
           )}
 
-          <li className="nav-item py-2">
-            <Link className="nav-link" href="#">
-              <i className="far fa-images"></i> Photos
-            </Link>
-          </li>
-
           {role === ROLE.STAFF && (
             <li className="nav-item py-2">
               <Link to="/admin/allappointment" className="nav-link">
@@ -62,6 +56,12 @@ function SideBar() {
               </Link>
             </li>
           )}
+
+          <li className="nav-item py-2">
+            <Link className="nav-link" href="#">
+              <i className="far fa-images"></i> Photos
+            </Link>
+          </li>
 
           <li className="nav-item py-2">
             <Link className="nav-link" href="#">
