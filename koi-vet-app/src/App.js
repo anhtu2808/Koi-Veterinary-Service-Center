@@ -75,6 +75,7 @@ function App() {
                 <Route path='/profile' element={<MyProfile />} />
                 <Route path='/booking' element={<BookingPage />} />
                 <Route path='/allappointment' element={<AllAppointment />} />
+                <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
               </Route>
             </Routes>
           </UserLayout>

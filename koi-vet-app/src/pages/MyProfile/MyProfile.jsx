@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateMyInfoAPI } from "../../apis";
 import { updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
 import "./MyProfile.css";
+import { useNavigate } from "react-router-dom";
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
   const dispatch = useDispatch();
   const myInfo = useSelector(state => state?.user);
   const customer = useSelector(state => state?.user?.customer);
-
+  const navigate = useNavigate();
   const handleEdit = () => {
     setIsEditing(true);
     setEditedInfo({
@@ -19,12 +20,16 @@ const MyProfile = () => {
       address: customer.address,
     });
   };
-
+  const handleAllAppointment = () => {
+    navigate("/allappointment");
+  };
   const handleSave = async () => {
+    setIsEditing(false);
     try {
       const updatedInfo = await updateMyInfoAPI(editedInfo);
+    
       dispatch(updateUserInfo(updatedInfo));
-      setIsEditing(false);
+    
     } catch (error) {
       console.error("Error updating user info:", error);
     }
@@ -122,12 +127,13 @@ const MyProfile = () => {
             </div>
           </div>
         </div>
-        <div className="card-footer text-center">
+        <div className="card-footer text-center d-flex justify-content-between">
           {isEditing ? (
             <button className="btn btn-primary" onClick={() => handleSave()}>Save Changes</button>
           ) : (
-            <button className="btn btn-secondary" onClick={() => handleEdit()}>Edit Information</button>
+            <button className="btn btn-primary" onClick={() => handleEdit()}>Edit Information</button>
           )}
+           <button className="btn btn-primary" onClick={() => handleAllAppointment()}>My Appointments</button>
         </div>
       </div>
     </div>
