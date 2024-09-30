@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Veterinarian from '../../../components/Veterinarian/Veterinarian';
-import { fetchVetByServiceIdAPI, fetchVetsAPI } from '../../../apis';
+import { fetchVetByServiceIdAPI } from '../../../apis';
 import { useSelector } from 'react-redux';
 
 const VeterinarianStep = () => {
