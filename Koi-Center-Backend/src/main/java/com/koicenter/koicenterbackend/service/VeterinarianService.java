@@ -146,7 +146,7 @@ public class VeterinarianService {
                     x.setVetId(veterinarian.getVetId());
                     x.setDescription(veterinarian.getDescription());
                     x.setUserId(veterinarian.getUser().getUserId());
-                    x.setVetStatus(veterinarian.getVeterinarianStatus().toString());
+                    x.setVetStatus(veterinarian.getVeterinarianStatus() == null? "" : veterinarian.getVeterinarianStatus().toString() );
                     x.setUserId(veterinarian.getUser().getUserId());
                     UserResponse userResponse = new UserResponse();
                     userResponse.setFullName(veterinarian.getUser().getFullName());
