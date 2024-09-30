@@ -14,8 +14,8 @@ import lombok.experimental.FieldDefaults;
 public class PrescriptionMedicine {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+     String id ;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prescription_id")

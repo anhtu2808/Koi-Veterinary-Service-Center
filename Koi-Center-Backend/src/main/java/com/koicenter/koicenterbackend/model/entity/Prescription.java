@@ -18,7 +18,7 @@ import java.util.Set;
 public class Prescription {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String PrescriptionId;
+    String id;
     String name;
     ZonedDateTime createdDate;
     String note;
