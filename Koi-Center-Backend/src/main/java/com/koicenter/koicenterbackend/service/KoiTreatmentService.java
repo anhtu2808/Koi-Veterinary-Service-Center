@@ -3,7 +3,7 @@ package com.koicenter.koicenterbackend.service;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.*;
-import com.koicenter.koicenterbackend.model.request.KoiTreatmentRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.response.KoiTreatmentResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.KoiRepository;

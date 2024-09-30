@@ -1,4 +1,4 @@
-package com.koicenter.koicenterbackend.model.request;
+package com.koicenter.koicenterbackend.model.request.appointment;
 
 import com.koicenter.koicenterbackend.model.enums.AppointmentStatus;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;

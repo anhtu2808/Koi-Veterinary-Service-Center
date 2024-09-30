@@ -1,4 +1,4 @@
-package com.koicenter.koicenterbackend.model.request;
+package com.koicenter.koicenterbackend.model.request.koi;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

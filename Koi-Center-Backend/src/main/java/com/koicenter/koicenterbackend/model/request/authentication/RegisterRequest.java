@@ -1,4 +1,4 @@
-package com.koicenter.koicenterbackend.model.request;
+package com.koicenter.koicenterbackend.model.request.authentication;
 
 
 import lombok.AccessLevel;
