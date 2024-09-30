@@ -18,7 +18,7 @@ function Payment() {
   useEffect(() => {
     setAppointmentCreateRequest({
       "appointmentDate": bookingData.date,
-      "status": bookingData.vetId !== null ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
+      "status": bookingData.vetId !== "SKIP" ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
       "startTime": bookingData.startAt, // Định dạng thời gian
       "endTime": bookingData.endAt, // Định dạng thời gian
       "location": customerInfo.address, // Địa điểm

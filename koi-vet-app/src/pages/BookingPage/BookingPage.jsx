@@ -79,7 +79,7 @@ function BookingPage() {
           </div>
 
           {step === 2? <div className="col-md-1">
-            <button className="btn btn-primary "  onClick={()=> handleNextStep()}>Next</button>
+            <button className="btn btn-primary "  onClick={()=> handleNextStep()}>Skip</button>
           </div> : null}
           {step === 3 && serviceFor === SERVICE_FOR.KOI ?  <div className="col-md-1">
             {date && startAt && endAt ? 
