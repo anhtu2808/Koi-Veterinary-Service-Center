@@ -137,6 +137,9 @@ public class VeterinarianService {
                     x.setGoogleMeet(veterinarian.getGoogleMeet());
                     x.setPhone(veterinarian.getPhone());
                     x.setVetId(veterinarian.getVetId());
+                    x.setDescription(veterinarian.getDescription());
+                    x.setUserId(veterinarian.getUser().getUserId());
+                    x.setVetStatus(veterinarian.getVeterinarianStatus().toString());
                     x.setUserId(veterinarian.getUser().getUserId());
             responseList.add(x);
         }
