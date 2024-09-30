@@ -94,7 +94,9 @@ public class AppointmentService {
                     .status(appointment.getStatus())
                     .type(appointment.getType())
                     .customerId(appointment.getCustomer().getCustomerId())
+                    .customerName(appointment.getCustomer().getUser().getFullName())
                     .serviceId(appointment.getService().getServiceId())
+                    .serviceName(appointment.getService().getServiceName())
                     .vetId(appointment.getVeterinarian().getVetId())
                     .build();
 
