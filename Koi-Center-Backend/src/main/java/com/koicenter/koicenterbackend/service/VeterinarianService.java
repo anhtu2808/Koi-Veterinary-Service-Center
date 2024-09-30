@@ -141,6 +141,11 @@ public class VeterinarianService {
                     x.setUserId(veterinarian.getUser().getUserId());
                     x.setVetStatus(veterinarian.getVeterinarianStatus().toString());
                     x.setUserId(veterinarian.getUser().getUserId());
+                    UserResponse userResponse = new UserResponse();
+                    userResponse.setFullName(veterinarian.getUser().getFullName());
+                    userResponse.setEmail(veterinarian.getUser().getEmail());
+                    userResponse.setUsername(veterinarian.getUser().getUsername());
+                    x.setUser(userResponse);
             responseList.add(x);
         }
         return responseList;
