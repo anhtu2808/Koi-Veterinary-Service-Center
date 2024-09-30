@@ -23,7 +23,7 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + '...';
   }
-  
+
   return (
     <>
       <div className="col-md-4 mb-4">
@@ -35,9 +35,12 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
             <p className="description flex-grow-1" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {truncateDescription(description, 100)}
             </p>
+
             <div>
-              <button className='btn btn-primary me-2' onClick={() => handleClickButton()}>Order</button> 
-              <button className='btn btn-primary'>Detail</button>
+
+              <button onClick={() => handleClickButton()}
+                className='btn btn-primary'>{isBooking ? 'Order' : 'Detail'}
+              </button>
             </div>
           </div>
         </div>

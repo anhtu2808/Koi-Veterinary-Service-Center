@@ -21,15 +21,15 @@ function HomePage() {
 
     return (
         <>
-            <section className="position-relative" >
+            <section className="position-relative banner-section" >
                 <img src="https://media.istockphoto.com/id/1044789320/vi/anh/c%C3%A1-ch%C3%A9p-b%C6%A1i-trong-%C4%91%C3%A0i-phun-n%C6%B0%E1%BB%9Bc.jpg?b=1&s=612x612&w=0&k=20&c=Afo7ZEPrztXetoXKgq5PxEc78HGxFYNKJcPP4FRrRDc="
-                    alt="Hero" className="w-100 h-100 object-fit-cover" />
+                    alt="Hero" className="banner w-100 banner-i " />
                 <div className="container">
                     <div className="position-absolute top-0 start-0 w-100 h-100 bg-light bg-opacity-75 d-flex align-items-center justify-content-start">
                         <div className="text-start text-dark container ms-4">
-                            <p className="fs-5 mb-2 text-nav" >Caring for Koi</p>
-                            <h1 className="display-4 fw-bold mb-4 text-nav" >Dedicated Care for Koi Fish</h1>
-                            <h1 className="display-4 fw-bold mb-4 text-nav" >Ensuring Their Peak Health</h1>
+
+                            <h1 className="display-4 fw-bold mb-4 text-start text-nav" >Dedicated Care for Koi Fish</h1>
+                            <h1 className="display-4 fw-bold mb-4 text-start text-nav" >Ensuring Their Peak Health</h1>
                             <button className="btn btn-primary">Our Services</button>
                         </div>
                     </div>
@@ -37,12 +37,8 @@ function HomePage() {
             </section>
 
             <div className="min-vh-100 bg-light">
-                <nav className="bg-white shadow-md">
-                    <div className="container px-6 py-3">
-                    </div>
-                </nav>
 
-                <div className="container px-6 py-8">
+                <div className="container px-6 py-5">
                     <div className="row">
 
                         <div className="col-md-4 mb-4" onClick={() => handleBooking(BOOKING_TYPE.HOME)}>

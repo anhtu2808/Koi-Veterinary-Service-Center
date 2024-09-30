@@ -2,7 +2,12 @@
     background-color: #1F2B6C;
     color: #fff;
 }
-
+.banner-image{
+    max-height: 60vh !important;
+}
+.banner-section{
+    max-height: 30% !important;
+}
 .text-nav{
     color: #1F2B6C;
 }
