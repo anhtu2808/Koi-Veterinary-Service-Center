@@ -74,6 +74,7 @@ function App() {
               <Route element={<UserProtectedRoute />}>
                 <Route path='/profile' element={<MyProfile />} />
                 <Route path='/booking' element={<BookingPage />} />
+                <Route path='/allappointment' element={<AllAppointment />} />
               </Route>
             </Routes>
           </UserLayout>

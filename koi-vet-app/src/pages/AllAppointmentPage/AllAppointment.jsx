@@ -4,12 +4,14 @@ import "./AllAppointment.css";
 import {
   fetchAllAppointmentAPI,
   fetchAllAppointmentByVetIdAPI,
+  fetchAppointmentByCustomerIdAPI,
 } from "../../apis";
 import { ROLE } from "../../utils/constants";
 import { useSelector } from "react-redux";
 
 function AllAppointment() {
   const [appointments, setAppointments] = useState([]);
+  const customerId = useSelector((state) => state.user.customer.customerId);
 
   //   useEffect(() => {
   //     const fecthServices = async () => {
@@ -26,6 +28,7 @@ function AllAppointment() {
     const fetchAppointmentForVet = async (vetId) => {
       const response = await fetchAllAppointmentByVetIdAPI(vetId);
       setAppointments(response?.data);
+      console.log(response?.data)
     };
 
     const fetchAppointmentForStaff = async () => {
@@ -33,12 +36,19 @@ function AllAppointment() {
       setAppointments(response?.data);
     };
 
+    const fetchAppointmentForCustomer = async (customerId) => {
+      const response = await fetchAppointmentByCustomerIdAPI(customerId);
+      setAppointments(response?.data);
+    };
+
     if (role === ROLE.VETERINARIAN) {
       fetchAppointmentForVet("VET002");
     } else if (role === ROLE.STAFF) {
       fetchAppointmentForStaff();
+    } else if (role === ROLE.CUSTOMER) {
+      fetchAppointmentForCustomer(customerId);
     }
-  }, [role]);
+  }, [role, customerId]);
 
   return (
     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">

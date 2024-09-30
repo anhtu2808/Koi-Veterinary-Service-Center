@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Veterinarian from '../../../components/Veterinarian/Veterinarian';
-import { fetchVetByServiceIdAPI, fetchVetsAPI } from '../../../apis';
+import { fetchVetByServiceIdAPI } from '../../../apis';
 import { useSelector } from 'react-redux';
 
 const VeterinarianStep = () => {
@@ -29,7 +29,7 @@ const VeterinarianStep = () => {
           {
            veterinarians?.map((vet) => {
             console.log({vet});
-            return <Veterinarian image={vet.image} vetId={vet.vetId} name={vet?.user?.full_name} isBooking={true} />
+            return <Veterinarian image={vet.image} vetId={vet.vetId} name={vet?.user?.fullName} isBooking={true} />
            })
           }
         </div>
