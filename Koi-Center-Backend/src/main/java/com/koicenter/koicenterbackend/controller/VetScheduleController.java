@@ -1,8 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
-import com.koicenter.koicenterbackend.model.entity.VetSchedule;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
-import com.koicenter.koicenterbackend.model.request.VetScheduleRequest;
+import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.VetScheduleService;
 import lombok.AccessLevel;
@@ -38,5 +37,9 @@ public class VetScheduleController {
         @GetMapping("/{vetSchedule}")
         public ResponseEntity<ResponseObject> getScheduleForBooking(@RequestBody VetScheduleRequest vetSchedule) {
             return ResponseObject.APIRepsonse(200,"Get Schedule ID Successfully", HttpStatus.OK,vetSchedule);
+        }
+        @PostMapping("/date") //lấy bác sĩ rãnh lên ngay do
+    public ResponseEntity<ResponseObject> getVeterinariansByDateTime(@RequestBody VetScheduleRequest vetSchedule) {
+        return ResponseObject.APIRepsonse(200,"Get Vet Schedule ID Successfully", HttpStatus.OK,vetSchedule);
         }
     }

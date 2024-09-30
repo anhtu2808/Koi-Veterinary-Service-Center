@@ -1,11 +1,10 @@
-package com.koicenter.koicenterbackend.model.request;
+package com.koicenter.koicenterbackend.model.request.authentication;
 
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.validator.constraints.pl.NIP;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)

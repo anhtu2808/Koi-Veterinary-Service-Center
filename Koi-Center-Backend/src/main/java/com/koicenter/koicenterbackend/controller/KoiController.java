@@ -3,9 +3,8 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Koi;
-import com.koicenter.koicenterbackend.model.request.KoiRequest;
-import com.koicenter.koicenterbackend.model.request.KoiUpdateRequest;
-import com.koicenter.koicenterbackend.model.request.PondUpdateRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.KoiService;
 import jakarta.validation.Valid;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
-public class KoiController {
+public class    KoiController {
 
     @Autowired
     private KoiService koiService;

@@ -1,19 +1,12 @@
 package com.koicenter.koicenterbackend.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.Customer;
-import com.koicenter.koicenterbackend.model.entity.Koi;
 import com.koicenter.koicenterbackend.model.entity.Pond;
-import com.koicenter.koicenterbackend.model.entity.PondTreatment;
-import com.koicenter.koicenterbackend.model.request.KoiRequest;
-import com.koicenter.koicenterbackend.model.request.PondRequest;
-import com.koicenter.koicenterbackend.model.request.PondUpdateRequest;
+import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
+import com.koicenter.koicenterbackend.model.request.pond.PondUpdateRequest;
 import com.koicenter.koicenterbackend.repository.PondRepository;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

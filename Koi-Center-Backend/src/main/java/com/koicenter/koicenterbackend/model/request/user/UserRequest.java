@@ -1,6 +1,5 @@
-package com.koicenter.koicenterbackend.model.request;
+package com.koicenter.koicenterbackend.model.request.user;
 
-import com.koicenter.koicenterbackend.model.enums.Role;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;

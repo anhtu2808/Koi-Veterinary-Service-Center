@@ -1,9 +1,8 @@
 package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.model.entity.VetSchedule;
-import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
-import com.koicenter.koicenterbackend.model.request.VetScheduleRequest;
+import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.DayResponse;
 import com.koicenter.koicenterbackend.model.response.SlotResponse;
 import com.koicenter.koicenterbackend.model.response.VetScheduleResponse;
@@ -18,9 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -109,4 +106,8 @@ public class VetScheduleService {
 
         return dayResponses;
     }
+//    public List<VetScheduleResponse> getVeterinariansByDateTime(VetScheduleRequest localDate) {
+//        List<VetScheduleResponse> vetSchedules = new ArrayList<>();
+//
+//    }
 }

@@ -1,7 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
 
-import com.koicenter.koicenterbackend.model.entity.Appointment;
+import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.response.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.AppointmentService;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/appointments")
@@ -72,4 +71,11 @@ public class AppointmentController {
         appointmentService.createAppointment(appointmentResponse);
     return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
     }
-}
+    // UPDATE
+    @PostMapping("/update")
+    public ResponseEntity<ResponseObject> updateAppointment(@RequestBody AppointmentRequest appointmentResponse) {
+        appointmentService.updateAppointment(appointmentResponse);
+    return ResponseObject.APIRepsonse(200,"UPDATE APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
+    }
+    }
+

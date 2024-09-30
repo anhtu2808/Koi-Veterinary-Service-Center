@@ -1,5 +1,4 @@
-package com.koicenter.koicenterbackend.model.request;
-
+package com.koicenter.koicenterbackend.model.request.koi;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,10 +10,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateUserRequest {
-    String username;
-    String full_name;
-    String email;
-    String phone_number;
+public class KoiTreatmentRequest {
+    String koiId;
+    String appointmentId;
+    String healthIssue;
+    String treatment;
 }
-

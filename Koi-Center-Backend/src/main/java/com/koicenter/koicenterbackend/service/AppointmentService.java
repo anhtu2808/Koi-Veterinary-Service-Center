@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
+import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.response.AppointmentResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
@@ -18,11 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 
 @Slf4j
@@ -198,7 +197,30 @@ public class AppointmentService {
     appointment.setService(service);
     appointmentRepository.save(appointment);
     }
+    public boolean updateAppointment (AppointmentRequest appointmentRequest){
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
+        Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
+        Veterinarian veterinarian =  veterinarianRepository.findByVetId(appointmentRequest.getVetId());
+        log.info("Veterian ID "+ veterinarian.getVetId());
+        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
 
+        appointment.setAppointmentDate(appointmentRequest.getAppointmentDate());
+        appointment.setCreatedAt(appointmentRequest.getCreatedAt());
+        appointment.setEndTime(appointmentRequest.getEndTime());
+        appointment.setStatus(appointmentRequest.getStatus());
+        appointment.setType(appointmentRequest.getType());
+        appointment.setLocation(appointmentRequest.getLocation());
+        appointment.setDepositedMoney(appointmentRequest.getDepositedMoney());
+        appointment.setResult(appointmentRequest.getResult());
+        appointment.setStartTime(appointmentRequest.getStartTime());
+        appointment.setType(appointmentRequest.getType());
+        appointment.setCustomer(customer);
+        appointment.setVeterinarian(veterinarian);
+        appointment.setService(service);
+
+        appointmentRepository.save(appointment);
+        return true ;
+    }
 }
 
 
