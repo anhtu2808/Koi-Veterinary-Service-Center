@@ -17,7 +17,7 @@ const Veterinarian = ({image,vetId,name,isBooking}) => {
             <div className="doctor-card">
               <img src={tempt_img} alt="Doctor 1" />
               <div className="p-3">
-                <h5>{name}- {vetId}</h5>
+                <h5>{name}  </h5>
                 <p>CVIS & VFDS</p>
                 <div className="icon-group">
                   <i className="fas fa-user"></i>

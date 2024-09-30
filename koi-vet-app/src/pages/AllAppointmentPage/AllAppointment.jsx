@@ -11,7 +11,8 @@ import { useSelector } from "react-redux";
 
 function AllAppointment() {
   const [appointments, setAppointments] = useState([]);
-  const customerId = useSelector((state) => state.user.customer.customerId);
+  const customerId = useSelector((state) => state?.user?.customer?.customerId);
+  const [title, setTitle] = useState("");
 
   //   useEffect(() => {
   //     const fecthServices = async () => {
@@ -39,21 +40,38 @@ function AllAppointment() {
     const fetchAppointmentForCustomer = async (customerId) => {
       const response = await fetchAppointmentByCustomerIdAPI(customerId);
       setAppointments(response?.data);
+      setTitle("My Appointments");
     };
 
     if (role === ROLE.VETERINARIAN) {
       fetchAppointmentForVet("VET002");
+      setTitle("All My Appointments");
     } else if (role === ROLE.STAFF) {
       fetchAppointmentForStaff();
+      setTitle("All Veterinarian Appointments");
     } else if (role === ROLE.CUSTOMER) {
       fetchAppointmentForCustomer(customerId);
     }
   }, [role, customerId]);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).replace(/\//g, '-');
+  };
+
+  const formatTime = (timeString) => {
+    const [hours, minutes] = timeString.split(':');
+    return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+  };
+
   return (
-    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+    <main className="col-md-9 col-lg-10 px-md-4 mx-auto main-content">
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 className="h2">Users Dashboard</h1>
+        <h1 className="h2">{title}</h1>
         <div className="btn-toolbar mb-2 mb-md-0">
           <div className="btn-group me-2">
             <button type="button" className="btn btn-sm btn-outline-secondary">
@@ -85,31 +103,41 @@ function AllAppointment() {
         <table className="table table-striped table-sm tableleft">
           <thead>
             <tr>
-              <th>Appoint ID</th>
+              <th>ID</th>
               <th>User</th>
               <th>Service</th>
-              <th>Address</th>
+              <th>Time</th>
               <th>Date</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {appointments.map((appointmentDetail) => (
-              <tr key={appointmentDetail.appointmentId}>
-                <td>{appointmentDetail.appointmentId}</td>
+            {appointments.map((appointmentDetail, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
                 <td>{appointmentDetail.customerName}</td>
                 <td>{appointmentDetail.serviceName}</td>
-                <td>{appointmentDetail.location}</td>
-                <td>{appointmentDetail.appointmentDate}</td>
+                <td>{formatTime(appointmentDetail.startTime)}</td>
+                <td>{formatDate(appointmentDetail.appointmentDate)}</td>
                 <td>{appointmentDetail.status}</td>
                 <td>
-                  <Link
-                    to={`/admin/appointment/${appointmentDetail.appointmentId}`}
-                    className="btn btn-sm btn-outline-primary"
-                  >
-                    <i className="fas fa-edit"></i>
-                  </Link>
+                  {role === ROLE.CUSTOMER ?
+                    <Link
+                      to={`/appointment/${appointmentDetail.appointmentId}`}
+                      className="btn btn-sm btn-outline-primary"
+                    >
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </Link>
+                    :
+                    <Link
+                      to={`/admin/appointment/${appointmentDetail.appointmentId}`}
+                      className="btn btn-sm btn-outline-primary"
+                    >
+                      <i className="fas fa-edit"></i>
+                    </Link>
+                  }
+
                   <button className="btn btn-sm btn-outline-secondary">
                     <i className="fas fa-trash"></i>
                   </button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/img/logo.png";
 import "../../pages/Home/Home.css";
 import { Link, NavLink, useNavigate } from "react-router-dom"; // Sử dụng NavLink để kiểm soát trạng thái "active"
@@ -9,7 +9,8 @@ import { ROLE } from "../../utils/constants";
 
 function Header() {
   const isAuthorized = useSelector((state) => state.user.isAuthorized);
-  const user = useSelector((state) => state.user);
+  const [user, setUser] = useState(null);
+  const userData = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,6 +25,9 @@ function Header() {
   const handleButtonLogin = () => {
     navigate("/login");
   };
+  useEffect(() => {
+     setUser(userData);
+  }, [userData]);
 
   return (
     <>
@@ -124,11 +128,11 @@ function Header() {
                   Login
                 </button>
               )}
-              {user.role === ROLE.CUSTOMER &&
+              {user?.role === ROLE.CUSTOMER &&
               <Link to="/profile" className="btn btn-outline-light">
               <i className="fas fa-user"></i>
             </Link>}
-            {user.role === ROLE.VETERINARIAN &&
+            {user?.role === ROLE.VETERINARIAN &&
             <Link to="/admin" className="btn btn-outline-light">
             <i className="fas fa-user"></i>
             </Link>}

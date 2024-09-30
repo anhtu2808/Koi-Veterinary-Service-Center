@@ -18,7 +18,7 @@ function Payment() {
   useEffect(() => {
     setAppointmentCreateRequest({
       "appointmentDate": bookingData.date,
-      "status": bookingData.vetId !== null ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
+      "status": bookingData.vetId !== "SKIP" ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
       "startTime": bookingData.startAt, // Định dạng thời gian
       "endTime": bookingData.endAt, // Định dạng thời gian
       "location": customerInfo.address, // Địa điểm
@@ -155,7 +155,7 @@ function Payment() {
             <div className="payment-card-body">
               <div className="mb-3">
                 <label htmlFor="doctorName" className="payment-form-label">
-                  Doctor's Name
+                  Veterinarian's Name
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
@@ -165,8 +165,9 @@ function Payment() {
                     type="text"
                     className="form-control payment-form-control"
                     id="doctorName"
-                    placeholder="Enter doctor's name"
+                    placeholder="Veterinarian is not selected"
                     value={vetInfo?.user?.fullName}
+                    disabled
                   />
                 </div>
               </div>
@@ -183,6 +184,7 @@ function Payment() {
                     className="form-control payment-form-control"
                     id="dateTime"
                     value={combinedDateTime}
+                    disabled
                   />
                 </div>
               </div>
@@ -200,6 +202,7 @@ function Payment() {
                     id="doctorName"
                     placeholder="Enter doctor's name"
                     value={serviceInfo?.serviceName}
+                    disabled
                   />
                 </div>
               </div>

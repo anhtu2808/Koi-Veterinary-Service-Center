@@ -172,8 +172,13 @@ public class AppointmentService {
     //CREATE APPOINTMENT
     public void createAppointment ( AppointmentResponse appointmentResponse){
         Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
-        Veterinarian veterinarian =  veterinarianRepository.findByVetId(appointmentResponse.getVetId());
-        log.info("Veterian ID "+ veterinarian.getVetId());
+        Veterinarian veterinarian = null;
+        if(!appointmentResponse.getVetId().equalsIgnoreCase("SKIP")){
+             veterinarian =  veterinarianRepository.findByVetId(appointmentResponse.getVetId());
+            log.info("Veterian ID "+ veterinarian.getVetId());
+        }
+
+
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentResponse.getServiceId());
 
         Appointment appointment = new Appointment();

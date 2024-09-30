@@ -14,10 +14,10 @@ function HomePage() {
         navigate('/booking')
     }
     //reset booking data
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(resetBoking())
-    //eslint-disable-next-line
-    },[])
+        //eslint-disable-next-line
+    }, [])
 
     return (
         <>
@@ -48,7 +48,7 @@ function HomePage() {
                                     <h3 className="h5 font-weight-semibold mb-2">Booking Home Service</h3>
                                     <p className="text-gray-600">Book a home service for convenient healthcare at your doorstep.</p>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div className="col-md-4 mb-4" onClick={() => handleBooking(BOOKING_TYPE.ONLINE)}>
