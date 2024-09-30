@@ -34,7 +34,6 @@ public class Service {
     String image;
 
     @OneToMany(mappedBy = "service")
-    @JsonIgnore
     List<Appointment> appointments;
 
     @ManyToMany
@@ -43,6 +42,5 @@ public class Service {
             joinColumns = @JoinColumn(name = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "vet_id")
     )
-    @JsonIgnore
     List<Veterinarian> veterinarians;
 }

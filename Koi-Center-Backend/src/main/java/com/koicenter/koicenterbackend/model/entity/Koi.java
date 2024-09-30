@@ -30,7 +30,6 @@ public class Koi {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    @JsonIgnore
     Customer customer;
 
 
