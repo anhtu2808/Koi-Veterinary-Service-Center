@@ -1,5 +1,7 @@
 package com.koicenter.koicenterbackend.service;
 
+import com.koicenter.koicenterbackend.exception.AppException;
+import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -129,7 +132,11 @@ public class VeterinarianService {
 
 
     public List<VeterinarianResponse> getVeterinariansByServiceId(String serviceId) {
+
         List<Veterinarian> veterinarians = veterinarianRepository.findByServices_ServiceId(serviceId);
+        if(veterinarians.isEmpty()){
+            throw new AppException(404, "Not found", HttpStatus.NOT_FOUND);
+        }
         List<VeterinarianResponse> responseList = new ArrayList<>();
         for (Veterinarian veterinarian : veterinarians) {
 
@@ -141,6 +148,11 @@ public class VeterinarianService {
                     x.setUserId(veterinarian.getUser().getUserId());
                     x.setVetStatus(veterinarian.getVeterinarianStatus().toString());
                     x.setUserId(veterinarian.getUser().getUserId());
+                    UserResponse userResponse = new UserResponse();
+                    userResponse.setFullName(veterinarian.getUser().getFullName());
+                    userResponse.setEmail(veterinarian.getUser().getEmail());
+                    userResponse.setUsername(veterinarian.getUser().getUsername());
+                    x.setUser(userResponse);
             responseList.add(x);
         }
         return responseList;
