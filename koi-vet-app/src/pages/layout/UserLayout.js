@@ -6,7 +6,9 @@ function UserLayout({ children }) {
   return (
    <>
    <Header/>
+   
     {children}
+ 
     <Footer/>
    </>
   )

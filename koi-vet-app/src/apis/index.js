@@ -139,6 +139,10 @@ export const updatePondInformationAPI = async (pondId, data) => {
     const response = await api.put(`/ponds/${pondId}`, data);
     return response.data;
 }
+export const createPondAPI = async (data) => {
+    const response = await api.post('/ponds/create', data);
+    return response.data;
+}
 
 
 
@@ -157,5 +161,8 @@ export const updateKoiInformationAPI = async (koiId, data) => {
     const response = await api.put(`/kois/${koiId}`, data);
     return response.data;
 }
-
+export const createKoiAPI = async (data) => {
+    const response = await api.post('/kois/create', data);
+    return response.data;
+}
 
