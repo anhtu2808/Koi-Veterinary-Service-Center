@@ -16,9 +16,9 @@ function BookingPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const step = useSelector(state => state.booking.step)
-  const date = useSelector(state => state.booking.bookingData.date) 
-  const startAt = useSelector(state => state.booking.bookingData.startAt) 
-  const endAt = useSelector(state => state.booking.bookingData.endAt) 
+  const date = useSelector(state => state.booking.bookingData.date)
+  const startAt = useSelector(state => state.booking.bookingData.startAt)
+  const endAt = useSelector(state => state.booking.bookingData.endAt)
   const serviceFor = useSelector(state => state.booking.bookingData.serviceFor)
   const selectedKoi = useSelector(state => state.booking.bookingData.selectedKoi)
   const selectedPond = useSelector(state => state.booking.bookingData.selectedPond)
@@ -40,7 +40,7 @@ function BookingPage() {
   const renderStepComponent = () => {
     switch (step) {
       case 1:
-        return  <ServiceStep/> ;
+        return <ServiceStep />;
       case 2:
         return <VeterinarianStep />;
       case 3:
@@ -78,29 +78,34 @@ function BookingPage() {
             </button>
           </div>
 
-          {step === 2? <div className="col-md-1">
-            <button className="btn btn-primary "  onClick={()=> handleNextStep()}>Skip</button>
+          {step === 2 ? <div className="col-md-1">
+            <button className="btn btn-primary " onClick={() => handleNextStep()}>Skip</button>
           </div> : null}
-          {step === 3 && serviceFor === SERVICE_FOR.KOI ?  <div className="col-md-1">
-            {date && startAt && endAt ? 
-            <button className="btn btn-primary "  onClick={()=> handleSetStep(4)}>Next</button> : null}
-          
+          {step === 3 && serviceFor === SERVICE_FOR.KOI ? <div className="col-md-1">
+            {date && startAt && endAt ?
+              <button className="btn btn-primary " onClick={() => handleSetStep(4)}>Next</button> : null}
+
+          </div> : null}
+          {step === 3 && serviceFor === SERVICE_FOR.ONLINE ? <div className="col-md-1">
+            {date && startAt && endAt ?
+              <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Next</button> : null}
+
           </div> : null}
 
-          {step === 3 && serviceFor === SERVICE_FOR.POND ?  <div className="col-md-1">
-            {date && startAt && endAt ? 
-            <button className="btn btn-primary "  onClick={()=> handleSetStep(5)}>Next</button> : null}
-          
-          </div> : null}
-          {(step === 4 || step === 5) && (selectedKoi.length > 0 || selectedPond.length > 0)? <div className="col-md-1">
-            <button className="btn btn-primary "  onClick={()=> handleSetStep(6)}>Next</button>
+          {step === 3 && serviceFor === SERVICE_FOR.POND ?
+            <div className="col-md-1">
+              {date && startAt && endAt ?
+                <button className="btn btn-primary " onClick={() => handleSetStep(5)}>Next</button> : null}
+            </div> : null}
+          {(step === 4 || step === 5) && (selectedKoi.length > 0 || selectedPond.length > 0) ? <div className="col-md-1">
+            <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Next</button>
           </div> : null}
           {(step === 4 || step === 5) ? !(selectedKoi.length > 0 || selectedPond.length > 0) ? <div className="col-md-1">
-            <button className="btn btn-primary "  onClick={()=> handleSetStep(6)}>Skip</button>
+            <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Skip</button>
           </div> : null : null}
-          
-          
-         
+
+
+
         </div>
       </div>
     </div>
