@@ -24,7 +24,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     // Pond theo customerId
-    @GetMapping("/{customerId}/ponds")
+    @GetMapping("/ponds/{customerId}")
     public ResponseEntity<ResponseObject> getPondsByCustomerId(@PathVariable("customerId") String customerId) {
         try {
             List<Pond> ponds = customerService.getPondsByCustomerId(customerId);
@@ -37,7 +37,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{customerId}/kois")
+    @GetMapping("/kois/{customerId}")
     public ResponseEntity<ResponseObject> getKoisByCustomerId(@PathVariable("customerId") String customerId) {
         try {
             List<Koi> kois = customerService.getKoiByCustomerId(customerId);

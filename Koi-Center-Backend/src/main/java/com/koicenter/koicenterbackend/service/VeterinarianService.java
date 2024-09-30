@@ -139,20 +139,20 @@ public class VeterinarianService {
         List<VeterinarianResponse> responseList = new ArrayList<>();
         for (Veterinarian veterinarian : veterinarians) {
 
-            VeterinarianResponse x = new VeterinarianResponse();
-                    x.setGoogleMeet(veterinarian.getGoogleMeet());
-                    x.setPhone(veterinarian.getPhone());
-                    x.setVetId(veterinarian.getVetId());
-                    x.setDescription(veterinarian.getDescription());
-                    x.setUserId(veterinarian.getUser().getUserId());
-                    x.setVetStatus(veterinarian.getVeterinarianStatus() == null? "" : veterinarian.getVeterinarianStatus().toString() );
-                    x.setUserId(veterinarian.getUser().getUserId());
+            VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
+            veterinarianResponse.setGoogleMeet(veterinarian.getGoogleMeet());
+            veterinarianResponse.setPhone(veterinarian.getPhone());
+            veterinarianResponse.setVetId(veterinarian.getVetId());
+            veterinarianResponse.setDescription(veterinarian.getDescription());
+            veterinarianResponse.setUserId(veterinarian.getUser().getUserId());
+            veterinarianResponse.setVetStatus(veterinarian.getVeterinarianStatus() == null? "" : veterinarian.getVeterinarianStatus().toString() );
+            veterinarianResponse.setUserId(veterinarian.getUser().getUserId());
                     UserResponse userResponse = new UserResponse();
                     userResponse.setFullName(veterinarian.getUser().getFullName());
                     userResponse.setEmail(veterinarian.getUser().getEmail());
                     userResponse.setUsername(veterinarian.getUser().getUsername());
-                    x.setUser(userResponse);
-            responseList.add(x);
+            veterinarianResponse.setUser(userResponse);
+            responseList.add(veterinarianResponse);
         }
         return responseList;
     }
