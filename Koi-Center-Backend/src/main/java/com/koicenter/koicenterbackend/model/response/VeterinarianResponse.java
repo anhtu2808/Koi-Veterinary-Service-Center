@@ -29,7 +29,7 @@ public class VeterinarianResponse {
      String googleMeet;
      String phone;
      String imageVeterinarian;
-    String userId ;
+     String userId ;
 
     List<String> serviceNames;
     UserResponse user;

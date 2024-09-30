@@ -39,5 +39,15 @@ public class VeterinarianController {
         return ResponseObject.APIRepsonse(200, "CREATE VETERINARIAN SUCCESSFULLY", HttpStatus.OK, " " );
 
     }
+    @GetMapping("/getByServiceId")
+    public ResponseEntity<ResponseObject> getVeterinarianByServiceId(@RequestParam String serviceId) {
+     List<VeterinarianResponse> list =  veterinarianService.getVeterinariansByServiceId(serviceId);
+      if(!list.isEmpty()){
+          return ResponseObject.APIRepsonse(200, "Veterinarians found successfully", HttpStatus.OK, list);
+      }else{
+          return ResponseObject.APIRepsonse(404, "Veterinarians not found", HttpStatus.NOT_FOUND,"");
+      }
+    }
+
 
 }
