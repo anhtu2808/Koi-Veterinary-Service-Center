@@ -2,7 +2,7 @@ package com.koicenter.koicenterbackend.controller;
 
 
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
-import com.koicenter.koicenterbackend.model.response.AppointmentResponse;
+import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;

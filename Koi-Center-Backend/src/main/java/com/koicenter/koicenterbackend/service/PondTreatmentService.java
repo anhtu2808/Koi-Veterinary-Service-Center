@@ -6,7 +6,7 @@ import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.entity.PondTreatment;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
-import com.koicenter.koicenterbackend.model.response.PondTreatmentResponse;
+import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.PondRepository;
 import com.koicenter.koicenterbackend.repository.PondTreatmentRepository;

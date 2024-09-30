@@ -1,13 +1,9 @@
-package com.koicenter.koicenterbackend.model.response;
+package com.koicenter.koicenterbackend.model.response.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import com.koicenter.koicenterbackend.model.entity.Customer;
-import com.koicenter.koicenterbackend.model.entity.Veterinarian;
-
 import com.koicenter.koicenterbackend.model.enums.Role;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

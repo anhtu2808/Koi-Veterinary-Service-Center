@@ -3,7 +3,7 @@ package com.koicenter.koicenterbackend.controller;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
 
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
-import com.koicenter.koicenterbackend.model.response.UserResponse;
+import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 import com.koicenter.koicenterbackend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.koicenter.koicenterbackend.model.response;
+package com.koicenter.koicenterbackend.model.response.appointment;
 
 import com.koicenter.koicenterbackend.model.enums.AppointmentStatus;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor

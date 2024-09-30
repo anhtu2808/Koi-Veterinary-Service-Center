@@ -6,10 +6,10 @@ import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
-import com.koicenter.koicenterbackend.model.response.CustomerDTO;
-import com.koicenter.koicenterbackend.model.response.UserResponse;
+import com.koicenter.koicenterbackend.model.response.user.CustomerDTO;
+import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 
-import com.koicenter.koicenterbackend.model.response.VeterinarianDTO;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianDTO;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;

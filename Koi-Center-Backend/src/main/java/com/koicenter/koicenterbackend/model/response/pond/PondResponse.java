@@ -1,4 +1,4 @@
-package com.koicenter.koicenterbackend.model.response;
+package com.koicenter.koicenterbackend.model.response.pond;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

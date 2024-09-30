@@ -1,8 +1,7 @@
-package com.koicenter.koicenterbackend.model.response;
+package com.koicenter.koicenterbackend.model.response.veterinarian;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
-import com.koicenter.koicenterbackend.model.enums.AppointmentType;
 
 import com.koicenter.koicenterbackend.model.enums.StatusVetSchedule;
 import lombok.AccessLevel;

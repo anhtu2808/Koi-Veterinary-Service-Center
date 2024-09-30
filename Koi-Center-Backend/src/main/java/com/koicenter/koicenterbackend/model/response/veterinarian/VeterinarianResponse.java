@@ -1,8 +1,8 @@
-package com.koicenter.koicenterbackend.model.response;
+package com.koicenter.koicenterbackend.model.response.veterinarian;
 
 
 
-import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
+import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
