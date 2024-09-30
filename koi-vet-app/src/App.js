@@ -76,6 +76,8 @@ function App() {
                 <Route path='/booking' element={<BookingPage />} />
                 <Route path='/allappointment' element={<AllAppointment />} />
                 <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
+                <Route path="/createkoi" element={<KoiDetail />} />
+                <Route path="/createpond" element={<PondDetail />} />
               </Route>
             </Routes>
           </UserLayout>
