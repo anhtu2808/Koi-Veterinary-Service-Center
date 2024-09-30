@@ -4,10 +4,8 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.User;
-import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
-import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
-import com.koicenter.koicenterbackend.model.request.RegisterRequest;
+import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
 import com.koicenter.koicenterbackend.model.response.CustomerDTO;
 import com.koicenter.koicenterbackend.model.response.UserResponse;
 

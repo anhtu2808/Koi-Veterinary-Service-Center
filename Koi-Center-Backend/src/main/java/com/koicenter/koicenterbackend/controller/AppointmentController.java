@@ -1,8 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
 
-import com.koicenter.koicenterbackend.model.entity.Appointment;
-import com.koicenter.koicenterbackend.model.request.AppointmentRequest;
+import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.response.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.AppointmentService;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/appointments")

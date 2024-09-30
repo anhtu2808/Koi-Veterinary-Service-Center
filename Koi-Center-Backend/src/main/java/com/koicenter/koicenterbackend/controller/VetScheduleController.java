@@ -1,8 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
-import com.koicenter.koicenterbackend.model.entity.VetSchedule;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
-import com.koicenter.koicenterbackend.model.request.VetScheduleRequest;
+import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.VetScheduleService;
 import lombok.AccessLevel;

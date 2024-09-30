@@ -5,7 +5,7 @@ import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
-import com.koicenter.koicenterbackend.model.request.AppointmentRequest;
+import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.response.AppointmentResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
@@ -19,11 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 
 @Slf4j

@@ -1,12 +1,11 @@
 package com.koicenter.koicenterbackend.service;
 
-import com.koicenter.koicenterbackend.controller.KoiController;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Koi;
-import com.koicenter.koicenterbackend.model.request.KoiRequest;
-import com.koicenter.koicenterbackend.model.request.KoiUpdateRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiUpdateRequest;
 import com.koicenter.koicenterbackend.repository.KoiRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
