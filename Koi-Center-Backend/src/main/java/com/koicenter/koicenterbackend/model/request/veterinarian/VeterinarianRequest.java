@@ -1,6 +1,6 @@
-package com.koicenter.koicenterbackend.model.request;
+package com.koicenter.koicenterbackend.model.request.veterinarian;
 
-import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.model.request.user.UserRequest;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;

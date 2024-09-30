@@ -25,5 +25,10 @@ public class KoiTreatment {
 
     @ManyToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "appointment_id")
+            
     Appointment appointment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prescription_id")
+    private Prescription prescription;
+
 }

@@ -1,6 +1,5 @@
-package com.koicenter.koicenterbackend.model.request;
+package com.koicenter.koicenterbackend.model.request.koi;
 
-import com.koicenter.koicenterbackend.model.entity.Customer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

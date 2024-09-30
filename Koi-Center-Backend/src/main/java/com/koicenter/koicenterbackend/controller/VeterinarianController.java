@@ -1,6 +1,5 @@
 package com.koicenter.koicenterbackend.controller;
-import com.koicenter.koicenterbackend.model.entity.Veterinarian;
-import com.koicenter.koicenterbackend.model.request.VeterinarianRequest;
+import com.koicenter.koicenterbackend.model.request.veterinarian.VeterinarianRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
 import com.koicenter.koicenterbackend.service.VeterinarianService;

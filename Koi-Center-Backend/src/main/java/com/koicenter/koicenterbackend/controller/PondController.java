@@ -2,10 +2,8 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Pond;
-import com.koicenter.koicenterbackend.model.entity.Service;
-import com.koicenter.koicenterbackend.model.request.KoiRequest;
-import com.koicenter.koicenterbackend.model.request.PondRequest;
-import com.koicenter.koicenterbackend.model.request.PondUpdateRequest;
+import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
+import com.koicenter.koicenterbackend.model.request.pond.PondUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.PondService;
 import jakarta.validation.Valid;

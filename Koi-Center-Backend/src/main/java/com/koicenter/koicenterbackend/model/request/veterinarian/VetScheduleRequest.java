@@ -1,6 +1,5 @@
-package com.koicenter.koicenterbackend.model.request;
+package com.koicenter.koicenterbackend.model.request.veterinarian;
 
-import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -12,4 +11,6 @@ public class VetScheduleRequest {
     String vet_id ;
     String schedule_id ;
     AppointmentType appointmentType;
+
+
 }

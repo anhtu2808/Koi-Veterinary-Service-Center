@@ -1,12 +1,11 @@
 package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
-import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
-import com.koicenter.koicenterbackend.model.request.VeterinarianRequest;
+import com.koicenter.koicenterbackend.model.request.veterinarian.VeterinarianRequest;
 import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
 import com.koicenter.koicenterbackend.model.response.UserResponse;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;
