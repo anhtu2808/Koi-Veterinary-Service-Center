@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.controller;
 
 
 import com.koicenter.koicenterbackend.model.entity.Appointment;
+import com.koicenter.koicenterbackend.model.request.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.response.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.AppointmentService;
@@ -72,4 +73,11 @@ public class AppointmentController {
         appointmentService.createAppointment(appointmentResponse);
     return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
     }
-}
+    // UPDATE
+    @PostMapping("/update")
+    public ResponseEntity<ResponseObject> updateAppointment(@RequestBody AppointmentRequest appointmentResponse) {
+        appointmentService.updateAppointment(appointmentResponse);
+    return ResponseObject.APIRepsonse(200,"UPDATE APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
+    }
+    }
+

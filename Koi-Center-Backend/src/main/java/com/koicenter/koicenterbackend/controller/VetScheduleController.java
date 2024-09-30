@@ -39,4 +39,8 @@ public class VetScheduleController {
         public ResponseEntity<ResponseObject> getScheduleForBooking(@RequestBody VetScheduleRequest vetSchedule) {
             return ResponseObject.APIRepsonse(200,"Get Schedule ID Successfully", HttpStatus.OK,vetSchedule);
         }
+        @PostMapping("/date") //lấy bác sĩ rãnh lên ngay do
+    public ResponseEntity<ResponseObject> getVeterinariansByDateTime(@RequestBody VetScheduleRequest vetSchedule) {
+        return ResponseObject.APIRepsonse(200,"Get Vet Schedule ID Successfully", HttpStatus.OK,vetSchedule);
+        }
     }

@@ -109,4 +109,8 @@ public class VetScheduleService {
 
         return dayResponses;
     }
+//    public List<VetScheduleResponse> getVeterinariansByDateTime(VetScheduleRequest localDate) {
+//        List<VetScheduleResponse> vetSchedules = new ArrayList<>();
+//
+//    }
 }

@@ -12,4 +12,6 @@ public class VetScheduleRequest {
     String vet_id ;
     String schedule_id ;
     AppointmentType appointmentType;
+
+
 }
