@@ -23,7 +23,7 @@ function Payment() {
       "endTime": bookingData.endAt, // Định dạng thời gian
       "location": customerInfo.address, // Địa điểm
       "result": null,  // Kết quả
-      "createdAt": combinedDateTime,  // Định dạng cho ZonedDateTime
+      "createdAt": new Date(),  // Định dạng cho ZonedDateTime
       "type": bookingData.type,  // Enum AppointmentType
       "depositedMoney": serviceInfo.basePrice,  // Số tiền đã đặt cọc
       "customerId": customerInfo.customerId,  // ID khách hàng
