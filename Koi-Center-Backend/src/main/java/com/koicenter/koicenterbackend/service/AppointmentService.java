@@ -6,7 +6,7 @@ import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
-import com.koicenter.koicenterbackend.model.response.AppointmentResponse;
+import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;

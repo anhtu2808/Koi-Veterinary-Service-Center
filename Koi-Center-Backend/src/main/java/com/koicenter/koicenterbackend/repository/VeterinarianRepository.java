@@ -1,8 +1,6 @@
 package com.koicenter.koicenterbackend.repository;
 
-import com.koicenter.koicenterbackend.model.entity.Service;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
-import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,5 +24,4 @@ public interface VeterinarianRepository extends JpaRepository<Veterinarian, Stri
 
 
     List<Veterinarian> findByServices_ServiceId(String serviceId);
-
 }
