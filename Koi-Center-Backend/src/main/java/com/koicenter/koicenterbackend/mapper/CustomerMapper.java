@@ -10,6 +10,4 @@ import org.mapstruct.Mapping;
 public interface CustomerMapper {
 
 
-    @Mapping(source = "userId", target = "user")
-    Customer toCustomer(User user);
 }
