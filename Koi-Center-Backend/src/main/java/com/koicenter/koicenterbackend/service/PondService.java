@@ -6,6 +6,7 @@ import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondUpdateRequest;
+import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.repository.PondRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,16 +23,28 @@ public class PondService {
     //check hồ
 
     public List<Pond> getAllPonds() {
+
         return pondRepository.findAll();
     }
 
 
     //    api get thong tin detail của hồ / cá
 
-    public Pond getPondById(String id) {
-        return pondRepository.findById(id).orElseThrow(()
+    public PondResponse getPondById(String id) {
+        Pond pond = pondRepository.findById(id).orElseThrow(()
                 -> new AppException(ErrorCode.POND_NOT_EXITS.getCode(),
                 ErrorCode.POND_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        PondResponse pondResponse = new PondResponse();
+        pondResponse.setPondId(pond.getPondId());
+        pondResponse.setStatus(pond.getStatus());
+        pondResponse.setDepth(pond.getDepth());
+        pondResponse.setPerimeter(pond.getPerimeter());
+        pondResponse.setTemperature(pond.getTemperature());
+        pondResponse.setNotes(pond.getNotes());
+        pondResponse.setImage(pond.getImage());
+        pondResponse.setWaterQuality(pond.getWaterQuality());
+        pondResponse.setFilterSystem(pond.getFilterSystem());
+        return pondResponse;
     }
 
 

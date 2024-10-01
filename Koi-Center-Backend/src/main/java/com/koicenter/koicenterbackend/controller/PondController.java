@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.service.CustomerService;
 import com.koicenter.koicenterbackend.service.PondService;
 import jakarta.validation.Valid;
@@ -37,7 +38,7 @@ public class PondController {
     @GetMapping("/{pondId}")
     public ResponseEntity<ResponseObject> getPondById(@PathVariable("pondId") String pondId) {
         try {
-            Pond pond = pondService.getPondById(pondId);
+            PondResponse pond = pondService.getPondById(pondId);
             return ResponseObject.APIRepsonse(200, "Found pond successfully", HttpStatus.OK, pond);
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
@@ -59,8 +60,8 @@ public class PondController {
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");
     }
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity<ResponseObject> getPondsByCustomerId(@PathVariable("customerId") String customerId) {
+    @GetMapping("/customerId")
+    public ResponseEntity<ResponseObject> getPondsByCustomerId(@RequestParam("customerId") String customerId) {
         try {
             List<Pond> ponds = customerService.getPondsByCustomerId(customerId);
             if (ponds.isEmpty()) {
