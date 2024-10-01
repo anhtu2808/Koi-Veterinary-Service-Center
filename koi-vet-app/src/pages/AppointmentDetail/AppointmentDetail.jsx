@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchAppointmentByIdAPI, updateAppointmentAPI } from "../../apis";
+import { fetchAppointmentByIdAPI, updateAppointmentAPI } from "../../apis/AllAppoimentMockData";
 import "./AppointmentDetail.css";
 
 function AppointmentDetail() {
   const { appointmentId } = useParams();
   const navigate = useNavigate();
-  const [appointment, setAppointment] = useState(null);
+  const [appointment, setAppointment] = useState({appointmentId: "APT12345",
+    customerId: "CUST9876",
+    serviceId: "SRV5432",
+    location: "Main Clinic",
+    appointmentDate: "2023-06-15",
+    status: "Confirmed",
+    veterinarian: "Dr. Smith"});
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -25,7 +31,7 @@ function AppointmentDetail() {
     const { name, value } = e.target;
     setAppointment({ ...appointment, [name]: value });
   };
-
+  console.log(appointment)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

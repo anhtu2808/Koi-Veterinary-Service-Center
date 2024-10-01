@@ -6,8 +6,7 @@ import { ROLE } from '../../utils/constants';
 
 const UserProtectedRoute = () => {
   const isAuthorized = useSelector(state => state.user.isAuthorized);
-  const role = useSelector(state => state.user.role);
-  if (isAuthorized && role === ROLE.CUSTOMER) {
+  if (isAuthorized) {
     return <Outlet />;
   } else {
     toast.error("You need to login first");

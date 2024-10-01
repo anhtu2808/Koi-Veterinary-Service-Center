@@ -89,12 +89,12 @@ export const createAppointmentAPI = async (appointmentCreateRequest) => {
     return response.data;
 }
 
-export const fetchAllAppointmentAPI = async () => {
-    const response = await api.get(`/appointments`);
+export const fetchAllAppointmentAPI = async (status) => {
+    const response = await api.get(`/appointments?status=${status}`);
     return response.data;
 }
-export const fetchAppointmentByCustomerIdAPI = async (customerId) => {
-    const response = await api.get(`/appointments/getByCustomerId?customerId=${customerId}`);
+export const fetchAppointmentByCustomerIdAPI = async (customerId,status) => {
+    const response = await api.get(`/appointments?customerId=${customerId}&status=${status}`);
     return response.data;
 }
 
@@ -106,7 +106,7 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
 export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
     //eslint-disable-next-line
     const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
-    // return response.data;
+    return response.data;
 }
 export const fetchAppointmentByVetIdAPI = async (vetId) => {
     const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
