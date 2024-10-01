@@ -2,14 +2,15 @@ package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
+import com.koicenter.koicenterbackend.mapper.UserMapper;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
-import com.koicenter.koicenterbackend.model.response.CustomerDTO;
-import com.koicenter.koicenterbackend.model.response.UserResponse;
+import com.koicenter.koicenterbackend.model.response.user.CustomerDTO;
+import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 
-import com.koicenter.koicenterbackend.model.response.VeterinarianDTO;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianDTO;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
@@ -44,6 +45,9 @@ public class UserService {
     @Autowired
     PasswordEncoder encoder;
 
+    @Autowired
+    UserMapper userMapper;
+
     public boolean getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
@@ -54,13 +58,8 @@ public class UserService {
     }
 
     public void createUser(RegisterRequest newUser) {
-        User user = new User();
-        user.setUsername(newUser.getUsername());
-        user.setPassword(encoder.encode(newUser.getPassword()));
-        user.setEmail(newUser.getEmail());
-        user.setFullName(newUser.getFullname());
+        User user = userMapper.toUser(newUser);
         user.setRole(Role.CUSTOMER);
-        user.setStatus(true);
         userRepository.save(user);
 
 

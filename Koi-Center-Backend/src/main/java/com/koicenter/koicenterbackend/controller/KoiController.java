@@ -6,6 +6,7 @@ import com.koicenter.koicenterbackend.model.entity.Koi;
 import com.koicenter.koicenterbackend.model.request.koi.KoiRequest;
 import com.koicenter.koicenterbackend.model.request.koi.KoiUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.service.CustomerService;
 import com.koicenter.koicenterbackend.service.KoiService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -28,6 +29,9 @@ public class    KoiController {
 
     @Autowired
     private KoiService koiService;
+
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAllPond() {
@@ -62,5 +66,19 @@ public class    KoiController {
     public ResponseEntity<ResponseObject> createPond (@RequestBody KoiRequest koiRequest){
         koiService.createKoi(koiRequest);
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");
+    }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<ResponseObject> getKoisByCustomerId(@PathVariable("customerId") String customerId) {
+        try {
+            List<Koi> kois = customerService.getKoiByCustomerId(customerId);
+            if (kois.isEmpty()) {
+                return ResponseObject.APIRepsonse(404, "Customer do not have any koi", HttpStatus.NOT_FOUND, null);
+            } else{
+                return ResponseObject.APIRepsonse(200, "Found kois successfully", HttpStatus.OK, kois);
+            }
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.koicenter.koicenterbackend.model.response;
+package com.koicenter.koicenterbackend.model.response.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

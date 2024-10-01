@@ -1,7 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 import com.koicenter.koicenterbackend.model.request.veterinarian.VeterinarianRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
-import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
 import com.koicenter.koicenterbackend.service.VeterinarianService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

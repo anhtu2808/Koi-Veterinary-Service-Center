@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.service.CustomerService;
 import com.koicenter.koicenterbackend.service.PondService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class PondController {
     @Autowired
     private PondService pondService;
 
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAllPond() {
@@ -54,5 +57,18 @@ public class PondController {
     public ResponseEntity<ResponseObject> createPond (@RequestBody PondRequest pondRequest){
         pondService.createPond(pondRequest);
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");
+    }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<ResponseObject> getPondsByCustomerId(@PathVariable("customerId") String customerId) {
+        try {
+            List<Pond> ponds = customerService.getPondsByCustomerId(customerId);
+            if (ponds.isEmpty()) {
+                return ResponseObject.APIRepsonse(404, "Customer do not have any pond", HttpStatus.NOT_FOUND, null);
+            } else{
+                return ResponseObject.APIRepsonse(200, "Found ponds successfully", HttpStatus.OK, ponds);}
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
     }
 }

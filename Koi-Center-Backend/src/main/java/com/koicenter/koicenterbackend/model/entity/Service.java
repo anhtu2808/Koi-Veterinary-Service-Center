@@ -24,19 +24,16 @@ public class Service {
     String description;
     @Column(name = "base_price")
     float basePrice;
-    @Column(name = "delivery_price")
-    float deliveryPrice;
     @Column(name = "pond_price")
     float pondPrice;
-    @Column(name = "tank_price")
-    float tankPrice;
+    @Column(name = "koi_price")
+    float koiPrice;
     @Enumerated(EnumType.STRING)
             @Column(name = "service_for")
     ServiceType serviceFor;
     String image;
 
     @OneToMany(mappedBy = "service")
-    @JsonIgnore
     List<Appointment> appointments;
 
     @ManyToMany
@@ -45,6 +42,5 @@ public class Service {
             joinColumns = @JoinColumn(name = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "vet_id")
     )
-    @JsonIgnore
     List<Veterinarian> veterinarians;
 }

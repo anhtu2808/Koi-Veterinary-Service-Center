@@ -29,10 +29,8 @@ public class Pond {
     String filterSystem; // Hệ thống lọc
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    @JsonIgnore
     Customer customer;
 
     @OneToMany(mappedBy = "pond")
-    @JsonIgnore
     List<PondTreatment> pondTreatments;
 }
