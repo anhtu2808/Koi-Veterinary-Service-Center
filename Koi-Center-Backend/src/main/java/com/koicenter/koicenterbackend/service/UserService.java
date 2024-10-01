@@ -58,7 +58,12 @@ public class UserService {
     }
 
     public void createUser(RegisterRequest newUser) {
-        User user = userMapper.toUser(newUser);
+        User user = new User();
+        user.setUsername(newUser.getUsername());
+        user.setPassword(encoder.encode(newUser.getPassword()));
+        user.setFullName(newUser.getFullname());
+        user.setEmail(newUser.getEmail());
+        user.setStatus(true);
         user.setRole(Role.CUSTOMER);
         userRepository.save(user);
 
