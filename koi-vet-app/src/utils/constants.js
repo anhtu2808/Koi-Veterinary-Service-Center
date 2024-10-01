@@ -23,5 +23,6 @@ export const APPOINTMENT_STATUS = {
 export const SERVICE_FOR = {
   KOI: "FISH",
   POND: "POND",
+  ONLINE: "ONLINE",
 };
 

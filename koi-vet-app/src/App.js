@@ -32,6 +32,7 @@ import InputKoiPage from './pages/InputKoiPage/InputKoiPage';
 import InputPondPage from './pages/InputPondPage/InputPondPage';
 import PondDetail from './pages/PondDetail/PondDetail';
 import KoiDetail from './pages/KoiDetail/KoiDetail';
+import AdminProtectedRoute from './components/ProtectedRoute/AdminProtectedRoute';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -69,7 +70,7 @@ function App() {
               <Route path='/veterinarians' element={<VeterinarianPage />} />
               <Route path='/services' element={<ServicePage />} />
               <Route path='/vet-profile' element={<VetProfile />} />
-              
+
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>
                 <Route path='/profile' element={<MyProfile />} />
@@ -85,17 +86,21 @@ function App() {
         <Route path="/admin/*" element={
           <AdminLayout>
             <Routes>
-              <Route path="/" element={<DocterDashboard />} />
-              <Route path="/usermanagement" element={<UserManagementPage />} />
-              <Route path="/allappointment" element={<AllAppointment />} />
-              <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
-              <Route path="/pondinformation" element={<PondInformation />} />
-              <Route path="/inputkoipage" element={<InputKoiPage />} />
-              <Route path="/inputpondpage" element={<InputPondPage />} />
-              <Route path="/pondinformation" element={<PondInformation />} />
-              <Route path="/koiinformation" element={<KoiInformation />} />
-              <Route path="/ponddetail" element={<PondDetail />} />
-              <Route path="/koidetail" element={<KoiDetail />} />
+              {/* Protected routes */}
+              <Route element={<AdminProtectedRoute />}>
+                <Route path="/" element={<DocterDashboard />} />
+                <Route path="/usermanagement" element={<UserManagementPage />} />
+                <Route path="/allappointment" element={<AllAppointment />} />
+                <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
+                <Route path="/pondinformation" element={<PondInformation />} />
+                <Route path="/inputkoipage" element={<InputKoiPage />} />
+                <Route path="/inputpondpage" element={<InputPondPage />} />
+                <Route path="/pondinformation" element={<PondInformation />} />
+                <Route path="/koiinformation" element={<KoiInformation />} />
+                <Route path="/ponddetail" element={<PondDetail />} />
+                <Route path="/koidetail" element={<KoiDetail />} />
+              </Route>
+
 
               {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
               {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
