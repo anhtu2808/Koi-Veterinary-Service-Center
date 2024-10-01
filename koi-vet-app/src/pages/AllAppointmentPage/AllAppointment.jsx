@@ -8,6 +8,7 @@ import {
 } from "../../apis";
 import { ROLE } from "../../utils/constants";
 import { useSelector } from "react-redux";
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
 
 function AllAppointment() {
   const [appointments, setAppointments] = useState([]);
@@ -71,8 +72,8 @@ function AllAppointment() {
   return (
     <>
 
-      
 
+      <AdminHeader title="All Appointment" />
       <div className="row mb-3 justify-content-center">
         <div className="col-md-8">
           <div className="input-group">
