@@ -40,8 +40,12 @@ export const mockAppointments = [
     return Promise.resolve({ data: mockAppointments });
   };
   
-  export const fetchAllAppointmentByVetIdAPI = (vetId) => {
-    const filteredAppointments = mockAppointments.filter(apt => apt.vetId === vetId);
+  export const fetchAllAppointmentByVetIdAPI = (vetId,status) => {
+    if(status === "ALL"){
+      const filteredAppointments = mockAppointments.filter(apt => apt.vetId === vetId);
+      return Promise.resolve({ data: filteredAppointments });
+    }
+    const filteredAppointments = mockAppointments.filter(apt => apt.vetId === vetId && apt.status === status);
     return Promise.resolve({ data: filteredAppointments });
   };
   

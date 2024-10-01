@@ -15,7 +15,7 @@ function AllAppointment() {
   const [status, setStatus] = useState("ALL");
   const customerId = useSelector((state) => state?.user?.customer?.customerId);
   const [title, setTitle] = useState("All Appointments");
-
+  const vetId = useSelector((state) => state?.user?.veterinarian?.vetId);
   const role = useSelector((state) => state.user.role);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function AllAppointment() {
       setTitle("My Appointments");
     };
     if (role === ROLE.VETERINARIAN) {
-      fetchAppointmentForVet("VET002", status);
+      fetchAppointmentForVet(vetId, status);
       setTitle("All My Appointments");
     } else if (role === ROLE.STAFF) {
       fetchAppointmentForStaff();
