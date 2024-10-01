@@ -10,10 +10,19 @@ function AdminLayout({ children }) {
       <div className="container-fluid">
         <div className="row">
           <SideBar />
-          {children}
+          <main className="col-md-9 col-lg-10 px-md-4 mx-auto main-content">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-12">
+                  
+                  {children}
+                </div>
+              </div>
+            </div>
+          </main>
         </div>
       </div>
-    
+
     </>
   )
 }

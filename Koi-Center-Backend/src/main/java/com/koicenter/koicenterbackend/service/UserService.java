@@ -64,6 +64,7 @@ public class UserService {
         user.setFullName(newUser.getFullname());
         user.setEmail(newUser.getEmail());
         user.setStatus(true);
+
         user.setRole(Role.CUSTOMER);
         userRepository.save(user);
 
