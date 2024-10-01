@@ -33,6 +33,7 @@ import InputPondPage from './pages/InputPondPage/InputPondPage';
 import PondDetail from './pages/PondDetail/PondDetail';
 import KoiDetail from './pages/KoiDetail/KoiDetail';
 import AdminProtectedRoute from './components/ProtectedRoute/AdminProtectedRoute';
+import ProfileLayout from './pages/layout/ProfileLayout';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -73,12 +74,29 @@ function App() {
 
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>
-                <Route path='/profile' element={<MyProfile />} />
                 <Route path='/booking' element={<BookingPage />} />
-                <Route path='/allappointment' element={<AllAppointment />} />
-                <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
+
+
                 <Route path="/createkoi" element={<KoiDetail />} />
                 <Route path="/createpond" element={<PondDetail />} />
+                <Route path="/profile/*" element={
+                  <ProfileLayout>
+                    <Routes>
+                      <Route path="/" element={<MyProfile />} />
+
+
+                      <Route path='/appointment' element={<AllAppointment />} />
+                      <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
+
+
+                    </Routes>
+                  </ProfileLayout>
+
+
+                } >
+
+
+                </Route>
               </Route>
             </Routes>
           </UserLayout>
@@ -90,7 +108,7 @@ function App() {
               <Route element={<AdminProtectedRoute />}>
                 <Route path="/" element={<DocterDashboard />} />
                 <Route path="/usermanagement" element={<UserManagementPage />} />
-                <Route path="/allappointment" element={<AllAppointment />} />
+                <Route path="/appointment" element={<AllAppointment />} />
                 <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
                 <Route path="/pondinformation" element={<PondInformation />} />
                 <Route path="/inputkoipage" element={<InputKoiPage />} />

@@ -1,4 +1,15 @@
 
+
+  
+  .custom-text-color {
+    color: var(--color-primary) !important;
+
+  }
+  
+  .nav-link.active.custom-text-color {
+    color: var(--color-primary) !important;
+    font-weight: bold;
+  }
  .all{
     margin: 0;
     padding: 0;

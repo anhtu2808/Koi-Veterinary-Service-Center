@@ -21,7 +21,7 @@ const MyProfile = () => {
     });
   };
   const handleAllAppointment = () => {
-    navigate("/allappointment");
+    navigate("/profile/appointment");
   };
   const handleSave = async () => {
     setIsEditing(false);
@@ -104,7 +104,7 @@ const MyProfile = () => {
                         onChange={handleChange}
                       />
                     ) : (
-                      <p className="form-control-plaintext">{customer.phone}</p>
+                      <p className="form-control-plaintext">{customer?.phone}</p>
                     )}
                   </div>
                   <div className="col-md-6 mb-3">
