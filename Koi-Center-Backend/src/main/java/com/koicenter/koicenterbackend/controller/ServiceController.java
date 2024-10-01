@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.model.entity.Service;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.service.ServiceResponse;
 import com.koicenter.koicenterbackend.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,13 @@ public class ServiceController {
 
     @GetMapping("") //service_for khac ONLINE
     public ResponseEntity<ResponseObject> getAllServicesNotOnline() {
-        List<Service> services = serviceService.getAllService();
+        List<ServiceResponse> services = serviceService.getAllService();
         return ResponseObject.APIRepsonse(200, "Get service list success", HttpStatus.OK, services);
     }
 
     @GetMapping("/{serviceId}")
     public ResponseEntity<ResponseObject> getServiceById(@PathVariable("serviceId") String serviceId) {
-        Service service = serviceService.getServiceById(serviceId);
+        ServiceResponse service = serviceService.getServiceById(serviceId);
         return ResponseObject.APIRepsonse(200, "Get service success", HttpStatus.OK, service);
     }
 
