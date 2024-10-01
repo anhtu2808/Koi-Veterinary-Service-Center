@@ -24,7 +24,7 @@ function SideBar() {
   return (
     <nav
       id="sidebar"
-      className="col-md-3 col-lg-2 d-md-block pt-4 bg-light sidebar collapse"
+      className="col-md-2 col-lg-2 d-md-block pt-4 bg-light sidebar collapse"
     >
       <div className="position-sticky pt-4">
         <Link to="/">
@@ -84,12 +84,14 @@ function SideBar() {
           </li>
 
           {isAuthorized && (
-            <button
-              className="btn btn-primary mt-5"
+            <div className="d-flex justify-content-center">
+              <button
+                className="btn btn-primary mt-5 w-50"
               onClick={() => handleLogout()}
             >
               Logout
             </button>
+            </div>
           )}
         </ul>
       </div>

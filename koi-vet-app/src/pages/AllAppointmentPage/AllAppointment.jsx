@@ -69,121 +69,101 @@ function AllAppointment() {
   };
 
   return (
-    <main className="col-md-9 col-lg-10 px-md-4 mx-auto main-content">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-12">
-            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-              <h1 className="h2">{title}</h1>
-              <div className="btn-toolbar mb-2 mb-md-0">
-                <div className="btn-group me-2">
-                  <button type="button" className="btn btn-sm btn-outline-secondary">
-                    <img
-                      src="https://via.placeholder.com/40"
-                      alt="User Avatar"
-                      className="rounded-circle"
-                      width="30"
-                      height="30"
-                    />
-                    Hello, Lekan
-                  </button>
-                </div>
-              </div>
-            </div>
+    <>
 
-            <div className="row mb-3 justify-content-center">
-              <div className="col-md-8">
-                <div className="input-group">
-                  <input type="text" className="form-control" placeholder="Search" />
-                  <button className="btn btn-primary" type="button">
-                    Add user +
-                  </button>
-                </div>
-              </div>
-            </div>
+      
 
-            <div className="table-responsive">
-              <table className="table table-striped table-sm tableleft">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Service</th>
-                    <th>Time</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {appointments.map((appointmentDetail, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{appointmentDetail.customerName}</td>
-                      <td>{appointmentDetail.serviceName}</td>
-                      <td>{formatTime(appointmentDetail.startTime)}</td>
-                      <td>{formatDate(appointmentDetail.appointmentDate)}</td>
-                      <td>{appointmentDetail.status}</td>
-                      <td>
-                        {role === ROLE.CUSTOMER ?
-                          <Link
-                            to={`/appointment/${appointmentDetail.appointmentId}`}
-                            className="btn btn-sm btn-outline-primary"
-                          >
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                          </Link>
-                          :
-                          <Link
-                            to={`/admin/appointment/${appointmentDetail.appointmentId}`}
-                            className="btn btn-sm btn-outline-primary"
-                          >
-                            <i className="fas fa-edit"></i>
-                          </Link>
-                        }
-
-                        <button className="btn btn-sm btn-outline-secondary">
-                          <i className="fas fa-trash"></i>
-                        </button>
-                        {role === ROLE.STAFF && (
-                          <button className="btn btn-sm btn-outline-secondary">
-                            <i className="fas fa-user-md"></i>
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <nav aria-label="Page navigation example">
-              <ul className="pagination justify-content-center">
-                <li className="page-item disabled">
-                  <Link className="page-link" href="#" tabindex="-1">
-                    Items per page: 10
-                  </Link>
-                </li>
-                <li className="page-item">
-                  <Link className="page-link" href="#">
-                    1-4 of 15
-                  </Link>
-                </li>
-                <li className="page-item">
-                  <Link className="page-link" href="#">
-                    <i className="fas fa-chevron-left"></i>
-                  </Link>
-                </li>
-                <li className="page-item">
-                  <Link className="page-link" href="#">
-                    <i className="fas fa-chevron-right"></i>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
+      <div className="row mb-3 justify-content-center">
+        <div className="col-md-8">
+          <div className="input-group">
+            <input type="text" className="form-control" placeholder="Search" />
+            <button className="btn btn-primary" type="button">
+              Search <i className="fas fa-search"></i>
+            </button>
           </div>
         </div>
       </div>
-    </main>
+
+      <div className="table-responsive">
+        <table className="table table-striped table-sm tableleft">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Service</th>
+              <th>Time</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments.map((appointmentDetail, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{appointmentDetail.customerName}</td>
+                <td>{appointmentDetail.serviceName}</td>
+                <td>{formatTime(appointmentDetail.startTime)}</td>
+                <td>{formatDate(appointmentDetail.appointmentDate)}</td>
+                <td>{appointmentDetail.status}</td>
+                <td>
+                  {role === ROLE.CUSTOMER ?
+                    <Link
+                      to={`/appointment/${appointmentDetail.appointmentId}`}
+                      className="btn btn-sm btn-outline-primary"
+                    >
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </Link>
+                    :
+                    <Link
+                      to={`/admin/appointment/${appointmentDetail.appointmentId}`}
+                      className="btn btn-sm btn-outline-primary"
+                    >
+                      <i className="fas fa-edit"></i>
+                    </Link>
+                  }
+
+                  <button className="btn btn-sm btn-outline-secondary">
+                    <i className="fas fa-trash"></i>
+                  </button>
+                  {role === ROLE.STAFF && (
+                    <button className="btn btn-sm btn-outline-secondary">
+                      <i className="fas fa-user-md"></i>
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <nav aria-label="Page navigation example">
+        <ul className="pagination justify-content-center">
+          <li className="page-item disabled">
+            <Link className="page-link" href="#" tabindex="-1">
+              Items per page: 10
+            </Link>
+          </li>
+          <li className="page-item">
+            <Link className="page-link" href="#">
+              1-4 of 15
+            </Link>
+          </li>
+          <li className="page-item">
+            <Link className="page-link" href="#">
+              <i className="fas fa-chevron-left"></i>
+            </Link>
+          </li>
+          <li className="page-item">
+            <Link className="page-link" href="#">
+              <i className="fas fa-chevron-right"></i>
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </>
+
   );
 }
 
