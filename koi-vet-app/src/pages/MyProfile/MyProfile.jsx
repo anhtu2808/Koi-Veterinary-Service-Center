@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateMyInfoAPI } from "../../apis";
 import { updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
 import "./MyProfile.css";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
@@ -21,7 +21,13 @@ const MyProfile = () => {
     });
   };
   const handleAllAppointment = () => {
-    navigate("/profile/allappointment");
+    navigate("/profile/appointment");
+  };
+  const handleMyPond = () => {
+    navigate("/profile/pond");
+  };
+  const handleMyKoi = () => {
+    navigate("/profile/koi");
   };
   const handleSave = async () => {
     setIsEditing(false);
@@ -134,6 +140,9 @@ const MyProfile = () => {
             <button className="btn btn-primary" onClick={() => handleEdit()}>Edit Information</button>
           )}
            <button className="btn btn-primary" onClick={() => handleAllAppointment()}>My Appointments</button>
+          
+          <button className="btn btn-primary" onClick={() => handleMyPond()}>My Pond</button>
+          <button className="btn btn-primary" onClick={() => handleMyKoi()}>My Koi</button>
         </div>
       </div>
     </div>

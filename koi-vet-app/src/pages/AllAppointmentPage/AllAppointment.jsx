@@ -127,7 +127,7 @@ function AllAppointment() {
                 <td>
                   {role === ROLE.CUSTOMER ?
                     <Link
-                      to={`/appointment/${appointmentDetail.appointmentId}`}
+                      to={`/profile/appointment/${appointmentDetail.appointmentId}`}
                       className="btn btn-sm btn-outline-dark"
                     >
                       <i class="fa fa-eye" aria-hidden="true"></i>
