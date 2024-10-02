@@ -1,10 +1,12 @@
 import React from "react";
 import "./UserManagementPage.css";
 import { Link } from "react-router-dom";
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
 
 function UserManagementPage() {
   return (
     <>
+    <AdminHeader title="User Management"/>
       <div className="row mb-3 justify-content-center">
         <div className="col-md-8">
           <div className="input-group">

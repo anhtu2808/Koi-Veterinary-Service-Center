@@ -1,8 +1,9 @@
 .sidebar {
     background-color: var(--color-primary);
-    min-height: 100vh;
     color: #ecf0f1;
     transition: all 0.3s;
+   
+    
   }
   
   .sidebar .nav-link {
@@ -24,8 +25,12 @@
   }
   
   .sidebar-logo {
-    padding: 20px 20px 20px 1vh;
+    padding: 20px;
     text-align: center;
+    position: sticky;
+    top: 0;
+    background-color: var(--color-primary);
+    z-index: 1;
   }
   
   .sidebar-logo img {
@@ -34,8 +39,10 @@
   }
   
   .sidebar-logout {
-    margin-top: 20px;
-    padding: 0 15px;
+    position: sticky;
+    bottom: 0;
+    padding: 15px;
+    background-color: var(--color-primary);
   }
   
   .sidebar-logout button {
@@ -50,7 +57,14 @@
   background-color: #c0392b;
 }
 #sidebar{
-    padding:5vh 0 5vh 0.5vw !important;
+    width: 250px; /* hoặc bất kỳ chiều rộng nào bạn muốn */
+    height: 100vh;
+    background-color: var(--color-primary);
+    color: #ecf0f1;
+    transition: all 0.3s;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
 }
 #sidebar .nav-link{
     /* padding-left: 1.5vw; */

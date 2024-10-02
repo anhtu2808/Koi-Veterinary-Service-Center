@@ -2,17 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAppointmentByIdAPI, updateAppointmentAPI } from "../../apis/AllAppoimentMockData";
 import "./AppointmentDetail.css";
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
 
 function AppointmentDetail() {
   const { appointmentId } = useParams();
   const navigate = useNavigate();
-  const [appointment, setAppointment] = useState({appointmentId: "APT12345",
+  const [appointment, setAppointment] = useState({
+    appointmentId: "APT12345",
     customerId: "CUST9876",
     serviceId: "SRV5432",
     location: "Main Clinic",
     appointmentDate: "2023-06-15",
     status: "Confirmed",
-    veterinarian: "Dr. Smith"});
+    veterinarian: "Dr. Smith"
+  });
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -47,16 +50,8 @@ function AppointmentDetail() {
   if (!appointment) return <div>Loading...</div>;
 
   return (
-    <main className="col-md-9 mx-auto col-lg-10 px-md-4 main-content">
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 className="h2">Appointment Detail</h1>
-        <button
-          className="btn btn-primary"
-          onClick={() => setIsEditing(!isEditing)}
-        >
-          {isEditing ? "Cancel" : "Edit"}
-        </button>
-      </div>
+    <>
+      <AdminHeader title="Appointment Detail" />
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -191,14 +186,25 @@ function AppointmentDetail() {
           </button>
         )}
       </form>
+      <div className="col-md-12">
+        <button
+          className="btn btn-secondary "
+          onClick={() => navigate("/admin/allappointment")}
+        >
+          Back to All Appointments
+        </button>
+        <button
+          className="btn btn-primary mx-3"
+          onClick={() => setIsEditing(!isEditing)}
+        >
+          {isEditing ? "Cancel" : "Edit"}
+        </button>
 
-      <button
-        className="btn btn-secondary mt-3"
-        onClick={() => navigate("/admin/allappointment")}
-      >
-        Back to All Appointments
-      </button>
-    </main>
+      </div>
+
+
+    </>
+
   );
 }
 

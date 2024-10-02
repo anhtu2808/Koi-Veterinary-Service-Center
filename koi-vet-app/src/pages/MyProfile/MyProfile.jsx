@@ -21,7 +21,7 @@ const MyProfile = () => {
     });
   };
   const handleAllAppointment = () => {
-    navigate("/profile/appointment");
+    navigate("/profile/allappointment");
   };
   const handleSave = async () => {
     setIsEditing(false);

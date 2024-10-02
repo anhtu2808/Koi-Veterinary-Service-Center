@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { ROLE } from '../../utils/constants';
 const AdminHeader = ({title}) => {
     const role = useSelector(state => state.user.role);
+    const user = useSelector(state => state.user);
     return (
         <>
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -18,7 +19,7 @@ const AdminHeader = ({title}) => {
                                 width="30"
                                 height="30"
                             />
-                            Hello, Lekan
+                            {user?.fullName}
                         </button>
                         </div>
                     ) : null}

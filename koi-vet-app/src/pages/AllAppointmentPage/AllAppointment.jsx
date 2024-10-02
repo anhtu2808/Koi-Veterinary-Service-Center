@@ -86,22 +86,22 @@ function AllAppointment() {
               <i className="fas fa-list-ul me-2"></i>All
             </button>
             <button class="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.BOOKING_COMPLETE)}>
-              <i className="fas fa-check-circle me-2"></i>Waiting Confirm
+            <i class="fa-solid fa-hourglass-start "></i> Waiting Confirm
             </button>
             <button class="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.BOOKING_COMPLETE)}>
-              <i className="fas fa-check-circle me-2"></i>Veterinarian Assigned
+              <i className="fas fa-check-circle me-2 text-success"></i>Veterinarian Assigned
             </button>
             <button class="nav-link custom-text-color" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.PROCESS)}>
               <i className="fas fa-spinner me-2"></i>Process
             </button>
             <button class="nav-link custom-text-color" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.READY_FOR_PAYMENT)}>
-              <i className="fas fa-dollar-sign me-2"></i>Ready For Payment
+              <i className="fas fa-dollar-sign me-2 text-warning"></i>Ready For Payment
             </button>
             <button class="nav-link custom-text-color" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.FINISH)}>
-              <i className="fas fa-flag-checkered me-2"></i>Finish
+              <i className="fas fa-flag-checkered me-2 text-success"></i>Finish
             </button>
             <button class="nav-link custom-text-color" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.CANCEL)}>
-              <i className="fas fa-ban me-2"></i>Cancel
+              <i className="fas fa-ban me-2 text-danger"></i>Cancel
             </button>
           </div>
         </nav>

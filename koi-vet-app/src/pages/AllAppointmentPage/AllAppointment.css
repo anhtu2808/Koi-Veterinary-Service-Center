@@ -25,8 +25,8 @@ body {
     width: 240px;
     background-color: white;
     height: 100vh;
-    padding: 20px;
-    border-right: 1px solid #e0e0e0;
+    padding: 2vh 0 2vh 0;
+
 }
 .logo {
     font-weight: bold;
