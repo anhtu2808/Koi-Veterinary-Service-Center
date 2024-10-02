@@ -28,7 +28,7 @@ const PondDetail = ({ pondId, onPondUpdated }) => {
       }
     };
 
-    fetchPondData();
+    fetchPondData(pondId);
   }, []);
 
   const handleInputChange = (e) => {

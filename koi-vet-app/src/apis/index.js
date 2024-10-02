@@ -127,12 +127,12 @@ export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
 
 //Pond API
 export const fetchPondByCustomerIdAPI = async (customerId) => {
-    const response = await api.get(`/customer/${customerId}/pond`);
+    const response = await api.get(`/customers/${customerId}/ponds`);
     return response.data;
 }
 
 export const fetchPondByPondIdAPI = async (pondId) => {
-    const response = await api.get(`/customer/${pondId}/koi`);
+    const response = await api.get(`/ponds/${pondId}`);
     return response.data;
 }
 export const updatePondInformationAPI = async (pondId, data) => {
@@ -140,7 +140,7 @@ export const updatePondInformationAPI = async (pondId, data) => {
     return response.data;
 }
 export const createPondAPI = async (data) => {
-    const response = await api.post('/ponds/create', data);
+    const response = await api.post('/ponds', data);
     return response.data;
 }
 
@@ -152,8 +152,8 @@ export const fetchKoiByKoiIdAPI = async (koiId) => {
     const response = await api.get(`/kois/${koiId}`);
     return response.data;
 }
-export const fetchKoiByCustomerIdAPI = async (customerId) => {
-    const response = await api.get(`/customer/${customerId}/koi`);
+export const fetchKoisByCustomerIdAPI = async (customerId) => {
+    const response = await api.get(`/customers/${customerId}/kois`);
     return response.data;
 }
 
@@ -162,9 +162,10 @@ export const updateKoiInformationAPI = async (koiId, data) => {
     return response.data;
 }
 export const createKoiAPI = async (data) => {
-    const response = await api.post('/kois/create', data);
+    const response = await api.post('/kois', data);
     return response.data;
 }
+ 
 
 
 

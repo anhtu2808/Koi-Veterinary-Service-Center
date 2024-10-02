@@ -104,7 +104,7 @@ function BookingPage() {
             <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Skip</button>
           </div> : null : null}
 
-
+            <button className="btn btn-primary" onClick={() => handleSetStep(step+1)}>nut next de test</button>
 
         </div>
       </div>

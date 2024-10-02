@@ -26,8 +26,6 @@ import AdminLayout from './pages/layout/AdminLayout';
 import PondInformation from './pages/PondInformation/PondInformation';
 import AppointmentDetail from './pages/AppointmentDetail/AppointmentDetail';
 import KoiInformation from './pages/KoiInformation/KoiInformation';
-import InputKoiStep from './pages/BookingStep/InputKoiStep/InputKoiStep';
-import InputPondStep from './pages/BookingStep/InputPontStep/InputPondStep';
 import InputKoiPage from './pages/InputKoiPage/InputKoiPage';
 import InputPondPage from './pages/InputPondPage/InputPondPage';
 import PondDetail from './pages/PondDetail/PondDetail';
@@ -37,6 +35,7 @@ import ProfileLayout from './pages/layout/ProfileLayout';
 import Koi from './components/Koi/Koi';
 import InvoiceListPage from './pages/InvoiceListPage/InvoiceListPage';
 import MedicineListPage from './pages/MedicineListPage/MedicineListPage';
+import KoiInfo from './pages/KoiInfo/KoiInfo';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -86,7 +85,7 @@ function App() {
                   <ProfileLayout>
                     <Routes>
                       <Route path="/" element={<MyProfile />} />
-                    <Route path='/koi' element={<Koi />}/>
+                    <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />}/>
 
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
