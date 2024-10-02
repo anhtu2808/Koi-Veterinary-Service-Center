@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.model.entity.News;
+import com.koicenter.koicenterbackend.model.request.news.NewsRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,15 @@ public class NewsController {
             return ResponseObject.APIRepsonse(200, "Create new news successfully", HttpStatus.OK, null);
         } else {
             return ResponseObject.APIRepsonse(409, "News title already exists", HttpStatus.CONFLICT, null);
+        }
+    }
+    @PutMapping("/update")
+    public ResponseEntity<ResponseObject> updateNews(@RequestParam String newId,@RequestBody NewsRequest newsDetails) {
+        boolean isUpdated = newsService.updateNews(newId, newsDetails);
+        if (isUpdated) {
+            return ResponseObject.APIRepsonse(200, "Update news successfully", HttpStatus.OK, newsDetails);
+        } else {
+            return ResponseObject.APIRepsonse(400, "Failed to update news", HttpStatus.BAD_REQUEST, null);
         }
     }
 }
