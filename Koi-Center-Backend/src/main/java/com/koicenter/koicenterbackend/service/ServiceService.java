@@ -97,6 +97,7 @@ public class ServiceService {
                     .koiPrice(serviceRequest.getKoiPrice())
                     .serviceFor(serviceRequest.getServiceFor())
                     .image(serviceRequest.getImage())
+                    .status(true)
                     .build();
             servicesRepository.save(service);
             return true;
