@@ -2,11 +2,11 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Pond;
-import com.koicenter.koicenterbackend.model.entity.Service;
-import com.koicenter.koicenterbackend.model.request.KoiRequest;
-import com.koicenter.koicenterbackend.model.request.PondRequest;
-import com.koicenter.koicenterbackend.model.request.PondUpdateRequest;
+import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
+import com.koicenter.koicenterbackend.model.request.pond.PondUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
+import com.koicenter.koicenterbackend.service.CustomerService;
 import com.koicenter.koicenterbackend.service.PondService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,8 @@ public class PondController {
     @Autowired
     private PondService pondService;
 
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAllPond() {
@@ -36,7 +38,7 @@ public class PondController {
     @GetMapping("/{pondId}")
     public ResponseEntity<ResponseObject> getPondById(@PathVariable("pondId") String pondId) {
         try {
-            Pond pond = pondService.getPondById(pondId);
+            PondResponse pond = pondService.getPondById(pondId);
             return ResponseObject.APIRepsonse(200, "Found pond successfully", HttpStatus.OK, pond);
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
@@ -56,5 +58,18 @@ public class PondController {
     public ResponseEntity<ResponseObject> createPond (@RequestBody PondRequest pondRequest){
         pondService.createPond(pondRequest);
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");
+    }
+
+    @GetMapping("/customerId")
+    public ResponseEntity<ResponseObject> getPondsByCustomerId(@RequestParam("customerId") String customerId) {
+        try {
+            List<Pond> ponds = customerService.getPondsByCustomerId(customerId);
+            if (ponds.isEmpty()) {
+                return ResponseObject.APIRepsonse(404, "Customer do not have any pond", HttpStatus.NOT_FOUND, null);
+            } else{
+                return ResponseObject.APIRepsonse(200, "Found ponds successfully", HttpStatus.OK, ponds);}
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
     }
 }

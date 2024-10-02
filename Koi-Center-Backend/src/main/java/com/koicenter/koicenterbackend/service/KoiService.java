@@ -1,12 +1,12 @@
 package com.koicenter.koicenterbackend.service;
 
-import com.koicenter.koicenterbackend.controller.KoiController;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Koi;
-import com.koicenter.koicenterbackend.model.request.KoiRequest;
-import com.koicenter.koicenterbackend.model.request.KoiUpdateRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiUpdateRequest;
+import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import com.koicenter.koicenterbackend.repository.KoiRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +32,20 @@ public class KoiService {
         return koiRepository.findAll();
     }
 
-    public Koi getKoiById(String koiId){
-        return koiRepository.findById(koiId).orElseThrow(()
+    public KoiResponse getKoiById(String koiId){
+        Koi koi = koiRepository.findById(koiId).orElseThrow(()
                 -> new AppException(ErrorCode.KOI_NOT_EXITS.getCode(),
                 ErrorCode.KOI_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        KoiResponse koiResponse = new KoiResponse();
+        koiResponse.setKoiId(koi.getKoiId());
+        koiResponse.setBreed(koi.getBreed());
+        koiResponse.setAge(koi.getAge());
+        koiResponse.setHeight(koi.getHeight());
+        koiResponse.setWeight(koi.getWeight());
+        koiResponse.setHealthStatus(koi.getHealthStatus());
+        koiResponse.setNotes(koi.getNotes());
+        koiResponse.setImage(koi.getImage());
+        return koiResponse;
     }
 
     public Koi updateKoi(String koiId, KoiUpdateRequest request){

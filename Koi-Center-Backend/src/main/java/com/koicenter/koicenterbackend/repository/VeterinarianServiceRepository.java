@@ -1,7 +1,7 @@
 //package com.koicenter.koicenterbackend.repository;
 //
 //import com.koicenter.koicenterbackend.model.entity.Veterinarian;
-//import com.koicenter.koicenterbackend.model.response.VetServiceResponse;
+//import com.koicenter.koicenterbackend.model.response.veterinarian.VetServiceResponse;
 //import com.koicenter.koicenterbackend.service.VeterinarianService;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Query;

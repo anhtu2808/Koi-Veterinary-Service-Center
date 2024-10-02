@@ -5,21 +5,16 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.LoggedOutToken;
 import com.koicenter.koicenterbackend.model.entity.User;
-import com.koicenter.koicenterbackend.model.enums.Role;
-import com.koicenter.koicenterbackend.model.request.LoginRequest;
+import com.koicenter.koicenterbackend.model.request.authentication.LoginRequest;
 import com.koicenter.koicenterbackend.repository.LoggedOutTokenRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.util.JWTUtilHelper;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class AuthenticateService {

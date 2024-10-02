@@ -1,7 +1,9 @@
 package com.koicenter.koicenterbackend.repository;
 
-import com.koicenter.koicenterbackend.model.entity.TreatmentMedicine;
+import com.koicenter.koicenterbackend.model.entity.Prescription;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface TreatmentMedicineRepository extends JpaRepository<TreatmentMedicine, String> {
+@Repository
+public interface TreatmentMedicineRepository extends JpaRepository<Prescription, String> {
 }

@@ -1,9 +1,9 @@
 package com.koicenter.koicenterbackend.controller;
 
-import com.koicenter.koicenterbackend.model.request.KoiTreatmentRequest;
-import com.koicenter.koicenterbackend.model.request.PondTreatmentRequest;
-import com.koicenter.koicenterbackend.model.response.KoiTreatmentResponse;
-import com.koicenter.koicenterbackend.model.response.PondTreatmentResponse;
+import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
+import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
+import com.koicenter.koicenterbackend.model.response.koi.KoiTreatmentResponse;
+import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.KoiTreatmentService;
 import com.koicenter.koicenterbackend.service.PondTreatmentService;

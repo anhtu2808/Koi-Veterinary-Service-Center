@@ -1,8 +1,8 @@
 package com.koicenter.koicenterbackend.controller;
 
 
-import com.koicenter.koicenterbackend.model.request.LoginRequest;
-import com.koicenter.koicenterbackend.model.request.LogoutRequest;
+import com.koicenter.koicenterbackend.model.request.authentication.LoginRequest;
+import com.koicenter.koicenterbackend.model.request.authentication.LogoutRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.AuthenticateService;
 import com.koicenter.koicenterbackend.util.JWTUtilHelper;
@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
     @RequestMapping("/api/v1/auth")

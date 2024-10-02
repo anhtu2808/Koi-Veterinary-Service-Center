@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class PondTreatment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "pond_treatment_id")
+
     String pondTreatmentId;
     @Column(name = "health_issue")
     String healthIssue;
@@ -27,6 +27,11 @@ public class PondTreatment {
     @ManyToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "appointment_id")
     Appointment appointment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prescription_id")
+    private Prescription prescription;
+
 
 
 }

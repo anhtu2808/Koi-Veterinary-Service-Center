@@ -3,10 +3,11 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Koi;
-import com.koicenter.koicenterbackend.model.request.KoiRequest;
-import com.koicenter.koicenterbackend.model.request.KoiUpdateRequest;
-import com.koicenter.koicenterbackend.model.request.PondUpdateRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiRequest;
+import com.koicenter.koicenterbackend.model.request.koi.KoiUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
+import com.koicenter.koicenterbackend.service.CustomerService;
 import com.koicenter.koicenterbackend.service.KoiService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -14,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,9 @@ public class    KoiController {
     @Autowired
     private KoiService koiService;
 
+    @Autowired
+    private CustomerService customerService;
+
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAllPond() {
         try {
@@ -44,7 +48,7 @@ public class    KoiController {
     @GetMapping("/{koiId}")
     public ResponseEntity<ResponseObject> getPondById(@PathVariable("koiId") String koiId) {
         try {
-            Koi koi = koiService.getKoiById(koiId);
+            KoiResponse koi = koiService.getKoiById(koiId);
             return ResponseObject.APIRepsonse(200, "Found koi successfully", HttpStatus.OK, koi);
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
@@ -52,7 +56,7 @@ public class    KoiController {
     }
 
     @PutMapping("/{koiId}")
-    public ResponseEntity<ResponseObject> updatePond(@PathVariable("koiId") String koiId, @Valid @RequestBody KoiUpdateRequest request) {
+    public ResponseEntity<ResponseObject> updatePond(@RequestParam("koiId") String koiId, @Valid @RequestBody KoiUpdateRequest request) {
         try {
             Koi updatedKoi = koiService.updateKoi(koiId, request);
             return ResponseObject.APIRepsonse(200, "Update success", HttpStatus.OK, updatedKoi);
@@ -64,5 +68,19 @@ public class    KoiController {
     public ResponseEntity<ResponseObject> createPond (@RequestBody KoiRequest koiRequest){
         koiService.createKoi(koiRequest);
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");
+    }
+
+    @GetMapping("/customerId")
+    public ResponseEntity<ResponseObject> getKoisByCustomerId(@RequestParam("customerId") String customerId) {
+        try {
+            List<Koi> kois = customerService.getKoiByCustomerId(customerId);
+            if (kois.isEmpty()) {
+                return ResponseObject.APIRepsonse(404, "Customer do not have any koi", HttpStatus.NOT_FOUND, null);
+            } else{
+                return ResponseObject.APIRepsonse(200, "Found kois successfully", HttpStatus.OK, kois);
+            }
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
     }
 }

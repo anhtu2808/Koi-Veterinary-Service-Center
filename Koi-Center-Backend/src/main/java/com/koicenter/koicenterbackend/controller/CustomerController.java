@@ -23,31 +23,5 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    // Pond theo customerId
-    @GetMapping("/{customerId}/ponds")
-    public ResponseEntity<ResponseObject> getPondsByCustomerId(@PathVariable("customerId") String customerId) {
-        try {
-            List<Pond> ponds = customerService.getPondsByCustomerId(customerId);
-            if (ponds.isEmpty()) {
-                return ResponseObject.APIRepsonse(404, "Customer do not have any pond", HttpStatus.NOT_FOUND, null);
-            } else{
-                return ResponseObject.APIRepsonse(200, "Found ponds successfully", HttpStatus.OK, ponds);}
-        } catch (AppException e) {
-            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
-        }
-    }
-
-    @GetMapping("/{customerId}/kois")
-    public ResponseEntity<ResponseObject> getKoisByCustomerId(@PathVariable("customerId") String customerId) {
-        try {
-            List<Koi> kois = customerService.getKoiByCustomerId(customerId);
-            if (kois.isEmpty()) {
-                return ResponseObject.APIRepsonse(404, "Customer do not have any koi", HttpStatus.NOT_FOUND, null);
-            } else{
-            return ResponseObject.APIRepsonse(200, "Found kois successfully", HttpStatus.OK, kois);
-            }
-        } catch (AppException e) {
-            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
-        }
-    }
+    
 }

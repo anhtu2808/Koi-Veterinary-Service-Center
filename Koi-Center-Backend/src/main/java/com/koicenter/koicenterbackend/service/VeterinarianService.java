@@ -1,14 +1,13 @@
 package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
-import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
-import com.koicenter.koicenterbackend.model.request.VeterinarianRequest;
-import com.koicenter.koicenterbackend.model.response.VeterinarianResponse;
-import com.koicenter.koicenterbackend.model.response.UserResponse;
+import com.koicenter.koicenterbackend.model.request.veterinarian.VeterinarianRequest;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
+import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
@@ -139,21 +138,21 @@ public class VeterinarianService {
         }
         List<VeterinarianResponse> responseList = new ArrayList<>();
         for (Veterinarian veterinarian : veterinarians) {
-log.info("Tat ca vet cua service do " + veterinarian.getVetId());
-            VeterinarianResponse x = new VeterinarianResponse();
-                    x.setGoogleMeet(veterinarian.getGoogleMeet());
-                    x.setPhone(veterinarian.getPhone());
-                    x.setVetId(veterinarian.getVetId());
-                    x.setDescription(veterinarian.getDescription());
-                    x.setUserId(veterinarian.getUser().getUserId());
-                    x.setVetStatus(veterinarian.getVeterinarianStatus() == null? "" : veterinarian.getVeterinarianStatus().toString() );
-                    x.setUserId(veterinarian.getUser().getUserId());
+
+            VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
+            veterinarianResponse.setGoogleMeet(veterinarian.getGoogleMeet());
+            veterinarianResponse.setPhone(veterinarian.getPhone());
+            veterinarianResponse.setVetId(veterinarian.getVetId());
+            veterinarianResponse.setDescription(veterinarian.getDescription());
+            veterinarianResponse.setUserId(veterinarian.getUser().getUserId());
+            veterinarianResponse.setVetStatus(veterinarian.getVeterinarianStatus() == null? "" : veterinarian.getVeterinarianStatus().toString() );
+            veterinarianResponse.setUserId(veterinarian.getUser().getUserId());
                     UserResponse userResponse = new UserResponse();
                     userResponse.setFullName(veterinarian.getUser().getFullName());
                     userResponse.setEmail(veterinarian.getUser().getEmail());
                     userResponse.setUsername(veterinarian.getUser().getUsername());
-                    x.setUser(userResponse);
-            responseList.add(x);
+            veterinarianResponse.setUser(userResponse);
+            responseList.add(veterinarianResponse);
         }
         return responseList;
     }
