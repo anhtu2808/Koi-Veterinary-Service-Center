@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.model.entity.VetSchedule;
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
 import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.schedual.DayResponse;

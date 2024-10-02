@@ -3,6 +3,7 @@ package com.koicenter.koicenterbackend.service;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.enums.ServiceType;
+import com.koicenter.koicenterbackend.model.request.service.ServiceRequest;
 import com.koicenter.koicenterbackend.model.response.service.ServiceResponse;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,4 +84,24 @@ public class ServiceService {
         return services;
     }
 
+    public boolean createService(ServiceRequest serviceRequest) {
+        try {
+            if(servicesRepository.findByserviceName(serviceRequest.getServiceName()).isPresent()) {
+                return false;
+            }
+            com.koicenter.koicenterbackend.model.entity.Service service = com.koicenter.koicenterbackend.model.entity.Service.builder()
+                    .serviceName(serviceRequest.getServiceName())
+                    .description(serviceRequest.getDescription())
+                    .basePrice(serviceRequest.getBasePrice())
+                    .pondPrice(serviceRequest.getPondPrice())
+                    .koiPrice(serviceRequest.getKoiPrice())
+                    .serviceFor(serviceRequest.getServiceFor())
+                    .image(serviceRequest.getImage())
+                    .build();
+            servicesRepository.save(service);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

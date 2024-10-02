@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.model.entity.Service;
+import com.koicenter.koicenterbackend.model.request.service.ServiceRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.service.ServiceResponse;
 import com.koicenter.koicenterbackend.service.ServiceService;
@@ -37,6 +38,18 @@ public class ServiceController {
         else {
             return ResponseObject.APIRepsonse(404, "Appointment_Type Not Found ", HttpStatus.NOT_FOUND, "");
 
+        }
+    }
+    /**
+     * create new service by staff
+     */
+    @PostMapping("/create")
+    public ResponseEntity<ResponseObject> createService(@RequestBody ServiceRequest serviceRequest) {
+        boolean isCreated = serviceService.createService(serviceRequest);
+        if (isCreated) {
+            return ResponseObject.APIRepsonse(200, "Create new service successfully", HttpStatus.OK, null);
+        } else {
+            return ResponseObject.APIRepsonse(409, "Service name already exists", HttpStatus.CONFLICT, null);
         }
     }
 }
