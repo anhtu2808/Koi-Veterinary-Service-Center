@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchMedicinesAPI } from "../../apis";
 import { Card, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
-import "./MedicineListPage.css";
+import "./MedicineListPage.module.css";
 
 function MedicineListPage() {
   const [medicines, setMedicines] = useState([]);
