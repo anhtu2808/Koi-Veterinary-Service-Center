@@ -34,6 +34,7 @@ import PondDetail from './pages/PondDetail/PondDetail';
 import KoiDetail from './pages/KoiDetail/KoiDetail';
 import AdminProtectedRoute from './components/ProtectedRoute/AdminProtectedRoute';
 import ProfileLayout from './pages/layout/ProfileLayout';
+import Koi from './components/Koi/Koi';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -83,7 +84,7 @@ function App() {
                   <ProfileLayout>
                     <Routes>
                       <Route path="/" element={<MyProfile />} />
-
+                    <Route path='/koi' element={<Koi />}/>
 
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
@@ -122,7 +123,7 @@ function App() {
 
               {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
               {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
-              {/* Add more admin routes as needed */}
+              Add more admin routes as needed
             </Routes>
           </AdminLayout>
         } />

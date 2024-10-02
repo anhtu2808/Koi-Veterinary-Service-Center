@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchAppointmentByIdAPI, updateAppointmentAPI } from "../../apis/AllAppoimentMockData";
 import "./AppointmentDetail.css";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
+import { ROLE } from "../../utils/constants";
+import { useSelector } from "react-redux";
 
 function AppointmentDetail() {
   const { appointmentId } = useParams();
@@ -17,7 +19,7 @@ function AppointmentDetail() {
     veterinarian: "Dr. Smith"
   });
   const [isEditing, setIsEditing] = useState(false);
-
+  const role = useSelector((state) => state.user.role);
   useEffect(() => {
     const fetchAppointmentDetail = async () => {
       try {
@@ -189,17 +191,18 @@ function AppointmentDetail() {
       <div className="col-md-12">
         <button
           className="btn btn-secondary "
-          onClick={() => navigate("/admin/allappointment")}
+          onClick={() => navigate(-1)}
         >
           Back to All Appointments
         </button>
-        <button
-          className="btn btn-primary mx-3"
-          onClick={() => setIsEditing(!isEditing)}
-        >
-          {isEditing ? "Cancel" : "Edit"}
-        </button>
-
+        {role !== ROLE.CUSTOMER && (
+          <button
+            className="btn btn-primary mx-3"
+            onClick={() => setIsEditing(!isEditing)}
+          >
+            {isEditing ? "Cancel" : "Edit"}
+          </button>
+        )}
       </div>
 
 
