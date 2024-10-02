@@ -39,7 +39,7 @@ function Footer() {
           <div className="col-md-3 text-start text-center">
             <h4>Follow Us</h4>
             <p>Stay connected with us on social media.</p>
-            <p>
+            <p className="d-flex justify-content-center gap-3">
               <i className="fab fa-facebook"></i>
               <i className="fab fa-twitter"></i>
               <i className="fab fa-instagram"></i>

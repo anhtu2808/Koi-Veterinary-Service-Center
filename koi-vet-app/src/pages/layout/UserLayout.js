@@ -6,8 +6,9 @@ function UserLayout({ children }) {
   return (
    <>
    <Header/>
-   
+   <div style={{minHeight: "65vh"}}>
     {children}
+   </div>
  
     <Footer/>
    </>

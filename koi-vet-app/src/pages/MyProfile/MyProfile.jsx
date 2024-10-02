@@ -40,10 +40,10 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="container my-5">
-      <div className="card shadow">
+    <div className="container my-profile-container my-5">
+      <div className="card shadow ">
         <div className="card-header  my-profile-card-header text-white">
-          <h3 className="mb-0 my-profile-card-header">My Information</h3>
+          <h3 className="mb-0  my-profile-card-header">My Information</h3>
         </div>
         <div className="card-body">
           <div className="row">

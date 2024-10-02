@@ -1,9 +1,11 @@
 .footer-logo{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
+    text-align: start;
+    gap: 2vh;
 }
 .footer-logo img{
-    width: 100% !important;
-    height: 100% !important;
+    width: 70% !important;
+    height: 70% !important;
 }
