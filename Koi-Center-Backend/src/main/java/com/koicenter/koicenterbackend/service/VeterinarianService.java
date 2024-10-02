@@ -139,7 +139,7 @@ public class VeterinarianService {
         }
         List<VeterinarianResponse> responseList = new ArrayList<>();
         for (Veterinarian veterinarian : veterinarians) {
-
+log.info("Tat ca vet cua service do " + veterinarian.getVetId());
             VeterinarianResponse x = new VeterinarianResponse();
                     x.setGoogleMeet(veterinarian.getGoogleMeet());
                     x.setPhone(veterinarian.getPhone());
