@@ -94,6 +94,18 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/treatments/ponds").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/treatments/kois").permitAll()
+
+                            .requestMatchers(HttpMethod.GET, "/api/v1/prescriptions").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/prescriptions").permitAll()
+
+
+                            .requestMatchers(HttpMethod.GET, "/api/v1/medicines").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/medicines/{medicineId}").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/medicines").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/medicines/{medicineId}").permitAll()
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/medicines/{medicineId}").permitAll()
+
+
                             .anyRequest().authenticated();
                 });
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));
