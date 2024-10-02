@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.model.entity.Service;
+import com.koicenter.koicenterbackend.model.request.service.ServiceRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.service.ServiceResponse;
 import com.koicenter.koicenterbackend.service.ServiceService;
@@ -39,4 +40,35 @@ public class ServiceController {
 
         }
     }
+    /**
+     * create new service by staff
+     */
+    @PostMapping("/create")
+    public ResponseEntity<ResponseObject> createService(@RequestBody ServiceRequest serviceRequest) {
+        boolean isCreated = serviceService.createService(serviceRequest);
+        if (isCreated) {
+            return ResponseObject.APIRepsonse(200, "Create new service successfully", HttpStatus.OK, null);
+        } else {
+            return ResponseObject.APIRepsonse(409, "Service name already exists", HttpStatus.CONFLICT, null);
+        }
+    }
+    @PutMapping("/update")
+    public ResponseEntity<ResponseObject> updateService(@RequestBody ServiceRequest serviceRequest) {
+        boolean isUpdated = serviceService.updateService(serviceRequest);
+        if (isUpdated) {
+            return ResponseObject.APIRepsonse(200, "Update service successfully", HttpStatus.OK, null);
+        } else {
+            return ResponseObject.APIRepsonse(400, "Failed to update service", HttpStatus.BAD_REQUEST, null);
+        }
+    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseObject> deleteService(@RequestParam String serviceId) {
+        boolean isDeleted = serviceService.deleteService(serviceId);
+        if (isDeleted) {
+            return ResponseObject.APIRepsonse(200, "Service deleted successfully", HttpStatus.OK, null);
+        } else {
+            return ResponseObject.APIRepsonse(404, "Service not found", HttpStatus.NOT_FOUND, null);
+        }
+    }
+
 }

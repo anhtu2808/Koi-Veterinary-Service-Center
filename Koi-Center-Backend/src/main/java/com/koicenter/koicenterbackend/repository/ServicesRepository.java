@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ServicesRepository extends JpaRepository<Service, String> {
     List<Service> findByServiceForNot(ServiceType serviceType);
     List<Service> findByServiceFor(ServiceType serviceType);
     Service findByServiceId(String serviceId);
+
+    Optional<Service> findByserviceName(String serviceName);
 }

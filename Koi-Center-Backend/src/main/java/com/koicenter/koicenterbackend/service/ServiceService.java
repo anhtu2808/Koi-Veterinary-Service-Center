@@ -3,16 +3,14 @@ package com.koicenter.koicenterbackend.service;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.enums.ServiceType;
+import com.koicenter.koicenterbackend.model.request.service.ServiceRequest;
 import com.koicenter.koicenterbackend.model.response.service.ServiceResponse;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ServiceService {
@@ -82,5 +80,65 @@ public class ServiceService {
         }
         return services;
     }
+
+    public boolean createService(ServiceRequest serviceRequest) {
+        try {
+            if(servicesRepository.findByserviceName(serviceRequest.getServiceName()).isPresent()) {
+                return false;
+            }
+            com.koicenter.koicenterbackend.model.entity.Service service = com.koicenter.koicenterbackend.model.entity.Service.builder()
+                    .serviceName(serviceRequest.getServiceName())
+                    .description(serviceRequest.getDescription())
+                    .basePrice(serviceRequest.getBasePrice())
+                    .pondPrice(serviceRequest.getPondPrice())
+                    .koiPrice(serviceRequest.getKoiPrice())
+                    .serviceFor(serviceRequest.getServiceFor())
+                    .image(serviceRequest.getImage())
+                    .status(true)
+                    .build();
+            servicesRepository.save(service);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean updateService(ServiceRequest serviceRequest) {
+        try{
+            com.koicenter.koicenterbackend.model.entity.Service existingService = servicesRepository.findByserviceName(serviceRequest.getServiceName())
+                    .orElse(null);
+            if (existingService == null) {
+                return false;
+            }
+            existingService.setServiceName(serviceRequest.getServiceName());
+            existingService.setDescription(serviceRequest.getDescription());
+            existingService.setBasePrice(serviceRequest.getBasePrice());
+            existingService.setPondPrice(serviceRequest.getPondPrice());
+            existingService.setKoiPrice(serviceRequest.getKoiPrice());
+            existingService.setServiceFor(serviceRequest.getServiceFor());
+            existingService.setImage(serviceRequest.getImage());
+            servicesRepository.save(existingService);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean deleteService(String serviceId) {
+        Optional<com.koicenter.koicenterbackend.model.entity.Service> optionalService = Optional.ofNullable(servicesRepository.findByServiceId(serviceId));
+        if (!optionalService.isPresent()) {
+            return false;
+        }
+
+        // Get the existing service object
+        com.koicenter.koicenterbackend.model.entity.Service existingService = optionalService.get();
+
+        // Set status to false (soft delete)
+        existingService.setStatus(false);
+
+        // Save the updated service back to the repository
+        servicesRepository.save(existingService);
+
+        return true;  // Return true if the status update was successful
+    }
+
 
 }

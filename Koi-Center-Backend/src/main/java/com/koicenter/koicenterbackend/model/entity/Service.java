@@ -32,6 +32,7 @@ public class Service {
             @Column(name = "service_for")
     ServiceType serviceFor;
     String image;
+    boolean status;
 
     @OneToMany(mappedBy = "service")
     List<Appointment> appointments;

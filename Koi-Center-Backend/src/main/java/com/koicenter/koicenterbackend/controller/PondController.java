@@ -60,16 +60,5 @@ public class PondController {
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");
     }
 
-    @GetMapping("/customerId")
-    public ResponseEntity<ResponseObject> getPondsByCustomerId(@RequestParam("customerId") String customerId) {
-        try {
-            List<Pond> ponds = customerService.getPondsByCustomerId(customerId);
-            if (ponds.isEmpty()) {
-                return ResponseObject.APIRepsonse(404, "Customer do not have any pond", HttpStatus.NOT_FOUND, null);
-            } else{
-                return ResponseObject.APIRepsonse(200, "Found ponds successfully", HttpStatus.OK, ponds);}
-        } catch (AppException e) {
-            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
-        }
-    }
+
 }
