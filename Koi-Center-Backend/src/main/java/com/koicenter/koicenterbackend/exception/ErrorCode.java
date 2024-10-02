@@ -15,6 +15,7 @@ public enum ErrorCode {
     KOI_NOT_EXITS(401,"Koi not exits"),
     POND_ID_OR_APPOINTMENT_ID_NOT_EXITS(401,"Pond id or appointment id not exits"),
     KOI_ID_OR_APPOINTMENT_ID_NOT_EXITS(401,"Pond id or appointment id not exits"),
+    MEDICINE_NOT_EXITS(401,"Medicine not exits"),
     ;
     private int code;
     private String message;
