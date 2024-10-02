@@ -24,4 +24,13 @@ public class NewsController {
         }
         return ResponseObject.APIRepsonse(200, "Fetched all news successfully", HttpStatus.OK, newsList);
     }
+    @GetMapping("/id")
+    public ResponseEntity<ResponseObject> getNewsById(@RequestParam String id) {
+        News news = newsService.getNewsById(id);
+        if (news != null) {
+            return ResponseObject.APIRepsonse(200, "Fetched news successfully", HttpStatus.OK, news);
+        } else {
+            return ResponseObject.APIRepsonse(404, "News not found", HttpStatus.NOT_FOUND, null);
+        }
+    }
 }

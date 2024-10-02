@@ -18,4 +18,7 @@ public class NewsService {
     }
 
 
+    public News getNewsById(String id) {
+        return newsRepository.findBynewId(id);
+    }
 }
