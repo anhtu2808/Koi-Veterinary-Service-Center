@@ -166,3 +166,22 @@ export const createKoiAPI = async (data) => {
     return response.data;
 }
 
+
+
+
+
+
+
+
+
+// Medicine API
+export const fecthMedicineByIdAPI = async (medicineId) => {
+    const response = await api.get(`/medicines/${medicineId}`)
+    return response.data;
+}
+
+export const fetchMedicinesAPI = async () => {
+    const response = await api.get('/medicines')
+    return response.data;
+}
+

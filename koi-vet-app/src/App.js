@@ -34,6 +34,8 @@ import PondDetail from './pages/PondDetail/PondDetail';
 import KoiDetail from './pages/KoiDetail/KoiDetail';
 import AdminProtectedRoute from './components/ProtectedRoute/AdminProtectedRoute';
 import ProfileLayout from './pages/layout/ProfileLayout';
+import InvoiceListPage from './pages/InvoiceListPage/InvoiceListPage';
+import MedicineListPage from './pages/MedicineListPage/MedicineListPage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -117,6 +119,8 @@ function App() {
                 <Route path="/koiinformation" element={<KoiInformation />} />
                 <Route path="/ponddetail" element={<PondDetail />} />
                 <Route path="/koidetail" element={<KoiDetail />} />
+                <Route path="/invoice" element={<InvoiceListPage />} />
+                <Route path="/medpage" element={< MedicineListPage />} />
               </Route>
 
 
