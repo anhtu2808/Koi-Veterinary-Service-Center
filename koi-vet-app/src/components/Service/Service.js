@@ -12,7 +12,6 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
       dispatch(setBookingData({ serviceId: serviceId }))
       dispatch(setBookingData({ serviceFor: serviceFor }))
       dispatch(setBookingData({ serviceName: serviceName }))
-      console.log(serviceFor)
       dispatch(nextStep())
     } else {
       navigate(`/services/${serviceId}`)
