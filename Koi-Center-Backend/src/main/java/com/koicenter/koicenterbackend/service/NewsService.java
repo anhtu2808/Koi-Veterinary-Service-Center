@@ -21,4 +21,19 @@ public class NewsService {
     public News getNewsById(String id) {
         return newsRepository.findBynewId(id);
     }
+
+    public boolean createNews(News news) {
+        try {
+            News news1 = News.builder()
+                    .img(news.getImg())
+                    .title(news.getTitle())
+                    .content(news.getContent())
+                    .preview(news.getPreview())
+                    .build();
+            newsRepository.save(news1);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

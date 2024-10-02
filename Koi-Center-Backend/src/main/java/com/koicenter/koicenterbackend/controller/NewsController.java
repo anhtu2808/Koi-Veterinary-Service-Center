@@ -33,4 +33,13 @@ public class NewsController {
             return ResponseObject.APIRepsonse(404, "News not found", HttpStatus.NOT_FOUND, null);
         }
     }
+    @PostMapping("/create")
+    public ResponseEntity<ResponseObject> createNews(@RequestBody News news) {
+        boolean isCreated = newsService.createNews(news);
+        if (isCreated) {
+            return ResponseObject.APIRepsonse(200, "Create new news successfully", HttpStatus.OK, null);
+        } else {
+            return ResponseObject.APIRepsonse(409, "News title already exists", HttpStatus.CONFLICT, null);
+        }
+    }
 }
