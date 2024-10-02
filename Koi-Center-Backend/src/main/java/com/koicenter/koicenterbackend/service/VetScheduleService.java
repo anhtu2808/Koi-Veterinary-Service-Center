@@ -106,16 +106,8 @@ public class VetScheduleService {
 
         return dayResponses;
     }
-    public List<VetScheduleResponse> getVeterinariansByDateTime(VetScheduleRequest vetScheduleRequest) {
-        List<VetScheduleResponse> vetSchedules = new ArrayList<>();
-        VetScheduleResponse vetScheduleResponse = new VetScheduleResponse();
-        List<Veterinarian> veterinarians = new ArrayList<>();
-        for ( Veterinarian veterinarian : veterinarianRepository.findByServices_ServiceId(vetScheduleRequest.getServiceId())){
-        log.info("toi dang o day " + veterinarian.getVetId());
-        }
-
-        return vetSchedules;
-
-    }
+//    public List<VetScheduleResponse> getVeterinariansByDateTime(VetScheduleRequest localDate) {
+//        List<VetScheduleResponse> vetSchedules = new ArrayList<>();
+//
+//    }
 }
-
