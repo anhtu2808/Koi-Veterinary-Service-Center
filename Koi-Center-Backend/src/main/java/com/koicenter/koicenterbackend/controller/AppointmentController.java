@@ -75,8 +75,8 @@ public class AppointmentController {
     // UPDATE
     @PostMapping("/update")
     public ResponseEntity<ResponseObject> updateAppointment(@RequestBody AppointmentRequest appointmentResponse) {
-        appointmentService.updateAppointment(appointmentResponse);
-    return ResponseObject.APIRepsonse(200,"UPDATE APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
+//        appointmentService.updateAppointment(appointmentResponse);
+    return ResponseObject.APIRepsonse(200,"UPDATE APPOINTMENT SUCCESSFULLY",HttpStatus.OK," ");
     }
     }
 
