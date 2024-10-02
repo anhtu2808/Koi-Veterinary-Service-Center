@@ -105,4 +105,24 @@ public class ServiceService {
             return false;
         }
     }
+    public boolean updateService(ServiceRequest serviceRequest) {
+        try{
+            com.koicenter.koicenterbackend.model.entity.Service existingService = servicesRepository.findByserviceName(serviceRequest.getServiceName())
+                    .orElse(null);
+            if (existingService == null) {
+                return false;
+            }
+            existingService.setServiceName(serviceRequest.getServiceName());
+            existingService.setDescription(serviceRequest.getDescription());
+            existingService.setBasePrice(serviceRequest.getBasePrice());
+            existingService.setPondPrice(serviceRequest.getPondPrice());
+            existingService.setKoiPrice(serviceRequest.getKoiPrice());
+            existingService.setServiceFor(serviceRequest.getServiceFor());
+            existingService.setImage(serviceRequest.getImage());
+            servicesRepository.save(existingService);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
 }
