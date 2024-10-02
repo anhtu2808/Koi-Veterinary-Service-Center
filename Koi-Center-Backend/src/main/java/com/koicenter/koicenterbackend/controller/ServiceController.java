@@ -61,5 +61,14 @@ public class ServiceController {
             return ResponseObject.APIRepsonse(400, "Failed to update service", HttpStatus.BAD_REQUEST, null);
         }
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseObject> deleteService(@RequestParam String serviceId) {
+        boolean isDeleted = serviceService.deleteService(serviceId);
+        if (isDeleted) {
+            return ResponseObject.APIRepsonse(200, "Service deleted successfully", HttpStatus.OK, null);
+        } else {
+            return ResponseObject.APIRepsonse(404, "Service not found", HttpStatus.NOT_FOUND, null);
+        }
+    }
 
 }

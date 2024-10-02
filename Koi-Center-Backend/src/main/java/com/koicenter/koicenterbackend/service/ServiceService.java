@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ServiceService {
@@ -125,4 +122,23 @@ public class ServiceService {
             return false;
         }
     }
+    public boolean deleteService(String serviceId) {
+        Optional<com.koicenter.koicenterbackend.model.entity.Service> optionalService = Optional.ofNullable(servicesRepository.findByServiceId(serviceId));
+        if (!optionalService.isPresent()) {
+            return false;
+        }
+
+        // Get the existing service object
+        com.koicenter.koicenterbackend.model.entity.Service existingService = optionalService.get();
+
+        // Set status to false (soft delete)
+        existingService.setStatus(false);
+
+        // Save the updated service back to the repository
+        servicesRepository.save(existingService);
+
+        return true;  // Return true if the status update was successful
+    }
+
+
 }
