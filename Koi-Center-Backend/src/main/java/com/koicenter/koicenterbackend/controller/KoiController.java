@@ -64,23 +64,11 @@ public class    KoiController {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
         }
     }
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<ResponseObject> createPond (@RequestBody KoiRequest koiRequest){
         koiService.createKoi(koiRequest);
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, "");
     }
 
-    @GetMapping("/customerId")
-    public ResponseEntity<ResponseObject> getKoisByCustomerId(@RequestParam("customerId") String customerId) {
-        try {
-            List<Koi> kois = customerService.getKoiByCustomerId(customerId);
-            if (kois.isEmpty()) {
-                return ResponseObject.APIRepsonse(404, "Customer do not have any koi", HttpStatus.NOT_FOUND, null);
-            } else{
-                return ResponseObject.APIRepsonse(200, "Found kois successfully", HttpStatus.OK, kois);
-            }
-        } catch (AppException e) {
-            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
-        }
-    }
+
 }

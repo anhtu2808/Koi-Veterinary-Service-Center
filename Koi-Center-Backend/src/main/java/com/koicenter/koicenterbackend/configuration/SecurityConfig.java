@@ -105,7 +105,8 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.PUT, "/api/v1/medicines/{medicineId}").permitAll()
                             .requestMatchers(HttpMethod.DELETE, "/api/v1/medicines/{medicineId}").permitAll()
 
-
+                            .requestMatchers(HttpMethod.GET, "api/v1/news/id").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/news").permitAll()
                             .anyRequest().authenticated();
                 });
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));
