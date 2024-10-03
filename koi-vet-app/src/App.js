@@ -36,6 +36,7 @@ import Koi from './components/Koi/Koi';
 import InvoiceListPage from './pages/InvoiceListPage/InvoiceListPage';
 import MedicineListPage from './pages/MedicineListPage/MedicineListPage';
 import KoiInfo from './pages/KoiInfo/KoiInfo';
+import ServicePageDetail from './pages/ServicePageDetail/ServicePageDetail';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -66,6 +67,7 @@ function App() {
         <Route path="/*" element={
           <UserLayout>
             <Routes>
+              <Route path="/services/:serviceId" element={<ServicePageDetail />} />
               <Route path="/faq" element={<FAQ />} /> {/* Trang chủ User */}
               <Route path="/" element={<HomePage />} />
               <Route path="/medicine" element={<Medicine />} />
