@@ -24,7 +24,7 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate }) {
   
   const koiId = useParams().koiId;
   const navigate = useNavigate();
-  const customerId = useSelector(state => state.user.customer.customerId);
+  const customerId = useSelector(state => state?.user?.customer?.customerId);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Ngăn không cho form tự động submit

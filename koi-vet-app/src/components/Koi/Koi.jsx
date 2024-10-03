@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Koi.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import {  fetchKoisByAppointmentIdAPI } from '../../apis/KoiMockData';
-import { fetchKoisByCustomerIdAPI  } from '../../apis';
+import { fetchKoisByAppointmentIdAPI } from '../../apis/KoiMockData';
+import { fetchKoisByCustomerIdAPI } from '../../apis';
 
 const Koi = ({ isAppointment, isBooking, title, updateTrigger, handleAddKoiToBooking, selectedKois }) => {
     const [koiList, setKoiList] = useState([]);
-    const customerId = useSelector(state => state?.user?.customer?.customerId);
+    const [customerId] = useState(useSelector(state => state?.user?.customer?.customerId))
     const { appointmentId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchKois = async () => {
             try {
-                const response = isAppointment 
+                const response = isAppointment
                     ? await fetchKoisByAppointmentIdAPI(appointmentId)
                     : await fetchKoisByCustomerIdAPI(customerId);
                 setKoiList(response.data);
@@ -61,12 +61,16 @@ const Koi = ({ isAppointment, isBooking, title, updateTrigger, handleAddKoiToBoo
                                         </td>
                                         <td>
                                             <div className='d-flex gap-3'>
+                                                {isAppointment ? 
+                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/koidetail/${koi.koiId}`)}>
+                                                    View Details
+                                                </button> : 
                                                 <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${koi.koiId}`)}>
                                                     View Details
-                                                </button>
+                                                </button>}
                                                 {isBooking && (
-                                                    <button 
-                                                        className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`} 
+                                                    <button
+                                                        className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
                                                         onClick={() => handleAddKoiToBooking(koi.koiId)}
                                                     >
                                                         {isSelected ? 'Remove' : 'Add'}

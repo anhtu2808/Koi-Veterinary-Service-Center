@@ -8,7 +8,7 @@ const sampleKoiData = [
         weight: 2.5,
         color: "White with red patterns",
         description: "A beautiful Kohaku with vibrant red markings",
-        appointmentId: "APT001"
+        appointmentId: "APT12345"
     },
     {
         koiId: 2,
@@ -19,7 +19,7 @@ const sampleKoiData = [
         weight: 1.8,
         color: "White with red and black patterns",
         description: "A young Sanke with promising color development",
-        appointmentId: "APT002"
+        appointmentId: "APT12345"
     },
     {
         koiId: 3,
@@ -41,7 +41,7 @@ const sampleKoiData = [
         weight: 0.8,
         color: "Solid platinum",
         description: "A young Ogon with a lustrous platinum sheen",
-        appointmentId: "APT001"
+        appointmentId: "APT12345"
     },
     {
         koiId: 5,

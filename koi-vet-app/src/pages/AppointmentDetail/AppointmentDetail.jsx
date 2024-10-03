@@ -11,7 +11,7 @@ function AppointmentDetail() {
   const navigate = useNavigate();
   const [appointment, setAppointment] = useState({
     appointmentId: "APT12345",
-    customerId: "CUST9876",
+    customerId: "0f4e5514-079e-4ed1-8df1-ff3d53221a52",
     serviceId: "SRV5432",
     location: "Main Clinic",
     appointmentDate: "2023-06-15",
@@ -24,7 +24,7 @@ function AppointmentDetail() {
     const fetchAppointmentDetail = async () => {
       try {
         const response = await fetchAppointmentByIdAPI(appointmentId);
-        setAppointment(response.data);
+        setAppointment(...appointment, response.data);
       } catch (error) {
         console.error("Error fetching appointment:", error);
       }
@@ -168,7 +168,7 @@ function AppointmentDetail() {
           </button>
         )}
 
-        {isEditing && (
+        
           <button
             onClick={() => navigate("/admin/inputpondpage")}
             type="submit"
@@ -176,17 +176,17 @@ function AppointmentDetail() {
           >
             Pond Information
           </button>
-        )}
+    
 
-        {isEditing && (
+        {console.log(appointment.appointmentId)}
           <button
-            onClick={() => navigate("/admin/inputkoipage")}
+            onClick={() => navigate(`/admin/koi/${appointment.appointmentId}`)}
             type="submit"
             className="btn btn-success buttonInEdit"
           >
             Koi Information
           </button>
-        )}
+      
       </form>
       <div className="col-md-12">
         <button
