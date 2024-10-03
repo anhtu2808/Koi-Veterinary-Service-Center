@@ -74,7 +74,7 @@ function App() {
               {/* Thêm các route khác của User ở đây */}
               <Route path='/veterinarians' element={<VeterinarianPage />} />
               <Route path='/services' element={<ServicePage />} />
-              <Route path='/vet-profile' element={<VetProfile />} />
+              <Route path='/vetprofile/:vetId' element={<VetProfile />} />
 
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>

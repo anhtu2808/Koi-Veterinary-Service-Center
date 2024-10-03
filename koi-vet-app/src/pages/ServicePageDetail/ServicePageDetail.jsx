@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { fecthServiceByServiceIdAPI } from "../../apis";
 import "./ServicePageDetail.css";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import Loading from "../../components/Loading/Loading";
 
 function ServicePageDetail() {
   const { serviceId } = useParams();
@@ -20,7 +21,7 @@ function ServicePageDetail() {
   }, [serviceId]);
 
   if (!serviceDetail) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const getPrice = () => {

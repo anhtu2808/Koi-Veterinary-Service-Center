@@ -1,6 +1,3 @@
-/* src/pages/VetProfile/VetProfile.css */
-
-/* Container chính của trang */
 .vet-profile-container {
     background-color: #f8f9fb;
     padding: 30px;
@@ -106,3 +103,6 @@
     }
   }
   
+  h5{
+    text-transform: capitalize;
+  }
