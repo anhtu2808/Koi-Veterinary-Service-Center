@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,5 +25,7 @@ public class Prescription {
     String note;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PrescriptionMedicine> prescriptionMedicines = new HashSet<>();
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    Set<PrescriptionMedicine> prescriptionMedicines = new HashSet<>();
 }
