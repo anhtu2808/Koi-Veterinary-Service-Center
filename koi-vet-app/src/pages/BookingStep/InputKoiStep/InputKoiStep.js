@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBookingData } from '../../../store/bookingSlice';
 import './InputKoiStep.css'
 import { useNavigate } from 'react-router-dom';
+import Koi from '../../../components/Koi/Koi';
+import Modal from '../../../components/Modal/Modal';
+import KoiDetail from '../../KoiDetail/KoiDetail';
+import { fetchKoiByCustomerIdAPI } from '../../../apis/KoiMockData';
+
 // Import the sample data
 const sampleKoiData = [
   {
@@ -79,98 +84,67 @@ const sampleKoiData = [
 
 
 const InputKoiStep = () => {
-  const [existingKoi] = useState(sampleKoiData); // Use sample data
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
   const dispatch = useDispatch();
-  const selectedKois = useSelector(state => state.booking.bookingData.selectedKoi);
   const navigate = useNavigate();
+  const customerId = useSelector(state => state.user.customer.customerId);
+  const selectedKois = useSelector(state => state.booking.bookingData.selectedKoi);
+  const [allKoi, setAllKoi] = useState([]);
 
-  const handleAddKoi = (koiId) => {
-    if (!selectedKois.includes(koiId)) {
-      const updatedselectedKois = [...selectedKois, koiId];
-      dispatch(setBookingData({ selectedKoi: updatedselectedKois }));
+  const handleAddKoiToBooking = (koiId) => {
+    if (selectedKois.includes(koiId)) {
+      // If already selected, remove it
+      dispatch(setBookingData({ selectedKoi: selectedKois.filter(id => id !== koiId) }));
+    } else {
+      // If not selected, add it
+      dispatch(setBookingData({ selectedKoi: [...selectedKois, koiId] }));
     }
   };
 
   const handleRemoveKoi = (koiId) => {
-    const updatedselectedKois = selectedKois.filter(id => id !== koiId);
-    dispatch(setBookingData({ selectedKoi: updatedselectedKois }));
+    const updatedSelectedKois = selectedKois.filter(id => id !== koiId);
+    dispatch(setBookingData({ selectedKoi: updatedSelectedKois }));
   };
 
+  //open modal for when click add new koi BTN
   const handleAddNewKoi = () => {
-    // Implement logic to add a new Koi
-    navigate("/admin/koiinformation");
-    console.log("Add new Koi clicked");
+    setIsModalOpen(true);
   };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  //update trigger for koi list
+  const handleKoiUpdate = () => {
+    setKoiUpdateTrigger(prev => prev + 1);
+  };
+  useEffect(() => {
+    const fetchAllKoi = async () => {
+      try {
+        const response = await fetchKoiByCustomerIdAPI(customerId);
+        setAllKoi(response.data);
+      } catch (error) {
+        console.error('Error fetching koi list:', error);
+      }
+    }
+    fetchAllKoi();
+  }, [customerId, koiUpdateTrigger]);
 
   return (
     <div className="container mt-4">
       <h3 className="mb-4">Select Koi for Appointment</h3>
-      
-      {/* Existing Koi Table */}
-      <div className="card mb-4">
-        <div className="card-header input-info-title text-white">
-          <h5 className="mb-0">Your Existing Koi</h5>
-        </div>
-        <div className="card-body">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Age</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {existingKoi.map(koi => (
-                <tr key={koi.koiId}>
-                  <td>{koi.name}</td>
-                  <td>{koi.type}</td>
-                  <td>{koi.age}</td>
-                  <td>
-                    <button 
-                      className="btn btn-sm btn-primary"
-                      onClick={() => handleAddKoi(koi.koiId)}
-                      disabled={selectedKois.includes(koi.koiId)}
-                    >
-                      Add
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
 
-      {/* Selected Koi List */}
-      <div className="card mb-4">
-        <div className="card-header input-info-title text-white">
-          <h5 className="mb-0">Selected Koi for Appointment</h5>
-        </div>
-        <div className="card-body">
-          {selectedKois.length === 0 ? (
-            <p>No Koi selected yet.</p>
-          ) : (
-            <ul className="list-group">
-              {selectedKois.map(koiId => {
-                const koi = existingKoi.find(k => k.koiId === koiId);
-                return (
-                  <li key={koiId} className="list-group-item d-flex justify-content-between align-items-center">
-                    {koi.name} - {koi.type}
-                    <button 
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleRemoveKoi(koiId)}
-                    >
-                      Remove
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
-      </div>
+      {/* Existing Koi Table */}
+      <Koi
+        isBooking={true}
+        title={"Your Kois"}
+        updateTrigger={koiUpdateTrigger}
+        handleAddKoiToBooking={handleAddKoiToBooking}
+        selectedKois={selectedKois}
+      />
+
+    
 
       {/* Add New Koi Button */}
       <div className="text-center">
@@ -178,6 +152,16 @@ const InputKoiStep = () => {
           Add New Koi
         </button>
       </div>
+
+      {/* Modal for KoiDetail */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <KoiDetail
+          isCreate={true}
+          isBooking={true}
+          onClose={handleCloseModal}
+          onUpdate={handleKoiUpdate}
+        />
+      </Modal>
     </div>
   );
 };

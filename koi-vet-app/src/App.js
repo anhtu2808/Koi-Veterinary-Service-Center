@@ -87,8 +87,17 @@ function App() {
                   <ProfileLayout>
                     <Routes>
                       <Route path="/" element={<MyProfile />} />
-                      <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />}/>
-                      <Route path='/koi/:koiId' element={<KoiDetail isEditable={true} isCreate={false}/>}/>
+                      <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />} />
+                      <Route path='/koi/:koiId' element={
+                        <KoiDetail
+                          isCreate={false}
+                          isUpdate={true} />
+                      } />
+                      <Route path='/koidetail' element={
+                        <KoiDetail
+                          isCreate={true}
+                          isUpdate={false} />
+                      } />
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
 

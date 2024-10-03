@@ -11,14 +11,17 @@ const fishSpecies = [
   "Ochiba Shigure", "Doitsu", "Koromo", "Other"
 ];
 
-function KoiDetail({ isCreate, isEditable }) {
+function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate }) {
   const [selectedSpecies, setSelectedSpecies] = useState("");
+  const [age, setAge] = useState("");
   const [color, setColor] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [healthStatus, setHealthStatus] = useState("");
+  const [notes, setNotes] = useState("");
+  const [image, setImage] = useState("")
   const [isEditing, setIsEditing] = useState(false);
-  const [koi, setKoi] = useState({});
+  
   const koiId = useParams().koiId;
   const navigate = useNavigate();
   const customerId = useSelector(state => state.user.customer.customerId);
@@ -27,38 +30,49 @@ function KoiDetail({ isCreate, isEditable }) {
     e.preventDefault(); // Ngăn không cho form tự động submit
 
     try {
-      if (isCreate) {
+      if (isCreate && !isEditing) {
         // Tạo mới Koi
         const response = await createKoiAPI({
           breed: selectedSpecies,
-          color,
+          age,
+          // color,
           height,
           weight,
           healthStatus,
+          notes,
+          image,
           customer_id: customerId,
         });
         toast.success(response.data.message);
-      } else if (isEditable) {
+        onUpdate(); // Call the callback function
+        if(isBooking){
+          onClose();
+        }else{
+          navigate(-1);
+        }
+      } else if (isUpdate || isEditing) {
         // Cập nhật thông tin Koi
         const response = await updateKoiInformationAPI(koiId, {
           breed: selectedSpecies,
-          color,
+          age,
+          // color,
           height,
           weight,
           healthStatus,
+          notes,
+          image,
         });
         toast.success(response.data.message);
+        onUpdate(); // Call the callback function
+        setIsEditing(false);
       }
     } catch (error) {
       toast.error("An error occurred while saving data.");
-    } finally {
-      setIsEditing(false); // Sau khi lưu, thoát chế độ chỉnh sửa
-      navigate(-1); // Quay lại trang trước sau khi lưu
     }
   };
 
   const handleUpdateButton = () => {
-    setIsEditing(true); // Bật chế độ chỉnh sửa khi nhấn "Update"
+    setIsEditing(!isEditing); // Bật chế độ chỉnh sửa khi nhấn "Update"
   };
 
   useEffect(() => {
@@ -67,12 +81,14 @@ function KoiDetail({ isCreate, isEditable }) {
         try {
           const response = await fetchKoiByKoiIdAPI(koiId);
           const koiData = response.data || {};
-          setKoi(koiData);
           setSelectedSpecies(koiData.breed || "");
-          setColor(koiData.color || "");
+          setAge(koiData.age || "");
+          // setColor(koiData.color || "");
           setHeight(koiData.height || "");
           setWeight(koiData.weight || "");
           setHealthStatus(koiData.healthStatus || "");
+          setNotes(koiData.notes || "");
+          setImage(koiData.image || "");
         } catch (error) {
           toast.error("Error fetching Koi data.");
         }
@@ -94,7 +110,7 @@ function KoiDetail({ isCreate, isEditable }) {
                 type="button"
                 onClick={() => setSelectedSpecies(species)}
                 className={`species-button ${selectedSpecies === species ? "selected" : ""}`}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreate}
               >
                 {species}
               </button>
@@ -103,35 +119,48 @@ function KoiDetail({ isCreate, isEditable }) {
         </div>
 
         <div className="form-group">
+          <label>Age (years)</label>
+          <input
+            type="number"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            placeholder="Enter age"
+            disabled={!isEditing && !isCreate}
+          />
+        </div>
+
+        {/* <div className="form-group">
           <label>Color</label>
           <input
             type="text"
             value={color}
             onChange={(e) => setColor(e.target.value)}
             placeholder="Enter color"
-            disabled={!isEditing}
+            disabled={!isEditing && !isCreate}
           />
-        </div>
+        </div> */}
 
         <div className="form-group">
           <label>Height (cm)</label>
           <input
-            type="text"
+            type="number"
+            step="0.1"
             value={height}
             onChange={(e) => setHeight(e.target.value)}
             placeholder="Enter height"
-            disabled={!isEditing}
+            disabled={!isEditing && !isCreate}
           />
         </div>
 
         <div className="form-group">
           <label>Weight (kg)</label>
           <input
-            type="text"
+            type="number"
+            step="0.1"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             placeholder="Enter weight"
-            disabled={!isEditing}
+            disabled={!isEditing && !isCreate}
           />
         </div>
 
@@ -142,30 +171,54 @@ function KoiDetail({ isCreate, isEditable }) {
             value={healthStatus}
             onChange={(e) => setHealthStatus(e.target.value)}
             placeholder="Enter health status"
-            disabled={!isEditing}
+            disabled={!isEditing && !isCreate}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Notes</label>
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Enter notes"
+            disabled={!isEditing && !isCreate}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Image URL</label>
+          <input
+            type="text"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            placeholder="Enter image URL"
+            disabled={!isEditing && !isCreate}
           />
         </div>
 
         <div className="button-group">
-          <button type="button" className="prev-button" onClick={() => navigate(-1)}>
+          <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
             Back
           </button>
 
-          {
-            isEditing ? <button type="submit" className="create-button">
-              {isCreate ? "Create" : "Save"}
-            </button> : null
-          }
-          {
-            !isEditing ? <button type="button" className="update-button" onClick={handleUpdateButton}>
-              Edit
-            </button> : null
-          }
+          {isEditing && isUpdate  ? (
+            <div className=" d-flex gap-2">
+            <button type="button" className="btn btn-secondary" onClick={handleUpdateButton}>Cancel</button>
+              <button type="submit" className="btn btn-primary">
+                Save
+              </button>
 
-
+            </div>
+          ) : isCreate ? <button type="submit" className="btn btn-primary">
+            Create
+          </button> : null}
+          {!isEditing && isUpdate ? (
+            <button type="button" className="btn btn-primary" onClick={handleUpdateButton}>
+              Update
+            </button>
+          ) : null}
         </div>
       </form>
-
     </div>
   );
 }

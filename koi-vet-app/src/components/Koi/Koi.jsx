@@ -2,40 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Koi.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchKoisByCustomerIdAPI } from '../../apis';
-import { fetchKoisByAppointmentIdAPI } from '../../apis/KoiMockData';
+import {  fetchKoisByAppointmentIdAPI } from '../../apis/KoiMockData';
+import { fetchKoisByCustomerIdAPI  } from '../../apis';
 
-
-
-const Koi = ({ isAppointment, isBooking,title }) => {
-    const [koiList, setKoiList] = useState([]); // Use sample data
+const Koi = ({ isAppointment, isBooking, title, updateTrigger, handleAddKoiToBooking, selectedKois }) => {
+    const [koiList, setKoiList] = useState([]);
     const customerId = useSelector(state => state?.user?.customer?.customerId);
-    const {appointmentId} = useParams();
-    console.log(koiList);
+    const { appointmentId } = useParams();
     const navigate = useNavigate();
+
     useEffect(() => {
-       const fetchKoisByCustomerId = async (customerId) => {
-        const response = await fetchKoisByCustomerIdAPI(customerId);
-        setKoiList(response.data);
-        console.log(response);
-       }
-       const fetchKoisByAppointmentId = async (appoinmentId) => {
-        const response = await fetchKoisByAppointmentIdAPI(appoinmentId);
-        setKoiList(response.data);
-        console.log(response);
-       }
-       if(isAppointment){
-        fetchKoisByAppointmentId(appointmentId);
-       }else{
-        fetchKoisByCustomerId(customerId);
-       }
-    },[customerId,isAppointment,appointmentId]);    
+        const fetchKois = async () => {
+            try {
+                const response = isAppointment 
+                    ? await fetchKoisByAppointmentIdAPI(appointmentId)
+                    : await fetchKoisByCustomerIdAPI(customerId);
+                setKoiList(response.data);
+            } catch (error) {
+                console.error('Error fetching koi list:', error);
+            }
+        };
+        fetchKois();
+    }, [customerId, isAppointment, appointmentId, updateTrigger]);
+
     return (
         <div className="container mt-4">
-            {isAppointment?<h3 className="mb-4 text-center">Choose Your Koi</h3>:null}
-            
+            {isAppointment && <h3 className="mb-4 text-center">Choose Your Koi</h3>}
 
-            {/* Existing Koi Table */}
             <div className="card mb-4">
                 <div className="card-header input-info-title text-white">
                     <h5 className="mb-0 text-start">{title}</h5>
@@ -45,40 +38,51 @@ const Koi = ({ isAppointment, isBooking,title }) => {
                         <thead>
                             <tr>
                                 <th>Koi Id</th>
-                                <th>Name</th>
-                                <th>breed</th>
+                                <th>Breed</th>
+                                <th>Health Status</th>
                                 <th>Age</th>
                                 <th>Image</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {
-                                koiList?.map((koi, index) => (
-                                    <tr key={koi.koiId}>
+                            {koiList?.map((koi, index) => {
+                                const isSelected = selectedKois?.includes(koi.koiId);
+                                return (
+                                    <tr key={koi.koiId} className={isSelected ? 'table-primary' : ''}>
                                         <td>{index + 1}</td>
-                                        <td>{koi.name}</td>
-                                        <td style={{ width: "30%" }}>{koi.breed}</td>
+                                        <td>{koi.breed}</td>
+                                        <td>{koi.healthStatus}</td>
                                         <td>{koi.age}</td>
                                         <td>
                                             <div className="koi-image">
-                                                <img src="https://visinhcakoi.com/wp-content/uploads/2021/07/ca-koi-showa-2-600x874-1.jpg" alt={koi.name} />
+                                                <img src="https://visinhcakoi.com/wp-content/uploads/2021/07/ca-koi-showa-2-600x874-1.jpg" alt={koi.breed} />
                                             </div>
                                         </td>
                                         <td>
-                                            <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${koi.koiId}`)}  >
-                                                View Details
-                                            </button>
+                                            <div className='d-flex gap-3'>
+                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${koi.koiId}`)}>
+                                                    View Details
+                                                </button>
+                                                {isBooking && (
+                                                    <button 
+                                                        className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`} 
+                                                        onClick={() => handleAddKoiToBooking(koi.koiId)}
+                                                    >
+                                                        {isSelected ? 'Remove' : 'Add'}
+                                                    </button>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
-                                ))}
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
             </div>
-            {/* Add New Koi Button */}
         </div>
     );
 };
 
-export default Koi
+export default Koi;
