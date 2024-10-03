@@ -19,6 +19,8 @@ public class PrescriptionMedicine {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prescription_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
      Prescription prescription;
 
     @ManyToOne(fetch = FetchType.LAZY)

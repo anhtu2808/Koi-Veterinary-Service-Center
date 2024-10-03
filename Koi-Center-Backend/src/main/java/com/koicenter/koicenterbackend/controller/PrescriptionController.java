@@ -4,6 +4,7 @@ import com.koicenter.koicenterbackend.model.entity.Prescription;
 import com.koicenter.koicenterbackend.model.entity.PrescriptionMedicine;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionResponse;
 import com.koicenter.koicenterbackend.service.PrescriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class PrescriptionController {
                 prescriptionRequest.getPrescriptionMedicines() == null || prescriptionRequest.getPrescriptionMedicines().isEmpty()) {
             return ResponseObject.APIRepsonse(400, "Invalid input data", HttpStatus.BAD_REQUEST, null);
         }
-        Prescription createdPrescription = prescriptionService.createPrescription(prescriptionRequest);
+        PrescriptionResponse createdPrescription = prescriptionService.createPrescription(prescriptionRequest);
         return ResponseObject.APIRepsonse(200, "Create prescription success", HttpStatus.OK, createdPrescription);
     }
 }
