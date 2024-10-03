@@ -4,7 +4,7 @@ const sampleKoiData = [
         name: "Kohaku",
         breed: "Kohaku",
         age: 3,
-        length: 45,
+        height: 45,
         weight: 2.5,
         color: "White with red patterns",
         description: "A beautiful Kohaku with vibrant red markings",
@@ -15,7 +15,7 @@ const sampleKoiData = [
         name: "Taisho",
         breed: "Sanke",
         age: 2,
-        length: 35,
+        height: 35,
         weight: 1.8,
         color: "White with red and black patterns",
         description: "A young Sanke with promising color development",
@@ -26,7 +26,7 @@ const sampleKoiData = [
         name: "Showa",
         breed: "Showa Sanshoku",
         age: 4,
-        length: 50,
+        height: 50,
         weight: 3.2,
         color: "Black with red and white patterns",
         description: "An elegant Showa with balanced color distribution",
@@ -37,7 +37,7 @@ const sampleKoiData = [
         name: "Platinum",
         breed: "Ogon",
         age: 1,
-        length: 25,
+        height: 25,
         weight: 0.8,
         color: "Solid platinum",
         description: "A young Ogon with a lustrous platinum sheen",
@@ -48,7 +48,7 @@ const sampleKoiData = [
         name: "Butterfly",
         breed: "Butterfly Koi",
         age: 5,
-        length: 60,
+        height: 60,
         weight: 4.0,
         color: "Orange and white with long fins",
         description: "A majestic Butterfly Koi with flowing fins",
@@ -87,3 +87,8 @@ export const fetchKoisByAppointmentIdAPI = (appointmentId) => {
     const filteredKoi = sampleKoiData.filter(koi => koi.appointmentId === appointmentId);
     return Promise.resolve({ data: filteredKoi });
 }
+export const fetchKoiByKoiIdAPI = (koiId) => {
+    const foundKoi = sampleKoiData.find(koi => koi.koiId ===  parseInt(koiId));
+    console.log(foundKoi);
+    return Promise.resolve({ data: foundKoi });
+ }

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Koi.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchKoiByCustomerIdAPI, fetchKoisByAppointmentIdAPI } from '../../apis/KoiMockData';
+import { fetchKoisByCustomerIdAPI } from '../../apis';
+import { fetchKoisByAppointmentIdAPI } from '../../apis/KoiMockData';
 
 
 
@@ -14,7 +15,7 @@ const Koi = ({ isAppointment, isBooking,title }) => {
     const navigate = useNavigate();
     useEffect(() => {
        const fetchKoisByCustomerId = async (customerId) => {
-        const response = await fetchKoiByCustomerIdAPI(customerId);
+        const response = await fetchKoisByCustomerIdAPI(customerId);
         setKoiList(response.data);
         console.log(response);
        }
@@ -53,7 +54,7 @@ const Koi = ({ isAppointment, isBooking,title }) => {
                         </thead>
                         <tbody>
                             {
-                                koiList.map((koi, index) => (
+                                koiList?.map((koi, index) => (
                                     <tr key={koi.koiId}>
                                         <td>{index + 1}</td>
                                         <td>{koi.name}</td>

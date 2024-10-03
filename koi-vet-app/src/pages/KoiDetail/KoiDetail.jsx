@@ -1,158 +1,163 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { createKoiAPI,fetchKoiByKoiIdAPI, updateKoiInformationAPI } from "../../apis";
+import { toast } from "react-toastify";
 import "./KoiDetail.css";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const fishSpecies = [
-  "Kohaku",
-  "Hikari Muji",
-  "Showa Sanshoku",
-  "Shiro Utsuri",
-  "Hi Utsuri",
-  "Ki Utsuri",
-  "Asagi",
-  "Shusui",
-  "Tancho",
-  "Goshiki",
-  "Kumonryu",
-  "Ochiba Shigure",
-  "Doitsu",
-  "Koromo",
-  "Other",
+  "Kohaku", "Hikari Muji", "Showa Sanshoku", "Shiro Utsuri", "Hi Utsuri",
+  "Ki Utsuri", "Asagi", "Shusui", "Tancho", "Goshiki", "Kumonryu", 
+  "Ochiba Shigure", "Doitsu", "Koromo", "Other"
 ];
 
-function KoiDetail() {
+function KoiDetail({ isCreate, isEditable }) {
   const [selectedSpecies, setSelectedSpecies] = useState("");
-  const [otherSpecies, setOtherSpecies] = useState("");
   const [color, setColor] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [healthStatus, setHealthStatus] = useState("");
+  const [koi, setKoi] = useState({});
+  const [isEditing, setIsEditing] = useState(isEditable); // Đây là trạng thái ban đầu của form
+  const koiId = useParams().koiId;
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({
-      selectedSpecies,
-      otherSpecies,
-      color,
-      height,
-      weight,
-      healthStatus,
-    });
+  const customerId = useSelector(state => state.user.customer.customerId);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Ngăn không cho form tự động submit
+
+    if (isCreate) {
+      // Tạo mới Koi
+      
+      const response = await createKoiAPI({
+        breed: selectedSpecies,
+        color,
+        height,
+        weight,
+        healthStatus,
+        customer_id: customerId,
+      });
+      toast.success(response.data.message);
+      setIsEditing(false);
+      console.log("a");
+    } else if (isEditing) {
+      // Cập nhật thông tin Koi
+      const response = await updateKoiInformationAPI(koiId, {
+        breed: selectedSpecies,
+        color,
+        height,
+        weight,
+        healthStatus,
+      });
+      toast.success(response.data.message);
+      
+     
+    }
+    setIsEditing(false); // Sau khi lưu, thoát chế độ chỉnh sửa
+    console.log("b");
   };
 
+  const handleUpdateButton = () => {
+    setIsEditing(true); // Bật chế độ chỉnh sửa khi nhấn "Update"
+  };
+
+  useEffect(() => {
+    if (!isCreate) {
+      const fetchKoiByKoiId = async () => {
+        const response = await fetchKoiByKoiIdAPI(koiId);
+        const koiData = response.data || {};
+        setKoi(koiData);
+        setSelectedSpecies(koiData.breed || "");
+        setColor(koiData.color || "");
+        setHeight(koiData.height || "");
+        setWeight(koiData.weight || "");
+        setHealthStatus(koiData.healthStatus || "");
+      };
+      fetchKoiByKoiId();
+    }
+  }, [koiId, isCreate]);
+
   return (
-    <>
-      <div className="col-9 mx-auto">
-        <h1>Enter the Koi's Information</h1>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Breed:</label>
-            <div className="species-grid">
-              {fishSpecies.map((species) => (
-                <button
-                  key={species}
-                  type="button"
-                  onClick={() => setSelectedSpecies(species)}
-                  className={`species-button ${
-                    selectedSpecies === species ? "selected" : ""
-                  }`}
-                >
-                  {species}
-                </button>
-              ))}
-            </div>
-            {selectedSpecies === "Other" && (
-              <input
-                type="text"
-                value={otherSpecies}
-                onChange={(e) => setOtherSpecies(e.target.value)}
-                placeholder="Enter other species"
-              />
-            )}
+    <div className="col-9 mx-auto">
+      <h1>{isCreate ? "Create New Koi" : "Update Koi Information"}</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Breed:</label>
+          <div className="species-grid">
+            {fishSpecies.map((species) => (
+              <button
+                key={species}
+                type="button"
+                onClick={() => setSelectedSpecies(species)}
+                className={`species-button ${selectedSpecies === species ? "selected" : ""}`}
+                disabled={!isEditing}
+              >
+                {species}
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div className="form-group">
-            <label>Color</label>
-            <input
-              type="text"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-              placeholder="Enter color"
-            />
-          </div>
+        <div className="form-group">
+          <label>Color</label>
+          <input
+            type="text"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            placeholder="Enter color"
+            disabled={!isEditing}
+          />
+        </div>
 
-          <div className="form-group">
-            <label>Height</label>
-            <input
-              type="text"
-              value={height}
-              onChange={(e) => setHeight(e.target.value)}
-              placeholder="Enter height"
-            />
-          </div>
+        <div className="form-group">
+          <label>Height (cm)</label>
+          <input
+            type="text"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            placeholder="Enter height"
+            disabled={!isEditing}
+          />
+        </div>
 
-          <div className="form-group">
-            <label>Weight</label>
-            <input
-              type="text"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              placeholder="Enter weight"
-            />
-          </div>
+        <div className="form-group">
+          <label>Weight (kg)</label>
+          <input
+            type="text"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            placeholder="Enter weight"
+            disabled={!isEditing}
+          />
+        </div>
 
-          <div className="form-group">
-            <label>Age</label>
-            <input
-              type="text"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              placeholder="Enter Age"
-            />
-          </div>
+        <div className="form-group">
+          <label>Health Status</label>
+          <input
+            type="text"
+            value={healthStatus}
+            onChange={(e) => setHealthStatus(e.target.value)}
+            placeholder="Enter health status"
+            disabled={!isEditing}
+          />
+        </div>
 
-          <div className="form-group">
-            <label>Health Status</label>
-            <input
-              type="text"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              placeholder="Enter Health Status"
-            />
-          </div>
+        <div className="button-group">
+          <button type="button" className="prev-button" onClick={() => navigate(-1)}>
+            Back
+          </button>
 
-          <div className="form-group">
-            <label>Address Home</label>
-            <input
-              type="text"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              placeholder="Enter Address Home"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Koi health status</label>
-            <textarea
-              value={healthStatus}
-              onChange={(e) => setHealthStatus(e.target.value)}
-              rows={4}
-              placeholder="Describe the koi's health status"
-            />
-          </div>
-
-          <div className="button-group">
-            <button type="button" className="prev-button" onClick={()=>navigate(-1)}>
-              Back
+          {!isEditing ? (
+            <button className="create-button" type="button" onClick={handleUpdateButton}>
+              Update
             </button>
+          ) : (
             <button type="submit" className="create-button">
-              Create
+              {isCreate ? "Create" : "Save"}
             </button>
-          </div>
-        </form>
-      </div>
-    </>
+          )}
+        </div>
+      </form>
+    </div>
   );
 }
 
