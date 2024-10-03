@@ -34,7 +34,6 @@ public class Koi {
 
 
     @OneToMany(mappedBy = "koi")
-    @JsonIgnore
     List<KoiTreatment> koiTreatments;
 
 }
