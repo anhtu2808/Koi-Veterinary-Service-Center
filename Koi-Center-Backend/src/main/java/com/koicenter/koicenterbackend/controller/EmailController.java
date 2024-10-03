@@ -15,7 +15,7 @@ public class EmailController {
 
     @GetMapping("/sendEmail")
     public String sendEmail() {
-        sendEmalService.sendMailSender("vulhse182602@gmail.com", "textbody", "test");
+        sendEmalService.sendMailSender("vulhse182602@gmail.com", "dcm tesst email chay nuoc", "test");
         return "success";
     }
 }

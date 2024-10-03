@@ -16,10 +16,10 @@ public class SendEmalService {
 
     public void sendMailSender(String recipient, String body, String subject) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmailId);  // Email người gửi
-        message.setTo("nhantttse180345@fpt.edu.vn");      // Email người nhận
-        message.setSubject(subject);   // Chủ đề email
-        message.setText(body);         // Nội dung email
-        mailSender.send(message);      // Gửi email
+        message.setFrom(fromEmailId);  // Email người gửi ne babe
+        message.setTo(recipient);      // Email người nhận ne babe
+        message.setSubject(subject);   // Chủ đề email ne babe
+        message.setText(body);         // Nội dung email ne babe
+        mailSender.send(message);      // Gửi email ne babe
     }
 }
