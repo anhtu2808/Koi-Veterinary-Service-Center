@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { createKoiAPI,fetchKoiByKoiIdAPI, updateKoiInformationAPI } from "../../apis";
+import { createKoiAPI, fetchKoiByKoiIdAPI, updateKoiInformationAPI } from "../../apis";
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
 import { useSelector } from "react-redux";
 
 const fishSpecies = [
   "Kohaku", "Hikari Muji", "Showa Sanshoku", "Shiro Utsuri", "Hi Utsuri",
-  "Ki Utsuri", "Asagi", "Shusui", "Tancho", "Goshiki", "Kumonryu", 
+  "Ki Utsuri", "Asagi", "Shusui", "Tancho", "Goshiki", "Kumonryu",
   "Ochiba Shigure", "Doitsu", "Koromo", "Other"
 ];
 
@@ -17,43 +17,44 @@ function KoiDetail({ isCreate, isEditable }) {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [healthStatus, setHealthStatus] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   const [koi, setKoi] = useState({});
-  const [isEditing, setIsEditing] = useState(isEditable); // Đây là trạng thái ban đầu của form
   const koiId = useParams().koiId;
   const navigate = useNavigate();
   const customerId = useSelector(state => state.user.customer.customerId);
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Ngăn không cho form tự động submit
 
-    if (isCreate) {
-      // Tạo mới Koi
-      
-      const response = await createKoiAPI({
-        breed: selectedSpecies,
-        color,
-        height,
-        weight,
-        healthStatus,
-        customer_id: customerId,
-      });
-      toast.success(response.data.message);
-      setIsEditing(false);
-      console.log("a");
-    } else if (isEditing) {
-      // Cập nhật thông tin Koi
-      const response = await updateKoiInformationAPI(koiId, {
-        breed: selectedSpecies,
-        color,
-        height,
-        weight,
-        healthStatus,
-      });
-      toast.success(response.data.message);
-      
-     
+    try {
+      if (isCreate) {
+        // Tạo mới Koi
+        const response = await createKoiAPI({
+          breed: selectedSpecies,
+          color,
+          height,
+          weight,
+          healthStatus,
+          customer_id: customerId,
+        });
+        toast.success(response.data.message);
+      } else if (isEditable) {
+        // Cập nhật thông tin Koi
+        const response = await updateKoiInformationAPI(koiId, {
+          breed: selectedSpecies,
+          color,
+          height,
+          weight,
+          healthStatus,
+        });
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error("An error occurred while saving data.");
+    } finally {
+      setIsEditing(false); // Sau khi lưu, thoát chế độ chỉnh sửa
+      navigate(-1); // Quay lại trang trước sau khi lưu
     }
-    setIsEditing(false); // Sau khi lưu, thoát chế độ chỉnh sửa
-    console.log("b");
   };
 
   const handleUpdateButton = () => {
@@ -61,16 +62,20 @@ function KoiDetail({ isCreate, isEditable }) {
   };
 
   useEffect(() => {
-    if (!isCreate) {
+    if (!isCreate && koiId) {
       const fetchKoiByKoiId = async () => {
-        const response = await fetchKoiByKoiIdAPI(koiId);
-        const koiData = response.data || {};
-        setKoi(koiData);
-        setSelectedSpecies(koiData.breed || "");
-        setColor(koiData.color || "");
-        setHeight(koiData.height || "");
-        setWeight(koiData.weight || "");
-        setHealthStatus(koiData.healthStatus || "");
+        try {
+          const response = await fetchKoiByKoiIdAPI(koiId);
+          const koiData = response.data || {};
+          setKoi(koiData);
+          setSelectedSpecies(koiData.breed || "");
+          setColor(koiData.color || "");
+          setHeight(koiData.height || "");
+          setWeight(koiData.weight || "");
+          setHealthStatus(koiData.healthStatus || "");
+        } catch (error) {
+          toast.error("Error fetching Koi data.");
+        }
       };
       fetchKoiByKoiId();
     }
@@ -146,17 +151,21 @@ function KoiDetail({ isCreate, isEditable }) {
             Back
           </button>
 
-          {!isEditing ? (
-            <button className="create-button" type="button" onClick={handleUpdateButton}>
-              Update
-            </button>
-          ) : (
-            <button type="submit" className="create-button">
+          {
+            isEditing ? <button type="submit" className="create-button">
               {isCreate ? "Create" : "Save"}
-            </button>
-          )}
+            </button> : null
+          }
+          {
+            !isEditing ? <button type="button" className="update-button" onClick={handleUpdateButton}>
+              Edit
+            </button> : null
+          }
+
+
         </div>
       </form>
+
     </div>
   );
 }
