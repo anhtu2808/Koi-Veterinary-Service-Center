@@ -5,6 +5,8 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Koi;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
+import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,7 @@ public class CustomerController {
     @GetMapping("/{customerId}/kois")
     public ResponseEntity<ResponseObject> getKoisByCustomerId(@PathVariable("customerId") String customerId) {
         try {
-            List<Koi> kois = customerService.getKoiByCustomerId(customerId);
+            List<KoiResponse> kois = customerService.getKoiByCustomerId(customerId);
             if (kois.isEmpty()) {
                 return ResponseObject.APIRepsonse(404, "Customer do not have any koi", HttpStatus.NOT_FOUND, null);
             } else{
@@ -35,7 +37,7 @@ public class CustomerController {
     @GetMapping("/{customerId}/ponds")
     public ResponseEntity<ResponseObject> getPondsByCustomerId(@PathVariable("customerId") String customerId) {
         try {
-            List<Pond> ponds = customerService.getPondsByCustomerId(customerId);
+            List<PondResponse> ponds = customerService.getPondsByCustomerId(customerId);
             if (ponds.isEmpty()) {
                 return ResponseObject.APIRepsonse(404, "Customer do not have any pond", HttpStatus.NOT_FOUND, null);
             } else{
