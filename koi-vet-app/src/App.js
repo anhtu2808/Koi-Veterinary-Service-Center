@@ -85,8 +85,8 @@ function App() {
                   <ProfileLayout>
                     <Routes>
                       <Route path="/" element={<MyProfile />} />
-                    <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />}/>
-
+                      <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />}/>
+                      <Route path='/koi/:customerId' element={<KoiDetail/>}/>
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
 

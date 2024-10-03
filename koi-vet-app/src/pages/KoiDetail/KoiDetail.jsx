@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./KoiDetail.css";
+import { useNavigate } from "react-router-dom";
 
 const fishSpecies = [
   "Kohaku",
@@ -26,7 +27,7 @@ function KoiDetail() {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [healthStatus, setHealthStatus] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({
@@ -41,7 +42,7 @@ function KoiDetail() {
 
   return (
     <>
-      <div className="col-9">
+      <div className="col-9 mx-auto">
         <h1>Enter the Koi's Information</h1>
 
         <form onSubmit={handleSubmit}>
@@ -142,8 +143,8 @@ function KoiDetail() {
           </div>
 
           <div className="button-group">
-            <button type="button" className="prev-button">
-              ← Previous Step
+            <button type="button" className="prev-button" onClick={()=>navigate(-1)}>
+              Back
             </button>
             <button type="submit" className="create-button">
               Create

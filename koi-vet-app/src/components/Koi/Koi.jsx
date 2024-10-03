@@ -65,7 +65,7 @@ const Koi = ({ isAppointment, isBooking,title }) => {
                                             </div>
                                         </td>
                                         <td>
-                                            <button className="btn btn-sm btn-primary" onClick={() => navigate(`/koi/${koi.koiId}`)}  >
+                                            <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${koi.koiId}`)}  >
                                                 View Details
                                             </button>
                                         </td>
