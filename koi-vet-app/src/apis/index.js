@@ -76,9 +76,6 @@ export const fetchServiceByTypeAPI = async (type) => {
 }
 
 
-
-
-
 // Appointment API
 export const fetchAllAppointmentByVetIdAPI = async (vetId) => {
     const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
@@ -93,7 +90,7 @@ export const fetchAllAppointmentAPI = async (status) => {
     const response = await api.get(`/appointments?status=${status}`);
     return response.data;
 }
-export const fetchAppointmentByCustomerIdAPI = async (customerId,status) => {
+export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
     const response = await api.get(`/appointments?customerId=${customerId}&status=${status}`);
     return response.data;
 }
@@ -111,6 +108,12 @@ export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
 export const fetchAppointmentByVetIdAPI = async (vetId) => {
     const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
     return response.data;
+}
+
+export const addKoiToAppointmentAPI = async (appointmentId, koiData) => {
+    // const response = await api.post(`/appointments/${appointmentId}/kois`, koiData);
+    // return response.data;
+    return Promise.resolve({ data: { message: "Success" } });// fake api
 }
 
 //API Schedule
@@ -165,7 +168,7 @@ export const createKoiAPI = async (data) => {
     const response = await api.post('/kois', data);
     return response.data;
 }
- 
+
 
 
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { createKoiAPI, fetchKoiByKoiIdAPI, updateKoiInformationAPI } from "../../apis";
+import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, updateKoiInformationAPI } from "../../apis";
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
 import { useSelector } from "react-redux";
@@ -11,7 +11,7 @@ const fishSpecies = [
   "Ochiba Shigure", "Doitsu", "Koromo", "Other"
 ];
 
-function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate }) {
+function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmentId,isAppointment }) {
   const [selectedSpecies, setSelectedSpecies] = useState("");
   const [age, setAge] = useState("");
 
@@ -30,7 +30,7 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate }) {
     e.preventDefault(); // Ngăn không cho form tự động submit
 
     try {
-      if (isCreate && !isEditing) {
+      if (isCreate && !isEditing && !isAppointment) {
         // Tạo mới Koi
         const response = await createKoiAPI({
           breed: selectedSpecies,
@@ -50,6 +50,21 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate }) {
         }else{
           navigate(-1);
         }
+      }else if(isAppointment){
+        // veterinarian add koi to appointment
+        const response = await addKoiToAppointmentAPI(appointmentId,{
+          breed: selectedSpecies,
+          age,
+          height,
+          weight,
+          healthStatus,
+          notes,
+          image,
+          customer_id: customerId,
+        })
+        toast.success(response.data.message);
+        onUpdate(); // Call the callback function
+        onClose();
       } else if (isUpdate || isEditing) {
         // Cập nhật thông tin Koi
         const response = await updateKoiInformationAPI(koiId, {

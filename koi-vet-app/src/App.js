@@ -37,6 +37,7 @@ import InvoiceListPage from './pages/InvoiceListPage/InvoiceListPage';
 import MedicineListPage from './pages/MedicineListPage/MedicineListPage';
 import ServicePageDetail from './pages/ServicePageDetail/ServicePageDetail';
 import KoiTreatmentPage from './pages/KoiTreatmentPage/KoiTreatmentPage';
+import Pond from './components/Pond/Pond';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -79,8 +80,6 @@ function App() {
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>
                 <Route path='/booking' element={<BookingPage />} />
-
-
                 <Route path="/createkoi" element={<KoiDetail />} />
                 <Route path="/createpond" element={<PondDetail />} />
                 <Route path="/profile/*" element={
@@ -98,6 +97,7 @@ function App() {
                           isCreate={true}
                           isUpdate={false} />
                       } />
+                      <Route path='/pond' element={<Pond/>}/>
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
 

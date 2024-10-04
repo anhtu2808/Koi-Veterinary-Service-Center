@@ -26,8 +26,6 @@ const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,hand
 
     return (
         <div className="container mt-4">
-            {isAppointment && <h3 className="mb-4 text-center">Choose Your Koi</h3>}
-
             <div className="card mb-4">
                 <div className="card-header input-info-title text-white">
                     <h5 className="mb-0 text-start">{title}</h5>
