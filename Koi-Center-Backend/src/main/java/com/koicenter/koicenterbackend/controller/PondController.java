@@ -48,7 +48,7 @@ public class PondController {
     @PutMapping("/{pondId}")
     public ResponseEntity<ResponseObject> updatePond(@PathVariable("pondId") String pondId, @Valid @RequestBody PondUpdateRequest request) {
         try {
-            Pond updatedPond = pondService.updatePond(pondId, request);
+            PondResponse updatedPond = pondService.updatePond(pondId, request);
             return ResponseObject.APIRepsonse(200, "Update success", HttpStatus.OK, updatedPond);
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);

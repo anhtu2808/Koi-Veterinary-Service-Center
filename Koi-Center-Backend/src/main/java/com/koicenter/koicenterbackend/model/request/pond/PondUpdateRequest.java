@@ -19,4 +19,6 @@ public class PondUpdateRequest {
     float temperature;
     String notes;
     String image;
+    String waterQuality; // Chất lượng nước
+    String filterSystem;
 }
