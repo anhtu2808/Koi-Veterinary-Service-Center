@@ -17,7 +17,7 @@ public class ServiceService {
     @Autowired
     ServicesRepository servicesRepository;
 
-    public List<ServiceResponse> getAllService(){
+    public List<ServiceResponse> getAllService() {
         List<com.koicenter.koicenterbackend.model.entity.Service> services = servicesRepository.findAll();
         List<ServiceResponse> responseList = new ArrayList<>();
         for (com.koicenter.koicenterbackend.model.entity.Service service : services) {
@@ -32,17 +32,17 @@ public class ServiceService {
             response.setImage(service.getImage());
             responseList.add(response);
         }
-          return responseList;
+        return responseList;
     }
 
 //    public List<com.koicenter.koicenterbackend.model.entity.Service> getAllServiceByType(){
 //        return servicesRepository.findByServiceFor(ServiceType.ONLINE);
 //    }
 
-    public ServiceResponse getServiceById(String id){
+    public ServiceResponse getServiceById(String id) {
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findById(id).orElseThrow(() ->
                 new AppException(ErrorCode.SERVICE_NOT_EXITS.getCode(),
-                        ErrorCode.SERVICE_NOT_EXITS.getMessage(),HttpStatus.NOT_FOUND));
+                        ErrorCode.SERVICE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
         ServiceResponse response = new ServiceResponse();
         response.setServiceId(service.getServiceId());
         response.setServiceName(service.getServiceName());
@@ -54,28 +54,69 @@ public class ServiceService {
         response.setImage(service.getImage());
         return response;
     }
-    public List<com.koicenter.koicenterbackend.model.entity.Service>    getServiceFor(String servicefor){
-        List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
-        if (servicefor.toLowerCase().equals("HOME".toLowerCase())){
-           List<com.koicenter.koicenterbackend.model.entity.Service> serviceForFish = servicesRepository.findByServiceFor(ServiceType.FISH);
-           List<com.koicenter.koicenterbackend.model.entity.Service> servicesForPond = servicesRepository.findByServiceFor(ServiceType.POND);
 
-           for (com.koicenter.koicenterbackend.model.entity.Service service : serviceForFish) {
-               services.add(service);
-           }
-            for (com.koicenter.koicenterbackend.model.entity.Service service : servicesForPond){
-                services.add(service);
+
+    public List<ServiceResponse> getServiceFor(String servicefor) {
+        List<ServiceResponse> services = new ArrayList<>();
+        if (servicefor.toLowerCase().equals("HOME".toLowerCase())) {
+            List<com.koicenter.koicenterbackend.model.entity.Service> serviceForFish = servicesRepository.findByServiceFor(ServiceType.FISH);
+            List<com.koicenter.koicenterbackend.model.entity.Service> servicesForPond = servicesRepository.findByServiceFor(ServiceType.POND);
+
+            for (com.koicenter.koicenterbackend.model.entity.Service service : serviceForFish) {
+                ServiceResponse response = ServiceResponse.builder()
+                        .serviceId(service.getServiceId())
+                        .serviceName(service.getServiceName())
+                        .description(service.getDescription())
+                        .basePrice(service.getBasePrice())
+                        .pondPrice(service.getPondPrice())
+                        .koiPrice(service.getKoiPrice())
+                        .serviceFor(service.getServiceFor())
+                        .image(service.getImage())
+                        .build();
+                services.add(response);
             }
-           }
-        else if (servicefor.toLowerCase().equals("CENTER".toLowerCase())){
+            for (com.koicenter.koicenterbackend.model.entity.Service service : servicesForPond) {
+                ServiceResponse response = ServiceResponse.builder()
+                        .serviceId(service.getServiceId())
+                        .serviceName(service.getServiceName())
+                        .description(service.getDescription())
+                        .basePrice(service.getBasePrice())
+                        .pondPrice(service.getPondPrice())
+                        .koiPrice(service.getKoiPrice())
+                        .serviceFor(service.getServiceFor())
+                        .image(service.getImage())
+                        .build();
+                services.add(response);
+            }
+        } else if (servicefor.toLowerCase().equals("CENTER".toLowerCase())) {
             List<com.koicenter.koicenterbackend.model.entity.Service> serviceForFish = servicesRepository.findByServiceFor(ServiceType.FISH);
             for (com.koicenter.koicenterbackend.model.entity.Service service : serviceForFish) {
-                services.add(service);
+                ServiceResponse response = ServiceResponse.builder()
+                        .serviceId(service.getServiceId())
+                        .serviceName(service.getServiceName())
+                        .description(service.getDescription())
+                        .basePrice(service.getBasePrice())
+                        .pondPrice(service.getPondPrice())
+                        .koiPrice(service.getKoiPrice())
+                        .serviceFor(service.getServiceFor())
+                        .image(service.getImage())
+                        .build();
+                services.add(response);
             }
-        }else {
+        } else {
             List<com.koicenter.koicenterbackend.model.entity.Service> serviceForOnline = servicesRepository.findByServiceFor(ServiceType.ONLINE);
             for (com.koicenter.koicenterbackend.model.entity.Service service : serviceForOnline) {
-                services.add(service);
+                ServiceResponse response = ServiceResponse.builder()
+                        .serviceId(service.getServiceId())
+                        .serviceName(service.getServiceName())
+                        .description(service.getDescription())
+                        .basePrice(service.getBasePrice())
+                        .pondPrice(service.getPondPrice())
+                        .koiPrice(service.getKoiPrice())
+                        .serviceFor(service.getServiceFor())
+                        .image(service.getImage())
+                        .build();
+                services.add(response);
             }
         }
         return services;
@@ -83,7 +124,7 @@ public class ServiceService {
 
     public boolean createService(ServiceRequest serviceRequest) {
         try {
-            if(servicesRepository.findByserviceName(serviceRequest.getServiceName()).isPresent()) {
+            if (servicesRepository.findByserviceName(serviceRequest.getServiceName()).isPresent()) {
                 return false;
             }
             com.koicenter.koicenterbackend.model.entity.Service service = com.koicenter.koicenterbackend.model.entity.Service.builder()
@@ -102,8 +143,9 @@ public class ServiceService {
             return false;
         }
     }
+
     public boolean updateService(ServiceRequest serviceRequest) {
-        try{
+        try {
             com.koicenter.koicenterbackend.model.entity.Service existingService = servicesRepository.findByserviceName(serviceRequest.getServiceName())
                     .orElse(null);
             if (existingService == null) {
@@ -118,10 +160,11 @@ public class ServiceService {
             existingService.setImage(serviceRequest.getImage());
             servicesRepository.save(existingService);
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
+
     public boolean deleteService(String serviceId) {
         Optional<com.koicenter.koicenterbackend.model.entity.Service> optionalService = Optional.ofNullable(servicesRepository.findByServiceId(serviceId));
         if (!optionalService.isPresent()) {
