@@ -53,6 +53,17 @@ public class PondService {
         Pond pond = pondRepository.findById(pondId).orElseThrow(()
                 -> new AppException(ErrorCode.POND_NOT_EXITS.getCode(),
                 ErrorCode.POND_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        pond.setStatus(request.getStatus());
+        pond.setDepth(request.getDepth());
+        pond.setPerimeter(request.getPerimeter());
+        pond.setTemperature(request.getTemperature());
+        pond.setNotes(request.getNotes());
+        pond.setImage(request.getImage());
+        pond.setFilterSystem(request.getFilterSystem());
+        pond.setWaterQuality(request.getWaterQuality());
+
+        pondRepository.save(pond);
+
         PondResponse pondResponse = new PondResponse();
         pondResponse.setStatus(request.getStatus());
         pondResponse.setDepth(request.getDepth());
@@ -62,7 +73,6 @@ public class PondService {
         pondResponse.setImage(request.getImage());
         pondResponse.setFilterSystem(request.getFilterSystem());
         pondResponse.setWaterQuality(request.getWaterQuality());
-        pondRepository.save(pond);
         return pondResponse;
     }
 

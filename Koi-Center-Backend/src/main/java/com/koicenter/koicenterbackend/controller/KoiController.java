@@ -58,7 +58,7 @@ public class    KoiController {
     @PutMapping("/{koiId}")
     public ResponseEntity<ResponseObject> updatePond(@PathVariable("koiId") String koiId, @Valid @RequestBody KoiUpdateRequest request) {
         try {
-            Koi updatedKoi = koiService.updateKoi(koiId, request);
+            KoiResponse updatedKoi = koiService.updateKoi(koiId, request);
             return ResponseObject.APIRepsonse(200, "Update success", HttpStatus.OK, updatedKoi);
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
