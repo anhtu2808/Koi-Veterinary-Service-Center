@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.repository;
 
 import com.koicenter.koicenterbackend.model.entity.VetSchedule;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VetScheduleResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,4 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<VetSchedule,String> {
     //List<VetSchedule> findByVetId(String vet_id);
     List<VetSchedule> findByVeterinarianVetId(String veterinarianId);
-
 }

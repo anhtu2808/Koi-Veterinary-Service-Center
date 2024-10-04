@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.response.koi;
 
+import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,4 +15,6 @@ public class KoiTreatmentResponse {
     private String treatment;
     private String koiId;
     private String appointmentId;
+    KoiResponse koi;
+
 }

@@ -24,7 +24,8 @@ public class VetScheduleResponse {
     LocalTime start_time;
     LocalTime end_time;
     StatusVetSchedule status;
-
+    int customerBookingCount;
+String vet_Id ;
     Veterinarian vetId;
 
 }

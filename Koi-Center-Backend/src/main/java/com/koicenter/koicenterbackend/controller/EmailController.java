@@ -1,8 +1,13 @@
 package com.koicenter.koicenterbackend.controller;
 
+import com.koicenter.koicenterbackend.model.request.email.EmailRequest;
+import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.SendEmalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,8 +19,12 @@ public class EmailController {
     SendEmalService sendEmalService;
 
     @GetMapping("/sendEmail")
-    public String sendEmail() {
-        sendEmalService.sendMailSender("vulhse182602@gmail.com", "dcm tesst email chay nuoc", "test");
-        return "success";
+    public ResponseEntity<ResponseObject> sendEmail(@RequestBody EmailRequest emailRequest) {
+       boolean isSent =  sendEmalService.sendMailSender(emailRequest.getRecipient(), emailRequest.getBody(), emailRequest.getSubject());
+        if (isSent) {
+            return ResponseObject.APIRepsonse(200, "Email has been successfully sent. Please check your mail.", HttpStatus.OK, "");
+        } else {
+            return ResponseObject.APIRepsonse(400, "Failed to send email.", HttpStatus.BAD_REQUEST, "");
+        }
     }
 }
