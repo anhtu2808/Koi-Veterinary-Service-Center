@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
+import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
@@ -34,7 +35,7 @@ public class AppointmentService {
     CustomerRepository customerRepository;
     ServicesRepository servicesRepository;
     VeterinarianRepository veterinarianRepository ;
-
+    AppointmentMapper appointmentMapper ;
     public List<AppointmentResponse> getAllAppointments() {
         List<Appointment> appointments = appointmentRepository.findAll();
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();
@@ -169,33 +170,27 @@ public class AppointmentService {
         return appointmentResponses;
     }
     //CREATE APPOINTMENT
-    public void createAppointment ( AppointmentResponse appointmentResponse){
-        Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
+    public AppointmentResponse createAppointment ( AppointmentRequest appointmentRequest){
+        Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
         Veterinarian veterinarian = null;
         if(!appointmentResponse.getVetId().equalsIgnoreCase("SKIP")){
              veterinarian =  veterinarianRepository.findByVetId(appointmentResponse.getVetId());
             log.info("Veterian ID "+ veterinarian.getVetId());
         }
-
-
-        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentResponse.getServiceId());
+        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
+        log.info("service ID "+ service.getServiceId());
 
         Appointment appointment = new Appointment();
-
-    appointment.setAppointmentDate(appointmentResponse.getAppointmentDate());
-    appointment.setCreatedAt(appointmentResponse.getCreatedAt());
-    appointment.setEndTime(appointmentResponse.getEndTime());
-    appointment.setStatus(appointmentResponse.getStatus());
-    appointment.setType(appointmentResponse.getType());
-    appointment.setLocation(appointmentResponse.getLocation());
-    appointment.setDepositedMoney(appointment.getDepositedMoney());
-    appointment.setResult(appointmentResponse.getResult());
-    appointment.setStartTime(appointmentResponse.getStartTime());
-    appointment.setType(appointment.getType());
+    appointment = appointmentMapper.toAppointment(appointmentRequest);
     appointment.setCustomer(customer);
     appointment.setVeterinarian(veterinarian);
     appointment.setService(service);
     appointmentRepository.save(appointment);
+    AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
+        appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
+        appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
+        appointmentResponse.setServiceId(appointment.getService().getServiceId());
+    return appointmentResponse ;
     }
     public boolean updateAppointment (AppointmentRequest appointmentRequest){
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());

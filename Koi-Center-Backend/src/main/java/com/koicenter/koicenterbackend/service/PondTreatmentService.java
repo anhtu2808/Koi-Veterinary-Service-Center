@@ -4,10 +4,15 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.mapper.PondMapper;
 import com.koicenter.koicenterbackend.mapper.PondTreatmentMapper;
+import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.entity.PondTreatment;
+import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
+import com.koicenter.koicenterbackend.model.request.koi.SelectedKoi;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
+import com.koicenter.koicenterbackend.model.request.pond.SelectedPond;
+import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.PondRepository;
@@ -30,7 +35,10 @@ public class PondTreatmentService {
     private final PondRepository pondRepository;
     private final AppointmentRepository appointmentRepository;
     private final PondTreatmentMapper pondTreatmentMapper;
-    private final PondMapper pondMapper ;
+    private final PondMapper pondMapper;
+    private final AppointmentMapper appointmentMapper;
+    private final AppointmentService appointmentService;
+
     public PondTreatmentResponse createPondTreatment(PondTreatmentRequest pondTreatmentRequest) {
 
         Optional<Pond> pondOptional = pondRepository.findById(pondTreatmentRequest.getPondId());
@@ -62,20 +70,23 @@ public class PondTreatmentService {
                     ErrorCode.POND_ID_OR_APPOINTMENT_ID_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
     public List<PondTreatmentResponse> getPondByAppointmentId(String appointmentId) {
         List<PondTreatmentResponse> pondTreatmentResponseList = new ArrayList<>();
         List<PondTreatment> pondTreatments = new ArrayList<>();
-        pondTreatments =pondTreatmentRepository.findPondTreatmentsByAppointment_AppointmentId(appointmentId);
+        pondTreatments = pondTreatmentRepository.findPondTreatmentsByAppointment_AppointmentId(appointmentId);
         for (PondTreatment pondTreatment : pondTreatments) {
             PondTreatmentResponse pondTreatmentResponse = new PondTreatmentResponse();
-            pondTreatmentResponse =pondTreatmentMapper.toPondTreatmentResponse(pondTreatment);
+            pondTreatmentResponse = pondTreatmentMapper.toPondTreatmentResponse(pondTreatment);
             pondTreatmentResponse.setPond(pondMapper.toPondResponse(pondTreatment.getPond()));
 
 
-        pondTreatmentResponseList.add( pondTreatmentResponse );
+            pondTreatmentResponseList.add(pondTreatmentResponse);
         }
 
-    return pondTreatmentResponseList ;
+        return pondTreatmentResponseList;
     }
 
-    }
+
+
+}

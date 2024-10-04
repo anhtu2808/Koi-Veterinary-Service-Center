@@ -19,7 +19,7 @@ public class AppointmentResponse {
      String appointmentId;
      LocalDate appointmentDate;
      ZonedDateTime createdAt;
-     double depositedMoney;
+     float depositedMoney;
      LocalTime endTime;
      String location;
      String result;

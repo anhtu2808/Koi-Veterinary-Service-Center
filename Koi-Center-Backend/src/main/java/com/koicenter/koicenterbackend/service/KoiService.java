@@ -48,7 +48,7 @@ public class KoiService {
         return koiResponse;
     }
 
-    public Koi updateKoi(String koiId, KoiUpdateRequest request){
+    public KoiResponse updateKoi(String koiId, KoiUpdateRequest request){
         Koi koi = koiRepository.findById(koiId).orElseThrow(()
                 -> new AppException(ErrorCode.KOI_NOT_EXITS.getCode(),
                 ErrorCode.KOI_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
@@ -60,7 +60,20 @@ public class KoiService {
         koi.setHealthStatus(request.getHealthStatus());
         koi.setNotes(request.getNotes());
         koi.setImage(request.getImage());
-        return koiRepository.save(koi);
+        koiRepository.save(koi);
+
+        KoiResponse koiResponse = new KoiResponse();
+
+        koiResponse.setKoiId(koi.getKoiId());
+        koiResponse.setBreed(request.getBreed());
+        koiResponse.setAge(request.getAge());
+        koiResponse.setHeight(request.getHeight());
+        koiResponse.setWeight(request.getWeight());
+        koiResponse.setHealthStatus(request.getHealthStatus());
+        koiResponse.setNotes(request.getNotes());
+        koiResponse.setImage(request.getImage());
+
+        return koiResponse;
 
     }
         public void createKoi (KoiRequest koiRequest){

@@ -1,4 +1,4 @@
-package com.koicenter.koicenterbackend.model.request.koi;
+package com.koicenter.koicenterbackend.model.request.pond;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -6,17 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class KoiUpdateRequest {
-    String id;
-    String breed;
-    int age;
-    float height;
-    float weight;
-    String healthStatus;
-    String notes;
-    String image;
+public class SelectedPond {
+    List<String> pondId;
 }
