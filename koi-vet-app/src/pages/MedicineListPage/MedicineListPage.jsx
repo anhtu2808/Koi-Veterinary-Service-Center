@@ -16,12 +16,15 @@ import {
 } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 import "./MedicineListPage.module.css";
-
+import { Input, Modal, Form as AntdForm } from "antd";
 import { useForm } from "antd/es/form/Form";
+import Loading from "../../components/Loading/Loading";
 
 function MedicineListPage() {
   const [medicines, setMedicines] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [formVariable] = useForm();
 
   useEffect(() => {
     const fetchAllMedicines = async () => {
@@ -50,6 +53,32 @@ function MedicineListPage() {
     }
   };
 
+  const handleAddMedicine = async (values) => {
+    const response = await createMedicineAPI(values);
+    const newMedicine = response.data;
+    if (newMedicine && newMedicine.name) {
+      setMedicines((preMedicines) => [...preMedicines, newMedicine]);
+    }
+    formVariable.resetFields();
+    handleCloseModal();
+  };
+
+  const handleOpenModal = () => {
+    setVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setVisible(false);
+  };
+
+  const handleOk = () => {
+    formVariable.submit();
+  };
+
+  if (!medicines) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Container className="col-9">
@@ -70,6 +99,8 @@ function MedicineListPage() {
               />
             </InputGroup>
           </Col>
+
+          <Button onClick={handleOpenModal}>Add new medicine</Button>
         </Row>
 
         <Row className="g-4">
@@ -108,6 +139,41 @@ function MedicineListPage() {
           ))}
         </Row>
       </Container>
+
+      <Modal
+        title="Basic Modal"
+        open={visible}
+        onCancel={handleCloseModal}
+        onOk={handleOk}
+      >
+        <AntdForm form={formVariable} onFinish={handleAddMedicine}>
+          <AntdForm.Item
+            name={"name"}
+            label={"Medicine Name"}
+            rules={[
+              {
+                required: true,
+                message: "Hey, Bro!!! Maybe you forget somethings",
+              },
+            ]}
+          >
+            <Input />
+          </AntdForm.Item>
+
+          <AntdForm.Item
+            name={"description"}
+            label={"Description"}
+            rules={[
+              {
+                required: true,
+                message: "Hey, Bro!!! Maybe you forget somethings",
+              },
+            ]}
+          >
+            <Input />
+          </AntdForm.Item>
+        </AntdForm>
+      </Modal>
     </>
   );
 }
