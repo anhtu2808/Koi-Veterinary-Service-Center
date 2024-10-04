@@ -29,6 +29,7 @@ const PondDetail = ({ pondId, onPondUpdated }) => {
     };
 
     fetchPondData(pondId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputChange = (e) => {

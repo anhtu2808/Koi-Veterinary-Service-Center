@@ -1,32 +1,14 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setBookingData } from '../../../store/bookingSlice';
-import './InputKoiStep.css'
-
-import Koi from '../../../components/Koi/Koi';
-import Modal from '../../../components/Modal/Modal';
-import KoiDetail from '../../KoiDetail/KoiDetail';
+import Koi from '../../components/Koi/Koi';
+import Modal from 'antd/es/modal/Modal';
+import {  useParams } from 'react-router-dom';
+import KoiDetail from '../KoiDetail/KoiDetail';
 
 
-const InputKoiStep = () => {
+const KoiTreatmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
-  const dispatch = useDispatch();
-  const selectedKois = useSelector(state => state.booking.bookingData.selectedKoi);
-
-
-  const handleAddKoiToBooking = (koiId) => {
-    if (selectedKois.includes(koiId)) {
-      // If already selected, remove it
-      dispatch(setBookingData({ selectedKoi: selectedKois.filter(id => id !== koiId) }));
-    } else {
-      // If not selected, add it
-      dispatch(setBookingData({ selectedKoi: [...selectedKois, koiId] }));
-    }
-  };
-
-  
-
+  const { appointmentId } = useParams();
   //open modal for when click add new koi BTN
   const handleAddNewKoi = () => {
     setIsModalOpen(true);
@@ -39,17 +21,16 @@ const InputKoiStep = () => {
   const handleKoiUpdate = () => {
     setKoiUpdateTrigger(prev => prev + 1);
   };
-
   return (
     <div className="container mt-4">
       <h3 className="mb-4">Select Koi for Appointment</h3>
       {/* Existing Koi Table */}
       <Koi
-        isBooking={true}
+        isBooking={false}
+        isAppointment={true}
+        appointmentId={appointmentId}
         title={"Your Kois"}
         updateTrigger={koiUpdateTrigger}
-        handleAddKoiToBooking={handleAddKoiToBooking}
-        selectedKois={selectedKois}
       />
       {/* Add New Koi Button */}
       <div className="text-center">
@@ -62,7 +43,8 @@ const InputKoiStep = () => {
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <KoiDetail
           isCreate={true}
-          isBooking={true}
+          isBooking={false}
+          isTreatment={true}
           onClose={handleCloseModal}
           onUpdate={handleKoiUpdate}
         />
@@ -71,4 +53,4 @@ const InputKoiStep = () => {
   );
 };
 
-export default InputKoiStep;
+export default KoiTreatmentPage;

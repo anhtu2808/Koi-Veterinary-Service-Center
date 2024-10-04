@@ -45,6 +45,7 @@ function AllAppointment() {
       fetchAppointmentForCustomer(customerId, status);
       setTitle("My Appointments");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [role, customerId, status]);
 
   const handleChangeStatus = (status) => {

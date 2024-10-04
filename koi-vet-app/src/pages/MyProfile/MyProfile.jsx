@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateMyInfoAPI } from "../../apis";
 import { updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
 import "./MyProfile.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});

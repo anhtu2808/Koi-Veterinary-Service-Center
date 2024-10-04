@@ -22,7 +22,6 @@ const fishSpecies = [
 function KoiInformation() {
   const [selectedSpecies, setSelectedSpecies] = useState("");
   const [otherSpecies, setOtherSpecies] = useState("");
-  const [color, setColor] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [healthStatus, setHealthStatus] = useState("");
@@ -32,7 +31,6 @@ function KoiInformation() {
     console.log({
       selectedSpecies,
       otherSpecies,
-      color,
       height,
       weight,
       healthStatus,
@@ -71,15 +69,6 @@ function KoiInformation() {
             )}
           </div>
 
-          <div className="form-group">
-            <label>Color</label>
-            <input
-              type="text"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-              placeholder="Enter color"
-            />
-          </div>
 
           <div className="form-group">
             <label>Height</label>

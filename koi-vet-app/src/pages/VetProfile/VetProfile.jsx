@@ -18,6 +18,7 @@ function VetProfile() {
 
   useEffect(() => {
     fectchVetProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vetId]);
 
   if (!vets) {

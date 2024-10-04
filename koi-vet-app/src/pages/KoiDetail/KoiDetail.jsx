@@ -14,7 +14,7 @@ const fishSpecies = [
 function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate }) {
   const [selectedSpecies, setSelectedSpecies] = useState("");
   const [age, setAge] = useState("");
-  const [color, setColor] = useState("");
+
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [healthStatus, setHealthStatus] = useState("");

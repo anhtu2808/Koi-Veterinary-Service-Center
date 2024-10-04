@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Koi.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchKoisByAppointmentIdAPI } from '../../apis/KoiMockData';
 import { fetchKoisByCustomerIdAPI } from '../../apis';
 
-const Koi = ({ isAppointment, isBooking, title, updateTrigger, handleAddKoiToBooking, selectedKois }) => {
+const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,handleAddKoiToBooking, selectedKois }) => {
     const [koiList, setKoiList] = useState([]);
     const [customerId] = useState(useSelector(state => state?.user?.customer?.customerId))
-    const { appointmentId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {

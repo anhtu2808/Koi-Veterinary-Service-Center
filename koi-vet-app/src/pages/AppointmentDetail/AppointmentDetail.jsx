@@ -30,6 +30,7 @@ function AppointmentDetail() {
       }
     };
     fetchAppointmentDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentId]);
 
   const handleInputChange = (e) => {
@@ -180,7 +181,7 @@ function AppointmentDetail() {
 
         {console.log(appointment.appointmentId)}
           <button
-            onClick={() => navigate(`/admin/koi/${appointment.appointmentId}`)}
+            onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}`)}
             type="submit"
             className="btn btn-success buttonInEdit"
           >

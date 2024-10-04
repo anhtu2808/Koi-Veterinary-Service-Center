@@ -18,6 +18,7 @@ function ServicePageDetail() {
 
   useEffect(() => {
     fectchServiceDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serviceId]);
 
   if (!serviceDetail) {
