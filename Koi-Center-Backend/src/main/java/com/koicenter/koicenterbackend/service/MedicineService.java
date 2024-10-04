@@ -6,10 +6,12 @@ import com.koicenter.koicenterbackend.model.entity.Medicine;
 import com.koicenter.koicenterbackend.model.request.prescription.MedicineRequest;
 import com.koicenter.koicenterbackend.model.response.medicine.MedicineResponse;
 import com.koicenter.koicenterbackend.repository.MedicineRepository;
+import com.koicenter.koicenterbackend.repository.PrescriptionMedicineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,9 @@ import java.util.stream.Collectors;
 public class MedicineService {
     @Autowired
     private MedicineRepository medicineRepository;
+
+    @Autowired
+    private PrescriptionMedicineRepository prescriptionMedicineRepository;
 
     //hien thi all thuoc
     public List<MedicineResponse> getAllMedicines() {
@@ -70,10 +75,12 @@ public class MedicineService {
     }
 
     //d thuoc
+    @Transactional
     public void deleteMedicine(String id) {
         Medicine medicine = medicineRepository.findById(id).orElseThrow(() ->
                 new AppException(ErrorCode.MEDICINE_NOT_EXITS.getCode(),
                         ErrorCode.MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        prescriptionMedicineRepository.deleteAllByMedicine(medicine);
         medicineRepository.delete(medicine);
     }
 
