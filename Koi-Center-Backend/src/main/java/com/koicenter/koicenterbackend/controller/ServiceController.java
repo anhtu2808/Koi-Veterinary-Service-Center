@@ -30,16 +30,16 @@ public class ServiceController {
         return ResponseObject.APIRepsonse(200, "Get service success", HttpStatus.OK, service);
     }
 
-    @GetMapping("/appointmentType/{serviceFor}")//Appoinment type de lay ra tung servicefor
-    public ResponseEntity<ResponseObject> getServiceFor(@PathVariable String serviceFor){
-        if(serviceFor.toLowerCase().equals("CENTER".toLowerCase()) || serviceFor.toLowerCase().equals("MOBILE".toLowerCase()) || serviceFor.toLowerCase().equals("ONLINE".toLowerCase())) {
-        return ResponseObject.APIRepsonse(200, "GET Appointment_Type Successfully", HttpStatus.OK, serviceService.getServiceFor(serviceFor));
-        }
-        else {
+        @GetMapping("/appointmentType/{serviceFor}")//Appoinment type de lay ra tung servicefor
+    public ResponseEntity<ResponseObject> getServiceFor(@PathVariable String serviceFor) {
+        if (serviceFor.toLowerCase().equals("CENTER".toLowerCase()) || serviceFor.toLowerCase().equals("MOBILE".toLowerCase()) || serviceFor.toLowerCase().equals("ONLINE".toLowerCase())) {
+            return ResponseObject.APIRepsonse(200, "GET Appointment_Type Successfully", HttpStatus.OK, serviceService.getServiceFor(serviceFor));
+        } else {
             return ResponseObject.APIRepsonse(404, "Appointment_Type Not Found ", HttpStatus.NOT_FOUND, "");
 
         }
     }
+
     /**
      * create new service by staff
      */
@@ -52,6 +52,7 @@ public class ServiceController {
             return ResponseObject.APIRepsonse(409, "Service name already exists", HttpStatus.CONFLICT, null);
         }
     }
+
     @PutMapping("/update")
     public ResponseEntity<ResponseObject> updateService(@RequestBody ServiceRequest serviceRequest) {
         boolean isUpdated = serviceService.updateService(serviceRequest);
@@ -61,6 +62,7 @@ public class ServiceController {
             return ResponseObject.APIRepsonse(400, "Failed to update service", HttpStatus.BAD_REQUEST, null);
         }
     }
+
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseObject> deleteService(@RequestParam String serviceId) {
         boolean isDeleted = serviceService.deleteService(serviceId);
