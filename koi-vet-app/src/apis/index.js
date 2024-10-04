@@ -198,3 +198,18 @@ export const fetchMedicinesAPI = async () => {
     return response.data;
 }
 
+
+export const deleteMedicineByIdAPI = async (medicineId) => {
+    const response = await api.delete(`/medicines/${medicineId}`)
+    return response.data;
+}
+
+export const updateMedicineByIdAPI = async (medicineId, data) => {
+    const response = await api.put(`/medicines/${medicineId}`, data)
+    return response.data;
+}
+
+export const createMedicineAPI = async (data) => {
+    const response = await api.post(`/medicines`, data)
+    return response.data;
+}
