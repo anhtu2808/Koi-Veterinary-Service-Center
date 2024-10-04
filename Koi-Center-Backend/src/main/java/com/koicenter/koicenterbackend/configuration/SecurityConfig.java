@@ -68,7 +68,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.POST, "/api/v1/kois/create").permitAll()
 
 
-                            .requestMatchers(HttpMethod.POST, "/api/v1/vetSchedules/date").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/getVeterinariansByDateTime").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ").permitAll()
@@ -114,6 +114,13 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "api/v1/mail/sendEmail").permitAll()
                            .requestMatchers(HttpMethod.GET, "api/v1/payment/vn-pay").permitAll()
                             .requestMatchers(HttpMethod.GET, "api/v1/payment/vn-pay-callback").permitAll()
+
+
+                            .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/kois").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/ponds").permitAll()
+
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/prescriptions/{prescriptionMedicineId}").permitAll()
+
                             .anyRequest().authenticated();
                 });
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));

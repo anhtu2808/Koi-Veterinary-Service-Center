@@ -30,7 +30,6 @@ public class VeterinarianResponse {
      String phone;
      String imageVeterinarian;
      String userId ;
-
     List<String> serviceNames;
     UserResponse user;
 
