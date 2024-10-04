@@ -2,6 +2,8 @@ package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
+import com.koicenter.koicenterbackend.mapper.PondMapper;
+import com.koicenter.koicenterbackend.mapper.PondTreatmentMapper;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.entity.PondTreatment;
@@ -11,11 +13,15 @@ import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.PondRepository;
 import com.koicenter.koicenterbackend.repository.PondTreatmentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PondTreatmentService {
@@ -23,7 +29,8 @@ public class PondTreatmentService {
     private final PondTreatmentRepository pondTreatmentRepository;
     private final PondRepository pondRepository;
     private final AppointmentRepository appointmentRepository;
-
+    private final PondTreatmentMapper pondTreatmentMapper;
+    private final PondMapper pondMapper ;
     public PondTreatmentResponse createPondTreatment(PondTreatmentRequest pondTreatmentRequest) {
 
         Optional<Pond> pondOptional = pondRepository.findById(pondTreatmentRequest.getPondId());
@@ -55,4 +62,20 @@ public class PondTreatmentService {
                     ErrorCode.POND_ID_OR_APPOINTMENT_ID_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-}
+    public List<PondTreatmentResponse> getPondByAppointmentId(String appointmentId) {
+        List<PondTreatmentResponse> pondTreatmentResponseList = new ArrayList<>();
+        List<PondTreatment> pondTreatments = new ArrayList<>();
+        pondTreatments =pondTreatmentRepository.findPondTreatmentsByAppointment_AppointmentId(appointmentId);
+        for (PondTreatment pondTreatment : pondTreatments) {
+            PondTreatmentResponse pondTreatmentResponse = new PondTreatmentResponse();
+            pondTreatmentResponse =pondTreatmentMapper.toPondTreatmentResponse(pondTreatment);
+            pondTreatmentResponse.setPond(pondMapper.toPondResponse(pondTreatment.getPond()));
+
+
+        pondTreatmentResponseList.add( pondTreatmentResponse );
+        }
+
+    return pondTreatmentResponseList ;
+    }
+
+    }

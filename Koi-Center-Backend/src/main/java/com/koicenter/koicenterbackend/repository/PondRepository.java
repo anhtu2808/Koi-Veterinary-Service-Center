@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.repository;
 
 import com.koicenter.koicenterbackend.model.entity.Pond;
+import com.koicenter.koicenterbackend.model.entity.PondTreatment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
