@@ -14,12 +14,17 @@ public class SendEmalService {
     @Value("${spring.mail.username}")  // Đã sửa cú pháp
     private String fromEmailId;
 
-    public void sendMailSender(String recipient, String body, String subject) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmailId);  // Email người gửi ne babe
-        message.setTo(recipient);      // Email người nhận ne babe
-        message.setSubject(subject);   // Chủ đề email ne babe
-        message.setText(body);         // Nội dung email ne babe
-        mailSender.send(message);      // Gửi email ne babe
+    public boolean sendMailSender(String recipient, String body, String subject) {
+        try{
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmailId);  // Email người gửi ne babe
+            message.setTo(recipient);      // Email người nhận ne babe
+            message.setSubject(subject);   // Chủ đề email ne babe
+            message.setText(body);         // Nội dung email ne babe
+            mailSender.send(message);      // Gửi email ne babe
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

@@ -98,6 +98,9 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.POST, "/api/v1/treatments/ponds").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/treatments/kois").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/treatments/ponds/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/treatments/kois/**").permitAll()
+
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/prescriptions").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/prescriptions").permitAll()
@@ -121,6 +124,9 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/ponds").permitAll()
 
                             .requestMatchers(HttpMethod.DELETE, "/api/v1/prescriptions/{prescriptionMedicineId}").permitAll()
+
+
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/deliveries/{deliveryId}").permitAll()
 
                             .anyRequest().authenticated();
                 });

@@ -54,7 +54,7 @@ public class ServiceService {
         response.setImage(service.getImage());
         return response;
     }
-    public List<com.koicenter.koicenterbackend.model.entity.Service> getServiceFor(String servicefor){
+    public List<com.koicenter.koicenterbackend.model.entity.Service>    getServiceFor(String servicefor){
         List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
         if (servicefor.toLowerCase().equals("HOME".toLowerCase())){
            List<com.koicenter.koicenterbackend.model.entity.Service> serviceForFish = servicesRepository.findByServiceFor(ServiceType.FISH);
