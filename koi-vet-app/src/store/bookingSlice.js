@@ -11,8 +11,7 @@ const initialState = {
     endAt: null,
     serviceId: null,
     paymentInfo: {},
-    selectedKoi: [],
-    selectedPond: [], // Add this line
+    selected: [], // Add Koi/Pond ID
   },
 };
 

@@ -20,8 +20,8 @@ function BookingPage() {
   const startAt = useSelector(state => state.booking.bookingData.startAt)
   const endAt = useSelector(state => state.booking.bookingData.endAt)
   const serviceFor = useSelector(state => state.booking.bookingData.serviceFor)
-  const selectedKoi = useSelector(state => state.booking.bookingData.selectedKoi)
-  const selectedPond = useSelector(state => state.booking.bookingData.selectedPond)
+  const selected = useSelector(state => state.booking.bookingData.selected)
+  
   const handleNextStep = () => {
     dispatch(nextStep())
   }
@@ -97,10 +97,10 @@ function BookingPage() {
               {date && startAt && endAt ?
                 <button className="btn btn-primary " onClick={() => handleSetStep(5)}>Next</button> : null}
             </div> : null}
-          {(step === 4 || step === 5) && (selectedKoi.length > 0 || selectedPond.length > 0) ? <div className="col-md-1">
+          {(step === 4 || step === 5) && (selected.length > 0 || selected.length > 0) ? <div className="col-md-1">
             <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Next</button>
           </div> : null}
-          {(step === 4 || step === 5) ? !(selectedKoi.length > 0 || selectedPond.length > 0) ? <div className="col-md-1">
+          {(step === 4 || step === 5) ? !(selected.length > 0 || selected.length > 0) ? <div className="col-md-1">
             <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Skip</button>
           </div> : null : null}
 

@@ -12,16 +12,16 @@ const InputKoiStep = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
   const dispatch = useDispatch();
-  const selectedKois = useSelector(state => state.booking.bookingData.selectedKoi);
+  const selected = useSelector(state => state.booking.bookingData.selected);
 
 
   const handleAddKoiToBooking = (koiId) => {
-    if (selectedKois.includes(koiId)) {
+    if (selected.includes(koiId)) {
       // If already selected, remove it
-      dispatch(setBookingData({ selectedKoi: selectedKois.filter(id => id !== koiId) }));
+      dispatch(setBookingData({ selectedKoi: selected.filter(id => id !== koiId) }));
     } else {
       // If not selected, add it
-      dispatch(setBookingData({ selectedKoi: [...selectedKois, koiId] }));
+      dispatch(setBookingData({ selected: [...selected, koiId] }));
     }
   };
 
@@ -49,7 +49,7 @@ const InputKoiStep = () => {
         title={"Your Kois"}
         updateTrigger={koiUpdateTrigger}
         handleAddKoiToBooking={handleAddKoiToBooking}
-        selectedKois={selectedKois}
+        selectedKois={selected}
       />
       {/* Add New Koi Button */}
       <div className="text-center">

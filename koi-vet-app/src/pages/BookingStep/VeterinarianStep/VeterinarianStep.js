@@ -16,7 +16,6 @@ const VeterinarianStep = () => {
   },[serviceId])
 
   return (
-    console.log({veterinarians}),
     <div className="container text-center my-5">
       <div className="container mt-5">
         <div className="text-center mb-5">

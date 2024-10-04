@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 
 const Service = ({ image, serviceId, serviceName, description, isBooking, serviceFor }) => {
   const navigate = useNavigate();
-  console.log(serviceName)
   const dispatch = useDispatch()
   const handleClickButton = () => {
     if (isBooking) {

@@ -147,6 +147,10 @@ export const createPondAPI = async (data) => {
     return response.data;
 }
 
+export const fetchPondByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/appointments/${appointmentId}/ponds`);
+    return response.data;
+}
 
 
 
@@ -166,6 +170,11 @@ export const updateKoiInformationAPI = async (koiId, data) => {
 }
 export const createKoiAPI = async (data) => {
     const response = await api.post('/kois', data);
+    return response.data;
+}
+
+export const fetchKoiByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/appointments/${appointmentId}/kois`);
     return response.data;
 }
 

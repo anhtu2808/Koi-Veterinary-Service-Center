@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./PondDetail.css";
-import { fetchPondByPondIdAPI } from "../../apis";
+import { fetchPondByPondIdAPI, updatePondInformationAPI } from "../../apis";
+import { useParams } from "react-router-dom";
 
-const PondDetail = ({ pondId, onPondUpdated }) => {
+const PondDetail = () => {
   const [pondData, setPondData] = useState({
     pondId: "",
     status: "",
@@ -17,15 +18,12 @@ const PondDetail = ({ pondId, onPondUpdated }) => {
     customerId: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-
+  const { pondId } = useParams();
   useEffect(() => {
     const fetchPondData = async (pondId) => {
-      try {
-        const response = await fetchPondByPondIdAPI(pondId);
-        setPondData(response.data);
-      } catch (error) {
-        console.error("Error fetching pond data:", error);
-      }
+
+      const response = await fetchPondByPondIdAPI(pondId);
+      setPondData(response.data);
     };
 
     fetchPondData(pondId);
@@ -44,18 +42,12 @@ const PondDetail = ({ pondId, onPondUpdated }) => {
   };
 
   const handleUpdate = async () => {
-    try {
-      const response = await axios.put(`/api/ponds/${pondId}`, pondData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const updatePond = async () => {
+      const response = await updatePondInformationAPI(pondId, pondData);
       console.log("Pond updated:", response.data);
-      onPondUpdated(response.data);
       setIsEditing(false);
-    } catch (error) {
-      console.error("Error updating pond:", error);
     }
+    updatePond();
   };
 
   const renderField = (label, value, name) => (
@@ -64,10 +56,9 @@ const PondDetail = ({ pondId, onPondUpdated }) => {
         {label}
       </label>
       <input
-        type={
-          name === "depth" || name === "perimeter" || name === "temperature"
-            ? "number"
-            : "text"
+        type={name === "depth" || name === "perimeter" || name === "temperature"
+          ? "number"
+          : "text"
         }
         className="form-control"
         id={name}
@@ -81,7 +72,7 @@ const PondDetail = ({ pondId, onPondUpdated }) => {
   );
 
   return (
-    <div className="col-9">
+    <div className="col-9 mx-auto">
       <h3 className="mb-4">Pond Detail</h3>
       <div className="pond-detail-form">
         {renderField("Pond ID", pondData.pondId, "pondId")}
@@ -90,10 +81,9 @@ const PondDetail = ({ pondId, onPondUpdated }) => {
         {renderField("Perimeter (m)", pondData.perimeter, "perimeter")}
         {renderField("Temperature (°C)", pondData.temperature, "temperature")}
         {renderField("Notes", pondData.notes, "notes")}
-        {renderField("Image URL", pondData.image, "image")}
         {renderField("Water Quality", pondData.waterQuality, "waterQuality")}
         {renderField("Filter System", pondData.filterSystem, "filterSystem")}
-        {renderField("Customer ID", pondData.customerId, "customerId")}
+        {renderField("Image URL", pondData.image, "image")}
 
         {isEditing ? (
           <button

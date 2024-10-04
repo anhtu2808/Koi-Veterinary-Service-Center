@@ -38,6 +38,7 @@ import MedicineListPage from './pages/MedicineListPage/MedicineListPage';
 import ServicePageDetail from './pages/ServicePageDetail/ServicePageDetail';
 import KoiTreatmentPage from './pages/KoiTreatmentPage/KoiTreatmentPage';
 import Pond from './components/Pond/Pond';
+import PaymentFailPage from './pages/PaymentFailPage/PaymentFailPage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -76,7 +77,7 @@ function App() {
               <Route path='/veterinarians' element={<VeterinarianPage />} />
               <Route path='/services' element={<ServicePage />} />
               <Route path='/vetprofile/:vetId' element={<VetProfile />} />
-
+              <Route path='/booking/paymentfail' element={<PaymentFailPage />} />
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>
                 <Route path='/booking' element={<BookingPage />} />
@@ -90,14 +91,11 @@ function App() {
                       <Route path='/koi/:koiId' element={
                         <KoiDetail
                           isCreate={false}
-                          isUpdate={true} />
-                      } />
-                      <Route path='/koidetail' element={
-                        <KoiDetail
-                          isCreate={true}
                           isUpdate={false} />
                       } />
+
                       <Route path='/pond' element={<Pond/>}/>
+                      <Route path='/pond/:pondId' element={<PondDetail/>} /> 
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
 
