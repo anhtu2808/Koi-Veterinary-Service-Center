@@ -23,9 +23,13 @@ public class VeterinarianController {
     VeterinarianService veterinarianService;
     @GetMapping("/{vetId}")
     public ResponseEntity<ResponseObject> getVeterinarianById (@PathVariable String vetId){
-        return ResponseObject.APIRepsonse(200,"Get ID Veterinarian Succesfully ", HttpStatus.OK,veterinarianService.getVeterinarianById(vetId));
+        VeterinarianResponse veterinarianResponse = veterinarianService.getVeterinarianById(vetId);
+        if(veterinarianResponse != null ){
+            return ResponseObject.APIRepsonse(200,"Get ID Veterinarian Succesfully ", HttpStatus.OK,veterinarianResponse);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Veterinarians not found", HttpStatus.NOT_FOUND,"");
+        }
     }
-
     @GetMapping()
     public ResponseEntity<ResponseObject> getAllVeterinarian() {
         List<VeterinarianResponse> listVet = veterinarianService.getAllVet();
