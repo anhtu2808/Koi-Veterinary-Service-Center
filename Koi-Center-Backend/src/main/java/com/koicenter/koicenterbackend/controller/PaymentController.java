@@ -1,33 +1,63 @@
 package com.koicenter.koicenterbackend.controller;
 
-import com.koicenter.koicenterbackend.model.entity.PaymentDTO;
+
+import com.koicenter.koicenterbackend.model.entity.Appointment;
+import com.koicenter.koicenterbackend.model.entity.Invoice;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.repository.AppointmentRepository;
+import com.koicenter.koicenterbackend.repository.InvoiceRepository;
+import com.koicenter.koicenterbackend.service.InvoiceService;
 import com.koicenter.koicenterbackend.service.PaymentService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+import java.time.LocalDateTime;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/payment")
 @RequiredArgsConstructor
 public class PaymentController {
-    private final PaymentService paymentService;
+    @Autowired
+    PaymentService paymentService;
+    @Autowired
+    AppointmentRepository appointmentRepository;
+    @Autowired
+    InvoiceRepository invoiceRepository;
+    private static String appointmentIdTemp = "";
     @GetMapping("/vn-pay")
-    public ResponseObject pay(HttpServletRequest request) {
-        return new ResponseObject(200, "Success", paymentService.createVnPayPayment(request));
+    public ResponseEntity<Void> pay(HttpServletRequest request) {
+        String paymentUrl = paymentService.createVnPayPayment(request);
+        String appointmentId = request.getParameter("appointmentId");
+        appointmentIdTemp = appointmentId.trim();
+        System.out.println("Redirecting to: " + paymentUrl);
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(paymentUrl)).build();
     }
     @GetMapping("/vn-pay-callback")
-    public ResponseObject payCallbackHandler(HttpServletRequest request) {
+    public ResponseEntity<Void> payCallbackHandler(HttpServletRequest request) {
         String status = request.getParameter("vnp_ResponseCode");
-        String appointmentId = request.getParameter("appointmentId");
+        System.out.println("MY APPOINTMENT OH YEAH : " + appointmentIdTemp);
         if (status.equals("00")) {
-            // insert info about appointment into dabaase here
-            return new ResponseObject(200, "Success", new PaymentDTO.VNPayResponse("00", "Success", ""));
+            System.out.println("chay dum t ik, o day ne plz plz");
+            Invoice newInvoice = Invoice.builder()
+                    .paymentStatus(true)
+                    .totalPrice(Float.parseFloat(request.getParameter("vnp_Amount")))
+                    .createAt(LocalDateTime.now())
+                    .appointment(appointmentRepository.findAppointmentById(appointmentIdTemp))
+                    .build();
+            invoiceRepository.save(newInvoice);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
         } else {
-            return new ResponseObject(400, "Failed", null);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
         }
     }
 }
