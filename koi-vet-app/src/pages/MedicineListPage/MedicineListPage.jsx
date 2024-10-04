@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
   createMedicineAPI,
-  //createMedicineAPI,
   deleteMedicineByIdAPI,
   fetchMedicinesAPI,
+  updateMedicineByIdAPI,
 } from "../../apis";
 import {
   Button,
@@ -25,6 +25,7 @@ function MedicineListPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [visible, setVisible] = useState(false);
   const [formVariable] = useForm();
+  const [editingMedicine, setEditingMedicine] = useState(null); // Track the medicine being edited
 
   useEffect(() => {
     const fetchAllMedicines = async () => {
@@ -68,6 +69,7 @@ function MedicineListPage() {
   };
 
   const handleCloseModal = () => {
+    setEditingMedicine(null);
     setVisible(false);
   };
 
@@ -78,6 +80,25 @@ function MedicineListPage() {
   if (!medicines) {
     return <Loading />;
   }
+
+  const handleUpdateMedicine = async (medicineId, values) => {
+    const response = await updateMedicineByIdAPI(medicineId, values);
+    setMedicines((prevMedicines) =>
+      prevMedicines.map((medicine) =>
+        medicine.medicineId === medicineId ? response.data : medicine
+      )
+    );
+    handleCloseModal();
+  };
+
+  const handleEditMedicine = (medicine) => {
+    setEditingMedicine(medicine); // Set the medicine being edited
+    formVariable.setFieldsValue({
+      name: medicine.name,
+      description: medicine.description,
+    });
+    setVisible(true);
+  };
 
   return (
     <>
@@ -127,11 +148,18 @@ function MedicineListPage() {
                     className="medicine-checkbox"
                   />
                   <Button
-                    className="delete-button"
+                    className="option-item"
+                    variant="primary"
+                    onClick={() => handleEditMedicine(medicine)} // Open modal for editing
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    className="option-item"
                     variant="danger"
                     onClick={() => handleDeleteMedicine(medicine.medicineId)}
                   >
-                    &times; {/* Biểu tượng X */}
+                    x
                   </Button>
                 </Card.Footer>
               </Card>
@@ -141,12 +169,20 @@ function MedicineListPage() {
       </Container>
 
       <Modal
-        title="Basic Modal"
+        title={editingMedicine ? "Edit Medicine" : "Add New Medicine"}
         open={visible}
         onCancel={handleCloseModal}
         onOk={handleOk}
       >
-        <AntdForm form={formVariable} onFinish={handleAddMedicine}>
+        <AntdForm
+          form={formVariable}
+          onFinish={
+            (values) =>
+              editingMedicine
+                ? handleUpdateMedicine(editingMedicine.medicineId, values) // Update existing medicine
+                : handleAddMedicine(values) // Add new medicine
+          }
+        >
           <AntdForm.Item
             name={"name"}
             label={"Medicine Name"}
