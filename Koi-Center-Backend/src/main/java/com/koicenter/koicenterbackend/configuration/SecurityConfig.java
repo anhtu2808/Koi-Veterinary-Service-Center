@@ -110,7 +110,10 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.GET, "api/v1/news/id").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/news").permitAll()
+
                             .requestMatchers(HttpMethod.GET, "api/v1/mail/sendEmail").permitAll()
+                           .requestMatchers(HttpMethod.GET, "api/v1/payment/vn-pay").permitAll()
+                            .requestMatchers(HttpMethod.GET, "api/v1/payment/vn-pay-callback").permitAll()
                             .anyRequest().authenticated();
                 });
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));
