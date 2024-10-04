@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { fecthAllServicesAPI, fetchServiceAPI } from '../../../apis'
+import { fetchServiceByTypeAPI} from '../../../apis'
 import Service from '../../../components/Service/Service'
 
 export const ServiceStep = () => {
@@ -8,21 +8,21 @@ export const ServiceStep = () => {
     const [services, setServices] = useState([]);
 
     useEffect(() => {
-        // const fetchServiceByType = async () => {
+        const fetchServiceByType = async () => {
 
-        //     const response = await fetchServiceByTypeAPI(type);
-        //     if(response.status === 200){
-        //         setServices(response.data)
-        //     }
-        // }
-        // fetchServiceByType();
-        const fetchAllService = async () => {
-            const response = await fecthAllServicesAPI();
+            const response = await fetchServiceByTypeAPI(type);
             if(response.status === 200){
                 setServices(response.data)
             }
         }
-        fetchAllService();
+        fetchServiceByType();
+        // const fetchAllService = async () => {
+        //     const response = await fecthAllServicesAPI();
+        //     if(response.status === 200){
+        //         setServices(response.data)
+        //     }
+        // }
+        // fetchAllService();
     }, [type])
    
 
