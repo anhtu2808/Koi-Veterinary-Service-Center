@@ -1,8 +1,10 @@
 package com.koicenter.koicenterbackend.controller;
 
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
 import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
 import com.koicenter.koicenterbackend.service.VetScheduleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/vetSchedules")
@@ -38,8 +42,13 @@ public class VetScheduleController {
         public ResponseEntity<ResponseObject> getScheduleForBooking(@RequestBody VetScheduleRequest vetSchedule) {
             return ResponseObject.APIRepsonse(200,"Get Schedule ID Successfully", HttpStatus.OK,vetSchedule);
         }
-        @PostMapping("/date") //lấy bác sĩ rãnh lên ngay do
-    public ResponseEntity<ResponseObject> getVeterinariansByDateTime(@RequestBody VetScheduleRequest vetSchedule) {
-        return ResponseObject.APIRepsonse(200,"Get Vet Schedule ID Successfully", HttpStatus.OK,vetSchedule);
+    @GetMapping("/getVeterinariansByDateTime")
+    public ResponseEntity<ResponseObject> getVeterinariansByDateTime(@RequestBody VetScheduleRequest vetScheduleRequest) {
+        List<VeterinarianResponse> list =  vetScheduleService.getVeterinariansByDateTime(vetScheduleRequest);
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(200, "Veterinarians found successfully By Date Time ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Veterinarians not found", HttpStatus.NOT_FOUND,"");
         }
+    }
     }

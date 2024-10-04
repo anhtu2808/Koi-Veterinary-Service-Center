@@ -19,5 +19,7 @@ public class VetScheduleRequest {
     LocalTime endTime ;
     String serviceId ;
     LocalDate date;
+    int customerBookingCount;
+
 
 }
