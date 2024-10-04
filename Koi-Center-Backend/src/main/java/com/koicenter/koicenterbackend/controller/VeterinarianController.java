@@ -38,9 +38,12 @@ public class VeterinarianController {
     }
     @PostMapping("/create")
     public ResponseEntity<ResponseObject> createVeterinarian(@RequestBody VeterinarianRequest veterinarianRequest){
-        veterinarianService.createVeterinarian(veterinarianRequest);
-        return ResponseObject.APIRepsonse(200, "CREATE VETERINARIAN SUCCESSFULLY", HttpStatus.OK, " " );
-
+        if(veterinarianRequest != null ){
+            veterinarianService.createVeterinarian(veterinarianRequest);
+            return ResponseObject.APIRepsonse(200, "CREATE VETERINARIAN SUCCESSFULLY", HttpStatus.OK, " " );
+        }else{
+            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST,"");
+        }
     }
     @GetMapping("/getByServiceId")
     public ResponseEntity<ResponseObject> getVeterinarianByServiceId(@RequestParam String serviceId) {
