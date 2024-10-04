@@ -67,6 +67,9 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/services/{serviceId}","/api/v1/vetSchedules").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/kois/create").permitAll()
 
+
+                            .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/getVeterinariansByDateTime").permitAll()
+
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians/{vetId}").permitAll()
@@ -94,6 +97,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/treatments/ponds").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/treatments/kois").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/treatments/**").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/prescriptions").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/prescriptions").permitAll()
@@ -107,12 +111,16 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.GET, "api/v1/news/id").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/news").permitAll()
+
                             .requestMatchers(HttpMethod.GET, "api/v1/mail/sendEmail").permitAll()
+                           .requestMatchers(HttpMethod.GET, "api/v1/payment/vn-pay").permitAll()
+                            .requestMatchers(HttpMethod.GET, "api/v1/payment/vn-pay-callback").permitAll()
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/kois").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/ponds").permitAll()
 
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/prescriptions/{prescriptionMedicineId}").permitAll()
 
                             .anyRequest().authenticated();
                 });

@@ -1,5 +1,8 @@
 package com.koicenter.koicenterbackend.service;
 
+import com.koicenter.koicenterbackend.mapper.UserMapper;
+import com.koicenter.koicenterbackend.mapper.VetScheduleMapper;
+import com.koicenter.koicenterbackend.mapper.VeterinariansMapper;
 import com.koicenter.koicenterbackend.model.entity.VetSchedule;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
@@ -7,7 +10,9 @@ import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequ
 import com.koicenter.koicenterbackend.model.response.schedual.DayResponse;
 import com.koicenter.koicenterbackend.model.response.schedual.SlotResponse;
 import com.koicenter.koicenterbackend.model.response.veterinarian.VetScheduleResponse;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
 import com.koicenter.koicenterbackend.repository.ScheduleRepository;
+import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +33,11 @@ public class VetScheduleService {
     //Schedule ID and Type : CENTER ,HOME ,MObile
     ScheduleRepository scheduleRepository;
     VeterinarianRepository veterinarianRepository;
+    VeterinarianService veterinarianService ;
+    VetScheduleMapper vetScheduleMapper ;
+    VeterinariansMapper veterinariansMapper ;
+    UserRepository userRepository ;
+    UserMapper userMapper ;
 
     public List<DayResponse> getScheduleForBooking(VetScheduleRequest vetSchedule) {
         List<VetScheduleResponse> vetSchedules = new ArrayList<>();
@@ -111,4 +121,44 @@ public class VetScheduleService {
 //        List<VetScheduleResponse> vetSchedules = new ArrayList<>();
 //
 //    }
+    public List<VeterinarianResponse> getVeterinariansByDateTime(VetScheduleRequest vetScheduleRequest) {
+
+
+        // Service Id , Date ,starTime , endTime type
+        List<VeterinarianResponse> veterinarians = new ArrayList<>();
+        List<VeterinarianResponse> veterinarianResponses = veterinarianService.getVeterinariansByServiceId(vetScheduleRequest.getServiceId());
+        List<VetScheduleResponse> vetScheduleResponses = new ArrayList<>();
+                List<VetSchedule> vetSchedules = new ArrayList<>();
+        for( VeterinarianResponse vetResponse : veterinarianResponses ) {
+            List<VetSchedule> vetSchedule = new ArrayList<>();
+            vetSchedule = scheduleRepository.findByVeterinarianVetId(vetResponse.getVetId());
+            for (VetSchedule vet1 : vetSchedule){
+                vetScheduleResponses.add(vetScheduleMapper.toVetScheduleResponse(vet1));
+            }
+        }
+        for (VetScheduleResponse vetScheduleResponse : vetScheduleResponses) {
+            if (vetScheduleRequest.getAppointmentType().toString().equals("CENTER") || vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
+                if(vetScheduleRequest.getStartTime().equals(vetScheduleResponse.getStart_time()) && vetScheduleRequest.getEndTime().equals(vetScheduleResponse.getEnd_time())&&vetScheduleRequest.getDate().equals(vetScheduleResponse.getDate())&&vetScheduleResponse.getCustomerBookingCount()<2 ) {
+
+                    Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+                    VeterinarianResponse response = new VeterinarianResponse();
+                    response = veterinariansMapper.toVeterinarianResponse(veterinarian);
+                    response.setUser(userMapper.toUserResponse(veterinarian.getUser()));
+                    veterinarians.add(response);
+
+
+                }
+            } else if (vetScheduleRequest.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
+                if(vetScheduleRequest.getStartTime().equals(vetScheduleResponse.getStart_time()) && vetScheduleRequest.getEndTime().equals(vetScheduleResponse.getEnd_time())&&vetScheduleRequest.getDate().equals(vetScheduleResponse.getDate())&&vetScheduleResponse.getCustomerBookingCount() ==0  ) {
+
+                    Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+                    VeterinarianResponse response = new VeterinarianResponse();
+                    response = veterinariansMapper.toVeterinarianResponse(veterinarian);
+                    response.setUser(userMapper.toUserResponse(veterinarian.getUser()));
+                    veterinarians.add(response);
+                }
+            }
+        }
+        return veterinarians ;
+    }
 }
