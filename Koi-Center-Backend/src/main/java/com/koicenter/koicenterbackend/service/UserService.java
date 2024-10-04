@@ -140,6 +140,7 @@ public class UserService {
             );
             userResponseBuilder.veterinarian(veterinarianDTO);
         }
+
         return userResponseBuilder.build();
     }
 
