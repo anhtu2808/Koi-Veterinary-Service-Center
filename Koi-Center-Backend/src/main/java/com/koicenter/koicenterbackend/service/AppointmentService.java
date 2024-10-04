@@ -34,8 +34,9 @@ public class AppointmentService {
     AppointmentRepository appointmentRepository;
     CustomerRepository customerRepository;
     ServicesRepository servicesRepository;
-    VeterinarianRepository veterinarianRepository ;
-    AppointmentMapper appointmentMapper ;
+    VeterinarianRepository veterinarianRepository;
+    AppointmentMapper appointmentMapper;
+
     public List<AppointmentResponse> getAllAppointments() {
         List<Appointment> appointments = appointmentRepository.findAll();
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();
@@ -169,53 +170,55 @@ public class AppointmentService {
         }
         return appointmentResponses;
     }
+
     //CREATE APPOINTMENT
-    public AppointmentResponse createAppointment ( AppointmentRequest appointmentRequest){
+    public AppointmentResponse createAppointment(AppointmentRequest appointmentRequest) {
         Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
         Veterinarian veterinarian = null;
-        if(!appointmentResponse.getVetId().equalsIgnoreCase("SKIP")){
-             veterinarian =  veterinarianRepository.findByVetId(appointmentResponse.getVetId());
-            log.info("Veterian ID "+ veterinarian.getVetId());
+        if (!appointmentRequest.getVetId().equalsIgnoreCase("SKIP")) {
+            veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
+            log.info("Veterian ID " + veterinarian.getVetId());
         }
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
-        log.info("service ID "+ service.getServiceId());
+        log.info("service ID " + service.getServiceId());
 
         Appointment appointment = new Appointment();
-    appointment = appointmentMapper.toAppointment(appointmentRequest);
-    appointment.setCustomer(customer);
-    appointment.setVeterinarian(veterinarian);
-    appointment.setService(service);
-    appointmentRepository.save(appointment);
-    AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
-        appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
-        appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
-        appointmentResponse.setServiceId(appointment.getService().getServiceId());
-    return appointmentResponse ;
-    }
-    public boolean updateAppointment (AppointmentRequest appointmentRequest){
-        Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
-        Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
-        Veterinarian veterinarian =  veterinarianRepository.findByVetId(appointmentRequest.getVetId());
-        log.info("Veterian ID "+ veterinarian.getVetId());
-        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
-
-        appointment.setAppointmentDate(appointmentRequest.getAppointmentDate());
-        appointment.setCreatedAt(appointmentRequest.getCreatedAt());
-        appointment.setEndTime(appointmentRequest.getEndTime());
-        appointment.setStatus(appointmentRequest.getStatus());
-        appointment.setType(appointmentRequest.getType());
-        appointment.setLocation(appointmentRequest.getLocation());
-        appointment.setDepositedMoney(appointmentRequest.getDepositedMoney());
-        appointment.setResult(appointmentRequest.getResult());
-        appointment.setStartTime(appointmentRequest.getStartTime());
-        appointment.setType(appointmentRequest.getType());
+        appointment = appointmentMapper.toAppointment(appointmentRequest);
         appointment.setCustomer(customer);
         appointment.setVeterinarian(veterinarian);
         appointment.setService(service);
-
         appointmentRepository.save(appointment);
-        return true ;
+        AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
+        appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
+        appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
+        appointmentResponse.setServiceId(appointment.getService().getServiceId());
+        return appointmentResponse;
     }
+
+//    public boolean updateAppointment(AppointmentRequest appointmentRequest) {
+//        Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
+//        Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
+//        Veterinarian veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
+//        log.info("Veterian ID " + veterinarian.getVetId());
+//        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
+//
+//        appointment.setAppointmentDate(appointmentRequest.getAppointmentDate());
+//        appointment.setCreatedAt(appointmentRequest.getCreatedAt());
+//        appointment.setEndTime(appointmentRequest.getEndTime());
+//        appointment.setStatus(appointmentRequest.getStatus());
+//        appointment.setType(appointmentRequest.getType());
+//        appointment.setLocation(appointmentRequest.getLocation());
+//        appointment.setDepositedMoney(appointmentRequest.getDepositedMoney());
+//        appointment.setResult(appointmentRequest.getResult());
+//        appointment.setStartTime(appointmentRequest.getStartTime());
+//        appointment.setType(appointmentRequest.getType());
+//        appointment.setCustomer(customer);
+//        appointment.setVeterinarian(veterinarian);
+//        appointment.setService(service);
+//
+//        appointmentRepository.save(appointment);
+//        return true;
+//    }
 }
 
 

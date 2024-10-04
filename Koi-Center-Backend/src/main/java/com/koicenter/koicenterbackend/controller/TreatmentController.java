@@ -1,17 +1,14 @@
 package com.koicenter.koicenterbackend.controller;
 
-import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
-import com.koicenter.koicenterbackend.model.request.pond.SelectedPond;
 import com.koicenter.koicenterbackend.model.request.treament.TreamentRequest;
-import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.koi.KoiTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
-import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
 import com.koicenter.koicenterbackend.service.KoiTreatmentService;
 import com.koicenter.koicenterbackend.service.PondTreatmentService;
+import com.koicenter.koicenterbackend.service.TreatmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +24,9 @@ public class TreatmentController {
 
     @Autowired
     private KoiTreatmentService koiTreatmentService;
+
+    @Autowired
+    private TreatmentService treatmentService;
 
     @PostMapping("/ponds")
     public ResponseEntity<ResponseObject> createPondTreatment(@RequestBody PondTreatmentRequest pondTreatmentRequest) {
@@ -58,5 +58,14 @@ public class TreatmentController {
             return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND,"");
         }
     }
-
+    //tạo nhiều cá,pond and appointment
+    @PostMapping("/create")
+    public ResponseEntity<ResponseObject> createTreament( @RequestBody TreamentRequest treamentRequest) {
+        List<?> list =  treatmentService.createTreament(treamentRequest.getSelected(),treamentRequest.getAppointmentRequest());
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(201, "Treament Created successfully! ", HttpStatus.CREATED, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST,"");
+        }
+    }
 }

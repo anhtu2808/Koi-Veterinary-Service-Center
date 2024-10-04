@@ -73,10 +73,10 @@ public class AppointmentController {
     return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,appointmentResponse);
     }
     // UPDATE
-    @PostMapping("/update")
-    public ResponseEntity<ResponseObject> updateAppointment(@RequestBody AppointmentRequest appointmentResponse) {
-        appointmentService.updateAppointment(appointmentResponse);
-    return ResponseObject.APIRepsonse(200,"UPDATE APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
-    }
+//    @PostMapping("/update")
+//    public ResponseEntity<ResponseObject> updateAppointment(@RequestBody AppointmentRequest appointmentResponse) {
+//        appointmentService.updateAppointment(appointmentResponse);
+//    return ResponseObject.APIRepsonse(200,"UPDATE APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
+//    }
     }
 
