@@ -1,30 +1,14 @@
 import React from "react";
 import "./UserManagementPage.css";
 import { Link } from "react-router-dom";
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
 
 function UserManagementPage() {
   return (
-    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 className="h2">Users Dashboard</h1>
-        <div className="btn-toolbar mb-2 mb-md-0">
-          <div className="btn-group me-2">
-            <button type="button" className="btn btn-sm btn-outline-secondary">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="User Avatar"
-                className="rounded-circle"
-                width="30"
-                height="30"
-              />
-              Hello, Lekan
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="row mb-3">
-        <div className="col">
+    <>
+    <AdminHeader title="User Management"/>
+      <div className="row mb-3 justify-content-center">
+        <div className="col-md-8">
           <div className="input-group">
             <input type="text" className="form-control" placeholder="Search" />
             <button className="btn btn-primary" type="button">
@@ -33,7 +17,6 @@ function UserManagementPage() {
           </div>
         </div>
       </div>
-
       <div className="table-responsive">
         <table className="table table-striped table-sm tableleft">
           <thead>
@@ -157,7 +140,8 @@ function UserManagementPage() {
           </li>
         </ul>
       </nav>
-    </main>
+    </>
+
   );
 }
 

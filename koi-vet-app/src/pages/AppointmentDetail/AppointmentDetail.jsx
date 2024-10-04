@@ -1,31 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchAppointmentByIdAPI, updateAppointmentAPI } from "../../apis";
+import { fetchAppointmentByIdAPI, updateAppointmentAPI } from "../../apis/AllAppoimentMockData";
 import "./AppointmentDetail.css";
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
+import { ROLE } from "../../utils/constants";
+import { useSelector } from "react-redux";
 
 function AppointmentDetail() {
   const { appointmentId } = useParams();
   const navigate = useNavigate();
-  const [appointment, setAppointment] = useState(null);
+  const [appointment, setAppointment] = useState({
+    appointmentId: "APT12345",
+    customerId: "0f4e5514-079e-4ed1-8df1-ff3d53221a52",
+    serviceId: "SRV5432",
+    location: "Main Clinic",
+    appointmentDate: "2023-06-15",
+    status: "Confirmed",
+    veterinarian: "Dr. Smith"
+  });
   const [isEditing, setIsEditing] = useState(false);
-
+  const role = useSelector((state) => state.user.role);
   useEffect(() => {
     const fetchAppointmentDetail = async () => {
       try {
         const response = await fetchAppointmentByIdAPI(appointmentId);
-        setAppointment(response.data);
+        setAppointment(...appointment, response.data);
       } catch (error) {
         console.error("Error fetching appointment:", error);
       }
     };
     fetchAppointmentDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAppointment({ ...appointment, [name]: value });
   };
-
+  console.log(appointment)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -41,16 +53,8 @@ function AppointmentDetail() {
   if (!appointment) return <div>Loading...</div>;
 
   return (
-    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 className="h2">Appointment Detail</h1>
-        <button
-          className="btn btn-primary"
-          onClick={() => setIsEditing(!isEditing)}
-        >
-          {isEditing ? "Cancel" : "Edit"}
-        </button>
-      </div>
+    <>
+      <AdminHeader title="Appointment Detail" />
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -139,20 +143,72 @@ function AppointmentDetail() {
             <option value="Cancelled">Cancelled</option>
           </select>
         </div>
+
+        <div className="mb-3">
+          <label htmlFor="status" className="form-label">
+            Veterinarian
+          </label>
+          <select
+            className="form-select"
+            id="status"
+            name="status"
+            value={appointment.status}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+          >
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
         {isEditing && (
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="btn btn-success buttonInEdit">
             Save Changes
           </button>
         )}
-      </form>
 
-      <button
-        className="btn btn-secondary mt-3"
-        onClick={() => navigate("/admin/allappointment")}
-      >
-        Back to All Appointments
-      </button>
-    </main>
+        
+          <button
+            onClick={() => navigate("/admin/inputpondpage")}
+            type="submit"
+            className="btn btn-success buttonInEdit"
+          >
+            Pond Information
+          </button>
+    
+
+        {console.log(appointment.appointmentId)}
+          <button
+            onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}`)}
+            type="submit"
+            className="btn btn-success buttonInEdit"
+          >
+            Koi Information
+          </button>
+      
+      </form>
+      <div className="col-md-12">
+        <button
+          className="btn btn-secondary "
+          onClick={() => navigate(-1)}
+        >
+          Back to All Appointments
+        </button>
+        {role !== ROLE.CUSTOMER && (
+          <button
+            className="btn btn-primary mx-3"
+            onClick={() => setIsEditing(!isEditing)}
+          >
+            {isEditing ? "Cancel" : "Edit"}
+          </button>
+        )}
+      </div>
+
+
+    </>
+
   );
 }
 

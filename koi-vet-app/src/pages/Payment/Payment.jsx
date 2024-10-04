@@ -1,10 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useSelector } from "react-redux";
+import { createAppointmentAPI, fecthServiceByServiceIdAPI, fetchVetByVetIdAPI } from "../../apis";
+import { toast } from "react-toastify";
+import { APPOINTMENT_STATUS } from "../../utils/constants";
 
 function Payment() {
   const userInfo = useSelector(state => state.user)
   const customerInfo = useSelector(state => state.user.customer)
+  const bookingData = useSelector(state => state?.booking?.bookingData)
+  const [serviceInfo, setServiceInfo] = useState({})
+  const [vetInfo, setVetInfo] = useState({})
+  const [appointmentCreateRequest, setAppointmentCreateRequest] = useState({
+
+  });
+
+  useEffect(() => {
+    setAppointmentCreateRequest({
+      "appointmentDate": bookingData.date,
+      "status": bookingData.vetId !== "SKIP" ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
+      "startTime": bookingData.startAt, // Định dạng thời gian
+      "endTime": bookingData.endAt, // Định dạng thời gian
+      "location": customerInfo.address, // Địa điểm
+      "result": null,  // Kết quả
+      "createdAt": new Date(),  // Định dạng cho ZonedDateTime
+      "type": bookingData.type,  // Enum AppointmentType
+      "depositedMoney": serviceInfo.basePrice,  // Số tiền đã đặt cọc
+      "customerId": customerInfo.customerId,  // ID khách hàng
+      "vetId": bookingData.vetId,  // ID bác sĩ thú y
+      "serviceId": bookingData.serviceId  // ID dịch vụ
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customerInfo, vetInfo, serviceInfo, bookingData])
+  const handlePayment = async (appointmentCreateRequest) => {
+    const response = await createAppointmentAPI(appointmentCreateRequest)
+    console.log(response)
+    if (response.status === 200) {
+      toast.success(response.data.message)
+    } else {
+      toast.error(response.data.message)
+    }
+  }
+
+
+  // Combine date and time into a single string
+  const combinedDateTime = `${bookingData?.date}T${bookingData?.startAt}`;
+  useEffect(() => {
+    const fetchServiceInfo = async () => {
+      const response = await fecthServiceByServiceIdAPI(bookingData?.serviceId)
+      setServiceInfo(response?.data)
+    }
+    fetchServiceInfo()
+    const fetchVetInfo = async () => {
+      if (bookingData?.vetId) {
+        const response = await fetchVetByVetIdAPI(bookingData?.vetId)
+        setVetInfo(response?.data)
+      }
+    }
+    fetchServiceInfo()
+    fetchVetInfo()
+    console.log(vetInfo)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bookingData?.serviceId, bookingData?.vetId])
   return (
     <div className="container payment-container">
       <h1 className="payment-title text-center mb-5">Secure Payment</h1>
@@ -35,7 +92,7 @@ function Payment() {
               </div>
               <div className="mb-3">
                 <label htmlFor="phoneNumber" className="payment-form-label">
-                value={userInfo.pho}
+                  Phone Number
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
@@ -46,6 +103,7 @@ function Payment() {
                     className="form-control payment-form-control"
                     id="phoneNumber"
                     placeholder="Enter your phone number"
+                    value={customerInfo?.phone}
                   />
                 </div>
               </div>
@@ -62,6 +120,7 @@ function Payment() {
                     id="address"
                     rows="3"
                     placeholder="Enter your address"
+                    value={customerInfo?.address}
                   ></textarea>
                 </div>
               </div>
@@ -70,7 +129,7 @@ function Payment() {
 
           <div className="payment-card">
             <div className="payment-card-header">
-              <i className="fas fa-fish me-2"></i> Koi Health Status
+              <i className="fas fa-fish me-2"></i> Koi/Pond Health Status
             </div>
             <div className="payment-card-body">
               <div className="mb-3">
@@ -81,7 +140,7 @@ function Payment() {
                   className="form-control payment-form-control"
                   id="koiHealth"
                   rows="5"
-                  placeholder="Describe the health status of your Koi"
+                  placeholder="Please enter describe about health status of your Koi/Pond"
                 ></textarea>
               </div>
             </div>
@@ -96,7 +155,7 @@ function Payment() {
             <div className="payment-card-body">
               <div className="mb-3">
                 <label htmlFor="doctorName" className="payment-form-label">
-                  Doctor's Name
+                  Veterinarian's Name
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
@@ -106,7 +165,9 @@ function Payment() {
                     type="text"
                     className="form-control payment-form-control"
                     id="doctorName"
-                    placeholder="Enter doctor's name"
+                    placeholder="Veterinarian is not selected"
+                    value={vetInfo?.user?.fullName}
+                    disabled
                   />
                 </div>
               </div>
@@ -122,19 +183,28 @@ function Payment() {
                     type="datetime-local"
                     className="form-control payment-form-control"
                     id="dateTime"
+                    value={combinedDateTime}
+                    disabled
                   />
                 </div>
               </div>
-              <div className="mb-4">
-                <label htmlFor="serviceType" className="payment-form-label">
-                  Service Type
+              <div className="mb-3">
+                <label htmlFor="doctorName" className="payment-form-label">
+                  Service
                 </label>
-                <select className="form-select payment-form-select" id="serviceType">
-                  <option value="">Select Service Type</option>
-                  <option value="consultation">Consultation</option>
-                  <option value="treatment">Treatment</option>
-                  <option value="checkup">Check-up</option>
-                </select>
+                <div className="input-group">
+                  <span className="input-group-text payment-input-icon">
+                    <i class="fas fa-fish"></i>
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control payment-form-control"
+                    id="doctorName"
+                    placeholder="Enter doctor's name"
+                    value={serviceInfo?.serviceName}
+                    disabled
+                  />
+                </div>
               </div>
 
               <div className="payment-summary mb-4">
@@ -145,7 +215,7 @@ function Payment() {
                 </div>
                 <div className="row">
                   <div className="col-6">Service Fee:</div>
-                  <div className="col-6 text-end">$10.00</div>
+                  <div className="col-6 text-end">${serviceInfo.basePrice}</div>
                 </div>
                 <hr />
                 <div className="row total">
@@ -182,7 +252,10 @@ function Payment() {
                 </div>
               </div>
 
-              <button className="btn payment-btn w-100" id="checkoutBtn">
+              <button className="btn payment-btn w-100" id="checkoutBtn"
+                onClick={() => handlePayment(appointmentCreateRequest)}
+
+              >
                 <i className="fas fa-lock me-2"></i> Proceed to Secure Checkout
               </button>
             </div>

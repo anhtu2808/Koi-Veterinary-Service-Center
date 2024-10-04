@@ -2,7 +2,7 @@
 import api from "../utils/authorizedAxious"
 
 /* Authentication API*/
-export const fetchLoginAPI =   async (username, password) => {
+export const fetchLoginAPI = async (username, password) => {
     const response = await api.post('/auth/login', {
         username: username,
         password: password
@@ -11,24 +11,24 @@ export const fetchLoginAPI =   async (username, password) => {
 }
 
 export const fetchLogoutAPI = async () => {
-    const response = await api.post('/auth/logout',{token: localStorage.getItem('accessToken')});
+    const response = await api.post('/auth/logout', { token: localStorage.getItem('accessToken') });
     return response.data;
 }
 
 
 /* User API */
 export const createUserAPI = async (email, password, username, fullname, phone, address) => {
-    
-      const response = await api.post('/users/register', {
+
+    const response = await api.post('/users/register', {
         email,
         password,
         username,
         fullname,
         phone,
         address,
-      });
-      return response.data;
-  };
+    });
+    return response.data;
+};
 
 export const fetchMyInfoAPI = async () => {
     const response = await api.post('/users/myInfo');
@@ -44,15 +44,15 @@ export const updateMyInfoAPI = async (userData) => {
 export const fetchVetsAPI = async () => {
     const response = await api.get('/veterinarians');
     return response.data;
-  }
+}
 
-export const fetchVetByVetIdAPI = async (vetId) =>{
+export const fetchVetByVetIdAPI = async (vetId) => {
     const response = await api.get(`/veterinarians/${vetId}`);
     return response.data;
 }
 
-export const fetchVetByVetByServiceIdAPI = async (serviceId) =>{
-    const response = await api.get(`/veterinarians?serviceId=${serviceId}`);
+export const fetchVetByServiceIdAPI = async (serviceId) => {
+    const response = await api.get(`veterinarians/getByServiceId?serviceId=${serviceId}`);
     return response.data;
 }
 
@@ -73,24 +73,25 @@ export const fecthServiceByServiceIdAPI = async (serviceId) => {
 export const fetchServiceByTypeAPI = async (type) => {
     const response = await api.get(`/services/appointmentType/${type}`);
     return response.data;
-} 
-
-
-
+}
 
 
 // Appointment API
 export const fetchAllAppointmentByVetIdAPI = async (vetId) => {
-const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
-return response.data;
-}
-
-export const fetchAllAppointmentAPI = async () => {
-    const response = await api.get(`/appointments`);
+    const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
     return response.data;
 }
-export const fetchAppointmentByCustomerIdAPI= async (customerId) => {
-    const response = await api.get(`/appointments/getByCustomerId?customerId=${customerId}`);
+export const createAppointmentAPI = async (appointmentCreateRequest) => {
+    const response = await api.post('/appointments/create', appointmentCreateRequest);
+    return response.data;
+}
+
+export const fetchAllAppointmentAPI = async (status) => {
+    const response = await api.get(`/appointments?status=${status}`);
+    return response.data;
+}
+export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
+    const response = await api.get(`/appointments?customerId=${customerId}&status=${status}`);
     return response.data;
 }
 
@@ -100,8 +101,19 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
 }
 
 export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
+    //eslint-disable-next-line
     const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
+    return response.data;
+}
+export const fetchAppointmentByVetIdAPI = async (vetId) => {
+    const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
+    return response.data;
+}
+
+export const addKoiToAppointmentAPI = async (appointmentId, koiData) => {
+    // const response = await api.post(`/appointments/${appointmentId}/kois`, koiData);
     // return response.data;
+    return Promise.resolve({ data: { message: "Success" } });// fake api
 }
 
 //API Schedule
@@ -117,36 +129,72 @@ export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
 
 
 //Pond API
-export const  fetchPondByCustomerIdAPI = async (customerId) => {
-    const response = await api.get(`/customer/${customerId}/pond`);
+export const fetchPondByCustomerIdAPI = async (customerId) => {
+    const response = await api.get(`/customers/${customerId}/ponds`);
     return response.data;
 }
 
-export const fetchKoiByPondIdAPI = async (pondId) => {
-    const response = await api.get(`/customer/${pondId}/koi`);
+export const fetchPondByPondIdAPI = async (pondId) => {
+    const response = await api.get(`/ponds/${pondId}`);
     return response.data;
 }
 export const updatePondInformationAPI = async (pondId, data) => {
-    const response = await api.put(`/pond/${pondId}`, data);
+    const response = await api.put(`/ponds/${pondId}`, data);
+    return response.data;
+}
+export const createPondAPI = async (data) => {
+    const response = await api.post('/ponds', data);
     return response.data;
 }
 
+export const fetchPondByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/appointments/${appointmentId}/ponds`);
+    return response.data;
+}
 
 
 
 //Koi API
 export const fetchKoiByKoiIdAPI = async (koiId) => {
-    const response = await api.get(`/koi/${koiId}`);
+    const response = await api.get(`/kois/${koiId}`);
     return response.data;
 }
-export const fetchKoiByCustomerIdAPI = async (customerId) => {
-    const response = await api.get(`/customer/${customerId}/koi`);
+export const fetchKoisByCustomerIdAPI = async (customerId) => {
+    const response = await api.get(`/customers/${customerId}/kois`);
     return response.data;
 }
 
 export const updateKoiInformationAPI = async (koiId, data) => {
-    const response = await api.put(`/koi/${koiId}`, data);
+    const response = await api.put(`/kois/${koiId}`, data);
+    return response.data;
+}
+export const createKoiAPI = async (data) => {
+    const response = await api.post('/kois', data);
     return response.data;
 }
 
+export const fetchKoiByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/appointments/${appointmentId}/kois`);
+    return response.data;
+}
+
+
+
+
+
+
+
+
+
+
+// Medicine API
+export const fecthMedicineByIdAPI = async (medicineId) => {
+    const response = await api.get(`/medicines/${medicineId}`)
+    return response.data;
+}
+
+export const fetchMedicinesAPI = async () => {
+    const response = await api.get('/medicines')
+    return response.data;
+}
 

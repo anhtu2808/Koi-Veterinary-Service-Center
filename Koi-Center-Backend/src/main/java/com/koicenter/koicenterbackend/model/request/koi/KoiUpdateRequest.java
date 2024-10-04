@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class KoiUpdateRequest {
+    String id;
     String breed;
     int age;
     float height;

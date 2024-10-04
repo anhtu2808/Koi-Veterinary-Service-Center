@@ -56,15 +56,14 @@ public class MedicineController {
     public ResponseEntity<ResponseObject> updateMedicine(@PathVariable("medicineId") String medicineId, @RequestBody MedicineRequest medicineRequest) {
         try {
             MedicineResponse updatedMedicine = medicineService.updateMedicine(medicineId, medicineRequest);
-            if(updatedMedicine.getMedicineId().isEmpty()){
-                return ResponseObject.APIRepsonse(404, "Medicine ID not exist", HttpStatus.NOT_FOUND, null);
-            }else{
-                return ResponseObject.APIRepsonse(200, "Updated medicine successfully", HttpStatus.OK, updatedMedicine);
-            }
+            return ResponseObject.APIRepsonse(200, "Updated medicine successfully", HttpStatus.OK, updatedMedicine);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, "Medicine Id do not exist", e.getHttpStatus(), null);
         } catch (Exception e) {
             return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
+
 
     @DeleteMapping("/{medicineId}")
     public ResponseEntity<ResponseObject> deleteMedicine(@PathVariable("medicineId") String medicineId) {

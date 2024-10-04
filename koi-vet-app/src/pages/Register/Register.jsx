@@ -2,23 +2,31 @@ import React, { useState } from "react";
 import register from "../../assets/img/login_side.png";
 import { createUserAPI } from "../../apis";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     console.log(email, password, username, fullname, phone, address);
-    const response = await createUserAPI(email, password, username, fullname, phone, address);
-    if (response?.data?.status === 200) {
-      toast.success(response?.data?.message);
-      navigate("/login");
+    try {
+      const response = await createUserAPI(email, password, username, fullname, phone, address);
+      if (response?.data?.status === 201) {
+        toast.success(response?.data?.message);
+        navigate("/login");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -108,19 +116,17 @@ function Register() {
               </div>
               <div className="col-12">
                 <div className="d-grid my-3">
-                  <button className="btn-dark btn btn-lg" type="submit" >
-                    SIGN UP
+                  <button className="btn-dark btn btn-lg" type="submit" disabled={isLoading}>
+                    {isLoading ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> : "SIGN UP"}
                   </button>
                 </div>
               </div>
               <div className="col-12">
                 <p className="m-0 text-secondary text-center">
-                  Don't have an account?{" "}
-                  <a href="#!"
-                    className="link-dark text-decoration-underline    "
-                  >
-                    Sign up
-                  </a>
+                  Already have an account?{" "}
+                  <Link to="/login" className="link-dark text-decoration-underline">
+                    Login
+                  </Link>
                 </p>
               </div>
             </div>

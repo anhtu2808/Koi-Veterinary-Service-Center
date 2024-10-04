@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBookingData } from '../../../store/bookingSlice';
 import './InputPondStep.css'
+import { useNavigate } from 'react-router-dom';
 
 // Sample pond data
 const samplePondData = [
@@ -37,20 +38,22 @@ const samplePondData = [
 const InputPondStep = () => {
   const [existingPonds] = useState(samplePondData);
   const dispatch = useDispatch();
-  const selectedPondIds = useSelector(state => state.booking.bookingData.selectedPondIds || []);
+  const selectedPond = useSelector(state => state.booking.bookingData.selectedPond || []);
+  const navigate = useNavigate();
 
   const handleSelectPond = (pondId) => {
-    let updatedSelectedPondIds;
-    if (selectedPondIds.includes(pondId)) {
-      updatedSelectedPondIds = selectedPondIds.filter(id => id !== pondId);
+    let updatedselectedPond;
+    if (selectedPond.includes(pondId)) {
+      updatedselectedPond = selectedPond.filter(id => id !== pondId);
     } else {
-      updatedSelectedPondIds = [...selectedPondIds, pondId];
+      updatedselectedPond = [...selectedPond, pondId];
     }
-    dispatch(setBookingData({ selectedPondIds: updatedSelectedPondIds }));
+    dispatch(setBookingData({ selectedPond: updatedselectedPond }));
   };
 
   const handleAddNewPond = () => {
     // Implement logic to add a new pond
+    navigate("/admin/pondinformation")
     console.log("Add new pond clicked");
   };
 
@@ -83,10 +86,10 @@ const InputPondStep = () => {
                   <td>{pond.temperature}</td>
                   <td>
                     <button 
-                      className={`btn btn-sm ${selectedPondIds.includes(pond.pondId) ? 'btn-success' : 'btn-primary'}`}
+                      className={`btn btn-sm ${selectedPond.includes(pond.pondId) ? 'btn-success' : 'btn-primary'}`}
                       onClick={() => handleSelectPond(pond.pondId)}
                     >
-                      {selectedPondIds.includes(pond.pondId) ? 'Selected' : 'Select'}
+                      {selectedPond.includes(pond.pondId) ? 'Selected' : 'Select'}
                     </button>
                   </td>
                 </tr>
@@ -97,13 +100,13 @@ const InputPondStep = () => {
       </div>
 
       {/* Selected Ponds Details */}
-      {selectedPondIds.length > 0 && (
+      {selectedPond.length > 0 && (
         <div className="card mb-4">
           <div className="card-header input-info-title text-white">
             <h5 className="mb-0">Selected Pond Details</h5>
           </div>
           <div className="card-body">
-            {selectedPondIds.map(pondId => {
+            {selectedPond.map(pondId => {
               const selectedPond = existingPonds.find(p => p.pondId === pondId);
               return (
                 <div key={pondId} className="mb-4 pb-3 border-bottom">
