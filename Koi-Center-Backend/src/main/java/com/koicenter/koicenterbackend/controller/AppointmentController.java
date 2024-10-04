@@ -68,9 +68,9 @@ public class AppointmentController {
     }
     //CREATE
     @PostMapping("/create")
-    public ResponseEntity<ResponseObject> createAppointment(@RequestBody AppointmentResponse appointmentResponse){
-        appointmentService.createAppointment(appointmentResponse);
-    return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
+    public ResponseEntity<ResponseObject> createAppointment(@RequestBody AppointmentRequest appointmentRequest){
+       AppointmentResponse appointmentResponse= appointmentService.createAppointment(appointmentRequest);
+    return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,appointmentResponse);
     }
     // UPDATE
     @PostMapping("/update")
