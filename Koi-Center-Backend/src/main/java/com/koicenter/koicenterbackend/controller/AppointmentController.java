@@ -70,7 +70,11 @@ public class AppointmentController {
     @PostMapping("/create")
     public ResponseEntity<ResponseObject> createAppointment(@RequestBody AppointmentRequest appointmentRequest){
        AppointmentResponse appointmentResponse= appointmentService.createAppointment(appointmentRequest);
-    return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,appointmentResponse);
+        if (appointmentResponse != null) {
+            return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,appointmentResponse);
+        } else {
+            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST,"");
+        }
     }
     // UPDATE
 //    @PostMapping("/update")
