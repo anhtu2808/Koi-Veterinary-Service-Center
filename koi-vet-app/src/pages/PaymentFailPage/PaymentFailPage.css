@@ -1,0 +1,28 @@
+.payment-fail-header {
+    font-weight: bold;
+}
+
+.payment-fail-icon {
+    color: #dc3545;
+}
+
+.payment-fail-btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.payment-fail-btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.payment-fail-btn-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.payment-fail-btn-secondary:hover {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}

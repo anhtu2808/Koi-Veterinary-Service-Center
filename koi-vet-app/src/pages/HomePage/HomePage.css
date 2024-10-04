@@ -1,8 +1,10 @@
-.service-card{
-    background-color: #1F2B6C;
-    color: #fff;
-}
 
+.banner-image{
+    max-height: 60vh !important;
+}
+.banner-section{
+    max-height: 30% !important;
+}
 .text-nav{
     color: #1F2B6C;
 }
@@ -23,6 +25,16 @@
     font-size: 1.5rem;
     color: #0d6efd;
 }
+.img-crop{
+    object-fit: cover;
+    
+}
+.img-container {
+    width: 100%;   /* Chiều rộng của div cha */
+    height: 60vh;  /* Chiều cao của div cha */
+    overflow: hidden; /* Ẩn phần ảnh vượt ra ngoài div cha */
+    
+  }
 .service-item {
     cursor: pointer;
     transition: background-color 0.3s;
@@ -109,4 +121,7 @@
     .hover\:bg-purple-200:hover {  
         background-color: #e9d8fd;  
     }  
+    .list-group-item.active{
+        background-color: var(--color-primary) !important;
+    }
     

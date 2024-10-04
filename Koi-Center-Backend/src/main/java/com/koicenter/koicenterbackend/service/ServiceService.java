@@ -55,9 +55,10 @@ public class ServiceService {
         return response;
     }
 
+
     public List<ServiceResponse> getServiceFor(String servicefor) {
         List<ServiceResponse> services = new ArrayList<>();
-        if (servicefor.toLowerCase().equals("MOBILE".toLowerCase())) {
+        if (servicefor.toLowerCase().equals("HOME".toLowerCase())) {
             List<com.koicenter.koicenterbackend.model.entity.Service> serviceForFish = servicesRepository.findByServiceFor(ServiceType.FISH);
             List<com.koicenter.koicenterbackend.model.entity.Service> servicesForPond = servicesRepository.findByServiceFor(ServiceType.POND);
 

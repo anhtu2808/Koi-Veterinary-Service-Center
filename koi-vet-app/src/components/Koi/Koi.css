@@ -1,0 +1,18 @@
+.input-info-title{
+    background-color: var(--color-primary) !important;
+    color: white;
+}
+.koi-image{
+    width: 3.5vw;
+    height: 3.5vw;
+  
+}
+.koi-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+td {
+    vertical-align: middle;
+}

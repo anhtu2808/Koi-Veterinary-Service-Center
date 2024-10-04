@@ -26,23 +26,24 @@ const Login = () => {
       toast.success("Login successfully");
       localStorage.setItem("accessToken", response.data);
       navigate("/");
+       window.location.reload();
     }
   };
-  
+
   return (
     <div className="row">
-     
-       
-        <div className="col-md-6 left-side-container text-start">
-         
-            <img src={logim_side} alt="login" className="img-fluid " />
-          
-        </div>
-      
+
+
+      <div className="col-md-6 left-side-container text-start">
+
+        <img src={logim_side} alt="login" className="img-fluid " />
+
+      </div>
+
       <div className="col-md-6 justify-content-center align-items-center login-left text-center mx-auto">
         <div className="col-md-8 login-container mx-auto mt-10">
-        <Link to="/">
-          <img src={logo} alt="logo" />
+          <Link to="/">
+            <img src={logo} alt="logo" />
           </Link>
           <h6 className=" text-start mt-5">WELCOME BACK</h6>
           <h3 className="fw-bold">Continue to your Account.</h3>

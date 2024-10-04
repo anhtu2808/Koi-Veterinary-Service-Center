@@ -1,0 +1,39 @@
+/* ServicePageDetail.css */
+.service-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .service-hero {
+    margin-bottom: 30px;
+  }
+  
+  .service-image {
+    height: 500px;
+    object-fit: cover;
+  }
+  
+  .service-title {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+  }
+  
+  .service-content {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+  }
+  
+  .service-description {
+    color: #555;
+  }
+  
+  @media (max-width: 768px) {
+    .service-image {
+      height: 300px;
+    }
+  
+    .service-title {
+      font-size: 28px;
+    }
+  }

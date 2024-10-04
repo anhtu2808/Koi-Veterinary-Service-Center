@@ -171,8 +171,13 @@ public class AppointmentService {
     //CREATE APPOINTMENT
     public void createAppointment ( AppointmentResponse appointmentResponse){
         Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
-        Veterinarian veterinarian =  veterinarianRepository.findByVetId(appointmentResponse.getVetId());
-        log.info("Veterian ID "+ veterinarian.getVetId());
+        Veterinarian veterinarian = null;
+        if(!appointmentResponse.getVetId().equalsIgnoreCase("SKIP")){
+             veterinarian =  veterinarianRepository.findByVetId(appointmentResponse.getVetId());
+            log.info("Veterian ID "+ veterinarian.getVetId());
+        }
+
+
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentResponse.getServiceId());
 
         Appointment appointment = new Appointment();
@@ -192,30 +197,30 @@ public class AppointmentService {
     appointment.setService(service);
     appointmentRepository.save(appointment);
     }
-//    public boolean updateAppointment (AppointmentRequest appointmentRequest){
-//        Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
-//        Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
-//        Veterinarian veterinarian =  veterinarianRepository.findByVetId(appointmentRequest.getVetId());
-//        log.info("Veterian ID "+ veterinarian.getVetId());
-//        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
-//
-//        appointment.setAppointmentDate(appointmentRequest.getAppointmentDate());
-//        appointment.setCreatedAt(appointmentRequest.getCreatedAt());
-//        appointment.setEndTime(appointmentRequest.getEndTime());
-//        appointment.setStatus(appointmentRequest.getStatus());
-//        appointment.setType(appointmentRequest.getType());
-//        appointment.setLocation(appointmentRequest.getLocation());
-//        appointment.setDepositedMoney(appointmentRequest.getDepositedMoney());
-//        appointment.setResult(appointmentRequest.getResult());
-//        appointment.setStartTime(appointmentRequest.getStartTime());
-//        appointment.setType(appointmentRequest.getType());
-//        appointment.setCustomer(customer);
-//        appointment.setVeterinarian(veterinarian);
-//        appointment.setService(service);
-//
-//        appointmentRepository.save(appointment);
-//        return true ;
-//    }
+    public boolean updateAppointment (AppointmentRequest appointmentRequest){
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
+        Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
+        Veterinarian veterinarian =  veterinarianRepository.findByVetId(appointmentRequest.getVetId());
+        log.info("Veterian ID "+ veterinarian.getVetId());
+        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
+
+        appointment.setAppointmentDate(appointmentRequest.getAppointmentDate());
+        appointment.setCreatedAt(appointmentRequest.getCreatedAt());
+        appointment.setEndTime(appointmentRequest.getEndTime());
+        appointment.setStatus(appointmentRequest.getStatus());
+        appointment.setType(appointmentRequest.getType());
+        appointment.setLocation(appointmentRequest.getLocation());
+        appointment.setDepositedMoney(appointmentRequest.getDepositedMoney());
+        appointment.setResult(appointmentRequest.getResult());
+        appointment.setStartTime(appointmentRequest.getStartTime());
+        appointment.setType(appointmentRequest.getType());
+        appointment.setCustomer(customer);
+        appointment.setVeterinarian(veterinarian);
+        appointment.setService(service);
+
+        appointmentRepository.save(appointment);
+        return true ;
+    }
 }
 
 

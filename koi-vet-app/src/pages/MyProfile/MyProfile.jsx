@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateMyInfoAPI } from "../../apis";
 import { updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
 import "./MyProfile.css";
+import { useNavigate } from "react-router-dom";
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
   const dispatch = useDispatch();
   const myInfo = useSelector(state => state?.user);
   const customer = useSelector(state => state?.user?.customer);
-
+  const navigate = useNavigate();
   const handleEdit = () => {
     setIsEditing(true);
     setEditedInfo({
@@ -19,12 +20,22 @@ const MyProfile = () => {
       address: customer.address,
     });
   };
-
+  const handleAllAppointment = () => {
+    navigate("/profile/appointment");
+  };
+  const handleMyPond = () => {
+    navigate("/profile/pond");
+  };
+  const handleMyKoi = () => {
+    navigate("/profile/koi");
+  };
   const handleSave = async () => {
+    setIsEditing(false);
     try {
       const updatedInfo = await updateMyInfoAPI(editedInfo);
+    
       dispatch(updateUserInfo(updatedInfo));
-      setIsEditing(false);
+    
     } catch (error) {
       console.error("Error updating user info:", error);
     }
@@ -35,10 +46,10 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="container my-5">
-      <div className="card shadow">
+    <div className="container my-profile-container my-5">
+      <div className="card shadow ">
         <div className="card-header  my-profile-card-header text-white">
-          <h3 className="mb-0 my-profile-card-header">My Information</h3>
+          <h3 className="mb-0  my-profile-card-header">My Information</h3>
         </div>
         <div className="card-body">
           <div className="row">
@@ -99,7 +110,7 @@ const MyProfile = () => {
                         onChange={handleChange}
                       />
                     ) : (
-                      <p className="form-control-plaintext">{customer.phone}</p>
+                      <p className="form-control-plaintext">{customer?.phone}</p>
                     )}
                   </div>
                   <div className="col-md-6 mb-3">
@@ -122,12 +133,16 @@ const MyProfile = () => {
             </div>
           </div>
         </div>
-        <div className="card-footer text-center">
+        <div className="card-footer text-center d-flex justify-content-between">
           {isEditing ? (
             <button className="btn btn-primary" onClick={() => handleSave()}>Save Changes</button>
           ) : (
-            <button className="btn btn-secondary" onClick={() => handleEdit()}>Edit Information</button>
+            <button className="btn btn-primary" onClick={() => handleEdit()}>Edit Information</button>
           )}
+           <button className="btn btn-primary" onClick={() => handleAllAppointment()}>My Appointments</button>
+          
+          <button className="btn btn-primary" onClick={() => handleMyPond()}>My Pond</button>
+          <button className="btn btn-primary" onClick={() => handleMyKoi()}>My Koi</button>
         </div>
       </div>
     </div>

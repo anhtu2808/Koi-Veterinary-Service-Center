@@ -1,14 +1,23 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import tempt_img from '../../assets/img/veterinarian.png'
 import { useDispatch } from 'react-redux'
 import { nextStep, setBookingData } from '../../store/bookingSlice'
 const Veterinarian = ({image,vetId,name,isBooking}) => {
   const dispatch = useDispatch()
+  const navigate = useNavigate();
+
   const handleChooseVeterinarian = () => {
     dispatch(setBookingData({vetId: vetId}))
     dispatch(nextStep())
   }
+
+
+  const handleViewProfileVet = () => {
+    navigate(`/vetprofile/${vetId}`)
+  }
+
+
   return (
     <>
    
@@ -24,11 +33,11 @@ const Veterinarian = ({image,vetId,name,isBooking}) => {
                   <i className="fas fa-phone"></i>
                   <i className="fas fa-envelope"></i>
                 </div>
-                <Link to={`VeterinarianProfile/${vetId}`}>
-                  <button className="btn-view-profile mt-3">
+
+                  <button className="btn-view-profile mt-3" onClick={() => handleViewProfileVet()}>
                     View Profile
                   </button>
-                </Link>
+
                 {isBooking?<button onClick={()=> handleChooseVeterinarian()} className="btn-view-profile  mt-3">
                    Choose
                   </button>

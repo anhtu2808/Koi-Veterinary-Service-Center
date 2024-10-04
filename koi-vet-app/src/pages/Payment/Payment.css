@@ -7,11 +7,11 @@
     --color-text: #34495e;
 } */
 
-body {
+/* body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--color-accent);
     color: var(--color-text);
-}
+} */
 
 .payment-container {
     max-width: 1200px;
@@ -122,4 +122,13 @@ body {
 
 .form-check-label {
     color: var(--color-text);
+}
+.payment-btn{
+    background-color: var(--color-primary) !important; 
+    color: white !important;
+}
+
+.payment-btn:hover{
+    background-color: var(--color-secondary) !important;
+    color: var(--color-primary) !important;
 }

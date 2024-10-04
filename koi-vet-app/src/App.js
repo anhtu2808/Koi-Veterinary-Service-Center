@@ -25,6 +25,20 @@ import UserProtectedRoute from './components/ProtectedRoute/UserProtectedRoute';
 import AdminLayout from './pages/layout/AdminLayout';
 import PondInformation from './pages/PondInformation/PondInformation';
 import AppointmentDetail from './pages/AppointmentDetail/AppointmentDetail';
+import KoiInformation from './pages/KoiInformation/KoiInformation';
+import InputKoiPage from './pages/InputKoiPage/InputKoiPage';
+import InputPondPage from './pages/InputPondPage/InputPondPage';
+import PondDetail from './pages/PondDetail/PondDetail';
+import KoiDetail from './pages/KoiDetail/KoiDetail';
+import AdminProtectedRoute from './components/ProtectedRoute/AdminProtectedRoute';
+import ProfileLayout from './pages/layout/ProfileLayout';
+import Koi from './components/Koi/Koi';
+import InvoiceListPage from './pages/InvoiceListPage/InvoiceListPage';
+import MedicineListPage from './pages/MedicineListPage/MedicineListPage';
+import ServicePageDetail from './pages/ServicePageDetail/ServicePageDetail';
+import KoiTreatmentPage from './pages/KoiTreatmentPage/KoiTreatmentPage';
+import Pond from './components/Pond/Pond';
+import PaymentFailPage from './pages/PaymentFailPage/PaymentFailPage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -55,18 +69,45 @@ function App() {
         <Route path="/*" element={
           <UserLayout>
             <Routes>
+              <Route path="/services/:serviceId" element={<ServicePageDetail />} />
               <Route path="/faq" element={<FAQ />} /> {/* Trang chủ User */}
               <Route path="/" element={<HomePage />} />
               <Route path="/medicine" element={<Medicine />} />
               {/* Thêm các route khác của User ở đây */}
               <Route path='/veterinarians' element={<VeterinarianPage />} />
               <Route path='/services' element={<ServicePage />} />
-              <Route path='/vet-profile' element={<VetProfile />} />
-              
+              <Route path='/vetprofile/:vetId' element={<VetProfile />} />
+              <Route path='/booking/paymentfail' element={<PaymentFailPage />} />
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>
-                <Route path='/profile' element={<MyProfile />} />
                 <Route path='/booking' element={<BookingPage />} />
+                <Route path="/createkoi" element={<KoiDetail />} />
+                <Route path="/createpond" element={<PondDetail />} />
+                <Route path="/profile/*" element={
+                  <ProfileLayout>
+                    <Routes>
+                      <Route path="/" element={<MyProfile />} />
+                      <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />} />
+                      <Route path='/koi/:koiId' element={
+                        <KoiDetail
+                          isCreate={false}
+                          isUpdate={false} />
+                      } />
+
+                      <Route path='/pond' element={<Pond/>}/>
+                      <Route path='/pond/:pondId' element={<PondDetail/>} /> 
+                      <Route path='/appointment' element={<AllAppointment />} />
+                      <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
+
+
+                    </Routes>
+                  </ProfileLayout>
+
+
+                } >
+
+
+                </Route>
               </Route>
             </Routes>
           </UserLayout>
@@ -74,13 +115,29 @@ function App() {
         <Route path="/admin/*" element={
           <AdminLayout>
             <Routes>
-              <Route path="/" element={<DocterDashboard />} />
-              <Route path="/usermanagement" element={<UserManagementPage />} />
-              <Route path="/allappointment" element={<AllAppointment />} />
-              <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
-              <Route path="/pondinformation/:pondId" element={<PondInformation />} />
+              {/* Protected routes */}
+              <Route element={<AdminProtectedRoute />}>
+                <Route path="/" element={<DocterDashboard />} />
+                <Route path="/usermanagement" element={<UserManagementPage />} />
+                <Route path="/appointment" element={<AllAppointment />} />
+                <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
+                <Route path="/pondinformation" element={<PondInformation />} />
+                <Route path="/inputkoipage" element={<InputKoiPage />} />
+                <Route path="/inputpondpage" element={<InputPondPage />} />
+                <Route path="/pondinformation" element={<PondInformation />} />
+                <Route path="/koiinformation" element={<KoiInformation />} />
+                <Route path="/ponddetail" element={<PondDetail />} />
+                <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage/>} />
+                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isCreate={false}/>} />
+                <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true}/>} />
+                <Route path="/invoice" element={<InvoiceListPage />} />
+                <Route path="/medpage" element={< MedicineListPage />} />
+              </Route>
 
-              {/* Add more admin routes as needed */}
+
+              {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
+              {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
+              Add more admin routes as needed
             </Routes>
           </AdminLayout>
         } />

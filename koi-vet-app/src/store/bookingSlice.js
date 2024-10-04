@@ -4,14 +4,14 @@ const initialState = {
   step: 0,
   bookingData: {
     type: null,
-    serviceId: null,
+    serviceFor: null,
     vetId: "SKIP",
     date: null,
     startAt: null,
     endAt: null,
+    serviceId: null,
     paymentInfo: {},
-    selectedKoi: [],
-    selectedPondIds: [], // Add this line
+    selected: [], // Add Koi/Pond ID
   },
 };
 
@@ -43,6 +43,9 @@ const bookingSlice = createSlice({
 
       }
     },
+    setStep: (state, action) => {
+      state.step = action.payload
+    },
     setBookingData: (state, action) => {
       state.bookingData = { ...state.bookingData, ...action.payload }
     },
@@ -54,5 +57,5 @@ const bookingSlice = createSlice({
   }
 
 })
-export const { nextStep, prevStep, setBookingData, resetBoking } = bookingSlice.actions;
+export const { nextStep, prevStep, setBookingData, resetBoking, setStep } = bookingSlice.actions;
 export default bookingSlice.reducer;

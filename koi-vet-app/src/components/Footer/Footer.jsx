@@ -1,6 +1,7 @@
 import React from "react";
-import logo from "../../assets/img/logo.png";
+import admin_logo from "../../assets/img/admin_logo.png";
 import "../../pages/Home/Home.css"
+import "./Footer.css"
 function Footer() {
   return (
     <>
@@ -8,8 +9,10 @@ function Footer() {
         <div className="container" >
         <div className="row">
           <div className="col-md-3 text-start">
-          <img src={logo} alt="logo" />
-          <p>Leading the Way in Medical Excellence, Trusted Care.</p>
+            <div className="footer-logo">
+            <img src={admin_logo} alt="logo" />
+            <p>Leading the Way in Medical Excellence, Trusted Care.</p>
+            </div>
           </div>
           <div className="col-md-3 text-start">
             <h4>Contact Us</h4>
@@ -27,8 +30,8 @@ function Footer() {
                 placeholder="Enter your email"
                 aria-label="Email"
               />
-              <button className="btn btn-submit" type="button">
-                <i className="fas fa-paper-plane"></i>
+              <button className="btn btn-submit border border-white" type="button">
+                <i className="fas fa-paper-plane text-white  "></i>
               </button>
             </div>
           </div>
@@ -36,7 +39,7 @@ function Footer() {
           <div className="col-md-3 text-start text-center">
             <h4>Follow Us</h4>
             <p>Stay connected with us on social media.</p>
-            <p>
+            <p className="d-flex justify-content-center gap-3">
               <i className="fab fa-facebook"></i>
               <i className="fab fa-twitter"></i>
               <i className="fab fa-instagram"></i>
@@ -45,7 +48,7 @@ function Footer() {
         </div>
         </div>
         <hr />
-        <p className="mt-4 align-content-center">
+        <p className="mt-4 align-content-center mb-0 pb-4">
           © 2021 Hospital's Name All Rights Reserved by PNTEC-LTD
         </p>
         
