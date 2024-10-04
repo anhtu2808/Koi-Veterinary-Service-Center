@@ -70,7 +70,7 @@ public class MedicineController {
     public ResponseEntity<ResponseObject> deleteMedicine(@PathVariable("medicineId") String medicineId) {
         try {
             medicineService.deleteMedicine(medicineId);
-            return ResponseObject.APIRepsonse(204, "Deleted medicine successfully", HttpStatus.OK, null);
+            return ResponseObject.APIRepsonse(200, "Deleted medicine successfully", HttpStatus.OK, null);
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
