@@ -92,6 +92,13 @@ public class PrescriptionService {
         return prescriptionResponse;
     }
 
+    public void deletePrescriptionMedicine(String id){
+        PrescriptionMedicine prescriptionMedicine = prescriptionMedicineRepository.findById(id).orElseThrow(() ->
+                new AppException(ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getCode(),
+                        ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        prescriptionMedicineRepository.delete(prescriptionMedicine);
+
+    }
 
 }
 

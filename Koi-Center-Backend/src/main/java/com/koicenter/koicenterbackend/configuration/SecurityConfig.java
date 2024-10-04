@@ -116,6 +116,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/kois").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/ponds").permitAll()
 
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/prescriptions/{prescriptionMedicineId}").permitAll()
 
                             .anyRequest().authenticated();
                 });
