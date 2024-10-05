@@ -40,10 +40,14 @@ public class TreatmentService {
     KoiRepository koiRepository ;
     KoiTreatmentService koiTreatmentService ;
     public <T> List<T> createAppointments(List<String> selected, AppointmentRequest appointmentRequest) {
-        log.info("AppointmentID "+ appointmentRequest.getAppointmentId());
-        log.info("vetId "+ appointmentRequest.getVetId());
+//        log.info("vetId "+ appointmentRequest.getVetId());
         AppointmentResponse appointmentResponse =  appointmentService.createAppointment(appointmentRequest);
+        log.info("AppointmentID "+ appointmentResponse.getAppointmentId());
+
         List<T> treatmentResponseList = new ArrayList<>();
+        if (selected.isEmpty()){
+            treatmentResponseList.add((T)appointmentResponse);
+        }else{
         for (String select : selected) {
             if(pondRepository.findById(select).isPresent()) {
                 PondTreatmentRequest pondTreatmentRequest = new PondTreatmentRequest();
@@ -60,6 +64,8 @@ public class TreatmentService {
                 koiTreatmentRequest.setHealthIssue("");
                 koiTreatmentRequest.setTreatment("");
                 treatmentResponseList.add((T) koiTreatmentService.createKoiTreatment(koiTreatmentRequest));
+            }
+
             }
         }
         return treatmentResponseList;
