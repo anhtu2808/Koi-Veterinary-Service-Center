@@ -100,7 +100,7 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
     return response.data;
 }
 
-export const updateAppointmentAPI = async ( appointmentData) => {
+export const updateAppointmentAPI = async (appointmentData) => {
     const response = await api.put(`/appointments/update`, appointmentData);
     return response.data;
 }
@@ -150,6 +150,10 @@ export const fetchPondByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/appointments/${appointmentId}/ponds`);
     return response.data;
 }
+export const fetchPondsByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/treatments/ponds/${appointmentId}`);
+    return response.data;
+}
 
 
 
@@ -172,8 +176,8 @@ export const createKoiAPI = async (data) => {
     return response.data;
 }
 
-export const fetchKoiByAppointmentIdAPI = async (appointmentId) => {
-    const response = await api.get(`/appointments/${appointmentId}/kois`);
+export const fetchKoisByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/treatments/kois/${appointmentId}`);
     return response.data;
 }
 

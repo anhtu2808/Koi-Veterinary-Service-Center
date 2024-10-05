@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Koi.css';
 import { useNavigate } from 'react-router-dom';
-import { fetchKoisByAppointmentIdAPI } from '../../apis/KoiMockData';
-import { fetchKoisByCustomerIdAPI } from '../../apis';
+import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI } from '../../apis';
 
-const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,handleAddKoiToBooking, selectedKois }) => {
+const Koi = ({ isAppointment, isBooking, title, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois }) => {
     const [koiList, setKoiList] = useState([]);
-    const customerId =useSelector(state => state?.user?.customer?.customerId)
+    const customerId = useSelector(state => state?.user?.customer?.customerId)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -16,7 +15,12 @@ const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,hand
                 const response = isAppointment
                     ? await fetchKoisByAppointmentIdAPI(appointmentId)
                     : await fetchKoisByCustomerIdAPI(customerId);
-                setKoiList(response.data);
+                isAppointment
+                    ? response.data.forEach(koiTreatment => {
+                        setKoiList(prev => [...prev, koiTreatment.koi]);
+                    })
+                    : setKoiList(response.data);
+                console.log(koiList);
             } catch (error) {
                 console.error('Error fetching koi list:', error);
             }
@@ -34,11 +38,12 @@ const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,hand
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th>Koi Id</th>
+                                {/* <th>Koi Id</th> */}
                                 <th>Breed</th>
                                 <th>Health Status</th>
                                 <th>Age</th>
                                 <th>Image</th>
+                                <th>PRESCRIPTION</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,7 +52,7 @@ const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,hand
                                 const isSelected = selectedKois?.includes(koi.koiId);
                                 return (
                                     <tr key={koi.koiId} className={isSelected ? 'table-primary' : ''}>
-                                        <td>{index + 1}</td>
+                                        {/* <td>{index + 1}</td> */}
                                         <td>{koi.breed}</td>
                                         <td>{koi.healthStatus}</td>
                                         <td>{koi.age}</td>
@@ -57,14 +62,26 @@ const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,hand
                                             </div>
                                         </td>
                                         <td>
+                                            <select className="form-select" aria-label="Default select example">
+                                                <option selected>Choose Prescription</option>
+                                                <option value="Prescription 1">Prescription 1</option>
+                                                <option value="Prescription 2">Prescription 2</option>
+                                                <option value="Prescription 1">Prescription 3</option>
+                                            </select>
+                                        </td>
+                                        <td>
                                             <div className='d-flex gap-3'>
-                                                {isAppointment ? 
-                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/koidetail/${koi.koiId}`)}>
-                                                    View Details
-                                                </button> : 
-                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${koi.koiId}`)}>
-                                                    View Details
-                                                </button>}
+                                                {isAppointment ?
+                                                    <>
+                                                        <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/koidetail/${koi.koiId}`)}>
+                                                            View Details
+                                                        </button>
+                                                    </>
+
+                                                    :
+                                                    <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${koi.koiId}`)}>
+                                                        View Details
+                                                    </button>}
                                                 {isBooking && (
                                                     <button
                                                         className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
@@ -75,6 +92,9 @@ const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,hand
                                                 )}
                                             </div>
                                         </td>
+                                    
+
+
                                     </tr>
                                 );
                             })}
