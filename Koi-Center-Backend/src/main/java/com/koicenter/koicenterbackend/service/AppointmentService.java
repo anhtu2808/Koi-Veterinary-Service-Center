@@ -44,7 +44,7 @@ public class AppointmentService {
     AppointmentMapper appointmentMapper;
     VetScheduleService vetScheduleService;
 
-    public List<AppointmentResponse> getAllAppointments() {
+    public List<AppointmentResponse> getAllAppointments(String status) {
         List<Appointment> appointments = appointmentRepository.findAll();
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 
@@ -56,26 +56,29 @@ public class AppointmentService {
 
 
         for (Appointment appointment : appointments) {
+            if (appointment.getStatus().name().equals(status) || status.equals("ALL")) {
+                AppointmentResponse response = AppointmentResponse.builder()
+                        .appointmentId(appointment.getAppointmentId())
+                        .appointmentDate(appointment.getAppointmentDate())
+                        .endTime(appointment.getEndTime())
+                        .status(appointment.getStatus())
+                        .location(String.valueOf(appointment.getLocation()))
+                        .createdAt(appointment.getCreatedAt())
+                        .depositedMoney(appointment.getDepositedMoney())
+                        .location(String.valueOf(appointment.getLocation()))
+                        .result(String.valueOf(appointment.getResult()))
+                        .startTime(appointment.getStartTime())
+                        .status(appointment.getStatus())
+                        .type(appointment.getType())
+                        .customerId(appointment.getCustomer().getCustomerId())
+                        .customerName(appointment.getCustomer().getUser().getFullName())
+                        .serviceName(appointment.getService().getServiceName())
+                        .serviceId(appointment.getService().getServiceId())
+                        .vetId(appointment.getVeterinarian().getVetId())
+                        .build();
 
-            AppointmentResponse response = AppointmentResponse.builder()
-                    .appointmentId(appointment.getAppointmentId())
-                    .appointmentDate(appointment.getAppointmentDate())
-                    .endTime(appointment.getEndTime())
-                    .status(appointment.getStatus())
-                    .location(String.valueOf(appointment.getLocation()))
-                    .createdAt(appointment.getCreatedAt())
-                    .depositedMoney(appointment.getDepositedMoney())
-                    .location(String.valueOf(appointment.getLocation()))
-                    .result(String.valueOf(appointment.getResult()))
-                    .startTime(appointment.getStartTime())
-                    .status(appointment.getStatus())
-                    .type(appointment.getType())
-                    .customerId(appointment.getCustomer().getCustomerId())
-                    .serviceId(appointment.getService().getServiceId())
-                    .vetId(appointment.getVeterinarian().getVetId())
-                    .build();
-
-            appointmentResponses.add(response);
+                appointmentResponses.add(response);
+            }
         }
         return appointmentResponses;
     }
@@ -132,6 +135,8 @@ public class AppointmentService {
                 .status(appointment.getStatus())
                 .type(appointment.getType())
                 .customerId(appointment.getCustomer().getCustomerId())
+                .customerName(appointment.getCustomer().getUser().getFullName())
+                .serviceName(appointment.getService().getServiceName())
                 .serviceId(appointment.getService().getServiceId())
                 .vetId(appointment.getVeterinarian().getVetId())
                 .build();
@@ -213,6 +218,7 @@ public class AppointmentService {
         appointmentResponse.setServiceId(appointment.getService().getServiceId());
         return appointmentResponse;
     }
+
     public AppointmentResponse updateAppointment(AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
         if (appointment != null) {
