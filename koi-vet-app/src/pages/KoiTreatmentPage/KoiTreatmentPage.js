@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Koi from '../../components/Koi/Koi';
 import Modal from '../../components/Modal/Modal';
-import {  useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate, useParams, useLocation } from 'react-router-dom';
 import KoiDetail from '../KoiDetail/KoiDetail';
 
 
@@ -9,6 +9,10 @@ const KoiTreatmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
   const { appointmentId } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const customerId = queryParams.get('customerId');
+  console.log("customerId", customerId)
   const navigate = useNavigate();
   //open modal for when click add new koi BTN
   const handleAddNewKoi = () => {
@@ -22,6 +26,7 @@ const KoiTreatmentPage = () => {
   const handleKoiUpdate = () => {
     setKoiUpdateTrigger(prev => prev + 1);
   };
+
   return (
     <div className="container mt-4">
       <h3 className="mb-4">Koi in this appointment</h3>
@@ -45,6 +50,7 @@ const KoiTreatmentPage = () => {
       {/* Modal for KoiDetail */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <KoiDetail
+          cusId={customerId}
           isCreate={true}
           isBooking={false}
           isAppointment={true}

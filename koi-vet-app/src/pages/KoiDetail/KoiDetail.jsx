@@ -8,7 +8,8 @@ import { fishSpecies } from "../../utils/constants";
 
 
 
-function KoiDetail({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAppointment }) {
+function KoiDetail({ isCreate,cusId, isUpdate,onClose, onUpdate, appointmentId, isAppointment }) {
+  const customerId = useSelector(state => state?.user?.customer?.customerId);
   const [koiData, setKoiData] = useState({
     breed: "",
     age: "",
@@ -22,8 +23,7 @@ function KoiDetail({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isApp
 
   const koiId = useParams().koiId;
   const navigate = useNavigate();
-  const customerId = useSelector(state => state?.user?.customer?.customerId);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault(); // Ngăn không cho form tự động submit
 
@@ -38,7 +38,7 @@ function KoiDetail({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isApp
       } 
       if (isAppointment) { // veterinarian add koi to appointment
         // veterinarian add koi to appointment
-        const response = await addKoiToAppointmentAPI(appointmentId, koiData)
+        const response = await addKoiToAppointmentAPI(appointmentId, {...koiData, customerId:cusId})
         console.log("response", response)
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Koi

@@ -5,7 +5,7 @@ import {
   fetchAllAppointmentAPI,
   fetchAllAppointmentByVetIdAPI,
   fetchAppointmentByCustomerIdAPI,
-} from "../../apis/AllAppoimentMockData";
+} from "../../apis";
 import { ROLE, APPOINTMENT_STATUS } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
@@ -26,11 +26,11 @@ function AllAppointment() {
     };
 
     const fetchAppointmentForStaff = async () => {
-      const response = await fetchAllAppointmentAPI();
+      const response = await fetchAllAppointmentAPI(status);
       setAppointments(response?.data);
     };
 
-    const fetchAppointmentForCustomer = async (customerId, status) => {
+    const fetchAppointmentForCustomer = async (customerId) => {
       const response = await fetchAppointmentByCustomerIdAPI(customerId, status);
       setAppointments(response?.data);
       setTitle("My Appointments");
@@ -50,6 +50,8 @@ function AllAppointment() {
 
   const handleChangeStatus = (status) => {
     setStatus(status);
+    setAppointments([]);
+    console.log("status", status)
   };
 
   const formatDate = (dateString) => {
@@ -86,7 +88,7 @@ function AllAppointment() {
             <button class="nav-link active custom-text-color" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" onClick={() => handleChangeStatus("ALL")}>
               <i className="fas fa-list-ul me-2"></i>All
             </button>
-            <button class="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.BOOKING_COMPLETE)}>
+            <button class="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.CREATED)}>
             <i class="fa-solid fa-hourglass-start "></i> Waiting Confirm
             </button>
             <button class="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.BOOKING_COMPLETE)}>
@@ -117,8 +119,13 @@ function AllAppointment() {
             </tr>
           </thead>
           <tbody>
-            {appointments.map((appointmentDetail, index) => (
-              <tr key={index}>
+            {appointments.length === 0 ?
+              <tr>
+                <td colSpan="7" className="text-center">No appointments found</td>
+              </tr>
+                :
+              appointments.map((appointmentDetail, index) => (
+                <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{appointmentDetail.customerName}</td>
                 <td>{appointmentDetail.serviceName}</td>

@@ -17,5 +17,5 @@ import lombok.experimental.FieldDefaults;
         String healthStatus;
         String notes;
         String image;
-        String customer_id;
+        String customerId;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchAppointmentByIdAPI, updateAppointmentAPI } from "../../apis/AllAppoimentMockData";
+import { fetchAppointmentByIdAPI, fetchVetForAssignAPI, updateAppointmentAPI } from "../../apis";
 import "./AppointmentDetail.css";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import { ROLE } from "../../utils/constants";
@@ -9,27 +9,52 @@ import { useSelector } from "react-redux";
 function AppointmentDetail() {
   const { appointmentId } = useParams();
   const navigate = useNavigate();
+  // const [dataForFindVet, setDataForFindVet] = useState({
+  //   appointmentId: "APT12345",
+  //   appointmentDate: "2023-06-15",
+  // });  
+  const [vetList, setVetList] = useState([]);
   const [appointment, setAppointment] = useState({
-    appointmentId: "APT12345",
-    customerId: "0f4e5514-079e-4ed1-8df1-ff3d53221a52",
-    serviceId: "SRV5432",
-    location: "Main Clinic",
-    appointmentDate: "2023-06-15",
-    status: "Confirmed",
-    veterinarian: "Dr. Smith"
+    "appointmentId": null,
+    "appointmentDate": null,
+    "createdAt": null,
+    "depositedMoney": null,
+    "endTime": null,
+    "location": null,
+    "result": null,
+    "startTime": null,
+    "status": null,
+    "type": null,
+    "customerId": null,
+    "customerName": null,
+    "serviceId": null,
+    "serviceName": null,
+    "vetId": null
   });
   const [isEditing, setIsEditing] = useState(false);
   const role = useSelector((state) => state.user.role);
   useEffect(() => {
-    const fetchAppointmentDetail = async () => {
+    const fetchAppointmentDetail = async (appointmentId) => {
       try {
         const response = await fetchAppointmentByIdAPI(appointmentId);
-        setAppointment(...appointment, response.data);
+        setAppointment(response.data);
+        
+        // Chỉ gọi fetchVetForAssignAPI sau khi có dữ liệu từ fetchAppointmentByIdAPI
+        const responseVet = await fetchVetForAssignAPI({
+          type: response.data.type,
+          serviceId: response.data.serviceId,
+          date: response.data.appointmentDate,
+          startTime: response.data.startTime,
+          endTime: response.data.endTime
+        });
+        setVetList(responseVet.data);
       } catch (error) {
-        console.error("Error fetching appointment:", error);
+        console.error("Error fetching appointment details:", error);
+        // Xử lý lỗi ở đây (ví dụ: hiển thị thông báo lỗi)
       }
     };
-    fetchAppointmentDetail();
+
+    fetchAppointmentDetail(appointmentId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentId]);
 
@@ -37,7 +62,6 @@ function AppointmentDetail() {
     const { name, value } = e.target;
     setAppointment({ ...appointment, [name]: value });
   };
-  console.log(appointment)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -145,21 +169,22 @@ function AppointmentDetail() {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="status" className="form-label">
+          <label htmlFor="vetId" className="form-label">
             Veterinarian
           </label>
           <select
             className="form-select"
-            id="status"
-            name="status"
-            value={appointment.status}
+            id="vetId"
+            name="vetId"
+            value={appointment.vetId}
             onChange={handleInputChange}
             disabled={!isEditing}
           >
-            <option value="Pending">Pending</option>
-            <option value="Confirmed">Confirmed</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancelled">Cancelled</option>
+            {vetList.map((vet) => (
+              <option key={vet.vetId} value={vet.vetId}>
+                {vet.user.fullName}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -181,7 +206,7 @@ function AppointmentDetail() {
 
         {console.log(appointment.appointmentId)}
           <button
-            onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}`)}
+            onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
             type="submit"
             className="btn btn-success buttonInEdit"
           >

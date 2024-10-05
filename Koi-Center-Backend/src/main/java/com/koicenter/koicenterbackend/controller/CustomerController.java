@@ -5,8 +5,10 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Koi;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
+import com.koicenter.koicenterbackend.service.AppointmentService;
 import com.koicenter.koicenterbackend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private AppointmentService appointmentService;
     @GetMapping("/{customerId}/kois")
     public ResponseEntity<ResponseObject> getKoisByCustomerId(@PathVariable("customerId") String customerId) {
         try {
@@ -44,6 +48,18 @@ public class CustomerController {
                 return ResponseObject.APIRepsonse(200, "Found ponds successfully", HttpStatus.OK, ponds);}
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
+    }
+    // Get appointment by customerId
+    @GetMapping("/{customerId}/appointments")
+    public ResponseEntity<ResponseObject> getAppointmentById(@PathVariable("customerId") String customerId, @RequestParam String status) {
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentsByCustomerId(customerId, status);
+
+        if (listAppointment != null && !listAppointment.isEmpty()) {
+            return ResponseEntity.ok(new ResponseObject(200, "Success", listAppointment));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject(404, "No appointments found for customer ID: " + customerId, null));
         }
     }
     

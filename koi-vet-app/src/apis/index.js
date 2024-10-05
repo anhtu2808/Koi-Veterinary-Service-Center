@@ -55,7 +55,11 @@ export const fetchVetByServiceIdAPI = async (serviceId) => {
     const response = await api.get(`veterinarians/getByServiceId?serviceId=${serviceId}`);
     return response.data;
 }
-
+export const fetchVetForAssignAPI = async (appointmentData) => {
+    console.log("appointmentData", appointmentData)
+    const response = await api.get(`/vetSchedules/getVeterinariansByDateTime?type=${appointmentData.type}&serviceId=${appointmentData.serviceId}&date=${appointmentData.date}&startTime=${appointmentData.startTime}&endTime=${appointmentData.endTime}`);
+    return response.data;
+}
 
 
 
@@ -77,12 +81,8 @@ export const fetchServiceByTypeAPI = async (type) => {
 
 
 // Appointment API
-export const fetchAllAppointmentByVetIdAPI = async (vetId) => {
-    const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
-    return response.data;
-}
 export const createAppointmentAPI = async (appointmentCreateRequest) => {
-    const response = await api.post('/appointments/create', appointmentCreateRequest);
+    const response = await api.post('/appointments', appointmentCreateRequest);
     return response.data;
 }
 
@@ -91,7 +91,7 @@ export const fetchAllAppointmentAPI = async (status) => {
     return response.data;
 }
 export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
-    const response = await api.get(`/appointments?customerId=${customerId}&status=${status}`);
+    const response = await api.get(`/customers/${customerId}/appointments?status=${status}`);
     return response.data;
 }
 
@@ -100,13 +100,12 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
     return response.data;
 }
 
-export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
-    //eslint-disable-next-line
-    const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
+export const updateAppointmentAPI = async ( appointmentData) => {
+    const response = await api.put(`/appointments/update`, appointmentData);
     return response.data;
 }
-export const fetchAppointmentByVetIdAPI = async (vetId) => {
-    const response = await api.get(`/appointments/detailByVetId?vetId=${vetId}`);
+export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
+    const response = await api.get(`/veterinarians/${vetId}/appointments?status=${status}`);
     return response.data;
 }
 
