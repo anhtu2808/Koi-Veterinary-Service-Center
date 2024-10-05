@@ -34,8 +34,8 @@ public class AppointmentController {
 
     // Get appointment by customerId
     @GetMapping("/getByCustomerId")
-    public ResponseEntity<ResponseObject> getAppointmentById(@RequestParam("customerId") String customerId) {
-        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentsByCustomerId(customerId);
+    public ResponseEntity<ResponseObject> getAppointmentById(@RequestParam("customerId") String customerId, @RequestParam String status) {
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentsByCustomerId(customerId, status);
 
         if (listAppointment != null && !listAppointment.isEmpty()) {
             return ResponseEntity.ok(new ResponseObject(200, "Success", listAppointment));
