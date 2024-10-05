@@ -90,9 +90,8 @@ export const createAppointmentAPI = async (appointmentCreateRequest) => {
     return response.data;
 }
 
-export const fetchAllAppointmentAPI = async () => {
-    // const response = await api.get(`/appointments?status=${status}`);
-    const response = await api.get(`/appointments`);
+export const fetchAllAppointmentAPI = async (status) => {
+    const response = await api.get(`/appointments?status=${status}`);
     return response.data;
 }
 export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
