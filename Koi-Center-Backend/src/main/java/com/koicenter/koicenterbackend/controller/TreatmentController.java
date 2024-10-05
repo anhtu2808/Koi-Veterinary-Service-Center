@@ -60,5 +60,23 @@ public class TreatmentController {
             return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND,"");
         }
     }
+    @PutMapping("/updatePondTreament")
+    public ResponseEntity<ResponseObject> updatePondTreament(@RequestBody PondTreatmentRequest pondTreatmentRequest) {
+        PondTreatmentResponse pondTreatmentResponse =  treatmentService.updatePondTreament(pondTreatmentRequest);
+        if (pondTreatmentResponse != null) {
+            return ResponseObject.APIRepsonse(200, "UPDATE PONDTREAMENT SUCCESSFULLY", HttpStatus.OK, pondTreatmentRequest);
+        } else {
+            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST, "");
+        }
+    }
+    @PutMapping("/updateKoiTreament")
+    public ResponseEntity<ResponseObject> updateKoiTreament(@RequestBody KoiTreatmentRequest koiTreatmentRequest) {
+        KoiTreatmentResponse koiTreatmentResponse =  treatmentService.updateKoiTreament(koiTreatmentRequest);
+        if (koiTreatmentResponse != null) {
+            return ResponseObject.APIRepsonse(200, "UPDATE KOITREAMENT SUCCESSFULLY", HttpStatus.OK, koiTreatmentResponse);
+        } else {
+            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST, "");
+        }
+    }
 
 }

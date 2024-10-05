@@ -103,6 +103,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments/ponds/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments/kois/**").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/treatments/**").permitAll()
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/prescriptions").permitAll()
