@@ -133,7 +133,7 @@ function Header() {
               <Link to="/profile" className="btn btn-outline-light">
               <i className="fas fa-user"></i>
             </Link>}
-            {user?.role === ROLE.VETERINARIAN &&
+            {[ ROLE.VETERINARIAN, ROLE.STAFF].includes(user?.role) &&
             <Link to="/admin" className="btn btn-outline-light">
             <i className="fas fa-user"></i>
             </Link>}

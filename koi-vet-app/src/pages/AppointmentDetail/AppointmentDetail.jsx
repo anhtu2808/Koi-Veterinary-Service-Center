@@ -41,7 +41,7 @@ function AppointmentDetail() {
         
         // Chỉ gọi fetchVetForAssignAPI sau khi có dữ liệu từ fetchAppointmentByIdAPI
         const responseVet = await fetchVetForAssignAPI({
-          appointmentType: response.data.type,
+          type: response.data.type,
           serviceId: response.data.serviceId,
           date: response.data.appointmentDate,
           startTime: response.data.startTime,
@@ -182,7 +182,7 @@ function AppointmentDetail() {
           >
             {vetList.map((vet) => (
               <option key={vet.vetId} value={vet.vetId}>
-                {vet.vetName}
+                {vet.user.fullName}
               </option>
             ))}
           </select>

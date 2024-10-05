@@ -57,7 +57,7 @@ export const fetchVetByServiceIdAPI = async (serviceId) => {
 }
 export const fetchVetForAssignAPI = async (appointmentData) => {
     console.log("appointmentData", appointmentData)
-    const response = await api.get(`/vetSchedules/getVeterinariansByDateTime`, appointmentData);
+    const response = await api.get(`/vetSchedules/getVeterinariansByDateTime?type=${appointmentData.type}&serviceId=${appointmentData.serviceId}&date=${appointmentData.date}&startTime=${appointmentData.startTime}&endTime=${appointmentData.endTime}`);
     return response.data;
 }
 
@@ -90,8 +90,9 @@ export const createAppointmentAPI = async (appointmentCreateRequest) => {
     return response.data;
 }
 
-export const fetchAllAppointmentAPI = async (status) => {
-    const response = await api.get(`/appointments?status=${status}`);
+export const fetchAllAppointmentAPI = async () => {
+    // const response = await api.get(`/appointments?status=${status}`);
+    const response = await api.get(`/appointments`);
     return response.data;
 }
 export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
