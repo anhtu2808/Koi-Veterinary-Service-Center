@@ -59,8 +59,8 @@ public class AppointmentController {
 
 
     @GetMapping("/detailByVetId")
-    public ResponseEntity<ResponseObject> getAllAppointmentByVetId(@RequestParam String vetId) {
-        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentByVetId(vetId);
+    public ResponseEntity<ResponseObject> getAllAppointmentByVetId(@RequestParam String vetId, @RequestParam String status) {
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentByVetId(vetId, status);
         if (listAppointment != null && !listAppointment.isEmpty()) {
             return ResponseObject.APIRepsonse(200, "Success", HttpStatus.OK, listAppointment);
         } else {
