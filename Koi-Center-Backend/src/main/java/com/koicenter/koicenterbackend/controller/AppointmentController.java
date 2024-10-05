@@ -27,8 +27,8 @@ public class AppointmentController {
     @Autowired
      TreatmentService treatmentService;
     @GetMapping("")
-    public ResponseEntity<ResponseObject> getAllAppointments() {
-        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointments();
+    public ResponseEntity<ResponseObject> getAllAppointments(@RequestParam String status) {
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointments(status);
         return ResponseObject.APIRepsonse(200, "", HttpStatus.OK, listAppointment);
     }
 
