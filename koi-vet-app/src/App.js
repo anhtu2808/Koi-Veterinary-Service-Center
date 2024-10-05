@@ -91,7 +91,7 @@ function App() {
                       <Route path='/koi/:koiId' element={
                         <KoiDetail
                           isCreate={false}
-                          isUpdate={false} />
+                          isUpdate={true} />
                       } />
 
                       <Route path='/pond' element={<Pond/>}/>

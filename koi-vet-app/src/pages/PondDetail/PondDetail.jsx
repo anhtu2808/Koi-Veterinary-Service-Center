@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./PondDetail.css";
 import { fetchPondByPondIdAPI, updatePondInformationAPI } from "../../apis";
 import { useParams } from "react-router-dom";
