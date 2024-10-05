@@ -82,7 +82,7 @@ export const fetchAllAppointmentByVetIdAPI = async (vetId) => {
     return response.data;
 }
 export const createAppointmentAPI = async (appointmentCreateRequest) => {
-    const response = await api.post('/appointments/create', appointmentCreateRequest);
+    const response = await api.post('/appointments', appointmentCreateRequest);
     return response.data;
 }
 

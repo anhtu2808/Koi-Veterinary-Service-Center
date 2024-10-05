@@ -181,7 +181,7 @@ function AppointmentDetail() {
 
         {console.log(appointment.appointmentId)}
           <button
-            onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}`)}
+            onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
             type="submit"
             className="btn btn-success buttonInEdit"
           >

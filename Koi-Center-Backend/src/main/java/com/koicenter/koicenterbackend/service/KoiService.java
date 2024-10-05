@@ -86,7 +86,7 @@ public class KoiService {
             koi.setNotes(koiRequest.getNotes());
             koi.setImage(koiRequest.getImage());
             Customer customer = new Customer();
-            customer.setCustomerId(koiRequest.getCustomer_id());
+            customer.setCustomerId(koiRequest.getCustomerId());
             koi.setCustomer(customer);
             koiRepository.save(koi);
         }
