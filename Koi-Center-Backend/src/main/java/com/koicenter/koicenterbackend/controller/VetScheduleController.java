@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class VetScheduleController {
     VetScheduleService vetScheduleService;
-
-
     @GetMapping("")
     public ResponseEntity<ResponseObject> getScheduleForBooking(@RequestParam String type, @RequestParam String vetId) {
         String types = type.toLowerCase();
@@ -35,22 +35,26 @@ public class VetScheduleController {
             VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
                     .vet_id(vetId)
                     .appointmentType(AppointmentType.valueOf(type)).build();
-//            vetScheduleRequest.setVet_id(vetId);
-//            vetScheduleRequest.setAppointmentType(AppointmentType.valueOf(type));
             log.info("Toi o day ban o dau ");
             return ResponseObject.APIRepsonse(200, "Get Schedule ID Successfully", HttpStatus.OK, vetScheduleService.getScheduleForBooking(vetScheduleRequest));
         } else {
             return ResponseObject.APIRepsonse(404, "Not Found this Type in Appointment_Type", HttpStatus.NOT_FOUND, " ");
         }
     }
-
     @GetMapping("/{vetSchedule}")
     public ResponseEntity<ResponseObject> getScheduleForBooking(@RequestBody VetScheduleRequest vetSchedule) {
         return ResponseObject.APIRepsonse(200, "Get Schedule ID Successfully", HttpStatus.OK, vetSchedule);
     }
 
     @GetMapping("/getVeterinariansByDateTime")
-    public ResponseEntity<ResponseObject> getVeterinariansByDateTime(@RequestBody VetScheduleRequest vetScheduleRequest) {
+    public ResponseEntity<ResponseObject> getVeterinariansByDateTime(@RequestParam String type , @RequestParam LocalTime startTime, @RequestParam LocalTime endTime, @RequestParam LocalDate date , @RequestParam String serviceId) {
+        VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
+                .appointmentType(AppointmentType.valueOf(type))
+                .startTime(startTime)
+                .endTime(endTime)
+                .serviceId(serviceId)
+                .date(date)
+                .build();
         List<VeterinarianResponse> list = vetScheduleService.getVeterinariansByDateTime(vetScheduleRequest);
         if (!list.isEmpty()) {
             return ResponseObject.APIRepsonse(200, "Veterinarians found successfully By Date Time ", HttpStatus.OK, list);

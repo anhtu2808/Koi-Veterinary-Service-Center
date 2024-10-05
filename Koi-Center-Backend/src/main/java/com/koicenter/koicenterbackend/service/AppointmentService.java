@@ -189,7 +189,7 @@ public class AppointmentService {
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
         log.info("service ID " + service.getServiceId());
         int count = 0;
-        if (appointmentRequest.getType().equals(AppointmentType.CENTER) || appointmentRequest.getType().equals(AppointmentType.ONLINE)) {
+        if (appointmentRequest.getType().equals(AppointmentType.CENTER)) {
             count = 1;
         } else {
             count = 2;
@@ -213,7 +213,6 @@ public class AppointmentService {
         appointmentResponse.setServiceId(appointment.getService().getServiceId());
         return appointmentResponse;
     }
-
     public AppointmentResponse updateAppointment(AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
         if (appointment != null) {
@@ -222,7 +221,7 @@ public class AppointmentService {
             LocalTime endTime = appointmentRequest.getEndTime();
             String vetId = appointmentRequest.getVetId();
             int count = 0;
-            if (appointmentRequest.getType().equals(AppointmentType.CENTER) || appointmentRequest.getType().equals(AppointmentType.ONLINE)) {
+            if (appointmentRequest.getType().equals(AppointmentType.CENTER)) {
                 count = 1;
             } else {
                 count = 2;
@@ -244,10 +243,7 @@ public class AppointmentService {
                         .date(appointmentRequest.getAppointmentDate())
                         .build();
                 VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest1, count);
-                log.info("Vetschedule cong count neu Vet Skip ");
-//                + vetScheduleResponse.getSchedule_id()
             } else {
-                //neu doi thoi gian,tru di thoi gian cu
                 VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
                         .vet_id(appointment.getVeterinarian().getVetId())
                         .endTime(appointment.getEndTime())
@@ -255,8 +251,6 @@ public class AppointmentService {
                         .date(appointment.getAppointmentDate())
                         .build();
                 VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest, -count);
-                log.info("Vetschedule tru count neu  thay doi lich   ");
-//                + vetScheduleResponse.getSchedule_id()
                 VetScheduleRequest vetScheduleRequest1 = VetScheduleRequest.builder()
                         .vet_id(appointmentRequest.getVetId())
                         .startTime(appointmentRequest.getStartTime())
@@ -264,8 +258,6 @@ public class AppointmentService {
                         .date(appointmentRequest.getAppointmentDate())
                         .build();
                 VetScheduleResponse vetScheduleResponse1 = vetScheduleService.SlotDateTime(vetScheduleRequest1, count);
-                log.info("Vetschedule cong count neu thay doi lich ");
-//                + vetScheduleResponse1.getSchedule_id()
             }
             appointment = appointmentMapper.toAppointment(appointmentRequest);
             appointment.setCustomer(customer);
