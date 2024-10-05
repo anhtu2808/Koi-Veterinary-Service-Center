@@ -37,6 +37,7 @@ public class PrescriptionService {
                 .name(prescriptionRequest.getName())
                 .createdDate(prescriptionRequest.getCreatedDate())
                 .note(prescriptionRequest.getNote())
+                .appointmentId(prescriptionRequest.getAppointmentId())
                 .prescriptionMedicines(new HashSet<>())
                 .build();
 
@@ -44,7 +45,7 @@ public class PrescriptionService {
 
         prescriptionRequest.getPrescriptionMedicines().forEach(prescriptionMedicineRequest -> {
 
-            Medicine medicine = medicineRepository.findById(prescriptionMedicineRequest.getMedicine().getMedicineId())
+            Medicine medicine = medicineRepository.findById(prescriptionMedicineRequest.getMedicineId())
                     .orElseThrow(() -> new AppException(ErrorCode.MEDICINE_NOT_EXITS.getCode(),
                             ErrorCode.MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
 
@@ -69,6 +70,7 @@ public class PrescriptionService {
         prescriptionResponse.setName(prescriptionRequest.getName());
         prescriptionResponse.setCreatedDate(prescription.getCreatedDate());
         prescriptionResponse.setNote(prescription.getNote());
+        prescriptionResponse.setAppointmentId(prescription.getAppointmentId());
 
         Set<PrescriptionMedicineResponse> prescriptionMedicineResponses = new HashSet<>();
 
@@ -99,6 +101,7 @@ public class PrescriptionService {
         prescriptionMedicineRepository.delete(prescriptionMedicine);
 
     }
+
 
 }
 

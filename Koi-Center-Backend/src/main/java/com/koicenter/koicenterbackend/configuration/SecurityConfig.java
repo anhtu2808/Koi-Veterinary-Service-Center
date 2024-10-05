@@ -132,6 +132,8 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.PUT, "/api/v1/deliveries/{deliveryId}").permitAll()
 
+                            .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/vetschedules").permitAll()
+
                             .anyRequest().authenticated();
                 });
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));
