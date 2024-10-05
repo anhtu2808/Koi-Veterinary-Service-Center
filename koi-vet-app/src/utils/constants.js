@@ -26,3 +26,11 @@ export const SERVICE_FOR = {
   ONLINE: "ONLINE",
 };
 
+
+// Koi species các loài cá 
+ export const fishSpecies = [
+  "Kohaku", "Hikari Muji", "Showa Sanshoku", "Shiro Utsuri", "Hi Utsuri",
+  "Ki Utsuri", "Asagi", "Shusui", "Tancho", "Goshiki", "Kumonryu",
+  "Ochiba Shigure", "Doitsu", "Koromo", "Other"
+];
+

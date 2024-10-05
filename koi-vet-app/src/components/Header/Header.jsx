@@ -16,6 +16,7 @@ function Header() {
 
   const handleLogout = async () => {
     const response = await fetchLogoutAPI();
+    console.log("response", response.message)
     localStorage.removeItem("accessToken");
     dispatch(clearUser());
     navigate("/login");
