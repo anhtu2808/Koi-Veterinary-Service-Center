@@ -5,7 +5,7 @@ import {
   fetchAllAppointmentAPI,
   fetchAllAppointmentByVetIdAPI,
   fetchAppointmentByCustomerIdAPI,
-} from "../../apis/AllAppoimentMockData";
+} from "../../apis";
 import { ROLE, APPOINTMENT_STATUS } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";

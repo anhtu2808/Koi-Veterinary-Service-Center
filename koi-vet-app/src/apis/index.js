@@ -55,7 +55,10 @@ export const fetchVetByServiceIdAPI = async (serviceId) => {
     const response = await api.get(`veterinarians/getByServiceId?serviceId=${serviceId}`);
     return response.data;
 }
-
+export const fetchVetForAssignAPI = async (appointmentData) => {
+    const response = await api.post(`/vetSchedules/getVeterinariansByDateTime`, appointmentData);
+    return response.data;
+}
 
 
 
@@ -100,9 +103,8 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
     return response.data;
 }
 
-export const updateAppointmentAPI = async (appointmentId, appointmentData) => {
-    //eslint-disable-next-line
-    const response = await api.put(`/appointments/${appointmentId}`, appointmentData);
+export const updateAppointmentAPI = async ( appointmentData) => {
+    const response = await api.put(`/appointments/update`, appointmentData);
     return response.data;
 }
 export const fetchAppointmentByVetIdAPI = async (vetId) => {
