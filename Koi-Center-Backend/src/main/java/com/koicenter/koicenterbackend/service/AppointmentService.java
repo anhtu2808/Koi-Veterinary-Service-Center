@@ -6,8 +6,11 @@ import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
+import com.koicenter.koicenterbackend.model.enums.AppointmentType;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
+import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
+import com.koicenter.koicenterbackend.model.response.veterinarian.VetScheduleResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.ServicesRepository;
@@ -19,7 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +42,7 @@ public class AppointmentService {
     ServicesRepository servicesRepository;
     VeterinarianRepository veterinarianRepository;
     AppointmentMapper appointmentMapper;
+    VetScheduleService vetScheduleService;
 
     public List<AppointmentResponse> getAllAppointments() {
         List<Appointment> appointments = appointmentRepository.findAll();
@@ -181,7 +188,19 @@ public class AppointmentService {
         }
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
         log.info("service ID " + service.getServiceId());
-
+        int count = 0;
+        if (appointmentRequest.getType().equals(AppointmentType.CENTER) || appointmentRequest.getType().equals(AppointmentType.ONLINE)) {
+            count = 1;
+        } else {
+            count = 2;
+        }
+        VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
+                .vet_id(appointmentRequest.getVetId())
+                .endTime(appointmentRequest.getEndTime())
+                .startTime(appointmentRequest.getStartTime())
+                .date(appointmentRequest.getAppointmentDate())
+                .build();
+        VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest, count);
         Appointment appointment = new Appointment();
         appointment = appointmentMapper.toAppointment(appointmentRequest);
         appointment.setCustomer(customer);
@@ -195,30 +214,77 @@ public class AppointmentService {
         return appointmentResponse;
     }
 
-//    public boolean updateAppointment(AppointmentRequest appointmentRequest) {
-//        Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
-//        Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
-//        Veterinarian veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
-//        log.info("Veterian ID " + veterinarian.getVetId());
-//        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
-//
-//        appointment.setAppointmentDate(appointmentRequest.getAppointmentDate());
-//        appointment.setCreatedAt(appointmentRequest.getCreatedAt());
-//        appointment.setEndTime(appointmentRequest.getEndTime());
-//        appointment.setStatus(appointmentRequest.getStatus());
-//        appointment.setType(appointmentRequest.getType());
-//        appointment.setLocation(appointmentRequest.getLocation());
-//        appointment.setDepositedMoney(appointmentRequest.getDepositedMoney());
-//        appointment.setResult(appointmentRequest.getResult());
-//        appointment.setStartTime(appointmentRequest.getStartTime());
-//        appointment.setType(appointmentRequest.getType());
-//        appointment.setCustomer(customer);
-//        appointment.setVeterinarian(veterinarian);
-//        appointment.setService(service);
-//
-//        appointmentRepository.save(appointment);
-//        return true;
-//    }
+    public AppointmentResponse updateAppointment(AppointmentRequest appointmentRequest) {
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
+        if (appointment != null) {
+            LocalDate date = appointmentRequest.getAppointmentDate();
+            LocalTime startTime = appointmentRequest.getStartTime();
+            LocalTime endTime = appointmentRequest.getEndTime();
+            String vetId = appointmentRequest.getVetId();
+            int count = 0;
+            if (appointmentRequest.getType().equals(AppointmentType.CENTER) || appointmentRequest.getType().equals(AppointmentType.ONLINE)) {
+                count = 1;
+            } else {
+                count = 2;
+            }
+
+            Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
+            Veterinarian veterinarian = null;
+            if (!appointmentRequest.getVetId().equalsIgnoreCase("SKIP")) {
+                veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
+            }
+            com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
+            if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian().getVetId().equals(vetId)) {
+                //NEU KHONG DOI THOI GIAN , KHONG DOI BAC SI
+            } else if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian().getVetId().equals("SKIP")) {
+                VetScheduleRequest vetScheduleRequest1 = VetScheduleRequest.builder()
+                        .vet_id(appointmentRequest.getVetId())
+                        .startTime(appointmentRequest.getStartTime())
+                        .endTime(appointmentRequest.getEndTime())
+                        .date(appointmentRequest.getAppointmentDate())
+                        .build();
+                VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest1, count);
+                log.info("Vetschedule cong count neu Vet Skip ");
+//                + vetScheduleResponse.getSchedule_id()
+            } else {
+                //neu doi thoi gian,tru di thoi gian cu
+                VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
+                        .vet_id(appointment.getVeterinarian().getVetId())
+                        .endTime(appointment.getEndTime())
+                        .startTime(appointment.getStartTime())
+                        .date(appointment.getAppointmentDate())
+                        .build();
+                VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest, -count);
+                log.info("Vetschedule tru count neu  thay doi lich   ");
+//                + vetScheduleResponse.getSchedule_id()
+                VetScheduleRequest vetScheduleRequest1 = VetScheduleRequest.builder()
+                        .vet_id(appointmentRequest.getVetId())
+                        .startTime(appointmentRequest.getStartTime())
+                        .endTime(appointmentRequest.getEndTime())
+                        .date(appointmentRequest.getAppointmentDate())
+                        .build();
+                VetScheduleResponse vetScheduleResponse1 = vetScheduleService.SlotDateTime(vetScheduleRequest1, count);
+                log.info("Vetschedule cong count neu thay doi lich ");
+//                + vetScheduleResponse1.getSchedule_id()
+            }
+            appointment = appointmentMapper.toAppointment(appointmentRequest);
+            appointment.setCustomer(customer);
+            appointment.setVeterinarian(veterinarian);
+            appointment.setService(service);
+            appointmentRepository.save(appointment);
+
+            AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
+            appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
+            appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
+            appointmentResponse.setServiceId(appointment.getService().getServiceId());
+            return appointmentResponse;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AppointmentById not found");
+        }
+
+    }
+
+
 }
 
 

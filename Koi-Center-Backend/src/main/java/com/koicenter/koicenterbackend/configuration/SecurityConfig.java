@@ -69,6 +69,8 @@ public class SecurityConfig {
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/getVeterinariansByDateTime").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/vetSchedules/updateDateTime").permitAll()
+
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians ").permitAll()
@@ -78,7 +80,8 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/appointments/detail").permitAll()
                             .requestMatchers(HttpMethod.GET, "api/v1/appointments/detailByVetId").permitAll()
                             .requestMatchers(HttpMethod.GET,"api/v1/veterinarians/getByServiceId").permitAll()
-                            .requestMatchers(HttpMethod.POST, "api/v1/appointments/create").permitAll()
+                            .requestMatchers(HttpMethod.POST, "api/v1/appointments").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "api/v1/appointments/update").permitAll()
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/ponds").permitAll()
@@ -97,7 +100,6 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/treatments/ponds").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/treatments/kois").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/v1/treatments/create").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments/ponds/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/treatments/kois/**").permitAll()

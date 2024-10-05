@@ -3,6 +3,7 @@ package com.koicenter.koicenterbackend.service;
 import com.koicenter.koicenterbackend.mapper.PondMapper;
 import com.koicenter.koicenterbackend.mapper.PondTreatmentMapper;
 import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
+import com.koicenter.koicenterbackend.model.entity.PondTreatment;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
@@ -38,7 +39,7 @@ public class TreatmentService {
     AppointmentService appointmentService;
     KoiRepository koiRepository ;
     KoiTreatmentService koiTreatmentService ;
-    public <T> List<T> createTreament(List<String> selected, AppointmentRequest appointmentRequest) {
+    public <T> List<T> createAppointments(List<String> selected, AppointmentRequest appointmentRequest) {
         log.info("AppointmentID "+ appointmentRequest.getAppointmentId());
         log.info("vetId "+ appointmentRequest.getVetId());
         AppointmentResponse appointmentResponse =  appointmentService.createAppointment(appointmentRequest);

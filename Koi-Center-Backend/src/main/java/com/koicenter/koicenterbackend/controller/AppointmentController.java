@@ -2,9 +2,11 @@ package com.koicenter.koicenterbackend.controller;
 
 
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
+import com.koicenter.koicenterbackend.model.request.treament.TreamentRequest;
 import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.service.AppointmentService;
+import com.koicenter.koicenterbackend.service.TreatmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +20,16 @@ import java.util.List;
 public class AppointmentController {
 
 
-
     // Get All appointment
     @Autowired
     AppointmentService appointmentService;
+
+    @Autowired
+     TreatmentService treatmentService;
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAllAppointments() {
-            List<AppointmentResponse> listAppointment = appointmentService.getAllAppointments();
-            return ResponseObject.APIRepsonse(200, "", HttpStatus.OK, listAppointment);
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointments();
+        return ResponseObject.APIRepsonse(200, "", HttpStatus.OK, listAppointment);
     }
 
     // Get appointment by customerId
@@ -40,8 +44,6 @@ public class AppointmentController {
                     .body(new ResponseObject(404, "No appointments found for customer ID: " + customerId, null));
         }
     }
-
-
 
 
     // api get Appointment detail
@@ -66,21 +68,24 @@ public class AppointmentController {
                     .body(new ResponseObject(404, "No appointments found", null));
         }
     }
-    //CREATE
-    @PostMapping("/create")
-    public ResponseEntity<ResponseObject> createAppointment(@RequestBody AppointmentRequest appointmentRequest){
-       AppointmentResponse appointmentResponse= appointmentService.createAppointment(appointmentRequest);
+    //     UPDATE
+    @PutMapping("/update")
+    public ResponseEntity<ResponseObject> updateAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+        AppointmentResponse appointmentResponse = appointmentService.updateAppointment(appointmentRequest);
         if (appointmentResponse != null) {
-            return ResponseObject.APIRepsonse(200,"CRETEA APPOINTMENT SUCCESSFULLY",HttpStatus.OK,appointmentResponse);
+            return ResponseObject.APIRepsonse(200, "UPDATE APPOINTMENT SUCCESSFULLY", HttpStatus.OK, appointmentResponse);
         } else {
+            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST, "");
+        }
+    }
+    //tạo nhiều cá,pond and appointment
+    @PostMapping("")
+    public ResponseEntity<ResponseObject> createAppointment( @RequestBody TreamentRequest treamentRequest) {
+        List<?> list =  treatmentService.createAppointments(treamentRequest.getSelected(),treamentRequest.getAppointmentRequest());
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(201, "Treament Created successfully! ", HttpStatus.CREATED, list);
+        }else{
             return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST,"");
         }
     }
-    // UPDATE
-//    @PostMapping("/update")
-//    public ResponseEntity<ResponseObject> updateAppointment(@RequestBody AppointmentRequest appointmentResponse) {
-//        appointmentService.updateAppointment(appointmentResponse);
-//    return ResponseObject.APIRepsonse(200,"UPDATE APPOINTMENT SUCCESSFULLY",HttpStatus.OK,null);
-//    }
-    }
-
+}
