@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 public class PondTreatmentResponse {
-    String pondTreatmentId;
+    private String pondTreatmentId;
     private String healthIssue;
     private String treatment;
     private String pondId;

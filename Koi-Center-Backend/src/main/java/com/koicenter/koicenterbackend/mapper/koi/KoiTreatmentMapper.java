@@ -9,8 +9,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface KoiTreatmentMapper {
-    @Mapping(target="koiId",ignore = true)
+    @Mapping(target="koi",ignore = true)
     @Mapping(target="appointmentId",ignore = true)
+    @Mapping(source = "koiTreatment.koi.koiId", target = "koiId")
     KoiTreatmentResponse toKoiTreatmentResponse(KoiTreatment koiTreatment);
 
 }
