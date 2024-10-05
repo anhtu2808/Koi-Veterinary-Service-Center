@@ -4,9 +4,9 @@ import './Pond.css';
 import { fetchPondByAppointmentIdAPI, fetchPondByCustomerIdAPI } from '../../apis';
 import { useSelector } from 'react-redux';
 
-const Pond = ({ title, selectedPonds, onUpdate, isBooking ,isAppointment,appointmentId}) => {
+const Pond = ({ title, selectedPonds, onUpdate, isBooking ,handleAddPondToBooking,isAppointment,appointmentId}) => {
     const navigate = useNavigate();
-    const [customerId] = useState(useSelector(state => state?.user?.customer?.customerId))
+    const customerId = useSelector(state => state?.user?.customer?.customerId)
     const [ponds, setPonds] = useState([])
     useEffect(() => {
         const fetchPonds = async () => {
@@ -53,7 +53,7 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking ,isAppointment,appoint
                                                 {isBooking && (
                                                     <button
                                                         className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
-                                                        
+                                                        onClick={() => handleAddPondToBooking(pond.pondId)}
                                                     >
                                                         {isSelected ? 'Remove' : 'Add'}
                                                     </button>

@@ -7,7 +7,7 @@ import { fetchKoisByCustomerIdAPI } from '../../apis';
 
 const Koi = ({ isAppointment, isBooking, title, updateTrigger,appointmentId,handleAddKoiToBooking, selectedKois }) => {
     const [koiList, setKoiList] = useState([]);
-    const [customerId] = useState(useSelector(state => state?.user?.customer?.customerId))
+    const customerId =useSelector(state => state?.user?.customer?.customerId)
     const navigate = useNavigate();
 
     useEffect(() => {

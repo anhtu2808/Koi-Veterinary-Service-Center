@@ -31,6 +31,7 @@ public class PrescriptionController {
         return ResponseObject.APIRepsonse(200, "Create prescription success", HttpStatus.OK, createdPrescription);
     }
 
+
     @DeleteMapping("/{prescriptionMedicineId}")
     public ResponseEntity<ResponseObject> deleteMedicine(@PathVariable("prescriptionMedicineId") String prescriptionMedicineId) {
         try {
@@ -43,3 +44,4 @@ public class PrescriptionController {
         }
     }
 }
+

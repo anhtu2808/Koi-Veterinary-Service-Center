@@ -3,7 +3,7 @@ import "./PondDetail.css";
 import { fetchPondByPondIdAPI, updatePondInformationAPI } from "../../apis";
 import { useParams } from "react-router-dom";
 
-const PondDetail = () => {
+const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointmentId, isAppointment }) => {
   const [pondData, setPondData] = useState({
     pondId: "",
     status: "",
@@ -64,7 +64,7 @@ const PondDetail = () => {
         name={name}
         value={value}
         onChange={handleInputChange}
-        disabled={!isEditing}
+        disabled={!isEditing && !isCreate}
         required
       />
     </div>
@@ -84,23 +84,20 @@ const PondDetail = () => {
         {renderField("Filter System", pondData.filterSystem, "filterSystem")}
         {renderField("Image URL", pondData.image, "image")}
 
-        {isEditing ? (
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleUpdate}
-          >
-            Save Changes
+        <div className="text-end">
+
+
+          {isEditing || isCreate ? (<button type="button" className="btn btn-primary" onClick={handleUpdate} >
+           {isCreate ? "Create" : "Save Changes"}
           </button>
-        ) : (
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => setIsEditing(true)}
-          >
-            Edit
-          </button>
-        )}
+          ) : (
+            <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(true)}>
+              Edit
+            </button>
+          )}
+        </div>
+
+
       </div>
     </div>
   );
