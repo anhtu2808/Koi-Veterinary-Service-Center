@@ -144,7 +144,7 @@ public class AppointmentService {
         return response;
     }
 
-    public List<AppointmentResponse> getAllAppointmentByVetId(String vetId) {
+    public List<AppointmentResponse> getAllAppointmentByVetId(String vetId, String status) {
         List<Appointment> appointments = appointmentRepository.findAllByVetId(vetId);
 
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();
@@ -159,27 +159,29 @@ public class AppointmentService {
                 .reversed());
 
         for (Appointment appointment : appointments) {
-            AppointmentResponse response = AppointmentResponse.builder()
-                    .appointmentId(appointment.getAppointmentId())
-                    .appointmentDate(appointment.getAppointmentDate())
-                    .endTime(appointment.getEndTime())
-                    .status(appointment.getStatus())
-                    .location(String.valueOf(appointment.getLocation()))
-                    .createdAt(appointment.getCreatedAt())
-                    .depositedMoney(appointment.getDepositedMoney())
-                    .location(String.valueOf(appointment.getLocation()))
-                    .result(String.valueOf(appointment.getResult()))
-                    .startTime(appointment.getStartTime())
-                    .status(appointment.getStatus())
-                    .type(appointment.getType())
-                    .customerId(appointment.getCustomer().getCustomerId())
-                    .serviceName(appointment.getService().getServiceName())
-                    .customerName(appointment.getCustomer().getUser().getFullName())
-                    .serviceId(appointment.getService().getServiceId())
-                    .vetId(appointment.getVeterinarian().getVetId())
-                    .build();
+            if (appointment.getStatus().name().equals(status) || status.equals("ALL")) {
+                AppointmentResponse response = AppointmentResponse.builder()
+                        .appointmentId(appointment.getAppointmentId())
+                        .appointmentDate(appointment.getAppointmentDate())
+                        .endTime(appointment.getEndTime())
+                        .status(appointment.getStatus())
+                        .location(String.valueOf(appointment.getLocation()))
+                        .createdAt(appointment.getCreatedAt())
+                        .depositedMoney(appointment.getDepositedMoney())
+                        .location(String.valueOf(appointment.getLocation()))
+                        .result(String.valueOf(appointment.getResult()))
+                        .startTime(appointment.getStartTime())
+                        .status(appointment.getStatus())
+                        .type(appointment.getType())
+                        .customerId(appointment.getCustomer().getCustomerId())
+                        .serviceName(appointment.getService().getServiceName())
+                        .customerName(appointment.getCustomer().getUser().getFullName())
+                        .serviceId(appointment.getService().getServiceId())
+                        .vetId(appointment.getVeterinarian().getVetId())
+                        .build();
 
-            appointmentResponses.add(response);
+                appointmentResponses.add(response);
+            }
         }
         return appointmentResponses;
     }
