@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchAppointmentByIdAPI, fetchVetForAssignAPI, updateAppointmentAPI } from "../../apis";
 import "./AppointmentDetail.css";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
-import { ROLE } from "../../utils/constants";
+import { APPOINTMENT_STATUS, ROLE } from "../../utils/constants";
 import { useSelector } from "react-redux";
 
 function AppointmentDetail() {
@@ -80,7 +80,7 @@ function AppointmentDetail() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateAppointmentAPI(appointmentId, appointment);
+      await updateAppointmentAPI(appointment, appointmentId);
       setIsEditing(false);
       // Optionally, show a success message
     } catch (error) {
@@ -185,12 +185,12 @@ function AppointmentDetail() {
             disabled={!isEditing}
           >
 
-            <option value="APPOINTMENT_STATUS.CREATED">Waiting Confirm</option>
-            <option value="APPOINTMENT_STATUS.BOOKING_COMPLETE">Veterinarian Assigned</option>
-            <option value="APPOINTMENT_STATUS.PROCESS">Process</option>
-            <option value="APPOINTMENT_STATUS.READY_FOR_PAYMENT">Ready For Payment</option>
-            <option value="APPOINTMENT_STATUS.COMPLETED">Completed</option>
-            <option value="APPOINTMENT_STATUS.CANCELLED">Cancelled</option>
+            <option value={APPOINTMENT_STATUS.CREATED}>Waiting Confirm</option>
+            <option value={APPOINTMENT_STATUS.BOOKING_COMPLETE}>Veterinarian Assigned</option>
+            <option value={APPOINTMENT_STATUS.PROCESS}>Process</option>
+            <option value={APPOINTMENT_STATUS.READY_FOR_PAYMENT}>Ready For Payment</option>
+            <option value={APPOINTMENT_STATUS.FINISH}>Completed</option>
+            <option value={APPOINTMENT_STATUS.CANCEL}>Cancelled</option>
           </select>
         </div>
 

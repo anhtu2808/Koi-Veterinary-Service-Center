@@ -100,8 +100,8 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
     return response.data;
 }
 
-export const updateAppointmentAPI = async (appointmentData) => {
-    const response = await api.put(`/appointments/update`, appointmentData);
+export const updateAppointmentAPI = async (appointmentData, appointmentId) => {
+    const response = await api.put(`/appointments/update`, {...appointmentData, appointmentId});
     return response.data;
 }
 export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
