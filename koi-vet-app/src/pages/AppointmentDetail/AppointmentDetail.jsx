@@ -35,15 +35,25 @@ function AppointmentDetail() {
   const role = useSelector((state) => state.user.role);
   useEffect(() => {
     const fetchAppointmentDetail = async (appointmentId) => {
+      try {
         const response = await fetchAppointmentByIdAPI(appointmentId);
         setAppointment(response.data);
-        const responseVet = await fetchVetForAssignAPI({appointmentType: response.data.type ,
-                                                        serviceId: response.data.serviceId,
-                                                         date: response.data.appointmentDate,
-                                                         startTime: response.data.startTime,
-                                                         endTime: response.data.endTime});
+        
+        // Chỉ gọi fetchVetForAssignAPI sau khi có dữ liệu từ fetchAppointmentByIdAPI
+        const responseVet = await fetchVetForAssignAPI({
+          appointmentType: response.data.type,
+          serviceId: response.data.serviceId,
+          date: response.data.appointmentDate,
+          startTime: response.data.startTime,
+          endTime: response.data.endTime
+        });
         setVetList(responseVet.data);
+      } catch (error) {
+        console.error("Error fetching appointment details:", error);
+        // Xử lý lỗi ở đây (ví dụ: hiển thị thông báo lỗi)
+      }
     };
+
     fetchAppointmentDetail(appointmentId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentId]);

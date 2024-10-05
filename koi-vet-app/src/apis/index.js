@@ -56,7 +56,8 @@ export const fetchVetByServiceIdAPI = async (serviceId) => {
     return response.data;
 }
 export const fetchVetForAssignAPI = async (appointmentData) => {
-    const response = await api.post(`/vetSchedules/getVeterinariansByDateTime`, appointmentData);
+    console.log("appointmentData", appointmentData)
+    const response = await api.get(`/vetSchedules/getVeterinariansByDateTime`, appointmentData);
     return response.data;
 }
 
