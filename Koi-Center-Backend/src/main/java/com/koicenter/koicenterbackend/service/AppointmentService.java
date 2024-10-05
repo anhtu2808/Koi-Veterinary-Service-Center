@@ -192,23 +192,25 @@ public class AppointmentService {
         Veterinarian veterinarian = null;
         if (!appointmentRequest.getVetId().equalsIgnoreCase("SKIP")) {
             veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
-            log.info("Veterian ID " + veterinarian.getVetId());
+//            log.info("Veterian ID " + veterinarian.getVetId());
+            int count = 0;
+            if (appointmentRequest.getType().equals(AppointmentType.CENTER)) {
+                count = 1;
+            } else {
+                count = 2;
+            }
+            VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
+                    .vet_id(appointmentRequest.getVetId())
+                    .endTime(appointmentRequest.getEndTime())
+                    .startTime(appointmentRequest.getStartTime())
+                    .date(appointmentRequest.getAppointmentDate())
+                    .build();
+            VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest, count);
         }
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
         log.info("service ID " + service.getServiceId());
-        int count = 0;
-        if (appointmentRequest.getType().equals(AppointmentType.CENTER)) {
-            count = 1;
-        } else {
-            count = 2;
-        }
-        VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
-                .vet_id(appointmentRequest.getVetId())
-                .endTime(appointmentRequest.getEndTime())
-                .startTime(appointmentRequest.getStartTime())
-                .date(appointmentRequest.getAppointmentDate())
-                .build();
-        VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest, count);
+
+
         Appointment appointment = new Appointment();
         appointment = appointmentMapper.toAppointment(appointmentRequest);
         appointment.setCustomer(customer);
@@ -217,8 +219,14 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
         AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
         appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
-        appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
+//        appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
         appointmentResponse.setServiceId(appointment.getService().getServiceId());
+        log.info("appoimtID" + appointmentResponse.getAppointmentId());
+        if (appointment.getVeterinarian() != null) {
+            appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
+        } else {
+            appointmentResponse.setVetId("SKIP");
+        }
         return appointmentResponse;
     }
 
@@ -229,13 +237,7 @@ public class AppointmentService {
             LocalTime startTime = appointmentRequest.getStartTime();
             LocalTime endTime = appointmentRequest.getEndTime();
             String vetId = appointmentRequest.getVetId();
-            int count = 0;
-            if (appointmentRequest.getType().equals(AppointmentType.CENTER)) {
-                count = 1;
-            } else {
-                count = 2;
-            }
-
+            int count = appointmentRequest.getType().equals(AppointmentType.CENTER) ? 1 : 2;
             Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
             Veterinarian veterinarian = null;
             if (!appointmentRequest.getVetId().equalsIgnoreCase("SKIP")) {
