@@ -22,6 +22,7 @@ public class Prescription {
     String id;
     String name;
     ZonedDateTime createdDate;
+    String appointmentId;
     String note;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
