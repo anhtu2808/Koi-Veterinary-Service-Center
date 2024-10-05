@@ -4,24 +4,22 @@ import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, updateKoiInfo
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
 import { useSelector } from "react-redux";
+import { fishSpecies } from "../../utils/constants";
 
-const fishSpecies = [
-  "Kohaku", "Hikari Muji", "Showa Sanshoku", "Shiro Utsuri", "Hi Utsuri",
-  "Ki Utsuri", "Asagi", "Shusui", "Tancho", "Goshiki", "Kumonryu",
-  "Ochiba Shigure", "Doitsu", "Koromo", "Other"
-];
 
-function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmentId,isAppointment }) {
-  const [selectedSpecies, setSelectedSpecies] = useState("");
-  const [age, setAge] = useState("");
 
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
-  const [healthStatus, setHealthStatus] = useState("");
-  const [notes, setNotes] = useState("");
-  const [image, setImage] = useState("")
+function KoiDetail({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAppointment }) {
+  const [koiData, setKoiData] = useState({
+    breed: "",
+    age: "",
+    height: "",
+    weight: "",
+    healthStatus: "",
+    note: "",
+    image: "",
+  })
   const [isEditing, setIsEditing] = useState(false);
-  
+
   const koiId = useParams().koiId;
   const navigate = useNavigate();
   const customerId = useSelector(state => state?.user?.customer?.customerId);
@@ -29,61 +27,31 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
   const handleSubmit = async (e) => {
     e.preventDefault(); // Ngăn không cho form tự động submit
 
-    try {
-      if (isCreate && !isEditing && !isAppointment) {
+   
+      if (isCreate && !isAppointment) { // Customer create new koi
         // Tạo mới Koi
-        const response = await createKoiAPI({
-          breed: selectedSpecies,
-          age,
-          // color,
-          height,
-          weight,
-          healthStatus,
-          notes,
-          image,
-          customer_id: customerId,
-        });
+        const response = await createKoiAPI({...koiData, customerId});
         toast.success(response.data.message);
-        onUpdate(); // Call the callback function
-        if(isBooking){
-          onClose();
-        }else{
-          navigate(-1);
-        }
-      }else if(isAppointment){
+        onUpdate(); // Call the callback function reload list Koi
+        onClose(); // Close modal popup
+        console.log("koiData", koiData)
+      } 
+      if (isAppointment) { // veterinarian add koi to appointment
         // veterinarian add koi to appointment
-        const response = await addKoiToAppointmentAPI(appointmentId,{
-          breed: selectedSpecies,
-          age,
-          height,
-          weight,
-          healthStatus,
-          notes,
-          image,
-          customer_id: customerId,
-        })
+        const response = await addKoiToAppointmentAPI(appointmentId, koiData)
+        console.log("response", response)
         toast.success(response.data.message);
-        onUpdate(); // Call the callback function
+        onUpdate(); // Call the callback function reload list Koi
         onClose();
-      } else if (isUpdate || isEditing) {
+      } 
+      if(isUpdate || isEditing) { // Customer or Veterinarian update koi information
         // Cập nhật thông tin Koi
-        const response = await updateKoiInformationAPI(koiId, {
-          breed: selectedSpecies,
-          age,
-          // color,
-          height,
-          weight,
-          healthStatus,
-          notes,
-          image,
-        });
+        const response = await updateKoiInformationAPI(koiId, koiData);
         toast.success(response.data.message);
-        onUpdate(); // Call the callback function
         setIsEditing(false);
+        console.log("koiData", koiData)
       }
-    } catch (error) {
-      toast.error("An error occurred while saving data.");
-    }
+   
   };
 
   const handleUpdateButton = () => {
@@ -95,22 +63,14 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
       const fetchKoiByKoiId = async () => {
         try {
           const response = await fetchKoiByKoiIdAPI(koiId);
-          const koiData = response.data || {};
-          setSelectedSpecies(koiData.breed || "");
-          setAge(koiData.age || "");
-          // setColor(koiData.color || "");
-          setHeight(koiData.height || "");
-          setWeight(koiData.weight || "");
-          setHealthStatus(koiData.healthStatus || "");
-          setNotes(koiData.notes || "");
-          setImage(koiData.image || "");
+          setKoiData(response.data)
         } catch (error) {
           toast.error("Error fetching Koi data.");
         }
       };
       fetchKoiByKoiId();
     }
-  }, [koiId, isCreate]);
+  }, [koiId, isCreate, customerId]);
 
   return (
     <div className="col-9 mx-auto">
@@ -123,8 +83,8 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
               <button
                 key={species}
                 type="button"
-                onClick={() => setSelectedSpecies(species)}
-                className={`species-button ${selectedSpecies === species ? "selected" : ""}`}
+                onClick={() => setKoiData({ ...koiData, breed: species })}
+                className={`species-button ${koiData.breed === species ? "selected" : ""}`}
                 disabled={!isEditing && !isCreate}
               >
                 {species}
@@ -137,31 +97,20 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
           <label>Age (years)</label>
           <input
             type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
+            value={koiData.age}
+            onChange={(e) => { setKoiData({ ...koiData, age: e.target.value }) }}
             placeholder="Enter age"
             disabled={!isEditing && !isCreate}
           />
         </div>
-
-        {/* <div className="form-group">
-          <label>Color</label>
-          <input
-            type="text"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            placeholder="Enter color"
-            disabled={!isEditing && !isCreate}
-          />
-        </div> */}
 
         <div className="form-group">
           <label>Height (cm)</label>
           <input
             type="number"
             step="0.1"
-            value={height}
-            onChange={(e) => setHeight(e.target.value)}
+            value={koiData.height}
+            onChange={(e) => setKoiData({ ...koiData, height: e.target.value })}
             placeholder="Enter height"
             disabled={!isEditing && !isCreate}
           />
@@ -172,8 +121,8 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
           <input
             type="number"
             step="0.1"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            value={koiData.weight}
+            onChange={(e) => setKoiData({ ...koiData, weight: e.target.value })}
             placeholder="Enter weight"
             disabled={!isEditing && !isCreate}
           />
@@ -183,8 +132,8 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
           <label>Health Status</label>
           <input
             type="text"
-            value={healthStatus}
-            onChange={(e) => setHealthStatus(e.target.value)}
+            value={koiData.healthStatus}
+            onChange={(e) => setKoiData({ ...koiData, healthStatus: e.target.value })}
             placeholder="Enter health status"
             disabled={!isEditing && !isCreate}
           />
@@ -193,8 +142,8 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
         <div className="form-group">
           <label>Notes</label>
           <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            value={koiData.note}
+            onChange={(e) => setKoiData({ ...koiData, note: e.target.value })}
             placeholder="Enter notes"
             disabled={!isEditing && !isCreate}
           />
@@ -204,8 +153,8 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
           <label>Image URL</label>
           <input
             type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            value={koiData.image}
+            onChange={(e) => setKoiData({ ...koiData, image: e.target.value })}
             placeholder="Enter image URL"
             disabled={!isEditing && !isCreate}
           />
@@ -216,10 +165,10 @@ function KoiDetail({ isCreate, isUpdate, isBooking, onClose, onUpdate,appointmen
             Back
           </button>
 
-          {isEditing && isUpdate  ? (
+          {isEditing && isUpdate && !isCreate ? (
             <div className=" d-flex gap-2">
-            <button type="button" className="btn btn-secondary" onClick={handleUpdateButton}>Cancel</button>
-              <button type="submit" className="btn btn-primary">
+              <button type="button" className="btn btn-secondary" onClick={handleUpdateButton}>Cancel</button>
+              <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                 Save
               </button>
 

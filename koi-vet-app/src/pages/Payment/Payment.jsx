@@ -17,6 +17,8 @@ function Payment() {
 
   useEffect(() => {
     setAppointmentCreateRequest({
+      "selected":bookingData.selected,
+      "appointmentRequest":{
       "appointmentDate": bookingData.date,
       "status": bookingData.vetId !== "SKIP" ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
       "startTime": bookingData.startAt, // Định dạng thời gian
@@ -29,7 +31,7 @@ function Payment() {
       "customerId": customerInfo.customerId,  // ID khách hàng
       "vetId": bookingData.vetId,  // ID bác sĩ thú y
       "serviceId": bookingData.serviceId  // ID dịch vụ
-    })
+    }})
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerInfo, vetInfo, serviceInfo, bookingData])
   const handlePayment = async (appointmentCreateRequest) => {

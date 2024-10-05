@@ -5,7 +5,6 @@ import { fetchLogoutAPI } from "../../apis";
 import logo_admin from "../../assets/img/admin_logo.png";
 import { clearUser } from "../../store/userSlice";
 import { ROLE } from "../../utils/constants";
-import logo from "../../assets/img/logo.png";
 import "./SideBar.css";
 
 function SideBar() {

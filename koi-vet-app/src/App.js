@@ -72,7 +72,6 @@ function App() {
               <Route path="/services/:serviceId" element={<ServicePageDetail />} />
               <Route path="/faq" element={<FAQ />} /> {/* Trang chủ User */}
               <Route path="/" element={<HomePage />} />
-              <Route path="/medicine" element={<Medicine />} />
               {/* Thêm các route khác của User ở đây */}
               <Route path='/veterinarians' element={<VeterinarianPage />} />
               <Route path='/services' element={<ServicePage />} />
@@ -91,7 +90,7 @@ function App() {
                       <Route path='/koi/:koiId' element={
                         <KoiDetail
                           isCreate={false}
-                          isUpdate={false} />
+                          isUpdate={true} />
                       } />
 
                       <Route path='/pond' element={<Pond/>}/>
@@ -131,6 +130,7 @@ function App() {
                 <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isCreate={false}/>} />
                 <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true}/>} />
                 <Route path="/invoice" element={<InvoiceListPage />} />
+                <Route path="/medicine" element={<Medicine />} />
                 <Route path="/medpage" element={< MedicineListPage />} />
               </Route>
 
