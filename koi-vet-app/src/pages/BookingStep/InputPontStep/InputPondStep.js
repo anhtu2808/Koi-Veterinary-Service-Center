@@ -2,105 +2,59 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBookingData } from '../../../store/bookingSlice';
 import './InputPondStep.css'
-import { useNavigate } from 'react-router-dom';
+import PondDetail from '../../../pages/PondDetail/PondDetail';
+import Pond from '../../../components/Pond/Pond';
+import Modal from '../../../components/Modal/Modal';
 
-// Sample pond data
-const samplePondData = [
-  {
-    pondId: 1,
-    name: "Main Koi Pond",
-    depth: 1.5,
-    perimeter: 20,
-    temperature: 22,
-    notes: "Filtered weekly, plants added last month",
-    image: "https://example.com/pond1.jpg"
-  },
-  {
-    pondId: 2,
-    name: "Japanese Garden Pond",
-    depth: 1.2,
-    perimeter: 15,
-    temperature: 21,
-    notes: "New filtration system installed",
-    image: "https://example.com/pond2.jpg"
-  },
-  {
-    pondId: 3,
-    name: "Quarantine Pond",
-    depth: 0.8,
-    perimeter: 8,
-    temperature: 23,
-    notes: "Used for new koi arrivals",
-    image: "https://example.com/pond3.jpg"
-  }
-];
 
 const InputPondStep = () => {
-  const [existingPonds] = useState(samplePondData);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pondUpdateTrigger, setPondUpdateTrigger] = useState(0);
   const dispatch = useDispatch();
-  const selectedPond = useSelector(state => state.booking.bookingData.selectedPond || []);
-  const navigate = useNavigate();
+  const selected = useSelector(state => state.booking.bookingData.selected);
 
-  const handleSelectPond = (pondId) => {
-    let updatedselectedPond;
-    if (selectedPond.includes(pondId)) {
-      updatedselectedPond = selectedPond.filter(id => id !== pondId);
+  const handleAddPondToBooking = (pondId) => {
+    if (selected.includes(pondId)) {
+      // If already selected, remove it
+      dispatch(setBookingData({ selected: selected.filter(id => id !== pondId) }));
     } else {
-      updatedselectedPond = [...selectedPond, pondId];
+      // If not selected, add it
+      dispatch(setBookingData({ selected: [...selected, pondId] }));
     }
-    dispatch(setBookingData({ selectedPond: updatedselectedPond }));
   };
 
+  //open modal for when click add new koi BTN
   const handleAddNewPond = () => {
-    // Implement logic to add a new pond
-    navigate("/admin/pondinformation")
-    console.log("Add new pond clicked");
+    setIsModalOpen(true);
   };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  //update trigger for pond list
+  const handlePondUpdate = () => {
+    setPondUpdateTrigger(prev => prev + 1);
+  };
+
+  
+
+
 
   return (
     <div className="container mt-4">
       <h3 className="mb-4">Select Ponds for Appointment</h3>
-      
+
       {/* Existing Ponds Table */}
-      <div className="card mb-4">
-        <div className="card-header input-info-title text-white">
-          <h5 className="mb-0">Your Existing Ponds</h5>
-        </div>
-        <div className="card-body">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Depth (m)</th>
-                <th>Perimeter (m)</th>
-                <th>Temperature (°C)</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {existingPonds.map(pond => (
-                <tr key={pond.pondId}>
-                  <td>{pond.name}</td>
-                  <td>{pond.depth}</td>
-                  <td>{pond.perimeter}</td>
-                  <td>{pond.temperature}</td>
-                  <td>
-                    <button 
-                      className={`btn btn-sm ${selectedPond.includes(pond.pondId) ? 'btn-success' : 'btn-primary'}`}
-                      onClick={() => handleSelectPond(pond.pondId)}
-                    >
-                      {selectedPond.includes(pond.pondId) ? 'Selected' : 'Select'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <Pond
+        isBooking={true}
+        title={"Your Ponds"}
+        updateTrigger={pondUpdateTrigger}
+        handleAddPondToBooking={handleAddPondToBooking}
+        selectedPonds={selected}
+      />
 
       {/* Selected Ponds Details */}
-      {selectedPond.length > 0 && (
+      {/* {selectedPond.length > 0 && (
         <div className="card mb-4">
           <div className="card-header input-info-title text-white">
             <h5 className="mb-0">Selected Pond Details</h5>
@@ -115,13 +69,13 @@ const InputPondStep = () => {
                   <p><strong>Perimeter:</strong> {selectedPond.perimeter} m</p>
                   <p><strong>Temperature:</strong> {selectedPond.temperature} °C</p>
                   <p><strong>Notes:</strong> {selectedPond.notes}</p>
-                  <img src={selectedPond.image} alt={selectedPond.name} className="img-fluid mt-3" style={{maxWidth: '300px'}} />
+                  <img src={selectedPond.image} alt={selectedPond.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
                 </div>
               );
             })}
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Add New Pond Button */}
       <div className="text-center">
@@ -129,6 +83,16 @@ const InputPondStep = () => {
           Add New Pond
         </button>
       </div>
+
+      {/* Modal for KoiDetail */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <PondDetail
+          isCreate={true}
+          isBooking={true}
+          onClose={handleCloseModal}
+          onUpdate={handlePondUpdate}
+        />
+      </Modal>
     </div>
   );
 };

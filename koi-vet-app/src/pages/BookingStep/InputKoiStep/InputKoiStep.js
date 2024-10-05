@@ -14,11 +14,10 @@ const InputKoiStep = () => {
   const dispatch = useDispatch();
   const selected = useSelector(state => state.booking.bookingData.selected);
 
-
   const handleAddKoiToBooking = (koiId) => {
     if (selected.includes(koiId)) {
       // If already selected, remove it
-      dispatch(setBookingData({ selectedKoi: selected.filter(id => id !== koiId) }));
+      dispatch(setBookingData({ selected: selected.filter(id => id !== koiId) }));
     } else {
       // If not selected, add it
       dispatch(setBookingData({ selected: [...selected, koiId] }));
