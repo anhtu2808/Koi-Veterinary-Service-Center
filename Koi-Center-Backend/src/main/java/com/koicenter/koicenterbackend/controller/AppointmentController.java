@@ -32,19 +32,6 @@ public class AppointmentController {
         return ResponseObject.APIRepsonse(200, "", HttpStatus.OK, listAppointment);
     }
 
-    // Get appointment by customerId
-    @GetMapping("/getByCustomerId")
-    public ResponseEntity<ResponseObject> getAppointmentById(@RequestParam("customerId") String customerId, @RequestParam String status) {
-        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentsByCustomerId(customerId, status);
-
-        if (listAppointment != null && !listAppointment.isEmpty()) {
-            return ResponseEntity.ok(new ResponseObject(200, "Success", listAppointment));
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseObject(404, "No appointments found for customer ID: " + customerId, null));
-        }
-    }
-
 
     // api get Appointment detail
     @GetMapping("/detail")
@@ -57,17 +44,6 @@ public class AppointmentController {
         }
     }
 
-
-    @GetMapping("/detailByVetId")
-    public ResponseEntity<ResponseObject> getAllAppointmentByVetId(@RequestParam String vetId, @RequestParam String status) {
-        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentByVetId(vetId, status);
-        if (listAppointment != null && !listAppointment.isEmpty()) {
-            return ResponseObject.APIRepsonse(200, "Success", HttpStatus.OK, listAppointment);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseObject(404, "No appointments found", null));
-        }
-    }
     //     UPDATE
     @PutMapping("/update")
     public ResponseEntity<ResponseObject> updateAppointment(@RequestBody AppointmentRequest appointmentRequest) {

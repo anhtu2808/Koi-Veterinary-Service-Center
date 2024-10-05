@@ -50,6 +50,7 @@ function AllAppointment() {
 
   const handleChangeStatus = (status) => {
     setStatus(status);
+    setAppointments([]);
     console.log("status", status)
   };
 
@@ -118,8 +119,13 @@ function AllAppointment() {
             </tr>
           </thead>
           <tbody>
-            {appointments.map((appointmentDetail, index) => (
-              <tr key={index}>
+            {appointments.length === 0 ?
+              <tr>
+                <td colSpan="7" className="text-center">No appointments found</td>
+              </tr>
+                :
+              appointments.map((appointmentDetail, index) => (
+                <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{appointmentDetail.customerName}</td>
                 <td>{appointmentDetail.serviceName}</td>

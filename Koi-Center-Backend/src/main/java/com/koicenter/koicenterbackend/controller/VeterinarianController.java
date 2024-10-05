@@ -1,7 +1,9 @@
 package com.koicenter.koicenterbackend.controller;
 import com.koicenter.koicenterbackend.model.request.veterinarian.VeterinarianRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
+import com.koicenter.koicenterbackend.service.AppointmentService;
 import com.koicenter.koicenterbackend.service.VeterinarianService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class VeterinarianController {
     VeterinarianService veterinarianService;
+    AppointmentService appointmentService;
     @GetMapping("/{vetId}")
     public ResponseEntity<ResponseObject> getVeterinarianById (@PathVariable String vetId){
         VeterinarianResponse veterinarianResponse = veterinarianService.getVeterinarianById(vetId);
@@ -36,7 +39,7 @@ public class VeterinarianController {
         return ResponseObject.APIRepsonse(200, "List of veterinarians retrieved successfully", HttpStatus.OK, listVet);
 
     }
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<ResponseObject> createVeterinarian(@RequestBody VeterinarianRequest veterinarianRequest){
         if(veterinarianRequest != null ){
             veterinarianService.createVeterinarian(veterinarianRequest);
@@ -53,6 +56,16 @@ public class VeterinarianController {
       }else{
           return ResponseObject.APIRepsonse(404, "Veterinarians not found", HttpStatus.NOT_FOUND,"");
       }
+    }
+    @GetMapping("/{vetId}/appointments")
+    public ResponseEntity<ResponseObject> getAllAppointmentByVetId(@PathVariable String vetId, @RequestParam String status) {
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointmentByVetId(vetId, status);
+        if (listAppointment != null && !listAppointment.isEmpty()) {
+            return ResponseObject.APIRepsonse(200, "Success", HttpStatus.OK, listAppointment);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseObject(404, "No appointments found", null));
+        }
     }
 
 
