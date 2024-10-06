@@ -29,6 +29,8 @@ function MedicineListPage() {
     note: "",
   });
 
+  const [selectedMedicines, setSelectedMedicines] = useState({});
+
   const handlePrescriptionDetailChange = (field, value) => {
     setPrescriptionDetails((prev) => ({ ...prev, [field]: value }));
   };
@@ -102,10 +104,15 @@ function MedicineListPage() {
       key: "dosage",
       render: (_, record) => (
         <Input
-          value={record.dosage}
+          value={selectedMedicines[record.medicineId]?.dosage || record.dosage}
           onChange={(e) =>
-            handleDirectChange(record.medicineId, "dosage", e.target.value)
+            handleSelectedMedicineChange(
+              record.medicineId,
+              "dosage",
+              e.target.value
+            )
           }
+          disabled={!selectedRowKeys.includes(record.medicineId)}
         />
       ),
     },
@@ -114,10 +121,17 @@ function MedicineListPage() {
       key: "quantity",
       render: (_, record) => (
         <Input
-          value={record.quantity}
-          onChange={(e) =>
-            handleDirectChange(record.medicineId, "quantity", e.target.value)
+          value={
+            selectedMedicines[record.medicineId]?.quantity || record.quantity
           }
+          onChange={(e) =>
+            handleSelectedMedicineChange(
+              record.medicineId,
+              "quantity",
+              e.target.value
+            )
+          }
+          disabled={!selectedRowKeys.includes(record.medicineId)}
         />
       ),
     },
@@ -156,14 +170,6 @@ function MedicineListPage() {
     }));
   };
 
-  const handleDirectChange = (medicineId, field, value) => {
-    setMedicines((prevMedicines) =>
-      prevMedicines.map((med) =>
-        med.medicineId === medicineId ? { ...med, [field]: value } : med
-      )
-    );
-  };
-
   // Hàm xử lý khi nhấn nút "Edit"
   const handleEdit = (record) => {
     setEditingData((prevData) => ({
@@ -199,7 +205,14 @@ function MedicineListPage() {
   const rowSelection = {
     selectedRowKeys,
     onChange: (newSelectedRowKeys) => {
-      setSelectedRowKeys(newSelectedRowKeys); // Cập nhật các dòng đã chọn
+      setSelectedRowKeys(newSelectedRowKeys);
+      setSelectedMedicines((prev) => {
+        const newSelectedMedicines = {};
+        newSelectedRowKeys.forEach((key) => {
+          newSelectedMedicines[key] = prev[key] || {};
+        });
+        return newSelectedMedicines;
+      });
     },
     hideSelectAll: true,
   };
@@ -245,34 +258,43 @@ function MedicineListPage() {
     }
   };
 
-  const handleCreatePrescription = async () => {
-    const appointmentId = "id nhập vô"; // Nhập appointmentId thực tế của bạn
-    const selectedMedicines = selectedRowKeys.map((key) => {
-      const medicine = medicines.find((med) => med.medicineId === key);
-      return {
-        medicineId: medicine.medicineId,
-        name: medicine.name,
-        dosage: editingData[medicine.medicineId]?.dosage || medicine.dosage,
-        quantity:
-          editingData[medicine.medicineId]?.quantity || medicine.quantity,
-      };
-    });
+  const handleSelectedMedicineChange = (medicineId, field, value) => {
+    setSelectedMedicines((prev) => ({
+      ...prev,
+      [medicineId]: {
+        ...prev[medicineId],
+        [field]: value,
+      },
+    }));
+  };
 
+  const handleCreatePrescription = async () => {
     const prescriptionData = {
-      medicines: selectedMedicines,
-      name: prescriptionDetails.name, // Lấy từ trường nhập liệu
-      note: prescriptionDetails.note, // Lấy từ trường nhập liệu
+      name: prescriptionDetails.name,
+      note: prescriptionDetails.note,
+      appointmentId: "ea19c7c6-669f-4f97-8cc2-4342dd192061",
+      createdDate: new Date(),
+      prescriptionMedicines: Object.entries(selectedMedicines).map(
+        ([medicineId, details]) => ({
+          medicineId: medicineId,
+          dosage: details.dosage,
+          quantity: details.quantity,
+        })
+      ),
     };
 
     try {
-      const newPrescription = await createPrescriptionAPI(
-        appointmentId,
-        prescriptionData
-      );
+      const newPrescription = await createPrescriptionAPI(prescriptionData);
       console.log(newPrescription);
-      // Bạn có thể thực hiện hành động khác, ví dụ như cập nhật giao diện hoặc thông báo thành công
+      // Reset form and selections after successful creation
+      setPrescriptionDetails({ name: "", note: "" });
+      setSelectedMedicines({});
+      setSelectedRowKeys([]);
+
+      // Handle success (e.g., show a success message, clear form, etc.)
     } catch (error) {
       console.error("Failed to create prescription:", error);
+      // Handle error (e.g., show error message)
     }
   };
 
