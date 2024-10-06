@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./PondDetail.css";
-import { fetchPondByPondIdAPI, updatePondInformationAPI } from "../../apis";
+import { fetchPondByPondIdAPI, updatePondInformationAPI, addNewPondAPI, addPondToAppointmentAPI } from "../../apis";
 import { useParams } from "react-router-dom";
 
-const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointmentId, isAppointment }) => {
+const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointmentId, isVeterinarian, isAppointment, cusId }) => {
   const [pondData, setPondData] = useState({
     pondId: "",
     status: "",
@@ -14,13 +14,12 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
     image: "",
     waterQuality: "",
     filterSystem: "",
-    customerId: "",
+    customerId: cusId,
   });
   const [isEditing, setIsEditing] = useState(false);
   const { pondId } = useParams();
   useEffect(() => {
     const fetchPondData = async (pondId) => {
-
       const response = await fetchPondByPondIdAPI(pondId);
       setPondData(response.data);
     };
@@ -40,6 +39,15 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
     }));
   };
 
+  const handleAddNewPond = async () => {
+    const response = await addPondToAppointmentAPI(appointmentId, pondData);
+    if (response.status === 200) {
+      onUpdate()
+      console.log("Pond added:", response.data);
+      setIsEditing(false);
+    }
+
+  }
   const handleUpdate = async () => {
     const updatePond = async () => {
       const response = await updatePondInformationAPI(pondId, pondData);
@@ -48,7 +56,7 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
     }
     updatePond();
   };
-   
+
 
   const renderField = (label, value, name) => (
     <div className="mb-3">
@@ -88,14 +96,15 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
         <div className="text-end">
 
 
-          {isEditing || isCreate ? (<button type="button" className="btn btn-primary" onClick={handleUpdate} >
-           {isCreate ? "Create" : "Save Changes"}
+          {isCreate && isVeterinarian ? (<button type="button" className="btn btn-primary" onClick={handleAddNewPond} >
+            {isCreate ? "Create" : "Save Changes"}
           </button>
-          ) : (
+          ) : null}
+          {isEditing ? (
             <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(true)}>
               Edit
             </button>
-          )}
+          ) : null}
         </div>
 
 
