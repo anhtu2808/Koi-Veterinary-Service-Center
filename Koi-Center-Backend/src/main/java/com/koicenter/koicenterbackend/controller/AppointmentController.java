@@ -34,8 +34,8 @@ public class AppointmentController {
 
 
     // api get Appointment detail
-    @GetMapping("/detail")
-    public ResponseEntity<ResponseObject> getAppointmentDetailById(@RequestParam String appointmentId) {
+    @GetMapping("/{appointmentId}")
+    public ResponseEntity<ResponseObject> getAppointmentDetailById(@PathVariable String appointmentId) {
         AppointmentResponse listAppointment = appointmentService.getAppointmentByAppointmentId(appointmentId);
         if (listAppointment != null) {
             return ResponseObject.APIRepsonse(200, "Appointment found", HttpStatus.OK, listAppointment);
