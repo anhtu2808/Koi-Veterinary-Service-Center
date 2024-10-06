@@ -10,6 +10,5 @@ import java.util.List;
 @Repository
 public interface KoiTreatmentRepository extends JpaRepository<KoiTreatment, String> {
     List<KoiTreatment> findKoiTreatmentsByAppointment_AppointmentId(String appointmentId);
-    KoiTreatment findByAppointment_AppointmentIdAndKoi_KoiId(String appointmentId, String koiId);
 
 }
