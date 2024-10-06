@@ -221,10 +221,13 @@ export const createMedicineAPI = async (data) => {
 
 
 //Prescription API
-export const createPrescriptionAPI = async (appointmentId, data) => {
-    const response = await api.post(`/prescriptions/${appointmentId}`, data)
-    return response.data;
+export const createPrescriptionAPI = async (data) => {
+        const response = await api.post(`/prescriptions`,data);
+        return response.data;
 }
+
+
+
 //Treatment API
 export const updateKoiTreatmentAPI = async (updatedData) => {
     const response = await api.put(`/treatments/updateKoiTreatment`, updatedData)
