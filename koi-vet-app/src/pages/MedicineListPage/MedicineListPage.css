@@ -1,0 +1,20 @@
+.abc {
+  display: flex;
+  justify-content: center; /* Center the search bar */
+  margin: 10px 0;
+}
+
+.search-container {
+  display: flex; /* Ensure the container is using flex layout */
+  align-items: center; /* Vertically align items */
+}
+
+.search-icon {
+  margin-right: 5px; /* Add some spacing between the icon and input */
+  display: flex;
+  align-items: center;
+}
+
+.input{
+  background-color: #fff;
+}

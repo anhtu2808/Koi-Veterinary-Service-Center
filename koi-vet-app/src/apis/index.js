@@ -216,3 +216,11 @@ export const createMedicineAPI = async (data) => {
     const response = await api.post(`/medicines`, data)
     return response.data;
 }
+
+
+
+//Prescription API
+export const createPrescriptionAPI = async (appointmentId, data) => {
+    const response = await api.post(`/prescriptions/${appointmentId}`, data)
+    return response.data;
+}
