@@ -1,10 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
-import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
-import com.koicenter.koicenterbackend.model.request.treament.TreamentRequest;
-import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.koi.KoiTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
@@ -60,18 +57,18 @@ public class TreatmentController {
             return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND,"");
         }
     }
-    @PutMapping("/updatePondTreament")
+    @PutMapping("/updatePondTreatment")
     public ResponseEntity<ResponseObject> updatePondTreament(@RequestBody PondTreatmentRequest pondTreatmentRequest) {
-        PondTreatmentResponse pondTreatmentResponse =  treatmentService.updatePondTreament(pondTreatmentRequest);
+        PondTreatmentResponse pondTreatmentResponse =  treatmentService.updatePondTreatment(pondTreatmentRequest);
         if (pondTreatmentResponse != null) {
             return ResponseObject.APIRepsonse(200, "UPDATE PONDTREAMENT SUCCESSFULLY", HttpStatus.OK, pondTreatmentRequest);
         } else {
             return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST, "");
         }
     }
-    @PutMapping("/updateKoiTreament")
+    @PutMapping("/updateKoiTreatment")
     public ResponseEntity<ResponseObject> updateKoiTreament(@RequestBody KoiTreatmentRequest koiTreatmentRequest) {
-        KoiTreatmentResponse koiTreatmentResponse =  treatmentService.updateKoiTreament(koiTreatmentRequest);
+        KoiTreatmentResponse koiTreatmentResponse =  treatmentService.updateKoiTreatment(koiTreatmentRequest);
         if (koiTreatmentResponse != null) {
             return ResponseObject.APIRepsonse(200, "UPDATE KOITREAMENT SUCCESSFULLY", HttpStatus.OK, koiTreatmentResponse);
         } else {
