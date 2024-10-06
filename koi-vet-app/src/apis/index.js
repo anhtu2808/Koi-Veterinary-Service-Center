@@ -217,3 +217,9 @@ export const createMedicineAPI = async (data) => {
     const response = await api.post(`/medicines`, data)
     return response.data;
 }
+
+//Treatment API
+export const updateKoiInTreatmentAPI = async (updatedData) => {
+    const response = await api.put(`/treatments/updateKoiTreatment`, updatedData)
+    return response.data;
+}

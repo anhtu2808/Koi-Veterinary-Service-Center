@@ -106,7 +106,7 @@ public class AppointmentService {
         if(appointment.getVeterinarian()!=null){
 
             response.setVetId(appointment.getVeterinarian().getVetId());
-            response.setVetName(veterinarianRepository.findByVetId(appointment.getVeterinarian().getVetId()).getUser().getFullName());
+            response.setVetName(appointment.getVeterinarian().getUser().getFullName());
         }
         return response;
     }
@@ -286,6 +286,7 @@ public class AppointmentService {
                     .build();
             if (appointment.getVeterinarian() != null) {
                 response.setVetId(appointment.getVeterinarian().getVetId());
+                response.setVetName(appointment.getVeterinarian().getUser().getFullName());
             }
             appointmentResponses.add(response);
 
