@@ -57,10 +57,10 @@ public class PondController {
     @PostMapping()
     public ResponseEntity<ResponseObject> createPond (@RequestBody PondRequest pondRequest){
         if(pondRequest != null ){
-            pondService.createPond(pondRequest);
-            return ResponseObject.APIRepsonse(200, "POND create successfully!", HttpStatus.CREATED, "");
+
+            return ResponseObject.APIRepsonse(200, "POND create successfully!", HttpStatus.CREATED, pondService.createPond(pondRequest));
         }else{
-            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST,"");
+            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST,null);
         }
     }
 }

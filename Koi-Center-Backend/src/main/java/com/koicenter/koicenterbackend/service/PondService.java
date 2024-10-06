@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
+import com.koicenter.koicenterbackend.mapper.PondMapper;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
@@ -20,6 +21,7 @@ public class PondService {
     @Autowired
     PondRepository pondRepository;
 
+    PondMapper pondMapper;
     //check hồ
 
     public List<Pond> getAllPonds() {
@@ -61,24 +63,12 @@ public class PondService {
         pond.setImage(request.getImage());
         pond.setFilterSystem(request.getFilterSystem());
         pond.setWaterQuality(request.getWaterQuality());
-
-        pondRepository.save(pond);
-
-        PondResponse pondResponse = new PondResponse();
-        pondResponse.setStatus(request.getStatus());
-        pondResponse.setDepth(request.getDepth());
-        pondResponse.setPerimeter(request.getPerimeter());
-        pondResponse.setTemperature(request.getTemperature());
-        pondResponse.setNotes(request.getNotes());
-        pondResponse.setImage(request.getImage());
-        pondResponse.setFilterSystem(request.getFilterSystem());
-        pondResponse.setWaterQuality(request.getWaterQuality());
-        return pondResponse;
+        return pondMapper.toPondResponse( pondRepository.save(pond)) ;
     }
 
 
 
-    public void createPond (PondRequest pondRequest){
+    public PondResponse createPond (PondRequest pondRequest){
         Pond pond = new Pond();
         pond.setStatus(pondRequest.getStatus());
         pond.setDepth(pondRequest.getDepth());
@@ -91,6 +81,6 @@ public class PondService {
         Customer customer = new Customer();
         customer.setCustomerId(pondRequest.getCustomerId());
         pond.setCustomer(customer);
-        pondRepository.save(pond);
+        return pondMapper.toPondResponse( pondRepository.save(pond)) ;
     }
 }
