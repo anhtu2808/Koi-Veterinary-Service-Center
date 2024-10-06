@@ -15,4 +15,5 @@ public class KoiTreatmentRequest {
     String appointmentId;
     String healthIssue;
     String treatment;
+    String prescription_id ;
 }

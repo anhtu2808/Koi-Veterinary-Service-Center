@@ -6,6 +6,7 @@ import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
 import com.koicenter.koicenterbackend.mapper.koi.KoiTreatmentMapper;
 import com.koicenter.koicenterbackend.model.entity.KoiTreatment;
 import com.koicenter.koicenterbackend.model.entity.PondTreatment;
+import com.koicenter.koicenterbackend.model.entity.Prescription;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
@@ -39,6 +40,8 @@ public class TreatmentService {
     AppointmentService appointmentService;
     KoiRepository koiRepository ;
     KoiTreatmentService koiTreatmentService ;
+    PrescriptionRepository prescriptionRepository;
+
     public <T> List<T> createAppointments(List<String> selected, AppointmentRequest appointmentRequest) {
 //        log.info("vetId "+ appointmentRequest.getVetId());
         AppointmentResponse appointmentResponse =  appointmentService.createAppointment(appointmentRequest);
@@ -71,7 +74,12 @@ public class TreatmentService {
         return treatmentResponseList;
     }
     public PondTreatmentResponse updatePondTreament (PondTreatmentRequest pondTreatmentRequest){
+
         PondTreatment pondTreatment = pondTreatmentRepository.findByAppointment_AppointmentIdAndPond_PondId(pondTreatmentRequest.getAppointmentId(), pondTreatmentRequest.getPondId());
+        if (!pondTreatmentRequest.getPrescription_id().isEmpty()){
+            Prescription prescription =prescriptionRepository.findById(pondTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
+            pondTreatment.setPrescription(prescription);
+        }
         pondTreatment.setHealthIssue(pondTreatmentRequest.getHealthIssue());
         pondTreatment.setTreatment(pondTreatmentRequest.getTreatment());
         pondTreatmentRepository.save(pondTreatment);
@@ -80,7 +88,12 @@ public class TreatmentService {
         return  pondTreatmentResponse ;
     }
     public KoiTreatmentResponse updateKoiTreament (KoiTreatmentRequest koiTreatmentRequest){
+
         KoiTreatment koiTreatment = koiTreatmentRepository.findByAppointment_AppointmentIdAndKoi_KoiId(koiTreatmentRequest.getAppointmentId(), koiTreatmentRequest.getKoiId());
+        if (!koiTreatmentRequest.getPrescription_id().isEmpty()){
+            Prescription prescription =prescriptionRepository.findById(koiTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
+            koiTreatment.setPrescription(prescription);
+        }
         koiTreatment.setHealthIssue(koiTreatmentRequest.getHealthIssue());
         koiTreatment.setTreatment(koiTreatmentRequest.getTreatment());
         koiTreatmentRepository.save(koiTreatment);
