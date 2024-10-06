@@ -139,5 +139,37 @@ public class PrescriptionService {
         }
         return prescriptionResponses;
     }
+
+    public PrescriptionResponse getPrescriptionById(String id) {
+        Prescription prescription = prescriptionRepository.findById(id).orElseThrow(() ->
+                new AppException(ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getCode(),
+                        ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        PrescriptionResponse prescriptionResponse = new PrescriptionResponse();
+        prescriptionResponse.setId(prescription.getId());
+        prescriptionResponse.setName(prescription.getName());
+        prescriptionResponse.setCreatedDate(prescription.getCreatedDate());
+        prescriptionResponse.setNote(prescription.getNote());
+        prescriptionResponse.setAppointmentId(prescription.getAppointmentId());
+
+        Set<PrescriptionMedicineResponse> prescriptionMedicineResponses = new HashSet<>();
+        for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()) {
+            PrescriptionMedicineResponse prescriptionMedicineResponse = new PrescriptionMedicineResponse();
+
+            Medicine medicine = prescriptionMedicine.getMedicine();
+            MedicineResponse medicineResponse = new MedicineResponse();
+            medicineResponse.setMedicineId(medicine.getMedicineId());
+            medicineResponse.setName(medicine.getName());
+            medicineResponse.setDescription(medicine.getDescription());
+
+            prescriptionMedicineResponse.setMedicine(medicineResponse);
+            prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
+            prescriptionMedicineResponse.setDosage(prescriptionMedicine.getDosage());
+            prescriptionMedicineResponses.add(prescriptionMedicineResponse);
+        }
+
+        prescriptionResponse.setPrescriptionMedicines(prescriptionMedicineResponses);
+
+        return prescriptionResponse;
+    }
 }
 

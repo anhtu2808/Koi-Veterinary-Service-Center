@@ -58,5 +58,17 @@ public class PrescriptionController {
             return ResponseObject.APIRepsonse(404, "No prescriptions found", HttpStatus.NOT_FOUND, null);
         }
     }
+
+
+    @GetMapping("/{prescriptionId}")
+    public ResponseEntity<ResponseObject> getPrescriptionById(@PathVariable("prescriptionId") String prescriptionId) {
+        try {
+            PrescriptionResponse pre = prescriptionService.getPrescriptionById(prescriptionId);
+            return ResponseObject.APIRepsonse(200, "Found prescription successfully", HttpStatus.OK, pre);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
+    }
+
 }
 
