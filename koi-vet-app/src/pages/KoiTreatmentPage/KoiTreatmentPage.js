@@ -4,10 +4,12 @@ import Modal from '../../components/Modal/Modal';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import KoiDetail from '../KoiDetail/KoiDetail';
 import { fetchPrescriptionByAppointmentIdAPI } from '../../apis';
+import MedicineListPage from '../MedicineListPage/MedicineListPage';
 
 
 const KoiTreatmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMedicineModalOpen, setIsMedicineModalOpen] = useState(false);
   const [prescriptions, setPrescriptions] = useState([]);
   const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
   const { appointmentId } = useParams();
@@ -35,6 +37,16 @@ const KoiTreatmentPage = () => {
     }
     fetchPrescription()
   }, [appointmentId])
+
+
+
+  const handleOpenMedicineModal = () => {
+    setIsMedicineModalOpen(true);
+  }
+
+  const handleCloseMedicineModal = () => {
+    setIsMedicineModalOpen(false);
+  }
 
   return (
     <div className="container mt-4">
@@ -101,9 +113,18 @@ const KoiTreatmentPage = () => {
               ))}
             </tbody>
           </table>
-          <button className="btn btn-primary">
+          <button className="btn btn-primary" onClick={handleOpenMedicineModal}>
             Add Prescription
           </button>
+          <Modal isOpen={isMedicineModalOpen} onClose={handleCloseMedicineModal}>
+        <MedicineListPage 
+          appointmentId={appointmentId}
+          onPrescriptionCreated={() => {
+            handleCloseMedicineModal();
+            // Có thể thêm logic để refresh danh sách prescription
+          }}
+        />
+      </Modal>
         </div>
       </section>
       <button className="btn btn-primary" onClick={() => navigate(-1)}>Back</button>

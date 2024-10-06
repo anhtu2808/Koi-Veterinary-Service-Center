@@ -11,7 +11,7 @@ import {
 import "./MedicineListPage.css";
 import TextArea from "antd/es/input/TextArea";
 
-function MedicineListPage() {
+function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
   const [medicines, setMedicines] = useState([]);
   const [editingData, setEditingData] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // Trạng thái lưu các dòng đã chọn
@@ -272,7 +272,7 @@ function MedicineListPage() {
     const prescriptionData = {
       name: prescriptionDetails.name,
       note: prescriptionDetails.note,
-      appointmentId: "ea19c7c6-669f-4f97-8cc2-4342dd192061",
+      appointmentId: appointmentId,
       createdDate: new Date(),
       prescriptionMedicines: Object.entries(selectedMedicines).map(
         ([medicineId, details]) => ({
@@ -290,6 +290,8 @@ function MedicineListPage() {
       setPrescriptionDetails({ name: "", note: "" });
       setSelectedMedicines({});
       setSelectedRowKeys([]);
+
+      onPrescriptionCreated();
 
       // Handle success (e.g., show a success message, clear form, etc.)
     } catch (error) {
