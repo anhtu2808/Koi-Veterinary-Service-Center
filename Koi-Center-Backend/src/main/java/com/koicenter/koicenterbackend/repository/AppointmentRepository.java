@@ -25,4 +25,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
 
     List<Appointment> findByStatusOrderByCreatedAtDesc( AppointmentStatus status);
 
+
+
+
+    List<Appointment> findAllByOrderByCreatedAtDesc();
 }

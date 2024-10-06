@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import Modal from '../Modal/Modal';
 import Treatment from '../Treatment/Treatment';
 
-const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois }) => {
+const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois,isVeterinarian }) => {
     const [koiTreatmentList, setKoiTreatmentList] = useState([]);
     const customerId = useSelector(state => state?.user?.customer?.customerId)
     const navigate = useNavigate();
@@ -101,7 +101,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                 <th>{isAppointment ? "Health Issue" : "Health Status"}</th>
                                 <th>{isAppointment ? "Treatment" : "Age"}</th>
                                 <th>Image</th>
-                                <th>PRESCRIPTION</th>
+                                {isAppointment? <th>PRESCRIPTION</th> : <th> Note</th>}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -120,6 +120,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                 <img src="https://visinhcakoi.com/wp-content/uploads/2021/07/ca-koi-showa-2-600x874-1.jpg" alt="hình cá" />
                                             </div>
                                         </td>
+                                        {isAppointment ? (
                                         <td >
                                             <select
                                                 className="form-select w-120"
@@ -135,6 +136,11 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                 ))}
                                             </select>
                                         </td>
+                                        ) : (
+                                            <td>
+                                                {treatment?.koi?.note}
+                                            </td>
+                                        )}
                                         <td>
                                             <div className='d-flex gap-3'>
                                                 {isAppointment ?
@@ -148,9 +154,10 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                     <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${treatment.koi.koiId}`)}>
                                                         View Details
                                                     </button>}
+                                                {isVeterinarian && (
                                                 <button className="btn btn-sm btn-primary" onClick={() => handleUpdateTreatment(treatment.treatment, treatment.healthIssue, treatment.koiTreatmentId)}>
                                                     Enter <br /> Treatment
-                                                </button>
+                                                </button> )}
 
 
 

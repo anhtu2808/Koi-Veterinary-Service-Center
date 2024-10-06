@@ -13,7 +13,7 @@ const InputKoiStep = () => {
   const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
   const dispatch = useDispatch();
   const selected = useSelector(state => state.booking.bookingData.selected);
-
+  const customerId = useSelector(state => state.user?.customer?.customerId);
   const handleAddKoiToBooking = (koiId) => {
     if (selected.includes(koiId)) {
       // If already selected, remove it
@@ -62,6 +62,7 @@ const InputKoiStep = () => {
         <KoiDetail
           isCreate={true}
           isBooking={true}
+          customerId={customerId}
           onClose={handleCloseModal}
           onUpdate={handleKoiUpdate}
         />

@@ -257,7 +257,7 @@ public class AppointmentService {
     public List<AppointmentResponse> getAllAppointments(String status) {
         List<Appointment> appointments;
         if (status.equalsIgnoreCase("ALL")) {
-            appointments = appointmentRepository.findAll();
+            appointments = appointmentRepository.findAllByOrderByCreatedAtDesc();
         } else {
             appointments = appointmentRepository.findByStatusOrderByCreatedAtDesc(AppointmentStatus.valueOf(status));
         }

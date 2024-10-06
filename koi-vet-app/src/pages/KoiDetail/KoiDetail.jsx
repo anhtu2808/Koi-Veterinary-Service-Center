@@ -8,8 +8,7 @@ import { fishSpecies } from "../../utils/constants";
 
 
 
-function KoiDetail({ isCreate,cusId, isUpdate,onClose, onUpdate, appointmentId, isAppointment }) {
-  const customerId = useSelector(state => state?.user?.customer?.customerId);
+function KoiDetail({ isCreate,cusId, isUpdate,onClose, onUpdate, appointmentId, isAppointment, customerId }) {
   const [koiData, setKoiData] = useState({
     breed: "",
     age: "",
@@ -18,6 +17,7 @@ function KoiDetail({ isCreate,cusId, isUpdate,onClose, onUpdate, appointmentId, 
     healthStatus: "",
     note: "",
     image: "",
+    customerId: customerId
   })
   const [isEditing, setIsEditing] = useState(false);
 
@@ -30,7 +30,7 @@ function KoiDetail({ isCreate,cusId, isUpdate,onClose, onUpdate, appointmentId, 
    
       if (isCreate && !isAppointment) { // Customer create new koi
         // Tạo mới Koi
-        const response = await createKoiAPI({...koiData, customerId});
+        const response = await createKoiAPI(koiData);
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Koi
         onClose(); // Close modal popup
