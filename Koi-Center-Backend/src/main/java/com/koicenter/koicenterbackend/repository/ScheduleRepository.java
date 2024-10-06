@@ -22,4 +22,15 @@ public interface ScheduleRepository extends JpaRepository<VetSchedule,String> {
             "                             AND     v.date =:date")
     VetSchedule findVetSchedule(@Param("vetId") String vetId, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime, @Param("date") LocalDate date);
 
+    @Query("SELECT vs FROM VetSchedule vs " +
+            "JOIN vs.veterinarian v " +
+            "JOIN v.services s " +
+            "WHERE v.vetId = :vetId " +
+            "AND s.serviceId = :serviceId " +
+            "AND s.serviceFor = 'ONLINE'")
+    List<VetSchedule> findVetScheduleByVetIdAndServiceIdAndOnline(
+            @Param("vetId") String vetId,
+            @Param("serviceId") String serviceId);
+
+
 }

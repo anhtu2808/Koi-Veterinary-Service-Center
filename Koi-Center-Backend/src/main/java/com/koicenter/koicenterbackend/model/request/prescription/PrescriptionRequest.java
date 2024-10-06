@@ -19,5 +19,6 @@ public class PrescriptionRequest {
     String name;
     ZonedDateTime createdDate;
     String note;
+    String appointmentId;
     Set<PrescriptionMedicineRequest> prescriptionMedicines;
 }

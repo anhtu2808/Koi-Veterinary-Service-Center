@@ -19,9 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +35,7 @@ public class PrescriptionService {
                 .name(prescriptionRequest.getName())
                 .createdDate(prescriptionRequest.getCreatedDate())
                 .note(prescriptionRequest.getNote())
+                .appointmentId(prescriptionRequest.getAppointmentId())
                 .prescriptionMedicines(new HashSet<>())
                 .build();
 
@@ -44,7 +43,7 @@ public class PrescriptionService {
 
         prescriptionRequest.getPrescriptionMedicines().forEach(prescriptionMedicineRequest -> {
 
-            Medicine medicine = medicineRepository.findById(prescriptionMedicineRequest.getMedicine().getMedicineId())
+            Medicine medicine = medicineRepository.findById(prescriptionMedicineRequest.getMedicineId())
                     .orElseThrow(() -> new AppException(ErrorCode.MEDICINE_NOT_EXITS.getCode(),
                             ErrorCode.MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
 
@@ -69,6 +68,7 @@ public class PrescriptionService {
         prescriptionResponse.setName(prescriptionRequest.getName());
         prescriptionResponse.setCreatedDate(prescription.getCreatedDate());
         prescriptionResponse.setNote(prescription.getNote());
+        prescriptionResponse.setAppointmentId(prescription.getAppointmentId());
 
         Set<PrescriptionMedicineResponse> prescriptionMedicineResponses = new HashSet<>();
 
@@ -100,5 +100,44 @@ public class PrescriptionService {
 
     }
 
+
+    public List<PrescriptionResponse> getPrescriptionsByAppointmentId(String appointmentId) {
+
+        List<Prescription> prescriptions = prescriptionRepository.findByAppointmentId(appointmentId);
+        if (prescriptions.isEmpty()) {
+            throw new AppException(ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getCode(),
+                    "No prescriptions found for appointmentId: " + appointmentId,
+                    HttpStatus.NOT_FOUND);
+        }
+        List<PrescriptionResponse> prescriptionResponses = new ArrayList<>();
+
+        for (Prescription prescription : prescriptions) {
+            PrescriptionResponse prescriptionResponse = new PrescriptionResponse();
+            prescriptionResponse.setId(prescription.getId());
+            prescriptionResponse.setName(prescription.getName());
+            prescriptionResponse.setCreatedDate(prescription.getCreatedDate());
+            prescriptionResponse.setNote(prescription.getNote());
+            prescriptionResponse.setAppointmentId(prescription.getAppointmentId());
+
+            Set<PrescriptionMedicineResponse> prescriptionMedicineResponses = new HashSet<>();
+            for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()) {
+                PrescriptionMedicineResponse prescriptionMedicineResponse = new PrescriptionMedicineResponse();
+
+                Medicine medicine = prescriptionMedicine.getMedicine();
+                MedicineResponse medicineResponse = new MedicineResponse();
+                medicineResponse.setMedicineId(medicine.getMedicineId());
+                medicineResponse.setName(medicine.getName());
+                medicineResponse.setDescription(medicine.getDescription());
+
+                prescriptionMedicineResponse.setMedicine(medicineResponse);
+                prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
+                prescriptionMedicineResponse.setDosage(prescriptionMedicine.getDosage());
+                prescriptionMedicineResponses.add(prescriptionMedicineResponse);
+            }
+            prescriptionResponse.setPrescriptionMedicines(prescriptionMedicineResponses);
+            prescriptionResponses.add(prescriptionResponse);
+        }
+        return prescriptionResponses;
+    }
 }
 

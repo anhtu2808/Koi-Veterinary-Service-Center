@@ -6,11 +6,14 @@ import com.koicenter.koicenterbackend.model.entity.PrescriptionMedicine;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionResponse;
+import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.service.PrescriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -41,6 +44,18 @@ public class PrescriptionController {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
         } catch (Exception e) {
             return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+    }
+
+
+    @GetMapping
+    public ResponseEntity<ResponseObject> getPrescriptionsByAppointmentId(
+            @RequestParam("appointmentId") String appointmentId) {
+        try {
+            List<PrescriptionResponse> prescriptions = prescriptionService.getPrescriptionsByAppointmentId(appointmentId);
+            return ResponseObject.APIRepsonse(200, "Found prescriptions successfully", HttpStatus.OK, prescriptions);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, "No prescriptions found", HttpStatus.NOT_FOUND, null);
         }
     }
 }
