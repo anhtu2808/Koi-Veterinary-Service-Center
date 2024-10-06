@@ -18,6 +18,7 @@ public class PondResponse {
     float temperature;
     String notes;
     String image;
+    String customerId;
     String waterQuality; // Chất lượng nước
     String filterSystem; // Hệ thống lọc
 }
