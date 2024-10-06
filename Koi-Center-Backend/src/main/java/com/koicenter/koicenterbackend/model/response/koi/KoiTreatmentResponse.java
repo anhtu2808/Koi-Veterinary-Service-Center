@@ -16,5 +16,6 @@ public class KoiTreatmentResponse {
     private String koiId;
     private String appointmentId;
     KoiResponse koi;
+String prescription_id ;
 
 }

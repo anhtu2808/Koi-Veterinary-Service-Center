@@ -12,6 +12,7 @@ public interface KoiTreatmentMapper {
     @Mapping(target="koi",ignore = true)
     @Mapping(target="appointmentId",ignore = true)
     @Mapping(source = "koiTreatment.koi.koiId", target = "koiId")
+    @Mapping(source = "koiTreatment.prescription.id",target = "prescription_id")
     KoiTreatmentResponse toKoiTreatmentResponse(KoiTreatment koiTreatment);
 
 }

@@ -99,6 +99,7 @@ public class TreatmentService {
         koiTreatmentRepository.save(koiTreatment);
         KoiTreatmentResponse koiTreatmentResponse = new KoiTreatmentResponse();
         koiTreatmentResponse = koiTreatmentMapper.toKoiTreatmentResponse(koiTreatment);
+//        koiTreatmentResponse.prescription
         return  koiTreatmentResponse ;
     }
 }

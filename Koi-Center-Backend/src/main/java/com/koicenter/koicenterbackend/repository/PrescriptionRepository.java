@@ -11,6 +11,5 @@ import java.util.List;
 
 @Repository
 public interface PrescriptionRepository extends JpaRepository<Prescription, String> {
-    List<Prescription> findByVeterinarianVetId(String veterinarianId);
 
 }
