@@ -219,7 +219,11 @@ export const createMedicineAPI = async (data) => {
 }
 
 //Treatment API
-export const updateKoiInTreatmentAPI = async (updatedData) => {
+export const updateKoiTreatmentAPI = async (updatedData) => {
     const response = await api.put(`/treatments/updateKoiTreatment`, updatedData)
+    return response.data;
+}
+export const updatePondTreatmentAPI = async (updatedData) => {
+    const response = await api.put(`/treatments/updatePondTreatment`, updatedData)
     return response.data;
 }

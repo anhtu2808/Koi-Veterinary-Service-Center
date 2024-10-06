@@ -47,6 +47,7 @@ const KoiTreatmentPage = () => {
         title={"Koi in this appointment"}
         prescriptions={prescriptions}
         updateTrigger={koiUpdateTrigger} //trigger update koi list
+        onUpdateTreatment={handleKoiUpdate}
       />
 
 
