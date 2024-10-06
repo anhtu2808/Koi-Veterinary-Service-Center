@@ -131,7 +131,26 @@ function AllAppointment() {
                 <td>{appointmentDetail.serviceName}</td>
                 <td>{formatTime(appointmentDetail.startTime)}</td>
                 <td>{formatDate(appointmentDetail.appointmentDate)}</td>
-                <td>{appointmentDetail.status}</td>
+                <td>
+                  {(() => {
+                    switch (appointmentDetail.status) {
+                      case APPOINTMENT_STATUS.CREATED:
+                        return <button className="btn btn-sm btn-warning">Waiting Confirm</button>;
+                      case APPOINTMENT_STATUS.BOOKING_COMPLETE:
+                        return <button className="btn btn-sm btn-success">Veterinarian Assigned</button>;
+                      case APPOINTMENT_STATUS.PROCESS:
+                        return <button className="btn btn-sm btn-primary">Process</button>;
+                      case APPOINTMENT_STATUS.READY_FOR_PAYMENT:
+                        return <button className="btn btn-sm btn-warning">Ready For Payment</button>;
+                      case APPOINTMENT_STATUS.FINISH:
+                        return <button className="btn btn-sm btn-success">Finish</button>;
+                      case APPOINTMENT_STATUS.CANCEL:
+                        return <button className="btn btn-sm btn-danger">Cancel</button>;
+                      default:
+                        return <button className="btn btn-sm btn-secondary">Unknown Status</button>;
+                    }
+                  })()}
+                </td>
                 <td>
                   {role === ROLE.CUSTOMER ?
                     <Link

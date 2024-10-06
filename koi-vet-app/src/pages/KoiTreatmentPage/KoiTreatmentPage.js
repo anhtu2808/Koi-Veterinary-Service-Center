@@ -59,6 +59,44 @@ const KoiTreatmentPage = () => {
           onUpdate={handleKoiUpdate}
         />
       </Modal>
+      <br />
+      <section className="mb-5">  
+            <h2 className="h4 font-weight-bold mb-4">PRESCRIPTION</h2>  
+            <div className="overflow-auto">  
+                <table className="table table-bordered">  
+                    <thead className="thead-light">  
+                        <tr>  
+                            <th>Prescription ID </th>
+                            <th>Prescription Name </th>  
+                            <th>Description</th>  
+                            <th >Note</th>  
+                        </tr>  
+                    </thead>  
+                    <tbody>  
+                        <tr>  <td>Prescription 1 </td>
+                            <td>Thuốc đau đầu </td>  
+                            <td>500mg</td>  
+                            <td>Twice daily</td>  
+                        </tr>  
+                        <tr>  <td>Prescription 2 </td>
+
+                            <td>Ibuprofen</td>  
+                            <td>400mg</td>  
+                            <td>Three times daily</td>  
+                        </tr>  
+                        <tr>  
+                            <td>Prescription 3 </td>
+                            <td>Paracetamol</td>  
+                            <td>1000mg</td>  
+                            <td>As needed</td>  
+                        </tr>  
+                    </tbody>  
+                </table>  
+                <button className="btn btn-primary">  
+                 Add Prescription 
+                </button>  
+            </div>  
+        </section>  
       <button className="btn btn-primary" onClick={() => navigate(-1)}>Back</button>
     </div>
   );
