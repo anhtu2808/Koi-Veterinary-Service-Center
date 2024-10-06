@@ -128,6 +128,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/customer/{customerId}/ponds").permitAll()
 
                             .requestMatchers(HttpMethod.DELETE, "/api/v1/prescriptions/{prescriptionMedicineId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/prescriptions/{prescriptionId}").permitAll()
 
 
                             .requestMatchers(HttpMethod.PUT, "/api/v1/deliveries/{deliveryId}").permitAll()
