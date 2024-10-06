@@ -66,6 +66,7 @@ const PondTreatmentPage = () => {
           cusId={customerId}
           isCreate={true}
           isBooking={false}
+          isVeterinarian={true}
           isAppointment={true}
           appointmentId={appointmentId}
           onClose={handleCloseModal}
