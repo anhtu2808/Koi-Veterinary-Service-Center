@@ -8,19 +8,29 @@ import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
+import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.PondRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Slf4j
 
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class PondService {
 
     @Autowired
     PondRepository pondRepository;
 
+    @Autowired
+    CustomerRepository customerRepository;
     PondMapper pondMapper;
     //check hồ
 
@@ -78,8 +88,7 @@ public class PondService {
         pond.setImage(pondRequest.getImage());
         pond.setFilterSystem(pondRequest.getFilterSystem());
         pond.setWaterQuality(pondRequest.getWaterQuality());
-        Customer customer = new Customer();
-        customer.setCustomerId(pondRequest.getCustomerId());
+        Customer customer = customerRepository.findByCustomerId(pondRequest.getCustomerId());
         pond.setCustomer(customer);
         return pondMapper.toPondResponse( pondRepository.save(pond)) ;
     }
