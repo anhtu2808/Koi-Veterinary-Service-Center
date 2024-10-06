@@ -15,4 +15,6 @@ public class PondTreatmentRequest {
     private String appointmentId;
     private String healthIssue;
     private String treatment;
+    String prescription_id ;
+
 }

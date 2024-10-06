@@ -28,8 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -68,22 +67,25 @@ public class VetScheduleService {
         if (vetSchedule.getAppointmentType().toString().equals("CENTER") || vetSchedule.getAppointmentType().toString().equals("ONLINE")) {
             for (LocalDate localDate : allDay) { // ngay hom do
                 DayResponse dates = new DayResponse();
-                List<SlotResponse> slotResponsesList = new ArrayList<>();
+                Set<SlotResponse> uniqueSlots = new TreeSet<>(Comparator.comparing(SlotResponse::getStartTime).thenComparing(SlotResponse::getEndTime));
+
+
                 for (VetSchedule vetScheduleEntry : vetSchedule1) {
                     if (vetScheduleEntry.getDate().equals(localDate) && vetScheduleEntry.getCustomerBookingCount() == 0  &&  vetSchedule.getAppointmentType().toString().equals("ONLINE")||vetScheduleEntry.getDate().equals(localDate) && vetScheduleEntry.getCustomerBookingCount() < 2 &&  vetSchedule.getAppointmentType().toString().equals("CENTER")) { // ngay va so luong khach da dăt
                         SlotResponse slotResponse = new SlotResponse();
                         slotResponse.setStartTime(vetScheduleEntry.getStartTime());
                         slotResponse.setEndTime(vetScheduleEntry.getEndTime());
-                        slotResponsesList.add(slotResponse);
+                        uniqueSlots.add(slotResponse);
                     }
                 }
-                if (!slotResponsesList.isEmpty()) {
+                if (!uniqueSlots.isEmpty()) {
                     dates.setDay(localDate);
-                    dates.setSlots(slotResponsesList);
+                    dates.setSlots(new ArrayList<>(uniqueSlots));
                     dayResponses.add(dates);
                 }
             }
-        } else if (vetSchedule.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
+        }
+        else if (vetSchedule.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
             // Logic xử lý cho loại hẹn MOBILE nếu cần
             for (LocalDate localDate : allDay) {
                 DayResponse dates = new DayResponse();
