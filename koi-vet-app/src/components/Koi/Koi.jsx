@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Koi.css';
 import { useNavigate } from 'react-router-dom';
-import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI, updateKoiTreatmentAPI } from '../../apis';
-import { fetchPrescriptionByAppointmentId } from '../../apis/PrescriptionMockData';
+import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI, updateKoiTreatmentAPI, fetchPrescriptionByAppointmentIdAPI } from '../../apis';
 import { toast } from 'react-toastify';
 import Modal from '../Modal/Modal';
 import Treatment from '../Treatment/Treatment';
@@ -54,7 +53,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
             }
         };
         const fetchPrescriptions = async () => {
-            const response = await fetchPrescriptionByAppointmentId(appointmentId)
+            const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
             setPrescriptions(response.data)
         }
         fetchKois();
@@ -64,16 +63,28 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
     // lưu lại đơn thuốc
     const handleChangePrescription = (treatmentId, prescriptionId, koiId) => {
         const updatePrescriptionId = async () => {
-            const response = await updateKoiTreatmentAPI({
-                koiTreatmentId: treatmentId,
-                prescription_id:prescriptionId==="None"?null:prescriptionId,
-                koiId: koiId,
-            })
-            toast.success(response.message)
-        }
-        updatePrescriptionId()
+            try {
+                const response = await updateKoiTreatmentAPI({
+                    koiTreatmentId: treatmentId,
+                    prescription_id: prescriptionId === "None" ? null : prescriptionId,
+                    koiId: koiId,
+                });
+                toast.success(response.message);
 
-    }
+                // Update the local state or data source to reflect the change
+                setKoiTreatmentList(prevList =>
+                    prevList.map(treatment =>
+                        treatment.koiTreatmentId === treatmentId
+                            ? { ...treatment, prescription_id: prescriptionId === "None" ? null : prescriptionId }
+                            : treatment
+                    )
+                );
+            } catch (error) {
+                toast.error('Failed to update prescription');
+            }
+        };
+        updatePrescriptionId();
+    };
 
     return (
         <div className="container mt-4">
@@ -116,8 +127,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                 onChange={(e) => handleChangePrescription(treatment?.koiTreatmentId, e.target.value, treatment?.koi?.koiId)}
                                                 value={treatment.prescription_id || "None"}
                                             >
-                                                {console.log(treatment.prescription_id)}
-                                                <option value="None">None</option> 
+                                                <option value="None">None</option>
                                                 {prescriptions.map(prescription => (
                                                     <option key={prescription.id} value={prescription.id}>
                                                         {prescription.name}
@@ -138,7 +148,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                     <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${treatment.koi.koiId}`)}>
                                                         View Details
                                                     </button>}
-                                                <button className="btn btn-sm btn-primary" onClick={()=>handleUpdateTreatment(treatment.treatment, treatment.healthIssue, treatment.koiTreatmentId)}>
+                                                <button className="btn btn-sm btn-primary" onClick={() => handleUpdateTreatment(treatment.treatment, treatment.healthIssue, treatment.koiTreatmentId)}>
                                                     Enter <br /> Treatment
                                                 </button>
 

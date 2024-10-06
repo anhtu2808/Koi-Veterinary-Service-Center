@@ -75,7 +75,9 @@ public class TreatmentService {
     }
     public PondTreatmentResponse updatePondTreatment(PondTreatmentRequest pondTreatmentRequest){
 
-        PondTreatment pondTreatment = pondTreatmentRepository.findByAppointment_AppointmentIdAndPond_PondId(pondTreatmentRequest.getAppointmentId(), pondTreatmentRequest.getPondId());
+        PondTreatment pondTreatment = pondTreatmentRepository.findById(pondTreatmentRequest.getPondTreatmentId()).orElseThrow(()->
+                new RuntimeException("PondTreatment not found"));
+
         if (pondTreatmentRequest.getPrescription_id()!=null){
             Prescription prescription =prescriptionRepository.findById(pondTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
             pondTreatment.setPrescription(prescription);
@@ -101,6 +103,8 @@ public class TreatmentService {
         if (koiTreatmentRequest.getPrescription_id()!=null){
             Prescription prescription =prescriptionRepository.findById(koiTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
             koiTreatment.setPrescription(prescription);
+        }else{
+            koiTreatment.setPrescription(null);
         }
         if (koiTreatmentRequest.getHealthIssue()!=null){
             koiTreatment.setHealthIssue(koiTreatmentRequest.getHealthIssue());
