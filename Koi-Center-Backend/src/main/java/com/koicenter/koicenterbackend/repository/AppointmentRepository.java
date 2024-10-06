@@ -1,13 +1,13 @@
 package com.koicenter.koicenterbackend.repository;
 
 import com.koicenter.koicenterbackend.model.entity.Appointment;
+import com.koicenter.koicenterbackend.model.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment,String> {
@@ -22,5 +22,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
 
     @Query(value = "SELECT * FROM koi_vet_db.appointment WHERE vet_id = :vetId", nativeQuery = true)
     List<Appointment> findAllByVetId(@Param("vetId") String vetId);
+
+    List<Appointment> findByStatusOrderByCreatedAtDesc( AppointmentStatus status);
 
 }

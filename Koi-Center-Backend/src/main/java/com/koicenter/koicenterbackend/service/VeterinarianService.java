@@ -34,6 +34,8 @@ public class VeterinarianService {
     ServicesRepository servicesRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ServiceService serviceService;
 
     //GET Veteriance ID
     public VeterinarianResponse getVeterinarianById(String veterinarianId) {
@@ -111,6 +113,14 @@ public class VeterinarianService {
 
 
         Veterinarian veterinarian = new Veterinarian();
+        if(!veterinarianRequest.getService().isEmpty()){
+            List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
+            for (String service : veterinarianRequest.getService()) {
+                services.add(servicesRepository.findByServiceId(service));
+            }
+            veterinarian.setServices(services);
+
+        }
         veterinarian.setDescription(veterinarianRequest.getDescription());
         veterinarian.setGoogleMeet(veterinarianRequest.getGoogle_meet());
         veterinarian.setPhone(veterinarianRequest.getPhone());
@@ -119,12 +129,7 @@ public class VeterinarianService {
         veterinarian.setVeterinarianStatus(VeterinarianStatus.AVAILABLE);
         veterinarian.setUser(newVeterinarian);
 
-        List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
-        for (String service : veterinarianRequest.getService()) {
-            services.add(servicesRepository.findByServiceId(service));
-        }
 
-        veterinarian.setServices(services);
 
         veterinarianRepository.save(veterinarian);
     }

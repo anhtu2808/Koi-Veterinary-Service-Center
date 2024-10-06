@@ -6,6 +6,7 @@ import com.koicenter.koicenterbackend.model.request.appointment.AppointmentReque
 import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
+import com.koicenter.koicenterbackend.model.response.schedual.DayResponse;
 import com.koicenter.koicenterbackend.model.response.veterinarian.VetScheduleResponse;
 import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
 import com.koicenter.koicenterbackend.service.VetScheduleService;
@@ -62,4 +63,16 @@ public class VetScheduleController {
             return ResponseObject.APIRepsonse(404, "Veterinarians not found", HttpStatus.NOT_FOUND, "");
         }
     }
+
+
+    @GetMapping("/vetschedules")
+    public ResponseEntity<ResponseObject> getVetSchedules(@RequestParam String vetId, @RequestParam String serviceId) {
+        List<DayResponse> list = vetScheduleService.getVetSchedules(vetId, serviceId);
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(200, "Veterinarians schedule found successfully ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Veterinarians schedule not found", HttpStatus.NOT_FOUND,"");
+        }
+    }
+
 }

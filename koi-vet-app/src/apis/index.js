@@ -96,7 +96,7 @@ export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
 }
 
 export const fetchAppointmentByIdAPI = async (appointmentId) => {
-    const response = await api.get(`appointments/detail?appointmentId=${appointmentId}`);
+    const response = await api.get(`appointments/${appointmentId}`);
     return response.data;
 }
 
@@ -110,9 +110,10 @@ export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
 }
 
 export const addKoiToAppointmentAPI = async (appointmentId, koiData) => {
-    // const response = await api.post(`/appointments/${appointmentId}/kois`, koiData);
-    // return response.data;
-    return Promise.resolve({ data: { message: "Success" } });// fake api
+    const saveKoi = await createKoiAPI(koiData)
+
+    const response = await api.post(`/treatments/kois`, {koiId:saveKoi.data.koiId, appointmentId:appointmentId});
+    return response.data;
 }
 
 //API Schedule
@@ -222,5 +223,14 @@ export const createMedicineAPI = async (data) => {
 //Prescription API
 export const createPrescriptionAPI = async (appointmentId, data) => {
     const response = await api.post(`/prescriptions/${appointmentId}`, data)
+    return response.data;
+}
+//Treatment API
+export const updateKoiTreatmentAPI = async (updatedData) => {
+    const response = await api.put(`/treatments/updateKoiTreatment`, updatedData)
+    return response.data;
+}
+export const updatePondTreatmentAPI = async (updatedData) => {
+    const response = await api.put(`/treatments/updatePondTreatment`, updatedData)
     return response.data;
 }

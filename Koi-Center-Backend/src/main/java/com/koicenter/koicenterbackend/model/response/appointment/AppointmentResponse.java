@@ -31,4 +31,5 @@ public class AppointmentResponse {
      String serviceId;
      String serviceName;
      String vetId;
+     String vetName;
 }
