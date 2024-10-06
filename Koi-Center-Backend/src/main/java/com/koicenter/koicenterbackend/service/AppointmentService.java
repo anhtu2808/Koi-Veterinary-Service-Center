@@ -211,9 +211,7 @@ public class AppointmentService {
                 veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
             }
             com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
-            if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian().getVetId().equals(vetId)) {
-                //NEU KHONG DOI THOI GIAN , KHONG DOI BAC SI
-            } else if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian().getVetId().equals("SKIP")) {
+            if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian() == null) {
                 VetScheduleRequest vetScheduleRequest1 = VetScheduleRequest.builder()
                         .vet_id(appointmentRequest.getVetId())
                         .startTime(appointmentRequest.getStartTime())
@@ -221,7 +219,12 @@ public class AppointmentService {
                         .date(appointmentRequest.getAppointmentDate())
                         .build();
                 VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest1, count);
-            } else {
+            }
+             else if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian().getVetId().equals(vetId)) {
+                //NEU KHONG DOI THOI GIAN , KHONG DOI BAC SI
+            }
+
+            else {
                 VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
                         .vet_id(appointment.getVeterinarian().getVetId())
                         .endTime(appointment.getEndTime())
@@ -257,7 +260,7 @@ public class AppointmentService {
     public List<AppointmentResponse> getAllAppointments(String status) {
         List<Appointment> appointments;
         if (status.equalsIgnoreCase("ALL")) {
-            appointments = appointmentRepository.findAll();
+            appointments = appointmentRepository.findAllByOrderByCreatedAtDesc();
         } else {
             appointments = appointmentRepository.findByStatusOrderByCreatedAtDesc(AppointmentStatus.valueOf(status));
         }

@@ -237,3 +237,9 @@ export const updatePondTreatmentAPI = async (updatedData) => {
     const response = await api.put(`/treatments/updatePondTreatment`, updatedData)
     return response.data;
 }
+
+//prescription API
+export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/prescriptions?appointmentId=${appointmentId}`)
+    return response.data;
+}

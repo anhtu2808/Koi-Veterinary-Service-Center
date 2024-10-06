@@ -3,7 +3,7 @@ import Koi from '../../components/Koi/Koi';
 import Modal from '../../components/Modal/Modal';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import KoiDetail from '../KoiDetail/KoiDetail';
-import { fetchPrescriptionByAppointmentId } from '../../apis/PrescriptionMockData';
+import { fetchPrescriptionByAppointmentIdAPI } from '../../apis';
 
 
 const KoiTreatmentPage = () => {
@@ -29,8 +29,8 @@ const KoiTreatmentPage = () => {
     setKoiUpdateTrigger(prev => prev + 1);
   };
   useEffect(() => {
-     const fetchPrescription = async () => {
-      const response = await fetchPrescriptionByAppointmentId(appointmentId)
+    const fetchPrescription = async () => {
+      const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
       setPrescriptions(response.data)
     }
     fetchPrescription()
@@ -79,8 +79,8 @@ const KoiTreatmentPage = () => {
               <tr>
                 <th>Prescription ID </th>
                 <th>Prescription Name </th>
-                <th>Description</th>
                 <th >Note</th>
+                <th>Action</th>
               </tr>
             </thead>
 
@@ -90,8 +90,12 @@ const KoiTreatmentPage = () => {
                 <tr key={prescription.id}>
                   <td>{prescription.id}</td>
                   <td>{prescription.name}</td>
-                  <td>{prescription.description}</td>
                   <td>{prescription.note}</td>
+                  <td>
+                    <button className="btn btn-primary">
+                      View Details
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
