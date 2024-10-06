@@ -152,10 +152,7 @@ export const createPondAPI = async (data) => {
     return response.data;
 }
 
-export const fetchPondByAppointmentIdAPI = async (appointmentId) => {
-    const response = await api.get(`/appointments/${appointmentId}/ponds`);
-    return response.data;
-}
+
 export const fetchPondsByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/treatments/ponds/${appointmentId}`);
     return response.data;

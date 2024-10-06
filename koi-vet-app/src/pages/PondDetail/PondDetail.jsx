@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PondDetail.css";
-import { fetchPondByPondIdAPI, updatePondInformationAPI, addNewPondAPI, addPondToAppointmentAPI } from "../../apis";
+import { fetchPondByPondIdAPI, updatePondInformationAPI, addPondToAppointmentAPI } from "../../apis";
 import { useParams } from "react-router-dom";
 
 const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointmentId, isVeterinarian, isAppointment, cusId }) => {
