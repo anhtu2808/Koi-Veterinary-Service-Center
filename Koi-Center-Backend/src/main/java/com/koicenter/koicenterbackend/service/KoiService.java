@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
+import com.koicenter.koicenterbackend.mapper.koi.KoiMapper;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Koi;
 import com.koicenter.koicenterbackend.model.request.koi.KoiRequest;
@@ -27,6 +28,7 @@ public class KoiService {
 
     @Autowired
      KoiRepository koiRepository;
+    KoiMapper koiMapper;
 
     public List<Koi> getAllKoi(){
         return koiRepository.findAll();
@@ -76,7 +78,7 @@ public class KoiService {
         return koiResponse;
 
     }
-        public void createKoi (KoiRequest koiRequest){
+        public KoiResponse createKoi (KoiRequest koiRequest){
             Koi koi = new Koi();
             koi.setBreed(koiRequest.getBreed());
             koi.setAge(koiRequest.getAge());
@@ -88,6 +90,6 @@ public class KoiService {
             Customer customer = new Customer();
             customer.setCustomerId(koiRequest.getCustomerId());
             koi.setCustomer(customer);
-            koiRepository.save(koi);
+            return koiMapper.toKoiResponse( koiRepository.save(koi)) ;
         }
 }

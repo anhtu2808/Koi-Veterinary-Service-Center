@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PrescriptionMedicineRequest {
-    MedicineRequest medicine;
+    String medicineId;
     int quantity;
     String dosage;
 }

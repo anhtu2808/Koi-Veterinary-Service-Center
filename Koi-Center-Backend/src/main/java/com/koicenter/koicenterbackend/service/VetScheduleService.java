@@ -1,5 +1,7 @@
 package com.koicenter.koicenterbackend.service;
 
+import com.koicenter.koicenterbackend.exception.AppException;
+import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.mapper.UserMapper;
 import com.koicenter.koicenterbackend.mapper.VetScheduleMapper;
 import com.koicenter.koicenterbackend.mapper.VeterinariansMapper;
@@ -13,6 +15,7 @@ import com.koicenter.koicenterbackend.model.response.schedual.SlotResponse;
 import com.koicenter.koicenterbackend.model.response.veterinarian.VetScheduleResponse;
 import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
 import com.koicenter.koicenterbackend.repository.ScheduleRepository;
+import com.koicenter.koicenterbackend.repository.ServicesRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
 import lombok.AccessLevel;
@@ -40,6 +43,7 @@ public class VetScheduleService {
     VeterinariansMapper veterinariansMapper;
     UserRepository userRepository;
     UserMapper userMapper;
+    ServicesRepository servicesRepository;
 
     public List<DayResponse> getScheduleForBooking(VetScheduleRequest vetSchedule) {
         List<VetScheduleResponse> vetSchedules = new ArrayList<>();
@@ -173,6 +177,56 @@ public class VetScheduleService {
          }
 
     }
+
+
+    public List<DayResponse> getVetSchedules(String vetId, String serviceId) {
+
+        com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findById(serviceId).orElseThrow(()
+                -> new AppException(ErrorCode.SERVICE_ID_NOT_EXITS.getCode(),
+                ErrorCode.SERVICE_ID_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+
+        Veterinarian veterinarian = veterinarianRepository.findById(vetId).orElseThrow(()
+                -> new AppException(ErrorCode.VETERINARIAN_ID_NOT_EXITS.getCode(),
+                ErrorCode.VETERINARIAN_ID_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+
+        List<VetSchedule> schedules = scheduleRepository
+                .findVetScheduleByVetIdAndServiceIdAndOnline(vetId, serviceId);
+
+        if (schedules == null || schedules.isEmpty()) {
+            throw new AppException(ErrorCode.NO_SCHEDULE_FOUND.getCode(),
+                    ErrorCode.NO_SCHEDULE_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        List<DayResponse> dayResponses = new ArrayList<>();
+
+
+        for (VetSchedule schedule : schedules) {
+            LocalDate scheduleDate = schedule.getDate();
+            SlotResponse slotResponse = new SlotResponse(schedule.getStartTime(), schedule.getEndTime());
+
+            DayResponse existingDayResponse = null;
+            for (DayResponse dayResponse : dayResponses) {
+                if (dayResponse.getDay().equals(scheduleDate)) {
+                    existingDayResponse = dayResponse;
+                    break;
+                }
+            }
+
+            if (existingDayResponse != null) {
+                existingDayResponse.getSlots().add(slotResponse);
+            }
+            else {
+                List<SlotResponse> slots = new ArrayList<>();
+                slots.add(slotResponse);
+                DayResponse dayResponse = new DayResponse(scheduleDate, slots);
+                dayResponses.add(dayResponse);
+            }
+        }
+
+        return dayResponses;
+    }
+
+    
 }
 
 

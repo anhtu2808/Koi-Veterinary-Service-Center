@@ -96,12 +96,12 @@ export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
 }
 
 export const fetchAppointmentByIdAPI = async (appointmentId) => {
-    const response = await api.get(`appointments/detail?appointmentId=${appointmentId}`);
+    const response = await api.get(`appointments/${appointmentId}`);
     return response.data;
 }
 
-export const updateAppointmentAPI = async ( appointmentData) => {
-    const response = await api.put(`/appointments/update`, appointmentData);
+export const updateAppointmentAPI = async (appointmentData, appointmentId) => {
+    const response = await api.put(`/appointments/update`, {...appointmentData, appointmentId});
     return response.data;
 }
 export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
@@ -110,9 +110,10 @@ export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
 }
 
 export const addKoiToAppointmentAPI = async (appointmentId, koiData) => {
-    // const response = await api.post(`/appointments/${appointmentId}/kois`, koiData);
-    // return response.data;
-    return Promise.resolve({ data: { message: "Success" } });// fake api
+    const saveKoi = await createKoiAPI(koiData)
+
+    const response = await api.post(`/treatments/kois`, {koiId:saveKoi.data.koiId, appointmentId:appointmentId});
+    return response.data;
 }
 
 //API Schedule
@@ -150,6 +151,10 @@ export const fetchPondByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/appointments/${appointmentId}/ponds`);
     return response.data;
 }
+export const fetchPondsByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/treatments/ponds/${appointmentId}`);
+    return response.data;
+}
 
 
 
@@ -172,8 +177,8 @@ export const createKoiAPI = async (data) => {
     return response.data;
 }
 
-export const fetchKoiByAppointmentIdAPI = async (appointmentId) => {
-    const response = await api.get(`/appointments/${appointmentId}/kois`);
+export const fetchKoisByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/treatments/kois/${appointmentId}`);
     return response.data;
 }
 
@@ -210,5 +215,11 @@ export const updateMedicineByIdAPI = async (medicineId, data) => {
 
 export const createMedicineAPI = async (data) => {
     const response = await api.post(`/medicines`, data)
+    return response.data;
+}
+
+//Treatment API
+export const updateKoiInTreatmentAPI = async (updatedData) => {
+    const response = await api.put(`/treatments/updateKoiTreatment`, updatedData)
     return response.data;
 }

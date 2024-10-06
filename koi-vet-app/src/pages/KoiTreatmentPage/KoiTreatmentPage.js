@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Koi from '../../components/Koi/Koi';
 import Modal from '../../components/Modal/Modal';
-import {  useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import KoiDetail from '../KoiDetail/KoiDetail';
+import { fetchPrescriptionByAppointmentId } from '../../apis/PrescriptionMockData';
 
 
 const KoiTreatmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [prescriptions, setPrescriptions] = useState([]);
   const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
   const { appointmentId } = useParams();
   const location = useLocation();
@@ -26,6 +28,13 @@ const KoiTreatmentPage = () => {
   const handleKoiUpdate = () => {
     setKoiUpdateTrigger(prev => prev + 1);
   };
+  useEffect(() => {
+     const fetchPrescription = async () => {
+      const response = await fetchPrescriptionByAppointmentId(appointmentId)
+      setPrescriptions(response.data)
+    }
+    fetchPrescription()
+  }, [appointmentId])
 
   return (
     <div className="container mt-4">
@@ -36,6 +45,7 @@ const KoiTreatmentPage = () => {
         isAppointment={true} // đây là appointment
         appointmentId={appointmentId}
         title={"Koi in this appointment"}
+        prescriptions={prescriptions}
         updateTrigger={koiUpdateTrigger} //trigger update koi list
       />
 
@@ -59,6 +69,37 @@ const KoiTreatmentPage = () => {
           onUpdate={handleKoiUpdate}
         />
       </Modal>
+      <br />
+      <section className="mb-5">
+        <h2 className="h4 font-weight-bold mb-4">PRESCRIPTION</h2>
+        <div className="overflow-auto">
+          <table className="table table-bordered">
+            <thead className="thead-light">
+              <tr>
+                <th>Prescription ID </th>
+                <th>Prescription Name </th>
+                <th>Description</th>
+                <th >Note</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {/* Chạy vòng for ở đây */}
+              {prescriptions.map(prescription => (
+                <tr key={prescription.id}>
+                  <td>{prescription.id}</td>
+                  <td>{prescription.name}</td>
+                  <td>{prescription.description}</td>
+                  <td>{prescription.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button className="btn btn-primary">
+            Add Prescription
+          </button>
+        </div>
+      </section>
       <button className="btn btn-primary" onClick={() => navigate(-1)}>Back</button>
     </div>
   );

@@ -19,6 +19,10 @@ public enum ErrorCode {
     CUSTOMER_NOT_EXITS(401,"Customer not exits"),
     PRESCRIPTION_MEDICINE_NOT_EXITS(401,"Prescription medicine not exits"),
     DELIVERY_ID_NOT_EXITS(401,"Delivery not exits"),
+    SERVICE_ID_NOT_EXITS(401,"Service not exits"),
+    VETERINARIAN_ID_NOT_EXITS(401,"Vetterinarian not exits"),
+    NO_SCHEDULE_FOUND(401,"No schedule found"),
+    PRESCRIPTION_ID_NOT_FOUND(401,"Prescription id not found"),
     ;
     private int code;
     private String message;
