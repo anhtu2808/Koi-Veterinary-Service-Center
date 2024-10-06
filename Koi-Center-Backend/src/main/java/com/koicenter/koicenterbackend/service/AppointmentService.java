@@ -71,9 +71,12 @@ public class AppointmentService {
                         .customerName(appointment.getCustomer().getUser().getFullName())
                         .serviceId(appointment.getService().getServiceId())
                         .serviceName(appointment.getService().getServiceName())
-                        .vetId(appointment.getVeterinarian().getVetId())
-                        .build();
 
+                        .build();
+                        if(appointment.getVeterinarian()!=null) {
+                            response.setVetId(appointment.getVeterinarian().getVetId());
+                            response.setVetName(appointment.getVeterinarian().getUser().getFullName());
+                        }
                 appointmentResponses.add(response);
             }
         }

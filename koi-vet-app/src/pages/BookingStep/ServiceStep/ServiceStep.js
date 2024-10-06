@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { fetchServiceByTypeAPI} from '../../../apis'
+import { fecthAllServicesAPI, fetchServiceByTypeAPI} from '../../../apis'
 
 import Service from '../../../components/Service/Service'
 
@@ -13,6 +13,7 @@ export const ServiceStep = () => {
         const fetchServiceByType = async () => {
 
             const response = await fetchServiceByTypeAPI(type);
+            // const response = await fecthAllServicesAPI();
             if(response.status === 200){
                 setServices(response.data)
             }

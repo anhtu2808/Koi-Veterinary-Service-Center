@@ -115,7 +115,12 @@ export const addKoiToAppointmentAPI = async (appointmentId, koiData) => {
     const response = await api.post(`/treatments/kois`, {koiId:saveKoi.data.koiId, appointmentId:appointmentId});
     return response.data;
 }
+export const addPondToAppointmentAPI = async (appointmentId, pondData) => {
+    const savePond = await createPondAPI(pondData)
 
+    const response = await api.post(`/treatments/ponds`, {pondId:savePond.data.pondId, appointmentId:appointmentId});
+    return response.data;
+}
 //API Schedule
 export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
     const response = await api.get(`vetSchedules?type=${type}&vetId=${vetId}`);

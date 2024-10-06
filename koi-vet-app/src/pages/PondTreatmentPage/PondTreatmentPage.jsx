@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Koi from '../../components/Koi/Koi';
 import Modal from '../../components/Modal/Modal';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import KoiDetail from '../KoiDetail/KoiDetail';
 import { fetchPrescriptionByAppointmentIdAPI } from '../../apis';
+import Pond from '../../components/Pond/Pond';
+import PondDetail from '../PondDetail/PondDetail';
 
 
-const KoiTreatmentPage = () => {
+const PondTreatmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [prescriptions, setPrescriptions] = useState([]);
   const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
@@ -17,7 +18,7 @@ const KoiTreatmentPage = () => {
   console.log("customerId", customerId)
   const navigate = useNavigate();
   //open modal for when click add new koi BTN
-  const handleAddNewKoi = () => {
+  const handleAddNewPond = () => {
     setIsModalOpen(true);
   };
 
@@ -38,14 +39,14 @@ const KoiTreatmentPage = () => {
 
   return (
     <div className="container mt-4">
-      <h3 className="mb-4">Koi in this appointment</h3>
+      <h3 className="mb-4">Pond in this appointment</h3>
       {/* Existing Koi Table */}
-      <Koi
+     <Pond
         isVeterinarian={true}
         isBooking={false} // đây không phải là booking mà là appointment
         isAppointment={true} // đây là appointment
         appointmentId={appointmentId}
-        title={"Koi in this appointment"}
+        title={"Pond in this appointment"}
         prescriptions={prescriptions}
         updateTrigger={koiUpdateTrigger} //trigger update koi list
         onUpdateTreatment={handleKoiUpdate}
@@ -54,14 +55,14 @@ const KoiTreatmentPage = () => {
 
       {/* Add New Koi Button */}
       <div className="text-center">
-        <button className="btn btn-primary" onClick={() => handleAddNewKoi()}>
-          Add New Koi
+        <button className="btn btn-primary" onClick={() => handleAddNewPond()}>
+          Add New Pond
         </button>
       </div>
 
       {/* Modal for KoiDetail */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <KoiDetail
+        <PondDetail
           cusId={customerId}
           isCreate={true}
           isBooking={false}
@@ -111,4 +112,4 @@ const KoiTreatmentPage = () => {
   );
 };
 
-export default KoiTreatmentPage;
+export default PondTreatmentPage;

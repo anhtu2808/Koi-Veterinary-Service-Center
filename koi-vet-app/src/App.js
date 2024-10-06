@@ -39,6 +39,7 @@ import ServicePageDetail from './pages/ServicePageDetail/ServicePageDetail';
 import KoiTreatmentPage from './pages/KoiTreatmentPage/KoiTreatmentPage';
 import Pond from './components/Pond/Pond';
 import PaymentFailPage from './pages/PaymentFailPage/PaymentFailPage';
+import PondTreatmentPage from './pages/PondTreatmentPage/PondTreatmentPage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -127,6 +128,7 @@ function App() {
                 <Route path="/koiinformation" element={<KoiInformation />} />
                 <Route path="/ponddetail" element={<PondDetail />} />
                 <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage/>} />
+                <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage/>} />
                 <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isCreate={false}/>} />
                 <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true}/>} />
                 <Route path="/invoice" element={<InvoiceListPage />} />

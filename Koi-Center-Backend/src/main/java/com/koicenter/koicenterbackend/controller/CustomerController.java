@@ -59,7 +59,7 @@ public class CustomerController {
             return ResponseEntity.ok(new ResponseObject(200, "Success", listAppointment));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseObject(404, "No appointments found for customer ID: " + customerId, null));
+                    .body(new ResponseObject(404, "No appointments in status " + status, null));
         }
     }
     

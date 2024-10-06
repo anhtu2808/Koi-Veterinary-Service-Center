@@ -223,7 +223,7 @@ function AppointmentDetail() {
 
 
         <button
-          onClick={() => navigate("/admin/inputpondpage")}
+          onClick={() => navigate(`/admin/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
           type="submit"
           className="btn btn-success buttonInEdit"
         >
