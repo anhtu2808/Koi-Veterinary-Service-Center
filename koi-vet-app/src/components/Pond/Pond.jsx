@@ -5,11 +5,32 @@ import { fetchPondByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescripti
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBooking, isAppointment, appointmentId, isVeterinarian }) => {
+import Treatment from '../Treatment/Treatment';
+import Modal from '../Modal/Modal';
+
+const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId, isVeterinarian }) => {
     const navigate = useNavigate();
     const customerId = useSelector(state => state?.user?.customer?.customerId)
     const [pondTreatmentList, setPondTreatmentList] = useState([])
     const [prescriptions, setPrescriptions] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalData, setModalData] = useState({})
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+    //open modal for when click add treatment
+    const handleUpdateTreatment = (treatment, healthIssue, pondTreatmentId) => {
+        setIsModalOpen(true);
+        console.log("debug nef")
+        setModalData({ treatment, healthIssue, pondTreatmentId })
+        console.log({ treatment, healthIssue, pondTreatmentId })
+    };
+
+    const handleSubmitTreatment = () => {
+        onUpdateTreatment();
+        setIsModalOpen(false);
+        onUpdate()
+    };
     // lưu lại đơn thuốc
     const handleChangePrescription = (treatmentId, prescriptionId, pondId) => {
         const updatePrescriptionId = async () => {
@@ -53,16 +74,17 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
             }
         };
         fetchPonds();
-    }, [onUpdate, customerId, isAppointment, appointmentId]);
+    }, [customerId,updateTrigger, isAppointment, appointmentId]);
     return (
         <div className="container mt-4">
             <div className="card mb-4">
                 <div className="card-header input-info-title text-white">
                     <h5 className="mb-0 text-start">{title}</h5>
                 </div>
+                
                 {/* option thiết kế 1 */}
                 {
-                    <div className="card mb-4">
+                    <div className=" mb-4">
 
                         <div className="card-body">
                             {pondTreatmentList.map(pondTreatment => {
@@ -70,8 +92,8 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
                                 return (
                                     <>
 
-                                        <div key={pondTreatment.pond.pondId} className="mb-4 pb-3 border-bottom row align-items-center">
-                                            <div className="col-md-6">
+                                        <div key={pondTreatment.pond.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
+                                            <div className="col-md-6 mt-2">
                                                 <h4>{"Đây là hồ cá pond của anh tú"}</h4>
                                                 <p><strong>Depth:</strong> {pondTreatment.pond.depth} m</p>
                                                 <p><strong>Perimeter:</strong> {pondTreatment.pond.perimeter} m</p>
@@ -87,9 +109,15 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
                                                 <div className='row gap-3'>
                                                     <div className='d-flex row flex-column align-items-center gap-2'>
                                                         <div className='col-md-6'>
-                                                            {isVeterinarian ? <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/ponddetail/${pondTreatment.pond.pondId}`)}>
-                                                                View Details
-                                                            </button>
+                                                            {isVeterinarian ?
+                                                                <>
+                                                                    <button className="btn btn-sm btn-primary px-3" onClick={() => navigate(`/admin/ponddetail/${pondTreatment.pond.pondId}`)}>
+                                                                        View Details
+                                                                    </button>
+                                                                    <button className="btn btn-sm btn-primary mt-3" onClick={() => handleUpdateTreatment(pondTreatment.treatment, pondTreatment.healthIssue, pondTreatment.pondTreatmentId)}>
+                                                                        Enter <br /> Treatment
+                                                                    </button>
+                                                                </>
                                                                 :
                                                                 <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment.pond.pondId}`)}>
                                                                     View Details
@@ -131,49 +159,24 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
                         </div>
                     </div>
                 }
-                {/* option thiết kế 2 */}
-                <div className="card-body">
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Depth (m)</th>
-                                <th>Perimeter (m)</th>
-                                <th>Filter System</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
 
-                            {pondTreatmentList.map((pondTreatment) => {
-                                const isSelected = selectedPonds?.includes(pondTreatment.pond.pondId);
-                                return (
-                                    <tr key={pondTreatment.pond.pondId} className={isSelected ? 'table-primary' : ''}>
-                                        <td>{pondTreatment.pond.depth}</td>
-                                        <td>{pondTreatment.pond.perimeter}</td>
-                                        <td>{pondTreatment.pond.filterSystem}</td>
-                                        <td>
-                                            <div className='d-flex gap-3'>
-                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment.pond.pondId}`)}>
-                                                    View Details
-                                                </button>
-                                                {isBooking && (
-                                                    <button
-                                                        className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
-                                                        onClick={() => handleAddPondToBooking(pondTreatment.pond.pondId)}
-                                                    >
-                                                        {isSelected ? 'Remove' : 'Add'}
-                                                    </button>
-                                                )}
-
-                                            </div>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+               
             </div>
+            <Modal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    onRequestClose={handleCloseModal}
+                    children={
+                        <Treatment
+                            treatment={modalData.treatment}
+                            isKoi={false}
+                            isPond={true}
+                            treatmentId={modalData.pondTreatmentId}
+                            onUpdate={handleSubmitTreatment}
+                            healthIssue={modalData.healthIssue}
+                        />
+                    }
+                />
         </div>
     );
 };

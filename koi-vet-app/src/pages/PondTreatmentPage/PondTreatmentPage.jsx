@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../../components/Modal/Modal';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import KoiDetail from '../KoiDetail/KoiDetail';
 import { fetchPrescriptionByAppointmentIdAPI } from '../../apis';
 import Pond from '../../components/Pond/Pond';
 import PondDetail from '../PondDetail/PondDetail';
@@ -10,14 +9,14 @@ import PondDetail from '../PondDetail/PondDetail';
 const PondTreatmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [prescriptions, setPrescriptions] = useState([]);
-  const [koiUpdateTrigger, setKoiUpdateTrigger] = useState(0);
+  const [pondUpdateTrigger, setPondUpdateTrigger] = useState(0);
   const { appointmentId } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const customerId = queryParams.get('customerId');
   console.log("customerId", customerId)
   const navigate = useNavigate();
-  //open modal for when click add new koi BTN
+  //open modal for when click add new pond BTN
   const handleAddNewPond = () => {
     setIsModalOpen(true);
   };
@@ -25,9 +24,9 @@ const PondTreatmentPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  //update trigger for koi list
-  const handleKoiUpdate = () => {
-    setKoiUpdateTrigger(prev => prev + 1);
+  //update trigger for pond list
+  const handlePondUpdate = () => {
+    setPondUpdateTrigger(prev => prev + 1);
   };
   useEffect(() => {
     const fetchPrescription = async () => {
@@ -40,7 +39,7 @@ const PondTreatmentPage = () => {
   return (
     <div className="container mt-4">
       <h3 className="mb-4">Pond in this appointment</h3>
-      {/* Existing Koi Table */}
+      {/* Existing Pond Table */}
      <Pond
         isVeterinarian={true}
         isBooking={false} // đây không phải là booking mà là appointment
@@ -48,19 +47,19 @@ const PondTreatmentPage = () => {
         appointmentId={appointmentId}
         title={"Pond in this appointment"}
         prescriptions={prescriptions}
-        updateTrigger={koiUpdateTrigger} //trigger update koi list
-        onUpdateTreatment={handleKoiUpdate}
+        updateTrigger={pondUpdateTrigger} //trigger update pond list
+        onUpdateTreatment={handlePondUpdate}
       />
 
 
-      {/* Add New Koi Button */}
+      {/* Add New Pond Button */}
       <div className="text-center">
         <button className="btn btn-primary" onClick={() => handleAddNewPond()}>
           Add New Pond
         </button>
       </div>
 
-      {/* Modal for KoiDetail */}
+      {/* Modal for PondDetail */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <PondDetail
           cusId={customerId}
@@ -70,7 +69,7 @@ const PondTreatmentPage = () => {
           isAppointment={true}
           appointmentId={appointmentId}
           onClose={handleCloseModal}
-          onUpdate={handleKoiUpdate}
+          onUpdate={handlePondUpdate}
         />
       </Modal>
       <br />
