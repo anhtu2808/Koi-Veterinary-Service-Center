@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./PondDetail.css";
 import { fetchPondByPondIdAPI, updatePondInformationAPI, addPondToAppointmentAPI } from "../../apis";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointmentId, isVeterinarian, isAppointment, cusId }) => {
   const [pondData, setPondData] = useState({
@@ -18,6 +18,7 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
   });
   const [isEditing, setIsEditing] = useState(false);
   const { pondId } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchPondData = async (pondId) => {
       const response = await fetchPondByPondIdAPI(pondId);
@@ -93,14 +94,18 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
         {renderField("Filter System", pondData.filterSystem, "filterSystem")}
         {renderField("Image URL", pondData.image, "image")}
 
-        <div className="text-end">
-
+        <div className="d-flex justify-content-between">
+          <button type="button" className="btn btn-primary" onClick={() => navigate(-1)}>Back</button>
 
           {isCreate && isVeterinarian ? (<button type="button" className="btn btn-primary" onClick={handleAddNewPond} >
-            {isCreate ? "Create" : "Save Changes"}
+              Add to this appointment 
           </button>
           ) : null}
-          {isEditing ? (
+          {isUpdate && isVeterinarian && isEditing ? (<button type="button" className="btn btn-primary" onClick={handleUpdate} >
+            {isUpdate ? "Update" : "Save Changes"}
+          </button>
+          ) : null}
+          {!isEditing ? (
             <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(true)}>
               Edit
             </button>

@@ -4,7 +4,7 @@ import './Pond.css';
 import { fetchPondByCustomerIdAPI, fetchPondsByAppointmentIdAPI } from '../../apis';
 import { useSelector } from 'react-redux';
 
-const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBooking, isAppointment, appointmentId }) => {
+const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBooking, isAppointment, appointmentId ,isVeterinarian}) => {
     const navigate = useNavigate();
     const customerId = useSelector(state => state?.user?.customer?.customerId)
     const [pondTreatmentList, setPondTreatmentList] = useState([])
@@ -34,9 +34,10 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
 
                         <div className="card-body">
                             {pondTreatmentList.map(pondTreatment => {
-
+                                const isSelected = selectedPonds?.includes(pondTreatment.pond.pondId);
                                 return (
                                     <>
+
                                         <div key={pondTreatment.pond.pondId} className="mb-4 pb-3 border-bottom row align-items-center">
                                             <div className="col-md-6">
                                                 <h4>{"Đây là hồ cá koi của anh tú"}</h4>
@@ -44,27 +45,31 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
                                                 <p><strong>Perimeter:</strong> {pondTreatment.pond.perimeter} m</p>
                                                 <p><strong>Filter System:</strong> {pondTreatment.pond.filterSystem}</p>
                                                 <p><strong>Notes:</strong> {pondTreatment.pond.notes}</p>
+                                                <p><strong>Health Issue:</strong> {pondTreatment.healthIssue}</p>
+                                                <p><strong>Treatment:</strong> {pondTreatment.treatment}</p>
                                             </div>
                                             <div className="col-md-4">
                                                 <img src={"https://honnonbomiennam.vn/wp-content/uploads/2022/05/46.jpg"} alt={pondTreatment.pond.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
                                             </div>
                                             <div className="col-md-2">
-                                                <button className="btn btn-primary">View Details</button>
-                                            </div>
-                                        </div>
-                                        <div key={pondTreatment.pond.pondId} className="mb-4 pb-3 border-bottom row align-items-center">
-                                            <div className="col-md-6">
-                                                <h4>{"Đây là hồ cá koi của anh tú"}</h4>
-                                                <p><strong>Depth:</strong> {pondTreatment.pond.depth} m</p>
-                                                <p><strong>Perimeter:</strong> {pondTreatment.pond.perimeter} m</p>
-                                                <p><strong>Filter System:</strong> {pondTreatment.pond.filterSystem}</p>
-                                                <p><strong>Notes:</strong> {pondTreatment.pond.notes}</p>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <img src={"https://honnonbomiennam.vn/wp-content/uploads/2022/05/46.jpg"} alt={pondTreatment.pond.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
-                                            </div>
-                                            <div className="col-md-2">
-                                                <button className="btn btn-primary">View Details</button>
+                                                <div className='d-flex gap-3'>
+                                                    {isVeterinarian ? <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/ponddetail/${pondTreatment.pond.pondId}`)}>
+                                                        View Details
+                                                    </button>
+                                                        :
+                                                        <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment.pond.pondId}`)}>
+                                                            View Details
+                                                        </button>}
+
+                                                    {isBooking && (
+                                                        <button
+                                                            className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
+                                                            onClick={() => handleAddPondToBooking(pondTreatment.pond.pondId)}
+                                                        >
+                                                            {isSelected ? 'Remove' : 'Add'}
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </>

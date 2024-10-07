@@ -129,7 +129,8 @@ function App() {
                 <Route path="/ponddetail" element={<PondDetail />} />
                 <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage/>} />
                 <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage/>} />
-                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isCreate={false}/>} />
+                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isVeterinarian={true} isCreate={false}/>} />
+                <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false}/>} />
                 <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true}/>} />
                 <Route path="/invoice" element={<InvoiceListPage />} />
                 <Route path="/medicine" element={<Medicine />} />
