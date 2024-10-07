@@ -19,7 +19,7 @@ function GGM() {
             />
           </div>
           <div className="col-lg-6">
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <label className="form-label">User:</label>
               <input type="text" className="form-control" readonly />
             </div>
@@ -38,6 +38,10 @@ function GGM() {
             <div className="mb-3">
               <label className="form-label">Doctor:</label>
               <input type="text" className="form-control" readonly />
+            </div> */}
+            <div className="mb-3">
+              <label className="form-label">Link:</label>
+              <div></div>
             </div>
           </div>
         </div>

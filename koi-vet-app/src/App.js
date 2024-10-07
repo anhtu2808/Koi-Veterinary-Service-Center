@@ -40,6 +40,7 @@ import KoiTreatmentPage from './pages/KoiTreatmentPage/KoiTreatmentPage';
 import Pond from './components/Pond/Pond';
 import PaymentFailPage from './pages/PaymentFailPage/PaymentFailPage';
 import PondTreatmentPage from './pages/PondTreatmentPage/PondTreatmentPage';
+import GGM from './pages/GoogleMeet/GGM';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -64,6 +65,7 @@ function App() {
 
     <Router>
       <Routes>
+        <Route path="/ggm" element={<GGM />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
