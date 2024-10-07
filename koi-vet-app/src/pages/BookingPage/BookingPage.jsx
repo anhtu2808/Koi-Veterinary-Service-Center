@@ -112,7 +112,7 @@ function BookingPage() {
           {step === 3 && serviceFor === SERVICE_FOR.POND ?
             <div className="col-md-1">
               {date && startAt && endAt ?
-                <button className="btn btn-primary " onClick={() => handleSetStep(5)}>Next</button> : null}
+                <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Next</button> : null}
             </div> : null}
           {(step === 4 || step === 5) && (selected.length > 0 || selected.length > 0) ? <div className="col-md-1">
             <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Next</button>

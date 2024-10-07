@@ -105,22 +105,22 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
 
                         <div className="card-body">
                             {pondTreatmentList.map(pondTreatment => {
-                                const isSelected = selectedPonds?.includes(pondTreatment.pond.pondId);
+                                const isSelected = selectedPonds?.includes(pondTreatment?.pond?.pondId);
                                 return (
                                     <>
 
                                         <div key={pondTreatment.pond.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
                                             <div className="col-md-6 mt-2">
                                                 <h4>{"Đây là hồ cá pond của anh tú"}</h4>
-                                                <p><strong>Depth:</strong> {pondTreatment.pond.depth} m</p>
-                                                <p><strong>Perimeter:</strong> {pondTreatment.pond.perimeter} m</p>
-                                                <p><strong>Filter System:</strong> {pondTreatment.pond.filterSystem}</p>
-                                                <p><strong>Notes:</strong> {pondTreatment.pond.notes}</p>
-                                                <p><strong>Health Issue:</strong> {pondTreatment.healthIssue}</p>
-                                                <p><strong>Treatment:</strong> {pondTreatment.treatment}</p>
+                                                <p><strong>Depth:</strong> {pondTreatment?.pond?.depth} m</p>
+                                                <p><strong>Perimeter:</strong> {pondTreatment?.pond?.perimeter} m</p>
+                                                <p><strong>Filter System:</strong> {pondTreatment?.pond?.filterSystem}</p>
+                                                <p><strong>Notes:</strong> {pondTreatment?.pond?.notes}</p>
+                                                <p><strong>Health Issue:</strong> {pondTreatment?.healthIssue}</p>
+                                                <p><strong>Treatment:</strong> {pondTreatment?.treatment}</p>
                                             </div>
                                             <div className="col-md-4">
-                                                <img src={"https://honnonbomiennam.vn/wp-content/uploads/2022/05/46.jpg"} alt={pondTreatment.pond.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
+                                                <img src={"https://honnonbomiennam.vn/wp-content/uploads/2022/05/46.jpg"} alt={pondTreatment.pond?.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
                                             </div>
                                             <div className="col-md-2">
                                                 <div className='row gap-3'>
@@ -128,22 +128,22 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                                                         <div className='col-md-6'>
                                                             {isVeterinarian ?
                                                                 <>
-                                                                    <button className="btn btn-sm btn-primary px-3" onClick={() => navigate(`/admin/ponddetail/${pondTreatment.pond.pondId}`)}>
+                                                                    <button className="btn btn-sm btn-primary px-3" onClick={() => navigate(`/admin/ponddetail/${pondTreatment?.pond?.pondId}`)}>
                                                                         View Details
                                                                     </button>
-                                                                    <button className="btn btn-sm btn-primary mt-3" onClick={() => handleUpdateTreatment(pondTreatment.treatment, pondTreatment.healthIssue, pondTreatment.pondTreatmentId)}>
+                                                                    <button className="btn btn-sm btn-primary mt-3" onClick={() => handleUpdateTreatment(pondTreatment?.treatment, pondTreatment?.healthIssue, pondTreatment?.pondTreatmentId)}>
                                                                         Enter <br /> Treatment
                                                                     </button>
                                                                 </>
                                                                 :
-                                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment.pond.pondId}`)}>
+                                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment?.pond?.pondId}`)}>
                                                                     View Details
                                                                 </button>}
 
                                                             {isBooking && (
                                                                 <button
                                                                     className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
-                                                                    onClick={() => handleAddPondToBooking(pondTreatment.pond.pondId)}
+                                                                    onClick={() => handleAddPondToBooking(pondTreatment?.pond?.pondId)}
                                                                 >
                                                                     {isSelected ? 'Remove' : 'Add'}
                                                                 </button>
@@ -160,8 +160,8 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                                                         >
                                                             <option value="None">None</option>
                                                             {prescriptions.map(prescription => (
-                                                                <option key={prescription.id} value={prescription.id}>
-                                                                    {prescription.name}
+                                                                <option key={prescription?.id} value={prescription?.id}>
+                                                                    {prescription?.name}
                                                                 </option>
                                                             ))}
                                                         </select>
