@@ -5,6 +5,7 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import KoiDetail from '../KoiDetail/KoiDetail';
 import { fetchPrescriptionByAppointmentIdAPI } from '../../apis';
 import MedicineListPage from '../MedicineListPage/MedicineListPage';
+import PrescriptionDetail from '../PrescriptionDetail/PrescriptionDetail'; // Import PrescriptionDetail
 
 
 const KoiTreatmentPage = () => {
@@ -18,6 +19,8 @@ const KoiTreatmentPage = () => {
   const customerId = queryParams.get('customerId');
   console.log("customerId", customerId)
   const navigate = useNavigate();
+  const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
+  const [selectedPrescriptionId, setSelectedPrescriptionId] = useState(null);  // Lưu Prescription ID được chọn
   //open modal for when click add new koi BTN
   const handleAddNewKoi = () => {
     setIsModalOpen(true);
@@ -47,6 +50,19 @@ const KoiTreatmentPage = () => {
   const handleCloseMedicineModal = () => {
     setIsMedicineModalOpen(false);
   }
+
+
+
+  const handleViewDetails = (prescriptionId) => {
+    setSelectedPrescriptionId(prescriptionId);
+    setIsPrescriptionModalOpen(true);
+  };
+
+  const handleClosePrescriptionModal = () => {
+    setIsPrescriptionModalOpen(false);
+    setSelectedPrescriptionId(null);
+  };
+
 
   return (
     <div className="container mt-4">
@@ -105,7 +121,7 @@ const KoiTreatmentPage = () => {
                   <td>{prescription.name}</td>
                   <td>{prescription.note}</td>
                   <td>
-                    <button className="btn btn-primary">
+                    <button className="btn btn-primary" onClick={() => handleViewDetails(prescription.id)}>
                       View Details
                     </button>
                   </td>
@@ -125,6 +141,13 @@ const KoiTreatmentPage = () => {
           }}
         />
       </Modal>
+
+      <Modal isOpen={isPrescriptionModalOpen} onClose={handleClosePrescriptionModal}>
+            {selectedPrescriptionId && (
+              <PrescriptionDetail prescriptionId={selectedPrescriptionId} />
+            )}
+          </Modal>
+
         </div>
       </section>
       <button className="btn btn-primary" onClick={() => navigate(-1)}>Back</button>
