@@ -2,7 +2,7 @@ import React from "react";
 import "./GGM.css";
 import GGMeet from "../../assets/img/GGMeet.jpg";
 
-function GGM() {
+function GGM({veterinarian,appointment}) {
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card shadow-lg p-4">
@@ -19,7 +19,7 @@ function GGM() {
             />
           </div>
           <div className="col-lg-6">
-            {/* <div className="mb-3">
+            <div className="mb-3">
               <label className="form-label">User:</label>
               <input type="text" className="form-control" readonly />
             </div>
@@ -38,7 +38,7 @@ function GGM() {
             <div className="mb-3">
               <label className="form-label">Doctor:</label>
               <input type="text" className="form-control" readonly />
-            </div> */}
+            </div>
             <div className="mb-3">
               <label className="form-label">Link:</label>
               <div></div>
