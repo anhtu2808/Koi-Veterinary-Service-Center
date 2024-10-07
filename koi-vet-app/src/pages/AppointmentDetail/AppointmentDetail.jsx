@@ -3,8 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchAppointmentByIdAPI, fetchVetForAssignAPI, updateAppointmentAPI } from "../../apis";
 import "./AppointmentDetail.css";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
-import { APPOINTMENT_STATUS, ROLE } from "../../utils/constants";
+import { APPOINTMENT_STATUS, BOOKING_TYPE, ROLE } from "../../utils/constants";
 import { useSelector } from "react-redux";
+import Loading from "../../components/Loading/Loading";
 
 function AppointmentDetail() {
   const { appointmentId } = useParams();
@@ -14,6 +15,7 @@ function AppointmentDetail() {
   //   appointmentDate: "2023-06-15",
   // });  
   const [vetList, setVetList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [appointment, setAppointment] = useState({
     "appointmentId": null,
     "appointmentDate": null,
@@ -37,8 +39,10 @@ function AppointmentDetail() {
     const fetchAppointmentDetail = async (appointmentId) => {
       try {
         const response = await fetchAppointmentByIdAPI(appointmentId);
-        setAppointment(response.data);
-
+        setAppointment({...appointment, ...response.data});
+        if(response.status === 200){
+          setIsLoading(false);
+        }
         // Chỉ gọi fetchVetForAssignAPI sau khi có dữ liệu từ fetchAppointmentByIdAPI
 
       } catch (error) {
@@ -75,7 +79,8 @@ function AppointmentDetail() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setAppointment({ ...appointment, [name]: value });
+    setAppointment({ ...appointment, [name]: value ,status: APPOINTMENT_STATUS.BOOKING_COMPLETE});
+    
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,8 +94,8 @@ function AppointmentDetail() {
     }
   };
 
-  if (!appointment) return <div>Loading...</div>;
-
+  if(isLoading) return <Loading/>
+  
   return (
     <>
       <AdminHeader title="Appointment Detail" />
@@ -135,6 +140,23 @@ function AppointmentDetail() {
             onChange={handleInputChange}
             disabled={!isEditing}
           />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="type" className="form-label">
+            Type
+          </label>
+          <select
+            className="form-select"
+            id="type"
+            name="type"
+            value={appointment.type}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+          >
+            <option value={BOOKING_TYPE.HOME}>Home</option>
+            <option value={BOOKING_TYPE.CENTER}>Center</option>
+            <option value={BOOKING_TYPE.ONLINE}>Online</option>
+          </select>
         </div>
         <div className="mb-3">
           <label htmlFor="serviceId" className="form-label">
@@ -206,7 +228,7 @@ function AppointmentDetail() {
             onChange={handleInputChange}
             disabled={!isEditing}
           >
-            <option value="">Not assigned</option>
+            <option value={"SKIP"}>Not assigned</option>
             {vetList.map((vet) => (
               <option key={vet.vetId} value={vet.vetId}>
                 {vet.user.fullName}

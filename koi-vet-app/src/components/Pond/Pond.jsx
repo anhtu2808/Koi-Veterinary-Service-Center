@@ -1,13 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Pond.css';
-import { fetchPondByCustomerIdAPI, fetchPondsByAppointmentIdAPI } from '../../apis';
+import { fetchPondByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescriptionByAppointmentIdAPI, updatePondTreatmentAPI } from '../../apis';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBooking, isAppointment, appointmentId ,isVeterinarian}) => {
+const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBooking, isAppointment, appointmentId, isVeterinarian }) => {
     const navigate = useNavigate();
     const customerId = useSelector(state => state?.user?.customer?.customerId)
     const [pondTreatmentList, setPondTreatmentList] = useState([])
+    const [prescriptions, setPrescriptions] = useState([]);
+    // lưu lại đơn thuốc
+    const handleChangePrescription = (treatmentId, prescriptionId, pondId) => {
+        const updatePrescriptionId = async () => {
+            try {
+                const response = await updatePondTreatmentAPI({
+                    pondTreatmentId: treatmentId,
+                    prescription_id: prescriptionId === "None" ? null : prescriptionId,
+                    pondId: pondId,
+                });
+                toast.success(response.message);
+
+                // Update the local state or data source to reflect the change
+                setPondTreatmentList(prevList =>
+                    prevList.map(treatment =>
+                        treatment.pondTreatmentId === treatmentId
+                            ? { ...treatment, prescription_id: prescriptionId === "None" ? null : prescriptionId }
+                            : treatment
+                    )
+                );
+            } catch (error) {
+                toast.error('Failed to update prescription');
+            }
+        };
+        const fetchPrescriptions = async () => {
+            const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
+            setPrescriptions(response.data)
+        }
+        fetchPrescriptions();
+        updatePrescriptionId();
+    };
     useEffect(() => {
         const fetchPonds = async () => {
             try {
@@ -40,7 +72,7 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
 
                                         <div key={pondTreatment.pond.pondId} className="mb-4 pb-3 border-bottom row align-items-center">
                                             <div className="col-md-6">
-                                                <h4>{"Đây là hồ cá koi của anh tú"}</h4>
+                                                <h4>{"Đây là hồ cá pond của anh tú"}</h4>
                                                 <p><strong>Depth:</strong> {pondTreatment.pond.depth} m</p>
                                                 <p><strong>Perimeter:</strong> {pondTreatment.pond.perimeter} m</p>
                                                 <p><strong>Filter System:</strong> {pondTreatment.pond.filterSystem}</p>
@@ -52,23 +84,43 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
                                                 <img src={"https://honnonbomiennam.vn/wp-content/uploads/2022/05/46.jpg"} alt={pondTreatment.pond.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
                                             </div>
                                             <div className="col-md-2">
-                                                <div className='d-flex gap-3'>
-                                                    {isVeterinarian ? <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/ponddetail/${pondTreatment.pond.pondId}`)}>
-                                                        View Details
-                                                    </button>
-                                                        :
-                                                        <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment.pond.pondId}`)}>
-                                                            View Details
-                                                        </button>}
+                                                <div className='row gap-3'>
+                                                    <div className='d-flex row flex-column align-items-center gap-2'>
+                                                        <div className='col-md-6'>
+                                                            {isVeterinarian ? <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/ponddetail/${pondTreatment.pond.pondId}`)}>
+                                                                View Details
+                                                            </button>
+                                                                :
+                                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment.pond.pondId}`)}>
+                                                                    View Details
+                                                                </button>}
 
-                                                    {isBooking && (
-                                                        <button
-                                                            className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
-                                                            onClick={() => handleAddPondToBooking(pondTreatment.pond.pondId)}
+                                                            {isBooking && (
+                                                                <button
+                                                                    className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
+                                                                    onClick={() => handleAddPondToBooking(pondTreatment.pond.pondId)}
+                                                                >
+                                                                    {isSelected ? 'Remove' : 'Add'}
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                        <div className='col-md-12 mt-4'>
+                                                            <p className='fs-6 fw-normal'> Select Prescription: </p>
+                                                        </div>
+                                                        <select
+                                                            className="form-select w-120"
+                                                            aria-label="Default select example"
+                                                            onChange={(e) => handleChangePrescription(pondTreatment?.pondTreatmentId, e.target.value, pondTreatment?.pond?.pondId)}
+                                                            value={pondTreatment?.prescription_id || "None"}
                                                         >
-                                                            {isSelected ? 'Remove' : 'Add'}
-                                                        </button>
-                                                    )}
+                                                            <option value="None">None</option>
+                                                            {prescriptions.map(prescription => (
+                                                                <option key={prescription.id} value={prescription.id}>
+                                                                    {prescription.name}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,6 +164,7 @@ const Pond = ({ title, selectedPonds, onUpdate, isBooking, handleAddPondToBookin
                                                         {isSelected ? 'Remove' : 'Add'}
                                                     </button>
                                                 )}
+
                                             </div>
                                         </td>
                                     </tr>
