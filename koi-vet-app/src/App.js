@@ -94,11 +94,15 @@ function App() {
                           isUpdate={true} />
                       } />
 
-                      <Route path='/pond' element={<Pond/>}/>
-                      <Route path='/pond/:pondId' element={<PondDetail/>} /> 
+                      <Route path='/pond' element={<Pond />} />
+                      <Route path='/pond/:pondId' element={<PondDetail />} />
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
 
+                      <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={false} isVeterinarian={false} isCreate={false} />} />
+                      <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} />} />
+                      <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
+                      <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
 
                     </Routes>
                   </ProfileLayout>
@@ -127,11 +131,11 @@ function App() {
                 <Route path="/pondinformation" element={<PondInformation />} />
                 <Route path="/koiinformation" element={<KoiInformation />} />
                 <Route path="/ponddetail" element={<PondDetail />} />
-                <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage/>} />
-                <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage/>} />
-                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isVeterinarian={true} isCreate={false}/>} />
-                <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false}/>} />
-                <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true}/>} />
+                <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
+                <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
+                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isVeterinarian={true} isCreate={false} />} />
+                <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false} />} />
+                <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true} />} />
                 <Route path="/invoice" element={<InvoiceListPage />} />
                 <Route path="/medicine" element={<Medicine />} />
                 <Route path="/medpage" element={< MedicineListPage />} />

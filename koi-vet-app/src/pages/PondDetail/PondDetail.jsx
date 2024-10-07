@@ -74,7 +74,7 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
         name={name}
         value={value}
         onChange={handleInputChange}
-        disabled={!isEditing && !isCreate}
+        disabled={!isEditing && !isCreate} 
         required
       />
     </div>
