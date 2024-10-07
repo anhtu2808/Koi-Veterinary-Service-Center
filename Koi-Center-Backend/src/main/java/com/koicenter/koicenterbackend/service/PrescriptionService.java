@@ -7,9 +7,7 @@ import com.koicenter.koicenterbackend.model.entity.Prescription;
 import com.koicenter.koicenterbackend.model.entity.PrescriptionMedicine;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionMedicineRequest;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionRequest;
-import com.koicenter.koicenterbackend.model.response.medicine.MedicineResponse;
-import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionMedicineResponse;
-import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionResponse;
+import com.koicenter.koicenterbackend.model.response.medicine.*;
 import com.koicenter.koicenterbackend.repository.MedicineRepository;
 import com.koicenter.koicenterbackend.repository.PrescriptionMedicineRepository;
 import com.koicenter.koicenterbackend.repository.TreatmentMedicineRepository;
@@ -140,36 +138,30 @@ public class PrescriptionService {
         return prescriptionResponses;
     }
 
-    public PrescriptionResponse getPrescriptionById(String id) {
+    public PrescriptionByIdResponse getPrescriptionById(String id) {
+
         Prescription prescription = prescriptionRepository.findById(id).orElseThrow(() ->
                 new AppException(ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getCode(),
                         ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
-        PrescriptionResponse prescriptionResponse = new PrescriptionResponse();
-        prescriptionResponse.setId(prescription.getId());
-        prescriptionResponse.setName(prescription.getName());
-        prescriptionResponse.setCreatedDate(prescription.getCreatedDate());
-        prescriptionResponse.setNote(prescription.getNote());
-        prescriptionResponse.setAppointmentId(prescription.getAppointmentId());
 
-        Set<PrescriptionMedicineResponse> prescriptionMedicineResponses = new HashSet<>();
+        Set<PreMedResponse> prescriptionMedicineResponses = new HashSet<>();
         for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()) {
-            PrescriptionMedicineResponse prescriptionMedicineResponse = new PrescriptionMedicineResponse();
 
             Medicine medicine = prescriptionMedicine.getMedicine();
-            MedicineResponse medicineResponse = new MedicineResponse();
-            medicineResponse.setMedicineId(medicine.getMedicineId());
-            medicineResponse.setName(medicine.getName());
-            medicineResponse.setDescription(medicine.getDescription());
 
-            prescriptionMedicineResponse.setMedicine(medicineResponse);
-            prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
-            prescriptionMedicineResponse.setDosage(prescriptionMedicine.getDosage());
-            prescriptionMedicineResponses.add(prescriptionMedicineResponse);
+            PreMedResponse preMedResponse = new PreMedResponse();
+            preMedResponse.setMedicineId(medicine.getMedicineId());
+            preMedResponse.setMedicineName(medicine.getName());
+            preMedResponse.setQuantity(prescriptionMedicine.getQuantity());
+            preMedResponse.setDosage(prescriptionMedicine.getDosage());
+
+            prescriptionMedicineResponses.add(preMedResponse);
         }
 
-        prescriptionResponse.setPrescriptionMedicines(prescriptionMedicineResponses);
+        PrescriptionByIdResponse prescriptionByIdResponse = new PrescriptionByIdResponse();
+        prescriptionByIdResponse.setPrescriptionMedicines(prescriptionMedicineResponses);
 
-        return prescriptionResponse;
+        return prescriptionByIdResponse;
     }
 }
 
