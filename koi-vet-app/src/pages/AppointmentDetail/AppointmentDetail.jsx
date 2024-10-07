@@ -39,8 +39,8 @@ function AppointmentDetail() {
     const fetchAppointmentDetail = async (appointmentId) => {
       try {
         const response = await fetchAppointmentByIdAPI(appointmentId);
-        setAppointment({ ...appointment, ...response.data });
-        if (response.status === 200) {
+        setAppointment({...appointment, ...response.data});
+        if(response.status === 200){
           setIsLoading(false);
         }
         // Chỉ gọi fetchVetForAssignAPI sau khi có dữ liệu từ fetchAppointmentByIdAPI
@@ -79,8 +79,8 @@ function AppointmentDetail() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setAppointment({ ...appointment, [name]: value, status: APPOINTMENT_STATUS.BOOKING_COMPLETE });
-
+    setAppointment({ ...appointment, [name]: value ,status: APPOINTMENT_STATUS.BOOKING_COMPLETE});
+    
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,8 +94,8 @@ function AppointmentDetail() {
     }
   };
 
-  if (isLoading) return <Loading />
-
+  if(isLoading) return <Loading/>
+  
   return (
     <>
       <AdminHeader title="Appointment Detail" />
@@ -243,44 +243,22 @@ function AppointmentDetail() {
           </button>
         )}
 
-        {role !== ROLE.CUSTOMER ?
-          <>
-            <button
-              onClick={() => navigate(`/admin/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-              type="submit"
-              className="btn btn-success buttonInEdit"
-            >
-              Pond Information
-            </button>
 
-            <button
-              onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-              type="submit"
-              className="btn btn-success buttonInEdit"
-            >
-              Koi Information
-            </button>
-          </>
-          :
-          <>
-          <button
-            onClick={() => navigate(`/profile/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-            type="submit"
-            className="btn btn-success buttonInEdit"
-          >
-            Pond Information
-          </button>
+        <button
+          onClick={() => navigate(`/admin/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
+          type="submit"
+          className="btn btn-success buttonInEdit"
+        >
+          Pond Information
+        </button>
 
-          <button
-            onClick={() => navigate(`/profile/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-            type="submit"
-            className="btn btn-success buttonInEdit"
-          >
-            Koi Information
-          </button>
-        </>
-        }
-
+        <button
+          onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
+          type="submit"
+          className="btn btn-success buttonInEdit"
+        >
+          Koi Information
+        </button>
 
       </form>
       <div className="col-md-12">
