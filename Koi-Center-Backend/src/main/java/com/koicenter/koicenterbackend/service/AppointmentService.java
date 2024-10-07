@@ -199,19 +199,23 @@ public class AppointmentService {
 
     public AppointmentResponse updateAppointment(AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
+
         if (appointment != null) {
             LocalDate date = appointmentRequest.getAppointmentDate();
             LocalTime startTime = appointmentRequest.getStartTime();
             LocalTime endTime = appointmentRequest.getEndTime();
             String vetId = appointmentRequest.getVetId();
+            log.info("date" + date +"/n startime" + startTime + "/n endTime "+ endTime + "/n vetId" + vetId);
             int count = appointmentRequest.getType().equals(AppointmentType.CENTER) ? 1 : 2;
             Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
             Veterinarian veterinarian = null;
-            if (!appointmentRequest.getVetId().equalsIgnoreCase("SKIP")) {
+            if (appointmentRequest.getVetId()!=null) {
                 veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
+                log.info("vetId "+ veterinarian.getVetId());
             }
+
             com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
-            if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian() == null) {
+            if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian() == null || !appointment.getAppointmentDate().equals(date) && appointment.getVeterinarian()== null|| !appointment.getStartTime().equals(startTime) && appointment.getVeterinarian()== null||  !appointment.getEndTime().equals(endTime) &&  appointment.getVeterinarian()== null) {
                 VetScheduleRequest vetScheduleRequest1 = VetScheduleRequest.builder()
                         .vet_id(appointmentRequest.getVetId())
                         .startTime(appointmentRequest.getStartTime())
@@ -224,7 +228,10 @@ public class AppointmentService {
                 //NEU KHONG DOI THOI GIAN , KHONG DOI BAC SI
             }
 
-            else {
+
+             // sai gio nhung o duoi khong co bac si f
+            // Assgin roi ma muono thay doi
+            else  if (!appointment.getAppointmentDate().equals(date) || !appointment.getStartTime().equals(startTime) ||  !appointment.getEndTime().equals(endTime) || !appointment.getVeterinarian().getVetId().equals(vetId)){
                 VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
                         .vet_id(appointment.getVeterinarian().getVetId())
                         .endTime(appointment.getEndTime())
@@ -240,15 +247,23 @@ public class AppointmentService {
                         .build();
                 VetScheduleResponse vetScheduleResponse1 = vetScheduleService.SlotDateTime(vetScheduleRequest1, count);
             }
+
             appointment = appointmentMapper.toAppointment(appointmentRequest);
+            if (appointmentRequest.getVetId()!=null) {
+                log.info("vetId "+ veterinarian.getVetId());
+
+                appointment.setVeterinarian(veterinarian);
+            }
             appointment.setCustomer(customer);
-            appointment.setVeterinarian(veterinarian);
             appointment.setService(service);
             appointmentRepository.save(appointment);
 
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
             appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
-            appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
+
+            if(appointmentRequest.getVetId()!=null){
+                appointmentResponse.setVetId(appointmentRequest.getVetId());
+            }
             appointmentResponse.setServiceId(appointment.getService().getServiceId());
             return appointmentResponse;
         } else {

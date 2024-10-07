@@ -24,10 +24,10 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
+import java.time.LocalTime;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 @Slf4j
@@ -177,6 +177,40 @@ public class VetScheduleService {
          }
 
     }
+//    public VetScheduleResponse updateSlotDateTime (VetScheduleRequest vetScheduleRequest){
+//        int count = 0 ;
+//        VetSchedule findID = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
+//        if (findID != null) {
+//        }
+//        if (vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
+//            count = 1 ;
+//            int number = findID.getCustomerBookingCount() + count;
+//
+//        } else if (vetScheduleRequest.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
+//            count = 2 ;
+//            int slotMorning = 0 ;
+//            int slotAfternoon = 0 ;
+//            if(vetScheduleRequest.getStartTime().toString()=="07:00:00" && vetScheduleRequest.getEndTime().toString()=="11:00:00"){
+//                int counts = 4 ;
+//                for (int i = 0 ; i < counts ; i++) {
+//                        findID = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime()+ 1 , vetScheduleRequest.getStartTime(), vetScheduleRequest.getDate());
+//                    if ()
+//                }
+//                findID = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(),vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
+//
+//            } else if (vetScheduleRequest.getStartTime().toString()=="13:00:00" && vetScheduleRequest.getEndTime().toString()=="17:00:00") {
+//
+//            }
+//        } else if (vetScheduleRequest.getAppointmentType().toString().equals("CENTER")) {
+//            count = 2 ;
+//            int number = findID.getCustomerBookingCount() + count;
+//
+//
+//        }
+//        return vetScheduleResponse;
+//
+//    }
+
 
 
     public List<DayResponse> getVetSchedules(String vetId, String serviceId) {
