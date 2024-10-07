@@ -134,7 +134,7 @@ export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
 
 
 //Pond API
-export const fetchPondByCustomerIdAPI = async (customerId) => {
+export const fetchPondsByCustomerIdAPI = async (customerId) => {
     const response = await api.get(`/customers/${customerId}/ponds`);
     return response.data;
 }

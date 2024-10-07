@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Pond.css';
-import { fetchPondByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescriptionByAppointmentIdAPI, updatePondTreatmentAPI } from '../../apis';
+import { fetchPondsByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescriptionByAppointmentIdAPI, updatePondTreatmentAPI } from '../../apis';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -64,17 +64,34 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
     useEffect(() => {
         const fetchPonds = async () => {
             try {
-                const response = isAppointment
-                    ? await fetchPondsByAppointmentIdAPI(appointmentId)
-                    : await fetchPondByCustomerIdAPI(customerId);
-                setPondTreatmentList(response.data);
-                console.log("Ponds:", response.data);
+                let response;
+                if (isAppointment) {
+                    response = await fetchPondsByAppointmentIdAPI(appointmentId)
+                    setPondTreatmentList(response.data)
+
+                } else {
+                    response = await fetchPondsByCustomerIdAPI(customerId);
+                    console.log(response.data)
+                    const KoiList = response.data.map(KoiTreatment =>
+                    ({
+                        Koi: KoiTreatment,
+                    })
+                    )
+                    setPondTreatmentList(KoiList);
+                    console.log(KoiList);
+                }
+
             } catch (error) {
-                console.error('Error fetching pond list:', error);
+                console.error('Error fetching Koi list:', error);
             }
         };
+        const fetchPrescriptions = async () => {
+            const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
+            setPrescriptions(response.data)
+        }
         fetchPonds();
-    }, [customerId,updateTrigger, isAppointment, appointmentId]);
+        fetchPrescriptions();
+    }, [customerId, isAppointment, appointmentId, updateTrigger]);
     return (
         <div className="container mt-4">
             <div className="card mb-4">
@@ -169,7 +186,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                     children={
                         <Treatment
                             treatment={modalData.treatment}
-                            isKoi={false}
+                            isPond={false}
                             isPond={true}
                             treatmentId={modalData.pondTreatmentId}
                             onUpdate={handleSubmitTreatment}
