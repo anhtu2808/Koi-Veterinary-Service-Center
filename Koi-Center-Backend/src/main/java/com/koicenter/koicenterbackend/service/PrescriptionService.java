@@ -7,9 +7,7 @@ import com.koicenter.koicenterbackend.model.entity.Prescription;
 import com.koicenter.koicenterbackend.model.entity.PrescriptionMedicine;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionMedicineRequest;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionRequest;
-import com.koicenter.koicenterbackend.model.response.medicine.MedicineResponse;
-import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionMedicineResponse;
-import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionResponse;
+import com.koicenter.koicenterbackend.model.response.medicine.*;
 import com.koicenter.koicenterbackend.repository.MedicineRepository;
 import com.koicenter.koicenterbackend.repository.PrescriptionMedicineRepository;
 import com.koicenter.koicenterbackend.repository.TreatmentMedicineRepository;
@@ -138,6 +136,32 @@ public class PrescriptionService {
             prescriptionResponses.add(prescriptionResponse);
         }
         return prescriptionResponses;
+    }
+
+    public PrescriptionByIdResponse getPrescriptionById(String id) {
+
+        Prescription prescription = prescriptionRepository.findById(id).orElseThrow(() ->
+                new AppException(ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getCode(),
+                        ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+
+        Set<PreMedResponse> prescriptionMedicineResponses = new HashSet<>();
+        for (PrescriptionMedicine prescriptionMedicine : prescription.getPrescriptionMedicines()) {
+
+            Medicine medicine = prescriptionMedicine.getMedicine();
+
+            PreMedResponse preMedResponse = new PreMedResponse();
+            preMedResponse.setMedicineId(medicine.getMedicineId());
+            preMedResponse.setMedicineName(medicine.getName());
+            preMedResponse.setQuantity(prescriptionMedicine.getQuantity());
+            preMedResponse.setDosage(prescriptionMedicine.getDosage());
+
+            prescriptionMedicineResponses.add(preMedResponse);
+        }
+
+        PrescriptionByIdResponse prescriptionByIdResponse = new PrescriptionByIdResponse();
+        prescriptionByIdResponse.setPrescriptionMedicines(prescriptionMedicineResponses);
+
+        return prescriptionByIdResponse;
     }
 }
 

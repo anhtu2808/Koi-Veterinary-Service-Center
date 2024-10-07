@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.model.entity.Prescription;
 import com.koicenter.koicenterbackend.model.entity.PrescriptionMedicine;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionByIdResponse;
 import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.service.PrescriptionService;
@@ -58,5 +59,17 @@ public class PrescriptionController {
             return ResponseObject.APIRepsonse(404, "No prescriptions found", HttpStatus.NOT_FOUND, null);
         }
     }
+
+
+    @GetMapping("/{prescriptionId}")
+    public ResponseEntity<ResponseObject> getPrescriptionById(@PathVariable("prescriptionId") String prescriptionId) {
+        try {
+            PrescriptionByIdResponse pre = prescriptionService.getPrescriptionById(prescriptionId);
+            return ResponseObject.APIRepsonse(200, "Found prescription successfully", HttpStatus.OK, pre);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
+    }
+
 }
 
