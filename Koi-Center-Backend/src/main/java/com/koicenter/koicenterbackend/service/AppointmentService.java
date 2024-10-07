@@ -205,7 +205,7 @@ public class AppointmentService {
             LocalTime startTime = appointmentRequest.getStartTime();
             LocalTime endTime = appointmentRequest.getEndTime();
             String vetId = appointmentRequest.getVetId();
-            log.info("date" + date +"/n startime" + startTime + "/n endTime "+ endTime + "/n vetId" + vetId);
+//            log.info("date" + date +"/n startime" + startTime + "/n endTime "+ endTime + "/n vetId" + vetId);
             int count = appointmentRequest.getType().equals(AppointmentType.CENTER) ? 1 : 2;
             Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
             Veterinarian veterinarian = null;
@@ -226,6 +226,17 @@ public class AppointmentService {
             }
              else if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian().getVetId().equals(vetId)) {
                 //NEU KHONG DOI THOI GIAN , KHONG DOI BAC SI
+            }
+             else if (!appointment.getAppointmentDate().equals(date) && appointmentRequest.getVetId()== null|| !appointment.getStartTime().equals(startTime) &&  appointmentRequest.getVetId()== null||  !appointment.getEndTime().equals(endTime) &&   appointmentRequest.getVetId()== null){
+                 if (appointment.getVeterinarian() !=null ){
+                     VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
+                             .vet_id(appointment.getVeterinarian().getVetId())
+                             .endTime(appointment.getEndTime())
+                             .startTime(appointment.getStartTime())
+                             .date(appointment.getAppointmentDate())
+                             .build();
+                     VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest, -count);
+                 }
             }
 
 
@@ -256,6 +267,7 @@ public class AppointmentService {
             }
             appointment.setCustomer(customer);
             appointment.setService(service);
+
             appointmentRepository.save(appointment);
 
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
