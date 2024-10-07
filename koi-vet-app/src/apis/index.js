@@ -228,6 +228,11 @@ export const createPrescriptionAPI = async (data) => {
         return response.data;
 }
 
+export const fetchPrescriptionByIdAPI = async (prescriptionId) => {
+    const response = await api.get(`/prescriptions/${prescriptionId}`)
+    return response.data;
+}
+
 
 
 //Treatment API
@@ -245,3 +250,5 @@ export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/prescriptions?appointmentId=${appointmentId}`)
     return response.data;
 }
+
+
