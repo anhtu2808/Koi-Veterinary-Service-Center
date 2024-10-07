@@ -16,12 +16,13 @@ function BookingPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const step = useSelector(state => state.booking.step)
+  
   const date = useSelector(state => state.booking.bookingData.date)
   const startAt = useSelector(state => state.booking.bookingData.startAt)
   const endAt = useSelector(state => state.booking.bookingData.endAt)
   const serviceFor = useSelector(state => state.booking.bookingData.serviceFor)
   const selected = useSelector(state => state.booking.bookingData.selected)
-  
+
   const handleNextStep = () => {
     dispatch(nextStep())
   }
@@ -35,6 +36,14 @@ function BookingPage() {
       navigate("/");
     }
   };
+  const handleBackStepInputKoi = () => {
+    if(serviceFor === SERVICE_FOR.KOI){
+      dispatch(setStep(3))
+    }
+    else if(serviceFor === SERVICE_FOR.POND){
+      dispatch(setStep(4))
+    }
+  }
 
   console.log(step);
   const renderStepComponent = () => {
@@ -70,12 +79,20 @@ function BookingPage() {
       <div className="row">
         <div className="row d-flex justify-content-between">
           <div className="col-md-1">
-            <button
-              className="btn btn-primary"
-              onClick={() => handleBackStep()}
-            >
-              Back
-            </button>
+            {step !== 5 && step !== 4 ?
+              <button
+                className="btn btn-primary"
+                onClick={() => handleBackStep()}
+              >
+                Back
+              </button>
+              :
+              <button
+                className="btn btn-primary"
+                onClick={() => handleBackStepInputKoi()}
+              >
+                Back
+              </button>}
           </div>
 
           {step === 2 ? <div className="col-md-1">
@@ -104,7 +121,7 @@ function BookingPage() {
             <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Skip</button>
           </div> : null : null}
 
-            <button className="btn btn-primary" onClick={() => handleSetStep(step+1)}>nut next de test</button>
+          {/* <button className="btn btn-primary" onClick={() => handleSetStep(step+1)}>nut next de test</button> */}
 
         </div>
       </div>

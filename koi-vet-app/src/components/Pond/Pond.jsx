@@ -186,7 +186,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                     children={
                         <Treatment
                             treatment={modalData.treatment}
-                            isPond={false}
+                            isKoi={false}
                             isPond={true}
                             treatmentId={modalData.pondTreatmentId}
                             onUpdate={handleSubmitTreatment}
