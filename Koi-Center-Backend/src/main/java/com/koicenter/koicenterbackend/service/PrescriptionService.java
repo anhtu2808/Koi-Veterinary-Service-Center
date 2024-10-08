@@ -7,6 +7,7 @@ import com.koicenter.koicenterbackend.model.entity.Prescription;
 import com.koicenter.koicenterbackend.model.entity.PrescriptionMedicine;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionMedicineRequest;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionRequest;
+import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.medicine.*;
 import com.koicenter.koicenterbackend.repository.MedicineRepository;
 import com.koicenter.koicenterbackend.repository.PrescriptionMedicineRepository;
@@ -167,60 +168,29 @@ public class PrescriptionService {
 
 
     @Transactional
-    public PrescriptionResponse updatePrescription(String prescriptionId, PrescriptionRequest prescriptionRequest) {
+    public PrescriptionResponse updatePrescription(String prescriptionId, PrescriptionUpdateRequest prescriptionRequest) {
 
         Prescription prescription = prescriptionRepository.findById(prescriptionId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getCode(),
                         ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND));
 
-        prescription.setName(prescriptionRequest.getName());
-        prescription.setCreatedDate(prescriptionRequest.getCreatedDate());
-        prescription.setNote(prescriptionRequest.getNote());
         Set<PrescriptionMedicine> currentMedicines = prescription.getPrescriptionMedicines();
 
-        Set<PrescriptionMedicine> medicinesToRemove = new HashSet<>();
-        for (PrescriptionMedicine pm : currentMedicines) {
-            boolean existsInRequest = false;
-            for (PrescriptionMedicineRequest req : prescriptionRequest.getPrescriptionMedicines()) {
-                if (pm.getMedicine().getMedicineId().equals(req.getMedicineId())) {
-                    existsInRequest = true;
-                    break;
-                }
-            }
-            if (!existsInRequest) {
-                medicinesToRemove.add(pm);
-            }
-        }
-        currentMedicines.removeAll(medicinesToRemove);
-
+        // Chỉ cập nhật dosage và quantity của các thuốc đã tồn tại
         for (PrescriptionMedicineRequest medicineRequest : prescriptionRequest.getPrescriptionMedicines()) {
-            Medicine medicine = medicineRepository.findById(medicineRequest.getMedicineId())
-                    .orElseThrow(() -> new AppException(ErrorCode.MEDICINE_NOT_EXITS.getCode(),
-                            ErrorCode.MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
-
-            PrescriptionMedicine existingMedicine = null;
             for (PrescriptionMedicine pm : currentMedicines) {
                 if (pm.getMedicine().getMedicineId().equals(medicineRequest.getMedicineId())) {
-                    existingMedicine = pm;
+                    pm.setQuantity(medicineRequest.getQuantity());
+                    pm.setDosage(medicineRequest.getDosage());
                     break;
                 }
             }
-
-            if (existingMedicine != null) {
-                existingMedicine.setQuantity(medicineRequest.getQuantity());
-                existingMedicine.setDosage(medicineRequest.getDosage());
-            } else {
-                PrescriptionMedicine newPrescriptionMedicine = PrescriptionMedicine.builder()
-                        .prescription(prescription)
-                        .medicine(medicine)
-                        .quantity(medicineRequest.getQuantity())
-                        .dosage(medicineRequest.getDosage())
-                        .build();
-
-                currentMedicines.add(newPrescriptionMedicine);
-            }
         }
+
+        // Lưu thay đổi của Prescription
         prescriptionRepository.save(prescription);
+
+        // Tạo đối tượng PrescriptionResponse để trả về
         PrescriptionResponse prescriptionResponse = new PrescriptionResponse();
         prescriptionResponse.setId(prescription.getId());
         prescriptionResponse.setName(prescription.getName());
@@ -228,6 +198,7 @@ public class PrescriptionService {
         prescriptionResponse.setNote(prescription.getNote());
         prescriptionResponse.setAppointmentId(prescription.getAppointmentId());
 
+        // Chuyển đổi các đối tượng PrescriptionMedicine sang PrescriptionMedicineResponse
         Set<PrescriptionMedicineResponse> prescriptionMedicineResponses = new HashSet<>();
         for (PrescriptionMedicine prescriptionMedicine : currentMedicines) {
             PrescriptionMedicineResponse prescriptionMedicineResponse = new PrescriptionMedicineResponse();
@@ -247,6 +218,7 @@ public class PrescriptionService {
         prescriptionResponse.setPrescriptionMedicines(prescriptionMedicineResponses);
         return prescriptionResponse;
     }
+
 
 
 }
