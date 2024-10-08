@@ -163,5 +163,91 @@ public class PrescriptionService {
 
         return prescriptionByIdResponse;
     }
+
+
+
+    @Transactional
+    public PrescriptionResponse updatePrescription(String prescriptionId, PrescriptionRequest prescriptionRequest) {
+
+        Prescription prescription = prescriptionRepository.findById(prescriptionId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getCode(),
+                        ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND));
+
+        prescription.setName(prescriptionRequest.getName());
+        prescription.setCreatedDate(prescriptionRequest.getCreatedDate());
+        prescription.setNote(prescriptionRequest.getNote());
+        Set<PrescriptionMedicine> currentMedicines = prescription.getPrescriptionMedicines();
+
+        Set<PrescriptionMedicine> medicinesToRemove = new HashSet<>();
+        for (PrescriptionMedicine pm : currentMedicines) {
+            boolean existsInRequest = false;
+            for (PrescriptionMedicineRequest req : prescriptionRequest.getPrescriptionMedicines()) {
+                if (pm.getMedicine().getMedicineId().equals(req.getMedicineId())) {
+                    existsInRequest = true;
+                    break;
+                }
+            }
+            if (!existsInRequest) {
+                medicinesToRemove.add(pm);
+            }
+        }
+        currentMedicines.removeAll(medicinesToRemove);
+
+        for (PrescriptionMedicineRequest medicineRequest : prescriptionRequest.getPrescriptionMedicines()) {
+            Medicine medicine = medicineRepository.findById(medicineRequest.getMedicineId())
+                    .orElseThrow(() -> new AppException(ErrorCode.MEDICINE_NOT_EXITS.getCode(),
+                            ErrorCode.MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+
+            PrescriptionMedicine existingMedicine = null;
+            for (PrescriptionMedicine pm : currentMedicines) {
+                if (pm.getMedicine().getMedicineId().equals(medicineRequest.getMedicineId())) {
+                    existingMedicine = pm;
+                    break;
+                }
+            }
+
+            if (existingMedicine != null) {
+                existingMedicine.setQuantity(medicineRequest.getQuantity());
+                existingMedicine.setDosage(medicineRequest.getDosage());
+            } else {
+                PrescriptionMedicine newPrescriptionMedicine = PrescriptionMedicine.builder()
+                        .prescription(prescription)
+                        .medicine(medicine)
+                        .quantity(medicineRequest.getQuantity())
+                        .dosage(medicineRequest.getDosage())
+                        .build();
+
+                currentMedicines.add(newPrescriptionMedicine);
+            }
+        }
+        prescriptionRepository.save(prescription);
+        PrescriptionResponse prescriptionResponse = new PrescriptionResponse();
+        prescriptionResponse.setId(prescription.getId());
+        prescriptionResponse.setName(prescription.getName());
+        prescriptionResponse.setCreatedDate(prescription.getCreatedDate());
+        prescriptionResponse.setNote(prescription.getNote());
+        prescriptionResponse.setAppointmentId(prescription.getAppointmentId());
+
+        Set<PrescriptionMedicineResponse> prescriptionMedicineResponses = new HashSet<>();
+        for (PrescriptionMedicine prescriptionMedicine : currentMedicines) {
+            PrescriptionMedicineResponse prescriptionMedicineResponse = new PrescriptionMedicineResponse();
+
+            Medicine med = prescriptionMedicine.getMedicine();
+            MedicineResponse medResponse = new MedicineResponse();
+            medResponse.setMedicineId(med.getMedicineId());
+            medResponse.setName(med.getName());
+            medResponse.setDescription(med.getDescription());
+
+            prescriptionMedicineResponse.setMedicine(medResponse);
+            prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
+            prescriptionMedicineResponse.setDosage(prescriptionMedicine.getDosage());
+            prescriptionMedicineResponses.add(prescriptionMedicineResponse);
+        }
+
+        prescriptionResponse.setPrescriptionMedicines(prescriptionMedicineResponses);
+        return prescriptionResponse;
+    }
+
+
 }
 

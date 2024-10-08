@@ -3,12 +3,15 @@ package com.koicenter.koicenterbackend.controller;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Prescription;
 import com.koicenter.koicenterbackend.model.entity.PrescriptionMedicine;
+import com.koicenter.koicenterbackend.model.request.koi.KoiUpdateRequest;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionByIdResponse;
 import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.service.PrescriptionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,5 +74,14 @@ public class PrescriptionController {
         }
     }
 
+    @PutMapping("/{prescriptionId}")
+    public ResponseEntity<ResponseObject> updatePrescription(@PathVariable("prescriptionId") String prescriptionId, @Valid @RequestBody PrescriptionRequest request) {
+        try {
+            PrescriptionResponse updatePrescription = prescriptionService.updatePrescription(prescriptionId, request);
+            return ResponseObject.APIRepsonse(200, "Update success", HttpStatus.OK, updatePrescription);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
+    }
 }
 
