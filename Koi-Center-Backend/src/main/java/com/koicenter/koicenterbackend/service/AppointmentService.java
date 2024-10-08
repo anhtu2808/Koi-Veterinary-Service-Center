@@ -175,6 +175,7 @@ public class AppointmentService {
         appointment.setCustomer(customer);
         appointment.setVeterinarian(veterinarian);
         appointment.setService(service);
+        appointment.setDepositedMoney(service.getBasePrice());
         appointmentRepository.save(appointment);
         AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
         appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());

@@ -13,6 +13,7 @@ public interface AppointmentMapper {
     @Mapping( target = "customer",ignore = true)
     @Mapping( target = "veterinarian",ignore = true)
     @Mapping(target = "service" , ignore = true)
+    @Mapping(target = "depositedMoney", ignore = true)
     Appointment toAppointment(AppointmentRequest appointmentRequest);
 
     @Mapping( target = "customerId",ignore = true)

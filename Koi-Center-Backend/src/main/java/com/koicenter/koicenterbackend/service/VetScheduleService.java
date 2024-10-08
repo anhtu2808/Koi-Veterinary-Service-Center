@@ -129,8 +129,9 @@ public class VetScheduleService {
     public List<VeterinarianResponse> getVeterinariansByDateTime(VetScheduleRequest vetScheduleRequest) {
         // Service Id , Date ,starTime , endTime type
         List<VeterinarianResponse> veterinarians = new ArrayList<>();
+        //Lay tat ca cac bac si len
         List<VeterinarianResponse> veterinarianResponses = veterinarianService.getVeterinariansByServiceId(vetScheduleRequest.getServiceId());
-        List<VetScheduleResponse> vetScheduleResponses = new ArrayList<>();
+        List<VetScheduleResponse> vetScheduleResponses = new ArrayList<>(); // tim lich cua tat ca bac si do
         List<VetSchedule> vetSchedules = new ArrayList<>();
         for (VeterinarianResponse vetResponse : veterinarianResponses) {
             List<VetSchedule> vetSchedule = new ArrayList<>();
@@ -139,7 +140,10 @@ public class VetScheduleService {
                 vetScheduleResponses.add(vetScheduleMapper.toVetScheduleResponse(vet1));
             }
         }
-        for (VetScheduleResponse vetScheduleResponse : vetScheduleResponses) {
+        int slotMorning = 0;
+        int slotAfternoon = 0 ;
+        for (VetScheduleResponse vetScheduleResponse : vetScheduleResponses) { // lich cua tat ca cac bac si co service ID ddo
+
             if (vetScheduleRequest.getAppointmentType().toString().equals("CENTER") || vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
                 if (vetScheduleRequest.getStartTime().equals(vetScheduleResponse.getStart_time()) && vetScheduleRequest.getEndTime().equals(vetScheduleResponse.getEnd_time()) && vetScheduleRequest.getDate().equals(vetScheduleResponse.getDate()) && vetScheduleResponse.getCustomerBookingCount() < 2) {
                     Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
@@ -149,18 +153,46 @@ public class VetScheduleService {
                     veterinarians.add(response);
                 }
             } else if (vetScheduleRequest.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
-                if (vetScheduleRequest.getStartTime().equals(vetScheduleResponse.getStart_time()) && vetScheduleRequest.getEndTime().equals(vetScheduleResponse.getEnd_time()) && vetScheduleRequest.getDate().equals(vetScheduleResponse.getDate()) && vetScheduleResponse.getCustomerBookingCount() == 0) {
-                    Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
-                    VeterinarianResponse response = new VeterinarianResponse();
-                    response = veterinariansMapper.toVeterinarianResponse(veterinarian);
-                    response.setUser(userMapper.toUserResponse(veterinarian.getUser()));
-                    veterinarians.add(response);
+                log.info("vetID dang tim "+ vetScheduleResponse.getVet_Id());
+                if (vetScheduleRequest.getStartTime().getHour() == 7 && vetScheduleRequest.getEndTime().getHour() == 11 && vetScheduleRequest.getDate().equals(vetScheduleResponse.getDate()) && vetScheduleResponse.getCustomerBookingCount() == 0 ) {
+                    String vetID = vetScheduleResponse.getVet_Id() ;
+                    if (vetScheduleResponse.getStart_time().getHour() >= 7 && vetScheduleResponse.getEnd_time().getHour() < 12 && vetID.equals(vetScheduleResponse.getVet_Id())) {
+                        slotMorning++; // kiem tra buoi sang
+                    }else {
+                        slotMorning = 1 ;
+                        vetID=vetScheduleResponse.getVet_Id();
+                    }
+                    if (slotMorning >= 4) {
+                        log.info("toi dango day ");
+                        Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+                        VeterinarianResponse response = new VeterinarianResponse();
+                        response = veterinariansMapper.toVeterinarianResponse(veterinarian);
+                        response.setUser(userMapper.toUserResponse(veterinarian.getUser()));
+                        veterinarians.add(response);
+
+                    }
+                } else if (vetScheduleRequest.getStartTime().getHour() == 13 && vetScheduleRequest.getEndTime().getHour() == 17) {
+                    String vetID = vetScheduleResponse.getVet_Id() ;
+                    if (vetScheduleResponse.getStart_time().getHour() >= 13 && vetScheduleResponse.getEnd_time().getHour() < 18 && vetID.equals(vetScheduleResponse.getVet_Id())) {
+                        slotAfternoon++; // kiem tra buoi sang
+                    }else {
+                        slotAfternoon = 1 ;
+                        vetID=vetScheduleResponse.getVet_Id();
+                    }
+                    if (slotAfternoon >= 4) {
+                        Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+                        VeterinarianResponse response = new VeterinarianResponse();
+                        response = veterinariansMapper.toVeterinarianResponse(veterinarian);
+                        response.setUser(userMapper.toUserResponse(veterinarian.getUser()));
+                        veterinarians.add(response);
+                    }
                 }
             }
         }
         return veterinarians;
     }
-    public List<VetScheduleResponse> slotDateTime(VetScheduleRequest vetScheduleRequest, String caculator ) {
+
+    public List<VetScheduleResponse> slotDateTime(VetScheduleRequest vetScheduleRequest, String caculator) {
         int count = (vetScheduleRequest.getAppointmentType().equals("CENTER") ? 1 : 2) * (caculator.equals("add") ? 1 : -1);
         List<VetScheduleResponse> vetScheduleResponse = new ArrayList<>();
         if (vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
@@ -196,6 +228,7 @@ public class VetScheduleService {
         }
         return vetScheduleResponse;
     }
+
     public List<DayResponse> getVetSchedules(String vetId, String serviceId) {
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findById(serviceId).orElseThrow(()
                 -> new AppException(ErrorCode.SERVICE_ID_NOT_EXITS.getCode(),
