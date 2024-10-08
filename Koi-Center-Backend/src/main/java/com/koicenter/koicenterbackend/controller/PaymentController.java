@@ -44,7 +44,6 @@ public class PaymentController {
                 return ResponseObject.APIRepsonse(400, "Amount is required", HttpStatus.BAD_REQUEST, null);
             }
             amountTemp = Float.parseFloat(amount);
-            System.out.println("Redirecting to: " + paymentUrl);
             return ResponseObject.APIRepsonse(200, "Redirecting to VN Pay", HttpStatus.OK, paymentUrl);
         } catch (NumberFormatException e) {
             return ResponseObject.APIRepsonse(400, "Invalid amount format", HttpStatus.BAD_REQUEST, null);
