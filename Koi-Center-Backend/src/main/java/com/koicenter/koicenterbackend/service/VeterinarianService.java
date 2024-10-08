@@ -111,16 +111,18 @@ public class VeterinarianService {
 
         newVeterinarian = userService.createVeterinarian(newVeterinarian);
 
-
+        List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
         Veterinarian veterinarian = new Veterinarian();
-        if(!veterinarianRequest.getService().isEmpty()){
-            List<com.koicenter.koicenterbackend.model.entity.Service> services = new ArrayList<>();
+        if (!veterinarianRequest.getService().isEmpty()) {
             for (String service : veterinarianRequest.getService()) {
-                services.add(servicesRepository.findByServiceId(service));
+                com.koicenter.koicenterbackend.model.entity.Service serviceId = servicesRepository.findByServiceId(service);
+                if (serviceId != null) {
+                    services.add(serviceId);
+                    serviceId.getVeterinarians().add(veterinarian);
+                }
             }
-            veterinarian.setServices(services);
-
         }
+        veterinarian.setServices(services);
         veterinarian.setDescription(veterinarianRequest.getDescription());
         veterinarian.setGoogleMeet(veterinarianRequest.getGoogle_meet());
         veterinarian.setPhone(veterinarianRequest.getPhone());
@@ -133,17 +135,13 @@ public class VeterinarianService {
 
         veterinarianRepository.save(veterinarian);
     }
-
-
     public List<VeterinarianResponse> getVeterinariansByServiceId(String serviceId) {
-
         List<Veterinarian> veterinarians = veterinarianRepository.findByServices_ServiceId(serviceId);
         if(veterinarians.isEmpty()){
             throw new AppException(404, "Not found", HttpStatus.NOT_FOUND);
         }
         List<VeterinarianResponse> responseList = new ArrayList<>();
         for (Veterinarian veterinarian : veterinarians) {
-
             VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
             veterinarianResponse.setGoogleMeet(veterinarian.getGoogleMeet());
             veterinarianResponse.setPhone(veterinarian.getPhone());

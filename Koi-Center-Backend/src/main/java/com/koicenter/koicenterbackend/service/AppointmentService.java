@@ -149,13 +149,11 @@ public class AppointmentService {
                         .serviceId(appointment.getService().getServiceId())
                         .vetId(appointment.getVeterinarian().getVetId())
                         .build();
-
                 appointmentResponses.add(response);
             }
         }
         return appointmentResponses;
     }
-
     //CREATE APPOINTMENT
     public AppointmentResponse createAppointment(AppointmentRequest appointmentRequest) {
         Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
@@ -163,24 +161,18 @@ public class AppointmentService {
         if (!appointmentRequest.getVetId().equalsIgnoreCase("SKIP")) {
             veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
 //            log.info("Veterian ID " + veterinarian.getVetId());
-            int count = 0;
-            if (appointmentRequest.getType().equals(AppointmentType.CENTER)) {
-                count = 1;
-            } else {
-                count = 2;
-            }
+
             VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
                     .vet_id(appointmentRequest.getVetId())
                     .endTime(appointmentRequest.getEndTime())
                     .startTime(appointmentRequest.getStartTime())
                     .date(appointmentRequest.getAppointmentDate())
+                    .appointmentType(appointmentRequest.getType())
                     .build();
-            VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest, count);
+            vetScheduleService.slotDateTime(vetScheduleRequest,"add");
         }
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
         log.info("service ID " + service.getServiceId());
-
-
         Appointment appointment = new Appointment();
         appointment = appointmentMapper.toAppointment(appointmentRequest);
         appointment.setCustomer(customer);
@@ -199,7 +191,6 @@ public class AppointmentService {
         }
         return appointmentResponse;
     }
-
     public AppointmentResponse updateAppointment(AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentRequest.getAppointmentId());
         if (appointment != null) {
@@ -207,59 +198,82 @@ public class AppointmentService {
             LocalTime startTime = appointmentRequest.getStartTime();
             LocalTime endTime = appointmentRequest.getEndTime();
             String vetId = appointmentRequest.getVetId();
-            int count = appointmentRequest.getType().equals(AppointmentType.CENTER) ? 1 : 2;
             Customer customer = customerRepository.findByCustomerId(appointmentRequest.getCustomerId());
             Veterinarian veterinarian = null;
-            if (!appointmentRequest.getVetId().equalsIgnoreCase("SKIP")) {
+            if (appointmentRequest.getVetId()!=null) {
                 veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
+                log.info("vetId "+ veterinarian.getVetId());
             }
+
             com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findByServiceId(appointmentRequest.getServiceId());
-            if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian() == null) {
+            if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian() == null || !appointment.getAppointmentDate().equals(date) && appointment.getVeterinarian()== null|| !appointment.getStartTime().equals(startTime) && appointment.getVeterinarian()== null||  !appointment.getEndTime().equals(endTime) &&  appointment.getVeterinarian()== null) {
                 VetScheduleRequest vetScheduleRequest1 = VetScheduleRequest.builder()
                         .vet_id(appointmentRequest.getVetId())
                         .startTime(appointmentRequest.getStartTime())
                         .endTime(appointmentRequest.getEndTime())
                         .date(appointmentRequest.getAppointmentDate())
+                        .appointmentType(appointmentRequest.getType())
                         .build();
-                VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest1, count);
+                List<VetScheduleResponse> vetScheduleResponse = vetScheduleService.slotDateTime(vetScheduleRequest1,"add");
             }
              else if (appointment.getAppointmentDate().equals(date) && appointment.getStartTime().equals(startTime) && appointment.getEndTime().equals(endTime) && appointment.getVeterinarian().getVetId().equals(vetId)) {
                 //NEU KHONG DOI THOI GIAN , KHONG DOI BAC SI
             }
+             else if ( appointmentRequest.getType().equals(AppointmentStatus.CANCEL)||!appointment.getAppointmentDate().equals(date) && appointmentRequest.getVetId()== null|| !appointment.getStartTime().equals(startTime) &&  appointmentRequest.getVetId()== null||  !appointment.getEndTime().equals(endTime) &&   appointmentRequest.getVetId()== null){
+                 if (appointment.getVeterinarian() !=null ){
+                     VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
+                             .vet_id(appointment.getVeterinarian().getVetId())
+                             .endTime(appointment.getEndTime())
+                             .startTime(appointment.getStartTime())
+                             .date(appointment.getAppointmentDate())
+                             .appointmentType(appointment.getType())
+                             .build();
+                     List<VetScheduleResponse> vetScheduleResponse = vetScheduleService.slotDateTime(vetScheduleRequest,"less");
 
-            else {
+                 }
+            }
+            else  if (!appointment.getAppointmentDate().equals(date) || !appointment.getStartTime().equals(startTime) ||  !appointment.getEndTime().equals(endTime) || !appointment.getVeterinarian().getVetId().equals(vetId)){
                 VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
                         .vet_id(appointment.getVeterinarian().getVetId())
                         .endTime(appointment.getEndTime())
                         .startTime(appointment.getStartTime())
                         .date(appointment.getAppointmentDate())
+                        .appointmentType(appointment.getType())
                         .build();
-                VetScheduleResponse vetScheduleResponse = vetScheduleService.SlotDateTime(vetScheduleRequest, -count);
+                List<VetScheduleResponse> vetScheduleResponse = vetScheduleService.slotDateTime(vetScheduleRequest,"less");
                 VetScheduleRequest vetScheduleRequest1 = VetScheduleRequest.builder()
                         .vet_id(appointmentRequest.getVetId())
                         .startTime(appointmentRequest.getStartTime())
                         .endTime(appointmentRequest.getEndTime())
                         .date(appointmentRequest.getAppointmentDate())
+                        .appointmentType(appointmentRequest.getType())
                         .build();
-                VetScheduleResponse vetScheduleResponse1 = vetScheduleService.SlotDateTime(vetScheduleRequest1, count);
+                vetScheduleService.slotDateTime(vetScheduleRequest,"add");
             }
+
             appointment = appointmentMapper.toAppointment(appointmentRequest);
+            if (appointmentRequest.getVetId()!=null) {
+                log.info("vetId "+ veterinarian.getVetId());
+
+                appointment.setVeterinarian(veterinarian);
+            }
             appointment.setCustomer(customer);
-            appointment.setVeterinarian(veterinarian);
             appointment.setService(service);
+
             appointmentRepository.save(appointment);
 
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
             appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
-            appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
+
+            if(appointmentRequest.getVetId()!=null){
+                appointmentResponse.setVetId(appointmentRequest.getVetId());
+            }
             appointmentResponse.setServiceId(appointment.getService().getServiceId());
             return appointmentResponse;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AppointmentById not found");
         }
-
     }
-
     public List<AppointmentResponse> getAllAppointments(String status) {
         List<Appointment> appointments;
         if (status.equalsIgnoreCase("ALL")) {

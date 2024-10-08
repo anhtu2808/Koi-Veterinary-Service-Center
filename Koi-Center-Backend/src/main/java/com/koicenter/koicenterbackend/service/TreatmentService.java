@@ -112,7 +112,6 @@ public class TreatmentService {
         if(koiTreatmentRequest.getTreatment()!=null) {
             koiTreatment.setTreatment(koiTreatmentRequest.getTreatment());
         }
-
         KoiTreatmentResponse koiTreatmentResponse = new KoiTreatmentResponse();
         koiTreatmentResponse = koiTreatmentMapper.toKoiTreatmentResponse(koiTreatmentRepository.save(koiTreatment));
 //        koiTreatmentResponse.prescription
