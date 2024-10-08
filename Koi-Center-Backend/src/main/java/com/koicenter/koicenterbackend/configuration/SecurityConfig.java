@@ -135,6 +135,9 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/vetschedules").permitAll()
 
+                            .requestMatchers(HttpMethod.GET, "api/v1/payment/momo-pay").permitAll()
+                            .requestMatchers(HttpMethod.POST, "api/v1/payment/momo-pay-callback").permitAll()
+
                             .anyRequest().authenticated();
                 });
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));
