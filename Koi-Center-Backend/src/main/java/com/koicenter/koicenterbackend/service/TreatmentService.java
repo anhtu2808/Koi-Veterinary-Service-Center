@@ -41,9 +41,9 @@ public class TreatmentService {
     KoiRepository koiRepository ;
     KoiTreatmentService koiTreatmentService ;
     PrescriptionRepository prescriptionRepository;
+    ServicesRepository servicesRepository ;
 
     public <T> List<T> createAppointments(List<String> selected, AppointmentRequest appointmentRequest) {
-//        log.info("vetId "+ appointmentRequest.getVetId());
         AppointmentResponse appointmentResponse =  appointmentService.createAppointment(appointmentRequest);
         log.info("AppointmentID "+ appointmentResponse.getAppointmentId());
 
