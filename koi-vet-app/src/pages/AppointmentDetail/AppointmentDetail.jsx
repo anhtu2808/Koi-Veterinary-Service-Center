@@ -248,7 +248,7 @@ function AppointmentDetail() {
             <button
               onClick={() => navigate(`/admin/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
               type="submit"
-              className="btn btn-success buttonInEdit"
+              className="btn btn-primary buttonInEdit"
             >
               Pond Information
             </button>
@@ -256,7 +256,7 @@ function AppointmentDetail() {
             <button
               onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
               type="submit"
-              className="btn btn-success buttonInEdit"
+              className="btn btn-primary buttonInEdit"
             >
               Koi Information
             </button>
@@ -266,7 +266,7 @@ function AppointmentDetail() {
           <button
             onClick={() => navigate(`/profile/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
             type="submit"
-            className="btn btn-success buttonInEdit"
+            className="btn btn-primary buttonInEdit"
           >
             Pond Information
           </button>
@@ -274,7 +274,7 @@ function AppointmentDetail() {
           <button
             onClick={() => navigate(`/profile/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
             type="submit"
-            className="btn btn-success buttonInEdit"
+            className="btn btn-primary buttonInEdit"
           >
             Koi Information
           </button>
@@ -283,6 +283,28 @@ function AppointmentDetail() {
 
 
       </form>
+      {
+        appointment.type === BOOKING_TYPE.ONLINE && role!==ROLE.CUSTOMER ?
+          <button
+            onClick={() => navigate(`/admin/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
+            type="submit"
+            className="btn btn-primary buttonInEdit"
+          >
+            Google Meet
+          </button>
+          : null
+      }
+       {
+        appointment.type === BOOKING_TYPE.ONLINE && role === ROLE.CUSTOMER ?
+          <button
+            onClick={() => navigate(`/admin/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
+            type="submit"
+            className="btn btn-primary buttonInEdit"
+          >
+            Google Meet
+          </button>
+          : null
+      }
       <div className="col-md-12">
         <button
           className="btn btn-secondary "

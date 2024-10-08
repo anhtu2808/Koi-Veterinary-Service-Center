@@ -38,7 +38,7 @@ function BookingPage() {
   };
   const handleBackStepInputKoi = () => {
     if(serviceFor === SERVICE_FOR.KOI){
-      dispatch(setStep(3))
+      dispatch(setStep(4))
     }
     else if(serviceFor === SERVICE_FOR.POND){
       dispatch(setStep(4))
@@ -79,17 +79,17 @@ function BookingPage() {
       <div className="row">
         <div className="row d-flex justify-content-between">
           <div className="col-md-1">
-            {step !== 5 && step !== 4 ?
+            {step === 6 ?
               <button
                 className="btn btn-primary"
-                onClick={() => handleBackStep()}
+                onClick={() => handleBackStepInputKoi()}
               >
                 Back
               </button>
               :
               <button
                 className="btn btn-primary"
-                onClick={() => handleBackStepInputKoi()}
+                onClick={() => handleBackStep()}
               >
                 Back
               </button>}
