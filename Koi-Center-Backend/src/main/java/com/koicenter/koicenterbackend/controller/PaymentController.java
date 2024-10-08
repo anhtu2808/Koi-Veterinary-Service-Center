@@ -44,6 +44,7 @@ public class PaymentController {
                 return ResponseObject.APIRepsonse(400, "Amount is required", HttpStatus.BAD_REQUEST, null);
             }
             amountTemp = Float.parseFloat(amount);
+            System.out.println("Redirect:  " + paymentUrl);
             return ResponseObject.APIRepsonse(200, "Redirecting to VN Pay", HttpStatus.OK, paymentUrl);
         } catch (NumberFormatException e) {
             return ResponseObject.APIRepsonse(400, "Invalid amount format", HttpStatus.BAD_REQUEST, null);
@@ -66,14 +67,10 @@ public class PaymentController {
                 }
                 Object firstObject = appointmentResponse.get(0);
                 String appointmentId = null;
-                if (firstObject instanceof PondTreatmentResponse) {
-                    PondTreatmentResponse firstAppointment = (PondTreatmentResponse) firstObject;
+                if (firstObject instanceof PondTreatmentResponse firstAppointment) {
                     appointmentId = firstAppointment.getAppointmentId();
-                    System.out.println("Appointment ID from PondTreatmentResponse: " + appointmentId);
-                } else if (firstObject instanceof KoiTreatmentResponse) {
-                    KoiTreatmentResponse firstAppointment = (KoiTreatmentResponse) firstObject;
+                } else if (firstObject instanceof KoiTreatmentResponse firstAppointment) {
                     appointmentId = firstAppointment.getAppointmentId();
-                    System.out.println("Appointment ID from KoiTreatmentResponse: " + appointmentId);
                 }
                 if (appointmentId != null) {
                     insertToInvoice(appointmentId, amountTemp);
