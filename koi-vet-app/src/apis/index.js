@@ -251,4 +251,10 @@ export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
     return response.data;
 }
 
+//Payment API
+export const fetchRedirectPaymentAPI = async (amount, bankCode,appointmentData) => {
+    const response = await api.post(`payment/vn-pay?amount=${amount}&bankCode=${bankCode}&appointmentId=123`,appointmentData)
+    return response.data;
+}
+
 
