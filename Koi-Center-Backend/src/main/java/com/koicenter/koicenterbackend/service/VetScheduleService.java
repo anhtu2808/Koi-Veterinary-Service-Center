@@ -24,7 +24,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
+
 import java.time.LocalTime;
+
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -71,7 +73,7 @@ public class VetScheduleService {
 
 
                 for (VetSchedule vetScheduleEntry : vetSchedule1) {
-                    if (vetScheduleEntry.getDate().equals(localDate) && vetScheduleEntry.getCustomerBookingCount() == 0  &&  vetSchedule.getAppointmentType().toString().equals("ONLINE")||vetScheduleEntry.getDate().equals(localDate) && vetScheduleEntry.getCustomerBookingCount() < 2 &&  vetSchedule.getAppointmentType().toString().equals("CENTER")) { // ngay va so luong khach da dăt
+                    if (vetScheduleEntry.getDate().equals(localDate) && vetScheduleEntry.getCustomerBookingCount() == 0 && vetSchedule.getAppointmentType().toString().equals("ONLINE") || vetScheduleEntry.getDate().equals(localDate) && vetScheduleEntry.getCustomerBookingCount() < 2 && vetSchedule.getAppointmentType().toString().equals("CENTER")) { // ngay va so luong khach da dăt
                         SlotResponse slotResponse = new SlotResponse();
                         slotResponse.setStartTime(vetScheduleEntry.getStartTime());
                         slotResponse.setEndTime(vetScheduleEntry.getEndTime());
@@ -84,8 +86,7 @@ public class VetScheduleService {
                     dayResponses.add(dates);
                 }
             }
-        }
-        else if (vetSchedule.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
+        } else if (vetSchedule.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
             // Logic xử lý cho loại hẹn MOBILE nếu cần
             for (LocalDate localDate : allDay) {
                 DayResponse dates = new DayResponse();
@@ -124,6 +125,7 @@ public class VetScheduleService {
         }
         return dayResponses;
     }
+
     public List<VeterinarianResponse> getVeterinariansByDateTime(VetScheduleRequest vetScheduleRequest) {
         // Service Id , Date ,starTime , endTime type
         List<VeterinarianResponse> veterinarians = new ArrayList<>();
@@ -148,7 +150,6 @@ public class VetScheduleService {
                 }
             } else if (vetScheduleRequest.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
                 if (vetScheduleRequest.getStartTime().equals(vetScheduleResponse.getStart_time()) && vetScheduleRequest.getEndTime().equals(vetScheduleResponse.getEnd_time()) && vetScheduleRequest.getDate().equals(vetScheduleResponse.getDate()) && vetScheduleResponse.getCustomerBookingCount() == 0) {
-
                     Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
                     VeterinarianResponse response = new VeterinarianResponse();
                     response = veterinariansMapper.toVeterinarianResponse(veterinarian);
@@ -159,62 +160,43 @@ public class VetScheduleService {
         }
         return veterinarians;
     }
-    public VetScheduleResponse SlotDateTime(VetScheduleRequest vetScheduleRequest, int count) { // cái này là cái Update SLOT
-        VetSchedule findID = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
-        if (findID != null) {
-            int number = findID.getCustomerBookingCount() + count;
-            findID.setCustomerBookingCount(number);
-            if (number == 2) {
-                findID.setStatus(StatusVetSchedule.AVAILABLE);
-            } else if (number == 1) {
-                findID.setStatus(StatusVetSchedule.PROCESS);
+    public List<VetScheduleResponse> slotDateTime(VetScheduleRequest vetScheduleRequest, String caculator ) {
+        int count = (vetScheduleRequest.getAppointmentType().equals("CENTER") ? 1 : 2) * (caculator.equals("add") ? 1 : -1);
+        List<VetScheduleResponse> vetScheduleResponse = new ArrayList<>();
+        if (vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
+            VetSchedule vetSchedule = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
+            int currentBookingCount = vetSchedule.getCustomerBookingCount();
+            vetSchedule.setCustomerBookingCount(currentBookingCount + count);
+            scheduleRepository.save(vetSchedule);
+            vetScheduleResponse.add(vetScheduleMapper.toVetScheduleResponse(vetSchedule));
+        } else if (vetScheduleRequest.getAppointmentType().toString().equals("CENTER")) {
+            VetSchedule vetSchedule = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
+            int currentBookingCount = vetSchedule.getCustomerBookingCount();
+            vetSchedule.setCustomerBookingCount(vetScheduleRequest.getCustomerBookingCount() + count);
+            vetScheduleResponse.add(vetScheduleMapper.toVetScheduleResponse(vetSchedule));
+        } else if (vetScheduleRequest.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
+            List<VetSchedule> vetSchedules = scheduleRepository.findVetScheduleByDate(vetScheduleRequest.getDate());
+            for (VetSchedule vetSchedule : vetSchedules) {
+                if (vetScheduleRequest.getStartTime().getHour() == 7 && vetScheduleRequest.getEndTime().getHour() == 11) {
+                    if (vetSchedule.getStartTime().getHour() >= 7 && vetSchedule.getStartTime().getHour() < 12 || vetSchedule.getStartTime().getHour() >= 13 && vetSchedule.getStartTime().getHour() < 18) {
+                        int currentBookingCount = vetSchedule.getCustomerBookingCount();
+                        vetSchedule.setCustomerBookingCount(currentBookingCount + count);
+                        scheduleRepository.save(vetSchedule);
+                        vetScheduleResponse.add(vetScheduleMapper.toVetScheduleResponse(vetSchedule));
+                    }
+                } else if (vetScheduleRequest.getStartTime().getHour() == 13 && vetScheduleRequest.getEndTime().getHour() == 17) {
+                    if (vetSchedule.getStartTime().getHour() >= 13 && vetSchedule.getStartTime().getHour() < 18) {
+                        int currentBookingCount = vetSchedule.getCustomerBookingCount();
+                        vetSchedule.setCustomerBookingCount(currentBookingCount + count);
+                        scheduleRepository.save(vetSchedule);
+                        vetScheduleResponse.add(vetScheduleMapper.toVetScheduleResponse(vetSchedule));
+                    }
+                }
             }
-            scheduleRepository.save(findID);
-            VetScheduleResponse vetScheduleResponse = vetScheduleMapper.toVetScheduleResponse(findID);
-            return vetScheduleResponse;
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "VetSchedule not found");
-         }
-
+        }
+        return vetScheduleResponse;
     }
-//    public VetScheduleResponse updateSlotDateTime (VetScheduleRequest vetScheduleRequest){
-//        int count = 0 ;
-//        VetSchedule findID = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
-//        if (findID != null) {
-//        }
-//        if (vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
-//            count = 1 ;
-//            int number = findID.getCustomerBookingCount() + count;
-//
-//        } else if (vetScheduleRequest.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
-//            count = 2 ;
-//            int slotMorning = 0 ;
-//            int slotAfternoon = 0 ;
-//            if(vetScheduleRequest.getStartTime().toString()=="07:00:00" && vetScheduleRequest.getEndTime().toString()=="11:00:00"){
-//                int counts = 4 ;
-//                for (int i = 0 ; i < counts ; i++) {
-//                        findID = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime()+ 1 , vetScheduleRequest.getStartTime(), vetScheduleRequest.getDate());
-//                    if ()
-//                }
-//                findID = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(),vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
-//
-//            } else if (vetScheduleRequest.getStartTime().toString()=="13:00:00" && vetScheduleRequest.getEndTime().toString()=="17:00:00") {
-//
-//            }
-//        } else if (vetScheduleRequest.getAppointmentType().toString().equals("CENTER")) {
-//            count = 2 ;
-//            int number = findID.getCustomerBookingCount() + count;
-//
-//
-//        }
-//        return vetScheduleResponse;
-//
-//    }
-
-
-
     public List<DayResponse> getVetSchedules(String vetId, String serviceId) {
-
         com.koicenter.koicenterbackend.model.entity.Service service = servicesRepository.findById(serviceId).orElseThrow(()
                 -> new AppException(ErrorCode.SERVICE_ID_NOT_EXITS.getCode(),
                 ErrorCode.SERVICE_ID_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
@@ -248,8 +230,7 @@ public class VetScheduleService {
 
             if (existingDayResponse != null) {
                 existingDayResponse.getSlots().add(slotResponse);
-            }
-            else {
+            } else {
                 List<SlotResponse> slots = new ArrayList<>();
                 slots.add(slotResponse);
                 DayResponse dayResponse = new DayResponse(scheduleDate, slots);
@@ -260,7 +241,7 @@ public class VetScheduleService {
         return dayResponses;
     }
 
-    
+
 }
 
 

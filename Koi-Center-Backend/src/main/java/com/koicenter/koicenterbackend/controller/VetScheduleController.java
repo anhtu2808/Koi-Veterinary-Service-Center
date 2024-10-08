@@ -74,5 +74,4 @@ public class VetScheduleController {
             return ResponseObject.APIRepsonse(404, "Veterinarians schedule not found", HttpStatus.NOT_FOUND,"");
         }
     }
-
 }
