@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchAppointmentByIdAPI, fetchVetForAssignAPI, updateAppointmentAPI } from "../../apis";
+import { fecthServiceByServiceIdAPI, fetchAppointmentByIdAPI, fetchVetForAssignAPI, updateAppointmentAPI } from "../../apis";
 import "./AppointmentDetail.css";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
-import { APPOINTMENT_STATUS, BOOKING_TYPE, ROLE } from "../../utils/constants";
+import { APPOINTMENT_STATUS, BOOKING_TYPE, ROLE, SERVICE_FOR } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import Loading from "../../components/Loading/Loading";
 
 function AppointmentDetail() {
   const { appointmentId } = useParams();
   const navigate = useNavigate();
-  // const [dataForFindVet, setDataForFindVet] = useState({
-  //   appointmentId: "APT12345",
-  //   appointmentDate: "2023-06-15",
   // });  
   const [vetList, setVetList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [service, setService] = useState({});
+  const [navigateLink, setNavigateLink] = useState({
+    link: null,
+    title: null
+  });
   const [appointment, setAppointment] = useState({
     "appointmentId": null,
     "appointmentDate": null,
@@ -44,18 +46,18 @@ function AppointmentDetail() {
           setIsLoading(false);
         }
         // Chỉ gọi fetchVetForAssignAPI sau khi có dữ liệu từ fetchAppointmentByIdAPI
-
       } catch (error) {
         console.error("Error fetching appointment details:", error);
         // Xử lý lỗi ở đây (ví dụ: hiển thị thông báo lỗi)
       }
     };
-
-
     fetchAppointmentDetail(appointmentId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentId]);
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setAppointment({ ...appointment, [name]: value });
+  }
   useEffect(() => {
     const fetchVetList = async () => {
 
@@ -76,10 +78,60 @@ function AppointmentDetail() {
   appointment.appointmentDate,
   appointment.startTime,
   appointment.endTime]);
+  useEffect(() => {
+    const fetchService = async () => {
+      const responseService = await fecthServiceByServiceIdAPI(appointment.serviceId);
+      setService(responseService.data);
+      switch (responseService.data.serviceFor) {
+        case SERVICE_FOR.KOI:
+          if (role !== ROLE.CUSTOMER) {
+            setNavigateLink({
+              link: `/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+              title: "Koi Information"
+            })
+          } else {
+            setNavigateLink({
+              link: `/profile/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+              title: "Koi Information"
+            })
+          }
+          break;
+        case SERVICE_FOR.POND:
+          if (role !== ROLE.CUSTOMER) {
+            setNavigateLink({
+              link: `/admin/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+              title: "Pond Information"
+            })
+          } else {
+            setNavigateLink({
+              link: `/profile/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+              title: "Pond Information"
+            })
+          }
+          break;
+        case SERVICE_FOR.ONLINE:
+          if (role !== ROLE.CUSTOMER) {
+            setNavigateLink({
+              link: `/admin/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+              title: "Google Meet"
+            })
+          } else {
+            setNavigateLink({
+              link: `/profile/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+              title: "Google Meet"
+            })
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    fetchService();
+  }, [appointment.serviceId]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setAppointment({ ...appointment, [name]: value, status: APPOINTMENT_STATUS.BOOKING_COMPLETE });
+  const handleAssignVet = (e) => {
+    e.preventDefault();
+    setAppointment({ ...appointment, vetId: e.target.value })
 
   };
   const handleSubmit = async (e) => {
@@ -92,6 +144,16 @@ function AppointmentDetail() {
       console.error("Error updating appointment:", error);
       // Optionally, show an error message
     }
+  };
+
+  // Mapping of status values to display strings
+  const statusDisplayMap = {
+    [APPOINTMENT_STATUS.CREATED]: "Waiting Confirm",
+    [APPOINTMENT_STATUS.BOOKING_COMPLETE]: "Veterinarian Assigned",
+    [APPOINTMENT_STATUS.PROCESS]: "Process",
+    [APPOINTMENT_STATUS.READY_FOR_PAYMENT]: "Ready For Payment",
+    [APPOINTMENT_STATUS.FINISH]: "Completed",
+    [APPOINTMENT_STATUS.CANCEL]: "Cancelled"
   };
 
   if (isLoading) return <Loading />
@@ -113,215 +175,189 @@ function AppointmentDetail() {
             disabled
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="customerId" className="form-label">
-            Customer
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="customerId"
-            name="customerId"
-            value={appointment.customerName}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="serviceId" className="form-label">
-            Service
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="serviceId"
-            name="serviceId"
-            value={appointment.serviceName}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="type" className="form-label">
-            Type
-          </label>
-          <select
-            className="form-select"
-            id="type"
-            name="type"
-            value={appointment.type}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-          >
-            <option value={BOOKING_TYPE.HOME}>Home</option>
-            <option value={BOOKING_TYPE.CENTER}>Center</option>
-            <option value={BOOKING_TYPE.ONLINE}>Online</option>
-          </select>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="serviceId" className="form-label">
-            Start Time
-          </label>
-          <input type="time" className="form-control" id="startTime" name="startTime" value={appointment.startTime} onChange={handleInputChange} disabled={!isEditing}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="serviceId" className="form-label">
-            End Time
-          </label>
-          <input type="time" className="form-control" id="endTime" name="endTime" value={appointment.endTime} onChange={handleInputChange} disabled={!isEditing}
-          />
+
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label htmlFor="customerId" className="form-label">
+              Customer
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="customerId"
+              name="customerId"
+              value={appointment.customerName}
+              disabled
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="status" className="form-label">
+              Status
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="status"
+              name="status"
+              value={statusDisplayMap[appointment.status] || appointment.status}
+              disabled={true}
+            />
+          </div>
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="location" className="form-label">
-            Location
-          </label>
-          <input type="text" className="form-control" id="location" name="location" value={appointment.location} onChange={handleInputChange} disabled={!isEditing} />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="appointmentDate" className="form-label">
-            Appointment Date
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            id="appointmentDate"
-            name="appointmentDate"
-            value={appointment.appointmentDate}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="status" className="form-label">
-            Status
-          </label>
-          <select
-            className="form-select"
-            id="status"
-            name="status"
-            value={appointment.status}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-          >
-
-            <option value={APPOINTMENT_STATUS.CREATED}>Waiting Confirm</option>
-            <option value={APPOINTMENT_STATUS.BOOKING_COMPLETE}>Veterinarian Assigned</option>
-            <option value={APPOINTMENT_STATUS.PROCESS}>Process</option>
-            <option value={APPOINTMENT_STATUS.READY_FOR_PAYMENT}>Ready For Payment</option>
-            <option value={APPOINTMENT_STATUS.FINISH}>Completed</option>
-            <option value={APPOINTMENT_STATUS.CANCEL}>Cancelled</option>
-          </select>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="vetId" className="form-label">
-            Veterinarian
-          </label>
-          <select
-            className="form-select"
-            id="vetId"
-            name="vetId"
-            value={appointment.vetId}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-          >
-            <option value={"SKIP"}>Not assigned</option>
-            {vetList.map((vet) => (
-              <option key={vet.vetId} value={vet.vetId}>
-                {vet.user.fullName}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {isEditing && (
-          <button type="submit" className="btn btn-success buttonInEdit">
-            Save Changes
-          </button>
-        )}
-
-        {role !== ROLE.CUSTOMER ?
-          <>
-            <button
-              onClick={() => navigate(`/admin/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-              type="submit"
-              className="btn btn-primary buttonInEdit"
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label htmlFor="vetId" className="form-label">
+              Veterinarian
+            </label>
+            <select
+              className="form-select"
+              id="vetId"
+              name="vetId"
+              value={appointment.vetId}
+              onChange={handleAssignVet}
+              disabled={!isEditing}
             >
-              Pond Information
-            </button>
+              <option value={"SKIP"}>Not assigned</option>
+              {vetList.map((vet) => (
+                <option key={vet.vetId} value={vet.vetId}>
+                  {vet.user.fullName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="serviceId" className="form-label">
+              Service
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="serviceId"
+              name="serviceId"
+              value={appointment.serviceName}
+              onChange={handleInputChange}
+              disabled
+            />
+          </div>
+        </div>
 
-            <button
-              onClick={() => navigate(`/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-              type="submit"
-              className="btn btn-primary buttonInEdit"
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label htmlFor="type" className="form-label">
+              Type
+            </label>
+            <select
+              className="form-select"
+              id="type"
+              name="type"
+              value={appointment.type}
+              onChange={handleInputChange}
+              disabled={!isEditing}
             >
-              Koi Information
+              <option value={BOOKING_TYPE.HOME}>Home</option>
+              <option value={BOOKING_TYPE.CENTER}>Center</option>
+              <option value={BOOKING_TYPE.ONLINE}>Online</option>
+            </select>
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="location" className="form-label">
+              Location
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="location"
+              name="location"
+              value={appointment.location}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            />
+          </div>
+        </div>
+
+        <div className="row mb-3">
+          <div className="col-md-4">
+            <label htmlFor="appointmentDate" className="form-label">
+              Appointment Date
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="appointmentDate"
+              name="appointmentDate"
+              value={appointment.appointmentDate}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            />
+          </div>
+          <div className="col-md-4">
+            <label htmlFor="startTime" className="form-label">
+              Start Time
+            </label>
+            <input
+              type="time"
+              className="form-control"
+              id="startTime"
+              name="startTime"
+              value={appointment.startTime}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            />
+          </div>
+          <div className="col-md-4">
+            <label htmlFor="endTime" className="form-label">
+              End Time
+            </label>
+            <input
+              type="time"
+              className="form-control"
+              id="endTime"
+              name="endTime"
+              value={appointment.endTime}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            />
+          </div>
+        </div>
+
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          {role !== ROLE.CUSTOMER && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setIsEditing(!isEditing)}
+            >
+              {isEditing ? "Cancel" : "Edit"}
             </button>
-          </>
-          :
-          <>
-          <button
-            onClick={() => navigate(`/profile/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-            type="submit"
-            className="btn btn-primary buttonInEdit"
-          >
-            Pond Information
-          </button>
-
-          <button
-            onClick={() => navigate(`/profile/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-            type="submit"
-            className="btn btn-primary buttonInEdit"
-          >
-            Koi Information
-          </button>
-        </>
-        }
-
-
+          )}
+          {isEditing && (
+            <button type="submit" className="btn btn-primary">
+              Save Changes
+            </button>
+          )}
+        </div>
       </form>
-      {
-        appointment.type === BOOKING_TYPE.ONLINE && role!==ROLE.CUSTOMER ?
-          <button
-            onClick={() => navigate(`/admin/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-            type="submit"
-            className="btn btn-primary buttonInEdit"
-          >
-            Google Meet
-          </button>
-          : null
-      }
-       {
-        appointment.type === BOOKING_TYPE.ONLINE && role === ROLE.CUSTOMER ?
-          <button
-            onClick={() => navigate(`/admin/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`)}
-            type="submit"
-            className="btn btn-primary buttonInEdit"
-          >
-            Google Meet
-          </button>
-          : null
-      }
-      <div className="col-md-12">
+
+      <div className="d-flex justify-content-between align-items-center">
+
+
         <button
-          className="btn btn-secondary "
+          className="btn btn-secondary"
           onClick={() => navigate(-1)}
         >
           Back to All Appointments
         </button>
-        {role !== ROLE.CUSTOMER && (
+        {navigateLink.link && (
           <button
-            className="btn btn-primary mx-3"
-            onClick={() => setIsEditing(!isEditing)}
+            onClick={() => navigate(navigateLink.link)}
+            type="button"
+            className="btn btn-primary"
           >
-            {isEditing ? "Cancel" : "Edit"}
+            {navigateLink.title}
           </button>
         )}
       </div>
-
 
     </>
 
