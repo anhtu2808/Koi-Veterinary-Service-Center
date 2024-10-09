@@ -233,6 +233,11 @@ export const fetchPrescriptionByIdAPI = async (prescriptionId) => {
     return response.data;
 }
 
+export const updatePrescriptionAPI = async (prescriptionId, data) => {
+    const response = await api.put(`/prescriptions/${prescriptionId}`, data)
+    return response.data;
+}
+
 
 
 //Treatment API
@@ -250,5 +255,4 @@ export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/prescriptions?appointmentId=${appointmentId}`)
     return response.data;
 }
-
 

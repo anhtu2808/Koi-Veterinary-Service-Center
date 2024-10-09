@@ -1,10 +1,11 @@
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { fetchPrescriptionByIdAPI } from "../../apis";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { fetchPrescriptionByIdAPI, updatePrescriptionAPI } from "../../apis";
 
 function PrescriptionDetail(props) {
   const [prescriptionData, setPrescriptionData] = useState([]);
+  const [editingMedicines, setEditingMedicines] = useState({});
 
   useEffect(() => {
     const handlefetchPrescriptionId = async () => {
@@ -13,6 +14,49 @@ function PrescriptionDetail(props) {
     };
     handlefetchPrescriptionId();
   }, [props.prescriptionId]);
+
+  const handleEdit = (medicineId) => {
+    setEditingMedicines((prev) => ({
+      ...prev,
+      [medicineId]: {
+        editing: true,
+        ...prescriptionData.find((m) => m.medicineId === medicineId),
+      },
+    }));
+  };
+
+  const handleSave = async (medicineId) => {
+    const updatedMedicine = editingMedicines[medicineId];
+    const newPrescriptionData = prescriptionData.map((medicine) =>
+      medicine.medicineId === medicineId
+        ? {
+            ...medicine,
+            dosage: updatedMedicine.dosage,
+            quantity: updatedMedicine.quantity,
+          }
+        : medicine
+    );
+    setPrescriptionData(newPrescriptionData);
+    setEditingMedicines((prev) => ({
+      ...prev,
+      [medicineId]: { editing: false },
+    }));
+
+    // Call the update API here with the updated medicine details
+    await updatePrescriptionAPI(props.prescriptionId, {
+      prescriptionMedicines: newPrescriptionData,
+    });
+  };
+
+  const handleChange = (medicineId, field, value) => {
+    setEditingMedicines((prev) => ({
+      ...prev,
+      [medicineId]: {
+        ...prev[medicineId],
+        [field]: value,
+      },
+    }));
+  };
 
   const columns = [
     {
@@ -29,11 +73,51 @@ function PrescriptionDetail(props) {
       title: "Dosage",
       dataIndex: "dosage",
       key: "dosage",
+      render: (text, record) => {
+        const isEditing = editingMedicines[record.medicineId]?.editing;
+        return isEditing ? (
+          <input
+            type="text"
+            value={editingMedicines[record.medicineId]?.dosage}
+            onChange={(e) =>
+              handleChange(record.medicineId, "dosage", e.target.value)
+            }
+          />
+        ) : (
+          text
+        );
+      },
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
+      render: (text, record) => {
+        const isEditing = editingMedicines[record.medicineId]?.editing;
+        return isEditing ? (
+          <input
+            type="number"
+            value={editingMedicines[record.medicineId]?.quantity}
+            onChange={(e) =>
+              handleChange(record.medicineId, "quantity", e.target.value)
+            }
+          />
+        ) : (
+          text
+        );
+      },
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (text, record) => {
+        const isEditing = editingMedicines[record.medicineId]?.editing;
+        return isEditing ? (
+          <Button onClick={() => handleSave(record.medicineId)}>Save</Button>
+        ) : (
+          <Button onClick={() => handleEdit(record.medicineId)}>Edit</Button>
+        );
+      },
     },
   ];
 

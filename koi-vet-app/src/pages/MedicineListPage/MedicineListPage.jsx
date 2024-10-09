@@ -1,4 +1,4 @@
-import { Form, Input, Popconfirm, Table } from "antd";
+import { Form, Input, message, Popconfirm, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import {
@@ -284,6 +284,12 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
     };
 
     try {
+      if (!validateSelectedMedicines()) {
+        message.error(
+          "Please enter dosage and quantity for all selected medicines."
+        );
+        return;
+      }
       const newPrescription = await createPrescriptionAPI(prescriptionData);
       console.log(newPrescription);
       // Reset form and selections after successful creation
@@ -298,6 +304,17 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
       console.error("Failed to create prescription:", error);
       // Handle error (e.g., show error message)
     }
+  };
+
+  // Hàm kiểm tra xem thuốc đã nhập đủ `dosage` và `quantity` chưa
+  const validateSelectedMedicines = () => {
+    for (const medicineId in selectedMedicines) {
+      const medicine = selectedMedicines[medicineId];
+      if (!medicine.dosage || !medicine.quantity) {
+        return false;
+      }
+    }
+    return true;
   };
 
   return (
