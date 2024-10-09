@@ -35,33 +35,32 @@ public class CreateOrderMoMo extends AbstractProcess<PaymentRequest, PaymentResp
     @Override
     public PaymentResponse execute(PaymentRequest request) throws MoMoException {
         try {
-
             String payload = getGson().toJson(request, PaymentRequest.class);
-
             HttpResponse response = execute.sendToMoMo(environment.getMomoEndpoint().getCreateUrl(), payload);
 
             if (response.getStatus() != 200) {
                 throw new MoMoException("[PaymentResponse] [" + request.getOrderId() + "] -> Error API");
             }
 
-            System.out.println("uweryei7rye8wyreow8: "+ response.getData());
 
             PaymentResponse captureMoMoResponse = getGson().fromJson(response.getData(), PaymentResponse.class);
-            String responserawData = Parameter.REQUEST_ID + "=" + captureMoMoResponse.getRequestId() +
-                    "&" + Parameter.ORDER_ID + "=" + captureMoMoResponse.getOrderId() +
-                    "&" + Parameter.MESSAGE + "=" + captureMoMoResponse.getMessage() +
-                    "&" + Parameter.PAY_URL + "=" + captureMoMoResponse.getPayUrl() +
-                    "&" + Parameter.RESULT_CODE + "=" + captureMoMoResponse.getResultCode();
 
-            LogUtils.info("[PaymentMoMoResponse] rawData: " + responserawData);
+
+            LogUtils.info("[PaymentMoMoResponse] Request ID: " + captureMoMoResponse.getRequestId());
+            LogUtils.info("[PaymentMoMoResponse] Amount: " + captureMoMoResponse.getAmount());
+            LogUtils.info("[PaymentMoMoResponse] Pay URL: " + captureMoMoResponse.getPayUrl());
+            LogUtils.info("[PaymentMoMoResponse] Short Link: " + captureMoMoResponse.getShortLink());
+            LogUtils.info("[PaymentMoMoResponse] Deeplink: " + captureMoMoResponse.getDeeplink());
+            LogUtils.info("[PaymentMoMoResponse] QR Code URL: " + captureMoMoResponse.getQrCodeUrl());
 
             return captureMoMoResponse;
 
         } catch (Exception exception) {
-            LogUtils.error("[PaymentMoMoResponse] "+ exception);
+            LogUtils.error("[PaymentMoMoResponse] " + exception);
             throw new IllegalArgumentException("Invalid params capture MoMo Request");
         }
     }
+
 
 
     public PaymentRequest createPaymentCreationRequest(String orderId, String requestId, String amount, String orderInfo,

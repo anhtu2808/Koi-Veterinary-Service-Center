@@ -29,7 +29,7 @@ public class PrescriptionService {
 
     @Transactional
     public PrescriptionResponse createPrescription(PrescriptionRequest prescriptionRequest) {
-        // Tạo Prescription từ PrescriptionRequest
+
         Prescription prescription = Prescription.builder()
                 .name(prescriptionRequest.getName())
                 .createdDate(prescriptionRequest.getCreatedDate())
@@ -176,7 +176,6 @@ public class PrescriptionService {
 
         Set<PrescriptionMedicine> currentMedicines = prescription.getPrescriptionMedicines();
 
-        // Chỉ cập nhật dosage và quantity của các thuốc đã tồn tại
         for (PrescriptionMedicineRequest medicineRequest : prescriptionRequest.getPrescriptionMedicines()) {
             for (PrescriptionMedicine pm : currentMedicines) {
                 if (pm.getMedicine().getMedicineId().equals(medicineRequest.getMedicineId())) {
@@ -186,11 +185,7 @@ public class PrescriptionService {
                 }
             }
         }
-
-        // Lưu thay đổi của Prescription
         prescriptionRepository.save(prescription);
-
-        // Tạo đối tượng PrescriptionResponse để trả về
         PrescriptionResponse prescriptionResponse = new PrescriptionResponse();
         prescriptionResponse.setId(prescription.getId());
         prescriptionResponse.setName(prescription.getName());
@@ -198,7 +193,6 @@ public class PrescriptionService {
         prescriptionResponse.setNote(prescription.getNote());
         prescriptionResponse.setAppointmentId(prescription.getAppointmentId());
 
-        // Chuyển đổi các đối tượng PrescriptionMedicine sang PrescriptionMedicineResponse
         Set<PrescriptionMedicineResponse> prescriptionMedicineResponses = new HashSet<>();
         for (PrescriptionMedicine prescriptionMedicine : currentMedicines) {
             PrescriptionMedicineResponse prescriptionMedicineResponse = new PrescriptionMedicineResponse();
