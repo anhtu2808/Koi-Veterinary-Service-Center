@@ -3,14 +3,14 @@ package com.koicenter.koicenterbackend.service;
 import com.koicenter.koicenterbackend.mapper.PondMapper;
 import com.koicenter.koicenterbackend.mapper.PondTreatmentMapper;
 import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
+import com.koicenter.koicenterbackend.mapper.koi.KoiMapper;
 import com.koicenter.koicenterbackend.mapper.koi.KoiTreatmentMapper;
-import com.koicenter.koicenterbackend.model.entity.KoiTreatment;
-import com.koicenter.koicenterbackend.model.entity.PondTreatment;
-import com.koicenter.koicenterbackend.model.entity.Prescription;
+import com.koicenter.koicenterbackend.model.entity.*;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
 import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
+import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import com.koicenter.koicenterbackend.model.response.koi.KoiTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.repository.*;
@@ -36,85 +36,115 @@ public class TreatmentService {
     KoiTreatmentMapper koiTreatmentMapper;
     PondMapper pondMapper;
     AppointmentMapper appointmentMapper;
-    PondTreatmentService pondTreatmentService ;
+    PondTreatmentService pondTreatmentService;
     AppointmentService appointmentService;
-    KoiRepository koiRepository ;
-    KoiTreatmentService koiTreatmentService ;
+    KoiRepository koiRepository;
+    KoiTreatmentService koiTreatmentService;
     PrescriptionRepository prescriptionRepository;
-    ServicesRepository servicesRepository ;
-
+    ServicesRepository servicesRepository;
+    KoiMapper koiMapper ;
     public <T> List<T> createAppointments(List<String> selected, AppointmentRequest appointmentRequest) {
-        AppointmentResponse appointmentResponse =  appointmentService.createAppointment(appointmentRequest);
-        log.info("AppointmentID "+ appointmentResponse.getAppointmentId());
+        AppointmentResponse appointmentResponse = appointmentService.createAppointment(appointmentRequest);
+        log.info("AppointmentID " + appointmentResponse.getAppointmentId());
 
         List<T> treatmentResponseList = new ArrayList<>();
-        if (selected.isEmpty()){
-            treatmentResponseList.add((T)appointmentResponse);
-        }else{
-        for (String select : selected) {
-            if(pondRepository.findById(select).isPresent()) {
-                PondTreatmentRequest pondTreatmentRequest = new PondTreatmentRequest();
-                pondTreatmentRequest.setPondId(select);
-                pondTreatmentRequest.setAppointmentId(appointmentResponse.getAppointmentId());
-                pondTreatmentRequest.setHealthIssue("");
-                pondTreatmentRequest.setTreatment("");
-                treatmentResponseList.add((T) pondTreatmentService.createPondTreatment(pondTreatmentRequest));
-            }
-            else if (koiRepository.findById(select).isPresent()) {
-                KoiTreatmentRequest koiTreatmentRequest = new KoiTreatmentRequest();
-                koiTreatmentRequest.setKoiId(select);
-                koiTreatmentRequest.setAppointmentId(appointmentResponse.getAppointmentId());
-                koiTreatmentRequest.setHealthIssue("");
-                koiTreatmentRequest.setTreatment("");
-                treatmentResponseList.add((T) koiTreatmentService.createKoiTreatment(koiTreatmentRequest));
-            }
+        if (selected.isEmpty()) {
+            treatmentResponseList.add((T) appointmentResponse);
+        } else {
+            for (String select : selected) {
+                if (pondRepository.findById(select).isPresent()) {
+                    PondTreatmentRequest pondTreatmentRequest = new PondTreatmentRequest();
+                    pondTreatmentRequest.setPondId(select);
+                    pondTreatmentRequest.setAppointmentId(appointmentResponse.getAppointmentId());
+                    pondTreatmentRequest.setHealthIssue("");
+                    pondTreatmentRequest.setTreatment("");
+                    treatmentResponseList.add((T) pondTreatmentService.createPondTreatment(pondTreatmentRequest));
+                } else if (koiRepository.findById(select).isPresent()) {
+                    KoiTreatmentRequest koiTreatmentRequest = new KoiTreatmentRequest();
+                    koiTreatmentRequest.setKoiId(select);
+                    koiTreatmentRequest.setAppointmentId(appointmentResponse.getAppointmentId());
+                    koiTreatmentRequest.setHealthIssue("");
+                    koiTreatmentRequest.setTreatment("");
+                    treatmentResponseList.add((T) koiTreatmentService.createKoiTreatment(koiTreatmentRequest));
+                }
 
             }
         }
         return treatmentResponseList;
     }
-    public PondTreatmentResponse updatePondTreatment(PondTreatmentRequest pondTreatmentRequest){
 
-        PondTreatment pondTreatment = pondTreatmentRepository.findById(pondTreatmentRequest.getPondTreatmentId()).orElseThrow(()->
+    public PondTreatmentResponse updatePondTreatment(PondTreatmentRequest pondTreatmentRequest) {
+
+        PondTreatment pondTreatment = pondTreatmentRepository.findById(pondTreatmentRequest.getPondTreatmentId()).orElseThrow(() ->
                 new RuntimeException("PondTreatment not found"));
 
-        if (pondTreatmentRequest.getPrescription_id()!=null){
-            Prescription prescription =prescriptionRepository.findById(pondTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
+        if (pondTreatmentRequest.getPrescription_id() != null) {
+            Prescription prescription = prescriptionRepository.findById(pondTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
             pondTreatment.setPrescription(prescription);
-        }else{
+        } else {
             pondTreatment.setPrescription(null);
         }
-        if (pondTreatmentRequest.getHealthIssue()!=null){
+        if (pondTreatmentRequest.getHealthIssue() != null) {
             pondTreatment.setHealthIssue(pondTreatmentRequest.getHealthIssue());
         }
-        if(pondTreatmentRequest.getTreatment()!=null) {
+        if (pondTreatmentRequest.getTreatment() != null) {
             pondTreatment.setTreatment(pondTreatmentRequest.getTreatment());
         }
         pondTreatmentRepository.save(pondTreatment);
         PondTreatmentResponse pondTreatmentResponse = new PondTreatmentResponse();
         pondTreatmentResponse = pondTreatmentMapper.toPondTreatmentResponse(pondTreatment);
-        return  pondTreatmentResponse ;
+        return pondTreatmentResponse;
     }
-    public KoiTreatmentResponse updateKoiTreatment(KoiTreatmentRequest koiTreatmentRequest){
+
+    public KoiTreatmentResponse updateKoiTreatment(KoiTreatmentRequest koiTreatmentRequest) {
 
         KoiTreatment koiTreatment = koiTreatmentRepository.findById(koiTreatmentRequest.getKoiTreatmentId()).orElseThrow(
                 () -> new RuntimeException("Not Found KoiTreatment ")
         );
-        if (koiTreatmentRequest.getPrescription_id()!=null){
-            Prescription prescription =prescriptionRepository.findById(koiTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
+        if (koiTreatmentRequest.getPrescription_id() != null) {
+            Prescription prescription = prescriptionRepository.findById(koiTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
             koiTreatment.setPrescription(prescription);
-        }else{
+        } else {
             koiTreatment.setPrescription(null);
         }
-        if (koiTreatmentRequest.getHealthIssue()!=null){
+        if (koiTreatmentRequest.getHealthIssue() != null) {
             koiTreatment.setHealthIssue(koiTreatmentRequest.getHealthIssue());
         }
-        if(koiTreatmentRequest.getTreatment()!=null) {
+        if (koiTreatmentRequest.getTreatment() != null) {
             koiTreatment.setTreatment(koiTreatmentRequest.getTreatment());
         }
         KoiTreatmentResponse koiTreatmentResponse = new KoiTreatmentResponse();
         koiTreatmentResponse = koiTreatmentMapper.toKoiTreatmentResponse(koiTreatmentRepository.save(koiTreatment));
 //        koiTreatmentResponse.prescription
-        return  koiTreatmentResponse ;
+        return koiTreatmentResponse;
+    }
+
+    public <T> T findKoiPondID(String id) {
+        KoiTreatment koiTreatment = koiTreatmentRepository.findKoiTreatmentByKoiTreatmentId(id);
+        PondTreatment pondTreatment = pondTreatmentRepository.findPondTreatmentByPondTreatmentId(id);
+//        log.info("koi treament ID "+ koiTreatment.getKoi().getKoiId());
+//        log.info("pond treament ID "+ pondTreatment.getPond().getPondId());
+
+        if (pondTreatment != null) {
+            PondTreatmentResponse pondTreatmentResponse = new PondTreatmentResponse();
+            Pond pond = pondRepository.findById(pondTreatment.getPond().getPondId()).orElseThrow(() -> new RuntimeException("Not Found Pond"));
+            pondTreatmentResponse.setPondId(pondTreatment.getPond().getPondId());
+            pondTreatmentResponse.setPond(pondMapper.toPondResponse(pond));
+            pondTreatmentResponse.setAppointmentId(pondTreatment.getAppointment().getAppointmentId());
+            pondTreatmentResponse.setHealthIssue(pondTreatment.getHealthIssue());
+            pondTreatmentResponse.setTreatment(pondTreatment.getTreatment());
+            return (T) pondTreatmentResponse;
+        } else if (koiTreatment != null) {
+            KoiTreatmentResponse koiTreatmentResponse = new KoiTreatmentResponse();
+            Koi koi = koiRepository.findById(koiTreatment.getKoi().getKoiId()).orElseThrow(() -> new RuntimeException("Not Found Koi"));
+            koiTreatmentResponse.setKoiId(koiTreatment.getKoi().getKoiId());
+            koiTreatmentResponse.setKoi(koiMapper.toKoiResponse(koi));
+            koiTreatmentResponse.setAppointmentId(koiTreatment.getAppointment().getAppointmentId());
+            koiTreatmentResponse.setHealthIssue(koiTreatment.getHealthIssue());
+            koiTreatmentResponse.setTreatment(koiTreatment.getTreatment());
+            return (T)koiTreatmentResponse;
+        }
+        return null;
+
     }
 }

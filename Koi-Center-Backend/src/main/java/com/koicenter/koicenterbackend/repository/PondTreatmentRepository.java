@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.repository;
 
+import com.koicenter.koicenterbackend.model.entity.KoiTreatment;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.entity.PondTreatment;
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
@@ -14,5 +15,6 @@ public interface PondTreatmentRepository extends JpaRepository<PondTreatment, St
 List<PondTreatment> findPondTreatmentsByAppointment_AppointmentId(String appointmentId);
 
     PondTreatment findByAppointment_AppointmentIdAndPond_PondId(String appointmentId, String pondId);
+    PondTreatment findPondTreatmentByPondTreatmentId(String pondTreatmentId);
 
 }
