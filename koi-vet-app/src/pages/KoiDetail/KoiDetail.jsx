@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, updateKoiInformationAPI } from "../../apis";
+import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, updateKoiInformationAPI  } from "../../apis";
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
 import { fishSpecies } from "../../utils/constants";
