@@ -69,6 +69,8 @@ public class SecurityConfig {
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/getVeterinariansByDateTime").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/vetSchedules/create").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/vetSchedules/update").permitAll()
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
