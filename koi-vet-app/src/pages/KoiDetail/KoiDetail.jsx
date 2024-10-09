@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, updateKoiInformationAPI  } from "../../apis";
+import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, fetchPrescriptionByAppointmentIdAPI, updateKoiInformationAPI } from "../../apis";
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
 import { fishSpecies } from "../../utils/constants";
@@ -19,7 +19,12 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, appointmentId
     customerId: customerId
   })
   const [isEditing, setIsEditing] = useState(false);
-
+  const [treatmentData, setTreatmentData] = useState({
+    healthIssue: "",
+    treatment: "",
+    prescription: "",
+  });
+  const [prescriptions, setPrescriptions] = useState([]);
   const koiId = useParams().koiId;
   const navigate = useNavigate();
 
@@ -67,9 +72,14 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, appointmentId
           toast.error("Error fetching Koi data.");
         }
       };
+      const fetchPrescriptions = async () => {
+        const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
+        setPrescriptions(response.data)
+      }
       fetchKoiByKoiId();
+      fetchPrescriptions();
     }
-  }, [koiId, isCreate, customerId]);
+  }, [koiId, isCreate, customerId, appointmentId]);
 
   return (
     <div className="col-9 mx-auto">
@@ -141,7 +151,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, appointmentId
           </div>
         </div>
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Health Status</label>
           <input
             type="text"
@@ -150,9 +160,47 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, appointmentId
             placeholder="Enter health status"
             disabled={!isEditing && !isCreate}
           />
+        </div> */}
+        <div className="gap-6 row">
+          <div className="form-group col-md-6">
+            <label>Health Issue</label>
+            <textarea
+              value={koiData.treatment}
+              onChange={(e) => setKoiData({ ...koiData, treatment: e.target.value })}
+              placeholder="Enter treatment"
+              disabled={!isEditing && !isCreate}
+            />
+          </div>
+          <div className="form-group col-md-6">
+            <label>Treatment</label>
+            <textarea
+              value={koiData.treatment}
+              onChange={(e) => setKoiData({ ...koiData, treatment: e.target.value })}
+              placeholder="Enter treatment"
+              disabled={!isEditing && !isCreate}
+            />
+          </div>
+          <div className="form-group col-md-6">
+            <label>Prescription</label>
+            <select
+              className="form-select"
+              value={koiData.breed}
+              onChange={(e) => setKoiData({ ...koiData, breed: e.target.value })}
+              disabled={!isEditing && !isCreate}
+            >
+              <option value="" disabled>Select prescription</option>
+              {prescriptions.map((prescription) => (
+                <option key={prescription.id} value={prescription.id}>
+                  {prescription.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
+            <button type="button" className="btn btn-primary">Add Prescription</button>
+            <button type="button" className="btn btn-primary">View Prescriptions</button>
+          </div>
         </div>
-
-
 
         <div className="form-group">
           <label>Image URL</label>
@@ -164,6 +212,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, appointmentId
             disabled={!isEditing && !isCreate}
           />
         </div>
+
 
         <div className="button-group">
           <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>

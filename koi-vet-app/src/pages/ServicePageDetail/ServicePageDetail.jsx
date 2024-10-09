@@ -29,13 +29,13 @@ function ServicePageDetail() {
     if (serviceDetail.serviceFor === "FISH") {
       return (
         <p>
-          Price: <span>{serviceDetail.koiPrice}$ </span>
+          Price: <span>{(serviceDetail.koiPrice * 1000).toLocaleString()}$ </span>
         </p>
       );
     } else if (serviceDetail.serviceFor === "POND") {
-      return <p>Price: {serviceDetail.pondPrice}$ </p>;
+      return <p>Price: {(serviceDetail.pondPrice * 1000).toLocaleString()}$ </p>;
     } else {
-      return <p>Price: {serviceDetail.basePrice}$ </p>;
+      return <p>Price: {(serviceDetail.basePrice * 1000).toLocaleString()}$ </p>;
     }
   };
 

@@ -24,7 +24,9 @@
   padding: 8px;
   width: 100%;
 }
-
+.description-container{
+  min-height: 30vh !important;
+}
 .koi-detail-button-group {
   display: flex;
   justify-content: flex-end;

@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import Modal from '../Modal/Modal';
 import Treatment from '../Treatment/Treatment';
 
-const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois,isVeterinarian }) => {
+const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois, isVeterinarian }) => {
     const [koiTreatmentList, setKoiTreatmentList] = useState([]);
     const customerId = useSelector(state => state?.user?.customer?.customerId)
     const navigate = useNavigate();
@@ -101,7 +101,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                 <th>{isAppointment ? "Health Issue" : "Health Status"}</th>
                                 <th>{isAppointment ? "Treatment" : "Age"}</th>
                                 <th>Image</th>
-                                {isAppointment? <th>PRESCRIPTION</th> : <th> Note</th>}
+                                {isAppointment ? <th>PRESCRIPTION</th> : <th> Note</th>}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -121,21 +121,21 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                             </div>
                                         </td>
                                         {isAppointment ? (
-                                        <td >
-                                            <select
-                                                className="form-select w-120"
-                                                aria-label="Default select example"
-                                                onChange={(e) => handleChangePrescription(treatment?.koiTreatmentId, e.target.value, treatment?.koi?.koiId)}
-                                                value={treatment.prescription_id || "None"}
-                                            >
-                                                <option value="None">None</option>
-                                                {prescriptions.map(prescription => (
-                                                    <option key={prescription.id} value={prescription.id}>
-                                                        {prescription.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </td>
+                                            <td >
+                                                <select
+                                                    className="form-select w-120"
+                                                    aria-label="Default select example"
+                                                    onChange={(e) => handleChangePrescription(treatment?.koiTreatmentId, e.target.value, treatment?.koi?.koiId)}
+                                                    value={treatment.prescription_id || "None"}
+                                                >
+                                                    <option value="None">None</option>
+                                                    {prescriptions.map(prescription => (
+                                                        <option key={prescription.id} value={prescription.id}>
+                                                            {prescription.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
                                         ) : (
                                             <td>
                                                 {treatment?.koi?.note}
@@ -154,14 +154,6 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                     <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${treatment.koi.koiId}`)}>
                                                         View Details
                                                     </button>}
-                                                {isVeterinarian && (
-                                                <button className="btn btn-sm btn-primary" onClick={() => handleUpdateTreatment(treatment.treatment, treatment.healthIssue, treatment.koiTreatmentId)}>
-                                                    Enter <br /> Treatment
-                                                </button> )}
-
-
-
-
                                                 {isBooking && (
                                                     <button
                                                         className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
