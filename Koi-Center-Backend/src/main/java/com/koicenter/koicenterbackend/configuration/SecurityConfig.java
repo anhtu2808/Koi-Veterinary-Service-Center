@@ -69,6 +69,8 @@ public class SecurityConfig {
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/getVeterinariansByDateTime").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/vetSchedules/create").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/vetSchedules/update").permitAll()
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/veterinarians").permitAll()
@@ -134,6 +136,9 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.PUT, "/api/v1/deliveries/{deliveryId}").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/vetschedules").permitAll()
+
+                            .requestMatchers(HttpMethod.GET, "api/v1/payment/momo-pay").permitAll()
+                            .requestMatchers(HttpMethod.POST, "api/v1/payment/momo-pay-callback").permitAll()
 
                             .anyRequest().authenticated();
                 });

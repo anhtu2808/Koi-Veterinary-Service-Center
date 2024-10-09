@@ -86,8 +86,8 @@ export const createAppointmentAPI = async (appointmentCreateRequest) => {
     return response.data;
 }
 
-export const fetchAllAppointmentAPI = async (status) => {
-    const response = await api.get(`/appointments?status=${status}`);
+export const fetchAllAppointmentAPI = async (status, offSet, pageSize) => {
+    const response = await api.get(`appointments?status=${status}&offSet=${offSet}&pageSize=${pageSize}`);
     return response.data;
 }
 export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
@@ -154,7 +154,7 @@ export const createPondAPI = async (data) => {
 
 
 export const fetchPondsByAppointmentIdAPI = async (appointmentId) => {
-    const response = await api.get(`/treatments/ponds/${appointmentId}`);
+    const response = await api.get(`/appointments/${appointmentId}/ponds/`);
     return response.data;
 }
 
@@ -180,7 +180,7 @@ export const createKoiAPI = async (data) => {
 }
 
 export const fetchKoisByAppointmentIdAPI = async (appointmentId) => {
-    const response = await api.get(`/treatments/kois/${appointmentId}`);
+    const response = await api.get(`/appointments/${appointmentId}/kois/`);
     return response.data;
 }
 
@@ -249,10 +249,25 @@ export const updatePondTreatmentAPI = async (updatedData) => {
     const response = await api.put(`/treatments/updatePondTreatment`, updatedData)
     return response.data;
 }
+export const fetchKoiTreatmentByIdAPI = async (koiTreatmentId) => {
+    const response = await api.get(`/treatments/kois/${koiTreatmentId}`)
+    return response.data;
+}
+export const fetchPondTreatmentByIdAPI = async (pondTreatmentId) => {
+    const response = await api.get(`/treatments/ponds/${pondTreatmentId}`)
+    return response.data;
+}
 
 //prescription API
 export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/prescriptions?appointmentId=${appointmentId}`)
     return response.data;
 }
+
+//Payment API
+export const fetchRedirectPaymentAPI = async (amount, bankCode,appointmentData) => {
+    const response = await api.post(`payment/vn-pay?amount=${amount}&bankCode=${bankCode}`,appointmentData)
+    return response.data;
+}
+
 

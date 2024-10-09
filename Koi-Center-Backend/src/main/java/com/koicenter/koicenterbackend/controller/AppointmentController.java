@@ -5,7 +5,11 @@ import com.koicenter.koicenterbackend.model.request.appointment.AppointmentReque
 import com.koicenter.koicenterbackend.model.request.treament.TreamentRequest;
 import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.koi.KoiTreatmentResponse;
+import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.service.AppointmentService;
+import com.koicenter.koicenterbackend.service.KoiTreatmentService;
+import com.koicenter.koicenterbackend.service.PondTreatmentService;
 import com.koicenter.koicenterbackend.service.TreatmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +23,10 @@ import java.util.List;
 @RequestMapping("/api/v1/appointments")
 public class AppointmentController {
 
-
+    @Autowired
+    PondTreatmentService pondTreatmentService;
+    @Autowired
+    KoiTreatmentService koiTreatmentService;
     // Get All appointment
     @Autowired
     AppointmentService appointmentService;
@@ -27,8 +34,8 @@ public class AppointmentController {
     @Autowired
      TreatmentService treatmentService;
     @GetMapping("")
-    public ResponseEntity<ResponseObject> getAllAppointments(@RequestParam String status) {
-        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointments(status);
+    public ResponseEntity<ResponseObject> getAllAppointments(@RequestParam String status,@RequestParam int offSet , @RequestParam int pageSize) {
+        List<AppointmentResponse> listAppointment = appointmentService.getAllAppointments(status, offSet, pageSize);
         return ResponseObject.APIRepsonse(200, "", HttpStatus.OK, listAppointment);
     }
 
@@ -62,6 +69,24 @@ public class AppointmentController {
             return ResponseObject.APIRepsonse(201, "Treament Created successfully! ", HttpStatus.CREATED, list);
         }else{
             return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST,"");
+        }
+    }
+    @GetMapping("/{appointmentId}/ponds/")
+    public ResponseEntity<ResponseObject> getPondByAppointmentId(@PathVariable String appointmentId) {
+        List<PondTreatmentResponse> list =  pondTreatmentService.getPondByAppointmentId(appointmentId);
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(200, "Pond found successfully By Appointment ID ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND,"");
+        }
+    }
+    @GetMapping("/{appointmentId}/kois/")
+    public ResponseEntity<ResponseObject> getKoiByAppointmentId(@PathVariable String appointmentId) {
+        List<KoiTreatmentResponse> list =  koiTreatmentService.getKoiByAppointmentId(appointmentId);
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(200, "Pond found successfully By Appointment ID ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND,"");
         }
     }
 }

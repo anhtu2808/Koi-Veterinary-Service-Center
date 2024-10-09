@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.model.entity.Prescription;
 import com.koicenter.koicenterbackend.model.entity.PrescriptionMedicine;
 import com.koicenter.koicenterbackend.model.request.koi.KoiUpdateRequest;
 import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionRequest;
+import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionUpdateRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionByIdResponse;
@@ -75,7 +76,7 @@ public class PrescriptionController {
     }
 
     @PutMapping("/{prescriptionId}")
-    public ResponseEntity<ResponseObject> updatePrescription(@PathVariable("prescriptionId") String prescriptionId, @Valid @RequestBody PrescriptionRequest request) {
+    public ResponseEntity<ResponseObject> updatePrescription(@PathVariable("prescriptionId") String prescriptionId, @Valid @RequestBody PrescriptionUpdateRequest request) {
         try {
             PrescriptionResponse updatePrescription = prescriptionService.updatePrescription(prescriptionId, request);
             return ResponseObject.APIRepsonse(200, "Update success", HttpStatus.OK, updatePrescription);

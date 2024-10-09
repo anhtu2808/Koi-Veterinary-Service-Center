@@ -1,0 +1,45 @@
+/* Custom styles for KoiDetail component */
+
+.koi-detail-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.koi-detail-form-group {
+  margin-bottom: 15px;
+}
+
+.koi-detail-form-group label {
+  font-weight: bold;
+  color: #555;
+}
+
+.koi-detail-form-group input,
+.koi-detail-form-group select,
+.koi-detail-form-group textarea {
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  width: 100%;
+}
+.description-container{
+  min-height: 30vh !important;
+}
+.koi-detail-button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.koi-detail-button-group .btn {
+  border-radius: 4px;
+  padding: 10px 20px;
+}
+
+.koi-detail-image {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}
