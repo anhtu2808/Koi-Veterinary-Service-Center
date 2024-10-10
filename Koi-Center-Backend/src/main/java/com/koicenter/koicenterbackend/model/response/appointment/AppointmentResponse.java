@@ -32,4 +32,11 @@ public class AppointmentResponse {
      String serviceName;
      String vetId;
      String vetName;
+     float distance ;
+     float locationPrice ;
+     int quantity ;
+     float totalQuantity ;
+     float balance ;
+
+
 }

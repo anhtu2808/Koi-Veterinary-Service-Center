@@ -61,12 +61,21 @@ public class TreatmentController {
         }
     }
  @GetMapping("/search")
- public ResponseEntity<ResponseObject> createAppointment( @RequestParam String  id) {
-    Object list =  treatmentService.findKoiPondID(id);
+ public ResponseEntity<ResponseObject> searchTreamentByKoiIdOrPondId( @RequestParam String  id) {
+    Object list =  treatmentService.searchTreamentByKoiIdOrPondId(id);
      if(list != null ){
          return ResponseObject.APIRepsonse(201, "Found successfully! ", HttpStatus.CREATED, list);
      }else{
-         return ResponseObject.APIRepsonse(404, "Can not found ", HttpStatus.NOT_FOUND,"");
+         return ResponseObject.APIRepsonse(404,"Can not found ", HttpStatus.NOT_FOUND,"");
+     }
+ }
+ @GetMapping("/secondPayment")
+ public ResponseEntity<ResponseObject> getSecondPayment( @RequestParam String  appointmentId) {
+     Object list =  treatmentService.getSecondPayment(appointmentId);
+     if(list != null ){
+         return ResponseObject.APIRepsonse(200, "Found successfully! ", HttpStatus.CREATED, list);
+     }else{
+         return ResponseObject.APIRepsonse(404,"Can not found ", HttpStatus.NOT_FOUND,"");
      }
  }
 }
