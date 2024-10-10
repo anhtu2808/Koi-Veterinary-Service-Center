@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +64,7 @@ public class PaymentController {
         }
     }
     @GetMapping("/vn-pay-callback")
-    public ResponseEntity<ResponseObject> payCallbackHandler(HttpServletRequest request) {
+    public ResponseEntity<?> payCallbackHandler(HttpServletRequest request) {
         try {
             String status = request.getParameter("vnp_ResponseCode");
             if ("00".equals(status)) {
@@ -83,12 +85,12 @@ public class PaymentController {
                 }
                 if (appointmentId != null) {
                     insertToInvoice(appointmentId, amountTemp);
-                    return ResponseObject.APIRepsonse(200, "Payment successful, appointment created", HttpStatus.OK, appointmentId);
+                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
                 } else {
                     return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
                 }
             } else {
-                return ResponseObject.APIRepsonse(400, "Payment failed", HttpStatus.BAD_REQUEST, null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
             }
         } catch (Exception e) {
             return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
@@ -106,29 +108,18 @@ public class PaymentController {
 
 
     @GetMapping("/momo-pay")
-    public ResponseEntity<ResponseObject> payWithMoMo(HttpServletRequest request) {
+    public ResponseEntity<ResponseObject> payWithMoMo(HttpServletRequest request, @RequestBody TreamentRequest treamentRequest) {
         try {
 //            String appointmentId = "627062bb-a967-4728-989b-4fcdcd51943f";
-            String appointmentId = request.getParameter("appointmentId");
-            appointmentIdTemp = appointmentId;
 
-            Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentId);
-            if (!appointmentOptional.isPresent()) {
-                return ResponseObject.APIRepsonse(404, "Appointment not exist.", HttpStatus.NOT_FOUND, null);
-            }
-
-            Appointment appointment = appointmentOptional.get();
-            float depositedMoneyUSD = appointment.getDepositedMoney();
-            long amountVND = Math.round(depositedMoneyUSD * 24000);  // tiền VN
-
-            if (amountVND < 10000 || amountVND > 50000000) {
-                return ResponseObject.APIRepsonse(400, "Invalid amount.", HttpStatus.BAD_REQUEST, null);
-            }
+            String amount = request.getParameter("amount");
+            amountTemp = Float.parseFloat(amount);
+            treamentRequestTemp = treamentRequest;
 
             CustomEnviroment customEnviroment = CustomEnviroment.selectEnv("dev");
             String orderId = "order-" + System.currentTimeMillis();
             String requestId = "request-" + System.currentTimeMillis();
-            String orderInfo = "Pay for MoMo orders for orders " + appointmentId;
+            String orderInfo = "Pay for MoMo orders for orders";
             String returnUrl = "http://localhost:3000/booking/paymentsuccess";
             String notifyUrl = "http://localhost:8080/api/v1/payment/momo-pay-callback";
             String extraData = "";
@@ -136,7 +127,7 @@ public class PaymentController {
             PaymentResponse response = CreateOrderMoMo.process(customEnviroment,
                     orderId,
                     requestId,
-                    String.valueOf(amountVND),
+                    String.valueOf(amount),
                     orderInfo,
                     returnUrl,
                     notifyUrl,
@@ -161,38 +152,37 @@ public class PaymentController {
     @PostMapping("/momo-pay-callback")
     public ResponseEntity<ResponseObject> momoPayCallback(@RequestBody Map<String, Object> payload) {
         try {
-            System.out.println("Received MoMo callback payload: " + payload);
 
-            String orderId = (String) payload.get("orderId");
-            String requestId = (String) payload.get("requestId");
+
             String message = (String) payload.get("message");
             Integer resultCode = (Integer) payload.get("resultCode");
-            Long amount = Long.valueOf((String) payload.get("amount"));
 
-            System.out.println("Order ID: " + orderId);
-            System.out.println("Result Code: " + resultCode);
 
             if (resultCode == 0) {
-                System.out.println("Payment successful, create new Invoice for order : " + orderId);
-                Appointment appointment = appointmentRepository.findAppointmentById(appointmentIdTemp);
-                if (appointment == null) {
-                    return ResponseObject.APIRepsonse(404, "Appointment not exist.", HttpStatus.NOT_FOUND, null);
+                TreamentRequest treatmentRequest = treamentRequestTemp;
+                if (treatmentRequest == null) {
+                    return ResponseObject.APIRepsonse(400, "Treatment request not found", HttpStatus.BAD_REQUEST, null);
                 }
-
-                Invoice newInvoice = Invoice.builder()
-                        .paymentStatus(true)
-                        .totalPrice(amount.floatValue())
-                        .createAt(LocalDateTime.now())
-                        .appointment(appointment)
-                        .build();
-
-                invoiceRepository.save(newInvoice);
-                appointmentRepository.save(appointment);
-
-                return ResponseObject.APIRepsonse(200, "Payment successful, invoice created.", HttpStatus.OK, null);
+                List<Object> appointmentResponse = treatmentService.createAppointments(treatmentRequest.getSelected(), treatmentRequest.getAppointmentRequest());
+                if (appointmentResponse.isEmpty()) {
+                    return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
+                }
+                Object firstObject = appointmentResponse.get(0);
+                String appointmentId = null;
+                if (firstObject instanceof PondTreatmentResponse firstAppointment) {
+                    appointmentId = firstAppointment.getAppointmentId();
+                } else if (firstObject instanceof KoiTreatmentResponse firstAppointment) {
+                    appointmentId = firstAppointment.getAppointmentId();
+                }
+                if (appointmentId != null) {
+                    insertToInvoice(appointmentId, amountTemp);
+                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
+                } else {
+                    return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
+                }
             } else {
                 System.out.println("Thanh toán thất bại: " + message);
-                return ResponseObject.APIRepsonse(400, "Payment fail: " + message, HttpStatus.BAD_REQUEST, null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
             }
         } catch (Exception e) {
             e.printStackTrace();
