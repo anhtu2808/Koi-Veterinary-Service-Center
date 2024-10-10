@@ -22,6 +22,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -71,9 +74,12 @@ public class AppointmentService {
                         .customerName(appointment.getCustomer().getUser().getFullName())
                         .serviceId(appointment.getService().getServiceId())
                         .serviceName(appointment.getService().getServiceName())
-                        .vetId(appointment.getVeterinarian().getVetId())
-                        .build();
 
+                        .build();
+                        if(appointment.getVeterinarian()!=null) {
+                            response.setVetId(appointment.getVeterinarian().getVetId());
+                            response.setVetName(appointment.getVeterinarian().getUser().getFullName());
+                        }
                 appointmentResponses.add(response);
             }
         }
@@ -272,12 +278,13 @@ public class AppointmentService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AppointmentById not found");
         }
     }
-    public List<AppointmentResponse> getAllAppointments(String status) {
-        List<Appointment> appointments;
+    public List<AppointmentResponse> getAllAppointments(String status,int offset,int pageSize) {
+        Page<Appointment> appointments;
+        Pageable pageable = PageRequest.of(offset, pageSize);
         if (status.equalsIgnoreCase("ALL")) {
-            appointments = appointmentRepository.findAll();
-        } else {
-            appointments = appointmentRepository.findByStatusOrderByCreatedAtDesc(AppointmentStatus.valueOf(status));
+         appointments = appointmentRepository.findAll(pageable);
+        } else {//PageRequest.of()
+            appointments = appointmentRepository.findByStatusOrderByCreatedAtDesc(AppointmentStatus.valueOf(status),pageable);
         }
 
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();

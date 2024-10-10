@@ -115,7 +115,12 @@ export const addKoiToAppointmentAPI = async (appointmentId, koiData) => {
     const response = await api.post(`/treatments/kois`, {koiId:saveKoi.data.koiId, appointmentId:appointmentId});
     return response.data;
 }
+export const addPondToAppointmentAPI = async (appointmentId, pondData) => {
+    const savePond = await createPondAPI(pondData)
 
+    const response = await api.post(`/treatments/ponds`, {pondId:savePond.data.pondId, appointmentId:appointmentId});
+    return response.data;
+}
 //API Schedule
 export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
     const response = await api.get(`vetSchedules?type=${type}&vetId=${vetId}`);
@@ -129,7 +134,7 @@ export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
 
 
 //Pond API
-export const fetchPondByCustomerIdAPI = async (customerId) => {
+export const fetchPondsByCustomerIdAPI = async (customerId) => {
     const response = await api.get(`/customers/${customerId}/ponds`);
     return response.data;
 }
@@ -147,10 +152,7 @@ export const createPondAPI = async (data) => {
     return response.data;
 }
 
-export const fetchPondByAppointmentIdAPI = async (appointmentId) => {
-    const response = await api.get(`/appointments/${appointmentId}/ponds`);
-    return response.data;
-}
+
 export const fetchPondsByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/treatments/ponds/${appointmentId}`);
     return response.data;
@@ -218,6 +220,21 @@ export const createMedicineAPI = async (data) => {
     return response.data;
 }
 
+
+
+//Prescription API
+export const createPrescriptionAPI = async (data) => {
+        const response = await api.post(`/prescriptions`,data);
+        return response.data;
+}
+
+export const fetchPrescriptionByIdAPI = async (prescriptionId) => {
+    const response = await api.get(`/prescriptions/${prescriptionId}`)
+    return response.data;
+}
+
+
+
 //Treatment API
 export const updateKoiTreatmentAPI = async (updatedData) => {
     const response = await api.put(`/treatments/updateKoiTreatment`, updatedData)
@@ -227,3 +244,17 @@ export const updatePondTreatmentAPI = async (updatedData) => {
     const response = await api.put(`/treatments/updatePondTreatment`, updatedData)
     return response.data;
 }
+
+//prescription API
+export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/prescriptions?appointmentId=${appointmentId}`)
+    return response.data;
+}
+
+//Payment API
+export const fetchRedirectPaymentAPI = async (amount, bankCode,appointmentData) => {
+    const response = await api.post(`payment/vn-pay?amount=${amount}&bankCode=${bankCode}&appointmentId=123`,appointmentData)
+    return response.data;
+}
+
+

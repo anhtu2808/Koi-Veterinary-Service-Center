@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
@@ -21,6 +22,7 @@ public class VetScheduleRequest {
     String serviceId ;
     LocalDate date;
     int customerBookingCount;
+    List<LocalDate> dates ;
 
 
 }

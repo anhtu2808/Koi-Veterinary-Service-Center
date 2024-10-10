@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PondTreatmentRequest {
+    String pondTreatmentId;
     private String pondId;
     private String appointmentId;
     private String healthIssue;

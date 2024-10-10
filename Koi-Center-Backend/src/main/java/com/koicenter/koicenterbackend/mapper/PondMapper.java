@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PondMapper {
+    @Mapping(target="customerId",source="pond.customer.customerId")
     PondResponse toPondResponse(Pond pond);
 
 }
