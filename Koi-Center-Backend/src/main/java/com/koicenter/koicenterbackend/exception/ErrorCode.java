@@ -23,6 +23,7 @@ public enum ErrorCode {
     VETERINARIAN_ID_NOT_EXITS(401,"Vetterinarian not exits"),
     NO_SCHEDULE_FOUND(401,"No schedule found"),
     PRESCRIPTION_ID_NOT_FOUND(401,"Prescription id not found"),
+    PRESCRIPTION_MEDICINE_ID_NOT_FOUND(401,"Prescription medicine id not found"),
     ;
     private int code;
     private String message;

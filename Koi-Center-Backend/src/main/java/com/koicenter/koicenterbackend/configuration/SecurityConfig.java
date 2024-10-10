@@ -133,6 +133,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.DELETE, "/api/v1/prescriptions/{prescriptionMedicineId}").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/prescriptions/{prescriptionId}").permitAll()
                             .requestMatchers(HttpMethod.PUT, "/api/v1/prescriptions/{prescriptionId}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/prescriptions/prescription-medicines/{prescriptionMedicineId}").permitAll()
 
 
                             .requestMatchers(HttpMethod.PUT, "/api/v1/deliveries/{deliveryId}").permitAll()
