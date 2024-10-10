@@ -22,7 +22,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const appointmentId = searchParams.get('appointmentId');
- 
+
   const [treatmentData, setTreatmentData] = useState({
     "koiTreatmentId": null,
     "koiId": null,
@@ -180,49 +180,51 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
             disabled={!isEditing && !isCreate}
           />
         </div> */}
-        <div className="gap-6 row">
-          <div className="form-group col-md-6">
-            <label>Health Issue</label>
-            <textarea
-              name="healthIssue"
-              value={koiData.healthIssue}
-              onChange={handleChangeTreatmentData}
-              placeholder="Enter treatment"
-              disabled={!isEditing && !isCreate}
-            />
+        {isAppointment ?
+          <div className="gap-6 row">
+            <div className="form-group col-md-6">
+              <label>Health Issue</label>
+              <textarea
+                name="healthIssue"
+                value={koiData.healthIssue}
+                onChange={handleChangeTreatmentData}
+                placeholder="Enter treatment"
+                disabled={!isEditing && !isCreate}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label>Treatment</label>
+              <textarea
+                value={koiData.treatment}
+                name="treatment"
+                onChange={handleChangeTreatmentData}
+                placeholder="Enter treatment"
+                disabled={!isEditing && !isCreate}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label>Prescription</label>
+              <select
+                className="form-select"
+                value={treatmentData.prescription_id || "None"}
+                name="prescription_id"
+                onChange={handleChangeTreatmentData}
+                disabled={!isEditing && !isCreate}
+              >
+                <option value="None">None</option>
+                {prescriptions.map(prescription => (
+                  <option key={prescription.id} value={prescription.id}>
+                    {prescription.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
+              <button type="button" className="btn btn-primary">Add Prescription</button>
+              <button type="button" className="btn btn-primary">View Prescriptions</button>
+            </div>
           </div>
-          <div className="form-group col-md-6">
-            <label>Treatment</label>
-            <textarea
-              value={koiData.treatment}
-              name="treatment"
-              onChange={handleChangeTreatmentData}
-              placeholder="Enter treatment"
-              disabled={!isEditing && !isCreate}
-            />
-          </div>
-          <div className="form-group col-md-6">
-            <label>Prescription</label>
-            <select
-              className="form-select"
-              value={treatmentData.prescription_id || "None"}
-              name="prescription_id"
-              onChange={handleChangeTreatmentData}
-              disabled={!isEditing && !isCreate}
-            >
-              <option value="None">None</option>
-              {prescriptions.map(prescription => (
-                <option key={prescription.id} value={prescription.id}>
-                  {prescription.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
-            <button type="button" className="btn btn-primary">Add Prescription</button>
-            <button type="button" className="btn btn-primary">View Prescriptions</button>
-          </div>
-        </div>
+          : null}
 
         <div className="form-group">
           <label>Image URL</label>

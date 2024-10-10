@@ -98,7 +98,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                             <tr>
                                 {/* <th>Koi Id</th> */}
                                 <th>Breed</th>
-                                <th>{isAppointment ? "Health Issue" : "Health Status"}</th>
+                                {isAppointment ? <th>Health Issue</th> : <th>Health Status</th>}
                                 <th>{isAppointment ? "Treatment" : "Age"}</th>
                                 <th>Image</th>
                                 {isAppointment ? <th>PRESCRIPTION</th> : <th> Note</th>}
