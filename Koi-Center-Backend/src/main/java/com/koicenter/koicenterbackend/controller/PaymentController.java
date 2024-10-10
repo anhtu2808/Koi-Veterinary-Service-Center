@@ -64,7 +64,7 @@ public class PaymentController {
         }
     }
     @GetMapping("/vn-pay-callback")
-    public ResponseEntity<ResponseObject> payCallbackHandler(HttpServletRequest request) {
+    public ResponseEntity<?> payCallbackHandler(HttpServletRequest request) {
         try {
             String status = request.getParameter("vnp_ResponseCode");
             if ("00".equals(status)) {
@@ -85,12 +85,12 @@ public class PaymentController {
                 }
                 if (appointmentId != null) {
                     insertToInvoice(appointmentId, amountTemp);
-                    return ResponseEntity.status(HttpStatus.OK).location(URI.create("localhost:3000/booking/paymentsuccess")).build();
+                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
                 } else {
                     return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
                 }
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("localhost:3000/booking/paymentfailed")).build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
             }
         } catch (Exception e) {
             return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
