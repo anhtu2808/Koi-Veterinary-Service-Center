@@ -176,13 +176,13 @@ public class PaymentController {
                 }
                 if (appointmentId != null) {
                     insertToInvoice(appointmentId, amountTemp);
-                    return ResponseEntity.status(HttpStatus.OK).location(URI.create("localhost:3000/booking/paymentsuccess")).build();
+                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
                 } else {
                     return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
                 }
             } else {
                 System.out.println("Thanh toán thất bại: " + message);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("localhost:3000/booking/paymentfail")).build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
             }
         } catch (Exception e) {
             e.printStackTrace();
