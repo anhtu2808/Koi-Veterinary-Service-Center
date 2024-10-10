@@ -27,8 +27,7 @@ const Treatment = (props) => {
                 response = await updatePondTreatmentAPI({
                     healthIssue: healthIssue,
                     treatment: treatment,
-                    pondId: props.pondId,
-                    appointmentId: props.appointmentId,
+                    pondTreatmentId: props.treatmentId
                 })
                 if (response.status === 200) {
                     toast.success(response.data.message)
@@ -42,7 +41,7 @@ const Treatment = (props) => {
 
     return (
         <div>
-            <h1> Enter Treatment For Koi</h1>
+            <h1> Enter Treatment For {props.isKoi? "Koi": "Pond"}</h1>
             <form onSubmit={handleSubmitTreatment}>
                 <div className="form-group">
                     <div className="form-group">

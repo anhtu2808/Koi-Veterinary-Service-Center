@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
+import com.koicenter.koicenterbackend.model.request.treament.TreamentRequest;
 import com.koicenter.koicenterbackend.model.response.koi.KoiTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
@@ -39,24 +40,8 @@ public class TreatmentController {
         KoiTreatmentResponse koiTreatmentResponse = koiTreatmentService.createKoiTreatment(koiTreatmentRequest);
         return ResponseObject.APIRepsonse(200, "create successfully!", HttpStatus.CREATED, koiTreatmentResponse);
     }
-    @GetMapping("/ponds/{appointmentId}")
-    public ResponseEntity<ResponseObject> getPondByAppointmentId(@PathVariable String appointmentId) {
-        List<PondTreatmentResponse> list =  pondTreatmentService.getPondByAppointmentId(appointmentId);
-        if(!list.isEmpty()){
-            return ResponseObject.APIRepsonse(200, "Pond found successfully By Appointment ID ", HttpStatus.OK, list);
-        }else{
-            return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND,"");
-        }
-    }
-    @GetMapping("/kois/{appointmentId}")
-    public ResponseEntity<ResponseObject> getKoiByAppointmentId(@PathVariable String appointmentId) {
-        List<KoiTreatmentResponse> list =  koiTreatmentService.getKoiByAppointmentId(appointmentId);
-        if(!list.isEmpty()){
-            return ResponseObject.APIRepsonse(200, "Pond found successfully By Appointment ID ", HttpStatus.OK, list);
-        }else{
-            return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND,"");
-        }
-    }
+
+
     @PutMapping("/updatePondTreatment")
     public ResponseEntity<ResponseObject> updatePondTreament(@RequestBody PondTreatmentRequest pondTreatmentRequest) {
         PondTreatmentResponse pondTreatmentResponse =  treatmentService.updatePondTreatment(pondTreatmentRequest);
@@ -75,5 +60,13 @@ public class TreatmentController {
             return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST, "");
         }
     }
-
+ @GetMapping("/search")
+ public ResponseEntity<ResponseObject> createAppointment( @RequestParam String  id) {
+    Object list =  treatmentService.findKoiPondID(id);
+     if(list != null ){
+         return ResponseObject.APIRepsonse(201, "Found successfully! ", HttpStatus.CREATED, list);
+     }else{
+         return ResponseObject.APIRepsonse(404, "Can not found ", HttpStatus.NOT_FOUND,"");
+     }
+ }
 }

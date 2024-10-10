@@ -27,4 +27,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
 
     Page<Appointment> findByStatusOrderByCreatedAtDesc(AppointmentStatus status, Pageable pageable);
 
+
+
+
+    List<Appointment> findAllByOrderByCreatedAtDesc();
 }

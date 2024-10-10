@@ -36,10 +36,6 @@ const InputPondStep = () => {
     setPondUpdateTrigger(prev => prev + 1);
   };
 
-  
-
-
-
   return (
     <div className="container mt-4">
       <h3 className="mb-4">Select Ponds for Appointment</h3>
@@ -52,31 +48,6 @@ const InputPondStep = () => {
         handleAddPondToBooking={handleAddPondToBooking}
         selectedPonds={selected}
       />
-
-      {/* Selected Ponds Details */}
-      {/* {selectedPond.length > 0 && (
-        <div className="card mb-4">
-          <div className="card-header input-info-title text-white">
-            <h5 className="mb-0">Selected Pond Details</h5>
-          </div>
-          <div className="card-body">
-            {selectedPond.map(pondId => {
-              const selectedPond = existingPonds.find(p => p.pondId === pondId);
-              return (
-                <div key={pondId} className="mb-4 pb-3 border-bottom">
-                  <h4>{selectedPond.name}</h4>
-                  <p><strong>Depth:</strong> {selectedPond.depth} m</p>
-                  <p><strong>Perimeter:</strong> {selectedPond.perimeter} m</p>
-                  <p><strong>Temperature:</strong> {selectedPond.temperature} °C</p>
-                  <p><strong>Notes:</strong> {selectedPond.notes}</p>
-                  <img src={selectedPond.image} alt={selectedPond.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )} */}
-
       {/* Add New Pond Button */}
       <div className="text-center">
         <button className="btn btn-primary" onClick={handleAddNewPond}>

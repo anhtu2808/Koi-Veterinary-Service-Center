@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Koi.css';
 import { useNavigate } from 'react-router-dom';
-import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI, updateKoiTreatmentAPI } from '../../apis';
-import { fetchPrescriptionByAppointmentId } from '../../apis/PrescriptionMockData';
+import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI, updateKoiTreatmentAPI, fetchPrescriptionByAppointmentIdAPI } from '../../apis';
 import { toast } from 'react-toastify';
 import Modal from '../Modal/Modal';
 import Treatment from '../Treatment/Treatment';
 
-const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois }) => {
+const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois,isVeterinarian }) => {
     const [koiTreatmentList, setKoiTreatmentList] = useState([]);
     const customerId = useSelector(state => state?.user?.customer?.customerId)
     const navigate = useNavigate();
@@ -54,7 +53,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
             }
         };
         const fetchPrescriptions = async () => {
-            const response = await fetchPrescriptionByAppointmentId(appointmentId)
+            const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
             setPrescriptions(response.data)
         }
         fetchKois();
@@ -64,16 +63,28 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
     // lưu lại đơn thuốc
     const handleChangePrescription = (treatmentId, prescriptionId, koiId) => {
         const updatePrescriptionId = async () => {
-            const response = await updateKoiTreatmentAPI({
-                koiTreatmentId: treatmentId,
-                prescription_id:prescriptionId==="None"?null:prescriptionId,
-                koiId: koiId,
-            })
-            toast.success(response.message)
-        }
-        updatePrescriptionId()
+            try {
+                const response = await updateKoiTreatmentAPI({
+                    koiTreatmentId: treatmentId,
+                    prescription_id: prescriptionId === "None" ? null : prescriptionId,
+                    koiId: koiId,
+                });
+                toast.success(response.message);
 
-    }
+                // Update the local state or data source to reflect the change
+                setKoiTreatmentList(prevList =>
+                    prevList.map(treatment =>
+                        treatment.koiTreatmentId === treatmentId
+                            ? { ...treatment, prescription_id: prescriptionId === "None" ? null : prescriptionId }
+                            : treatment
+                    )
+                );
+            } catch (error) {
+                toast.error('Failed to update prescription');
+            }
+        };
+        updatePrescriptionId();
+    };
 
     return (
         <div className="container mt-4">
@@ -90,7 +101,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                 <th>{isAppointment ? "Health Issue" : "Health Status"}</th>
                                 <th>{isAppointment ? "Treatment" : "Age"}</th>
                                 <th>Image</th>
-                                <th>PRESCRIPTION</th>
+                                {isAppointment? <th>PRESCRIPTION</th> : <th> Note</th>}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -109,6 +120,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                 <img src="https://visinhcakoi.com/wp-content/uploads/2021/07/ca-koi-showa-2-600x874-1.jpg" alt="hình cá" />
                                             </div>
                                         </td>
+                                        {isAppointment ? (
                                         <td >
                                             <select
                                                 className="form-select w-120"
@@ -116,8 +128,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                 onChange={(e) => handleChangePrescription(treatment?.koiTreatmentId, e.target.value, treatment?.koi?.koiId)}
                                                 value={treatment.prescription_id || "None"}
                                             >
-                                                {console.log(treatment.prescription_id)}
-                                                <option value="None">None</option> 
+                                                <option value="None">None</option>
                                                 {prescriptions.map(prescription => (
                                                     <option key={prescription.id} value={prescription.id}>
                                                         {prescription.name}
@@ -125,6 +136,11 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                 ))}
                                             </select>
                                         </td>
+                                        ) : (
+                                            <td>
+                                                {treatment?.koi?.note}
+                                            </td>
+                                        )}
                                         <td>
                                             <div className='d-flex gap-3'>
                                                 {isAppointment ?
@@ -138,9 +154,10 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                     <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${treatment.koi.koiId}`)}>
                                                         View Details
                                                     </button>}
-                                                <button className="btn btn-sm btn-primary" onClick={()=>handleUpdateTreatment(treatment.treatment, treatment.healthIssue, treatment.koiTreatmentId)}>
+                                                {isVeterinarian && (
+                                                <button className="btn btn-sm btn-primary" onClick={() => handleUpdateTreatment(treatment.treatment, treatment.healthIssue, treatment.koiTreatmentId)}>
                                                     Enter <br /> Treatment
-                                                </button>
+                                                </button> )}
 
 
 
