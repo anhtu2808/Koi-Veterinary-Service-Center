@@ -5,7 +5,6 @@ import Service from "../../components/Service/Service"
 
 function ServicePage() {
     const [services, setServices] = useState([]);
-
     useEffect(() => {
         const fecthServices = async () => {
             const response = await fecthAllServicesAPI();
@@ -24,8 +23,6 @@ function ServicePage() {
             </div>
 
         <div className="row">
-           
-
            {
             services.map((service) => {
                 return <Service image={service.image} serviceId={service.serviceId} description={service.description} serviceName={service.serviceName} basePrice={service.basePrice} pondPrice={service.pondPrice} koiPrice={service.koiPrice} />

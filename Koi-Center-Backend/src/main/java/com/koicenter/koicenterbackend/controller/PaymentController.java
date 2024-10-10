@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +64,7 @@ public class PaymentController {
         }
     }
     @GetMapping("/vn-pay-callback")
-    public ResponseEntity<ResponseObject> payCallbackHandler(HttpServletRequest request) {
+    public ResponseEntity<?> payCallbackHandler(HttpServletRequest request) {
         try {
             String status = request.getParameter("vnp_ResponseCode");
             if ("00".equals(status)) {
@@ -83,12 +85,12 @@ public class PaymentController {
                 }
                 if (appointmentId != null) {
                     insertToInvoice(appointmentId, amountTemp);
-                    return ResponseObject.APIRepsonse(200, "Payment successful, appointment created", HttpStatus.OK, appointmentId);
+                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
                 } else {
                     return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
                 }
             } else {
-                return ResponseObject.APIRepsonse(400, "Payment failed", HttpStatus.BAD_REQUEST, null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
             }
         } catch (Exception e) {
             return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
@@ -174,13 +176,13 @@ public class PaymentController {
                 }
                 if (appointmentId != null) {
                     insertToInvoice(appointmentId, amountTemp);
-                    return ResponseObject.APIRepsonse(200, "Payment successful, appointment created", HttpStatus.OK, appointmentId);
+                    return ResponseEntity.status(HttpStatus.OK).location(URI.create("localhost:3000/booking/paymentsuccess")).build();
                 } else {
                     return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
                 }
             } else {
                 System.out.println("Thanh toán thất bại: " + message);
-                return ResponseObject.APIRepsonse(400, "Payment fail: " + message, HttpStatus.BAD_REQUEST, null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("localhost:3000/booking/paymentfail")).build();
             }
         } catch (Exception e) {
             e.printStackTrace();

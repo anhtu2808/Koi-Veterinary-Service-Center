@@ -39,7 +39,7 @@ const KoiTreatmentPage = () => {
       setPrescriptions(response.data)
     }
     fetchPrescription()
-  }, [appointmentId])
+  }, [appointmentId,koiUpdateTrigger])
 
 
 
@@ -137,6 +137,7 @@ const KoiTreatmentPage = () => {
           appointmentId={appointmentId}
           onPrescriptionCreated={() => {
             handleCloseMedicineModal();
+            handleKoiUpdate()
             // Có thể thêm logic để refresh danh sách prescription
           }}
         />
@@ -144,7 +145,8 @@ const KoiTreatmentPage = () => {
 
       <Modal isOpen={isPrescriptionModalOpen} onClose={handleClosePrescriptionModal}>
             {selectedPrescriptionId && (
-              <PrescriptionDetail prescriptionId={selectedPrescriptionId} />
+              <PrescriptionDetail 
+              prescriptionId={selectedPrescriptionId} />
             )}
           </Modal>
 
