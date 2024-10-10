@@ -103,8 +103,8 @@ function App() {
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
                       <Route path="/google-meet/:appointmentId" element={<GGM/>} />
-                      <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={false} isVeterinarian={false} isCreate={false} />} />
-                      <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} />} />
+                      <Route path="/koidetail/:treatmentId" element={<KoiDetail isUpdate={false} isVeterinarian={false} isAppointment={true} isCreate={false} />} />
+                      <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={false} isVeterinarian={false} isAppointment={true} isCreate={false} />} />
                       <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
                       <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
 
@@ -138,8 +138,8 @@ function App() {
                 <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
                 <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
                 <Route path="/google-meet/:appointmentId" element={<GGM/>} />
-                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isVeterinarian={true} isCreate={false} />} />
-                <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false} />} />
+                <Route path="/koidetail/:treatmentId" element={<KoiDetail isUpdate={true} isVeterinarian={true} isAppointment={true} isCreate={false} />} />
+                <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={true} isVeterinarian={true} isAppointment={true} isCreate={false} />} />
                 <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true} />} />
                 <Route path="/invoice" element={<InvoiceListPage />} />
                 <Route path="/medicine" element={<Medicine />} />

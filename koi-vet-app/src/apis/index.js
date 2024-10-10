@@ -262,6 +262,11 @@ export const fetchPondTreatmentByIdAPI = async (pondTreatmentId) => {
     return response.data;
 }
 
+export const fetchTreatmentByIdAPI = async (id) => {
+    const response = await api.get(`/treatments/${id}`)
+    return response.data;
+}
+
 //prescription API
 export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/prescriptions?appointmentId=${appointmentId}`)
