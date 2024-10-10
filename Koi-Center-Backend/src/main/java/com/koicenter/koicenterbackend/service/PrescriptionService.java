@@ -214,6 +214,26 @@ public class PrescriptionService {
     }
 
 
+    @Transactional
+    public PrescriptionMedicineResponse getPrescriptionMedicineById(String id) {
+        PrescriptionMedicine prescriptionMedicine = prescriptionMedicineRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRESCRIPTION_MEDICINE_ID_NOT_FOUND.getCode(),
+                        ErrorCode.PRESCRIPTION_MEDICINE_ID_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND));
+
+        PrescriptionMedicineResponse prescriptionMedicineResponse = new PrescriptionMedicineResponse();
+
+        Medicine medicine = prescriptionMedicine.getMedicine();
+        MedicineResponse medicineResponse = new MedicineResponse();
+        medicineResponse.setMedicineId(medicine.getMedicineId());
+        medicineResponse.setName(medicine.getName());
+        medicineResponse.setDescription(medicine.getDescription());
+        prescriptionMedicineResponse.setMedicine(medicineResponse);
+        prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
+        prescriptionMedicineResponse.setDosage(prescriptionMedicine.getDosage());
+
+        return prescriptionMedicineResponse;
+    }
+
 
 }
 

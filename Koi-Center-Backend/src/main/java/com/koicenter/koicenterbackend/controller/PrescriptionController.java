@@ -9,6 +9,7 @@ import com.koicenter.koicenterbackend.model.request.prescription.PrescriptionUpd
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionByIdResponse;
+import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionMedicineResponse;
 import com.koicenter.koicenterbackend.model.response.medicine.PrescriptionResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.service.PrescriptionService;
@@ -84,5 +85,17 @@ public class PrescriptionController {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
         }
     }
+
+
+    @GetMapping("/prescription-medicines/{prescriptionMedicineId}")
+    public ResponseEntity<ResponseObject> getPrescriptionMedicineById(@PathVariable("prescriptionMedicineId") String prescriptionMedicineId) {
+        try {
+            PrescriptionMedicineResponse prescriptionMedicineResponse = prescriptionService.getPrescriptionMedicineById(prescriptionMedicineId);
+            return ResponseObject.APIRepsonse(200, "Found prescription medicine successfully", HttpStatus.OK, prescriptionMedicineResponse);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
+    }
+
 }
 
