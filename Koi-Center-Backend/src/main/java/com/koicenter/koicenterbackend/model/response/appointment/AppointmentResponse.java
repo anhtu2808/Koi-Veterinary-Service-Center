@@ -37,6 +37,7 @@ public class AppointmentResponse {
      int quantity ;
      float totalQuantity ;
      float balance ;
+     String code ;
 
 
 }

@@ -14,7 +14,7 @@ public class KoiUpdateRequest {
     String id;
     String breed;
     int age;
-    float height;
+    float length;
     float weight;
     String healthStatus;
     String notes;

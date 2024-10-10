@@ -6,6 +6,8 @@ import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
 import com.koicenter.koicenterbackend.mapper.koi.KoiMapper;
 import com.koicenter.koicenterbackend.mapper.koi.KoiTreatmentMapper;
 import com.koicenter.koicenterbackend.model.entity.*;
+import com.koicenter.koicenterbackend.model.enums.AppointmentStatus;
+import com.koicenter.koicenterbackend.model.enums.AppointmentType;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
@@ -194,4 +196,5 @@ public class TreatmentService {
         }
         return null ;
     }
+
 }

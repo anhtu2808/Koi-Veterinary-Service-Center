@@ -182,6 +182,7 @@ public class AppointmentService {
         appointment.setVeterinarian(veterinarian);
         appointment.setService(service);
         appointment.setDepositedMoney(service.getBasePrice());
+        appointment.setCode(getCode(appointmentRequest.getType()));
         appointmentRepository.save(appointment);
         AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
         appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
@@ -318,7 +319,22 @@ public class AppointmentService {
         }
         return appointmentResponses;
     }
+    private  String getCode(AppointmentType appointmentType){
+        List<Appointment> appointments = appointmentRepository.findAll();
+        int count = 1 ;
+        String aphabet ="";
+        if (appointmentType.equals(AppointmentType.HOME))
+            aphabet="H";
+        else if (appointmentType.equals(AppointmentType.CENTER))
+            aphabet="C";
+        else
+            aphabet="O";
 
+        for (Appointment appointment : appointments ){
+            count++ ;
+        }
+        return aphabet+count;
+    }
 
 }
 
