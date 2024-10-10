@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.LoggedOutToken;
 import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.authentication.LoginRequest;
 import com.koicenter.koicenterbackend.repository.LoggedOutTokenRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class AuthenticateService {
@@ -54,34 +57,34 @@ public class AuthenticateService {
         }
     }
 
-//    public String loginGoogleToken(Map<String, Object> credential) {
-//
-//        String email = (String) credential.getOrDefault("email", "");
-//        String fullName = (String) credential.getOrDefault("given_name", "");
-//        String image = (String) credential.getOrDefault("picture", "");
-//        String name = (String) credential.getOrDefault("name", "");
-//        if (email.isEmpty()) {
-//            throw new AppException(ErrorCode.INVALID_LOGIN.getCode(), "Email is required for login.", HttpStatus.BAD_REQUEST);
-//        }
-//
-//        User user = userRepository.findByEmail(email);
-//
-//        if (user != null) {
-//            return jWTUtilHelper.generateTokenGmail(user);
-//        }
-//
-//        user = new User();
-//        user.setUsername(name);
-//        user.setFullName(fullName);
-//        user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-//        user.setImage(image);
-//        user.setEmail(email);
-//        user.setStatus(true);
-//        user.setRole(Role.CUSTOMER);
-//        userRepository.save(user);
-//
-//        return jWTUtilHelper.generateTokenGmail(user);
-//    }
+    public String loginGoogleToken(Map<String, Object> credential) {
+
+        String email = (String) credential.getOrDefault("email", "");
+        String fullName = (String) credential.getOrDefault("given_name", "");
+        String image = (String) credential.getOrDefault("picture", "");
+        String name = (String) credential.getOrDefault("name", "");
+        if (email.isEmpty()) {
+            throw new AppException(ErrorCode.INVALID_LOGIN.getCode(), "Email is required for login.", HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userRepository.findByEmail(email);
+
+        if (user != null) {
+            return jWTUtilHelper.generateTokenGmail(user);
+        }
+
+        user = new User();
+        user.setUsername(name);
+        user.setFullName(fullName);
+        user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+        user.setImage(image);
+        user.setEmail(email);
+        user.setStatus(true);
+        user.setRole(Role.CUSTOMER);
+        userRepository.save(user);
+
+        return jWTUtilHelper.generateTokenGmail(user);
+    }
 
 
 }
