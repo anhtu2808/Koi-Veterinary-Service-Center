@@ -15,6 +15,7 @@ import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.service.PrescriptionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/prescriptions")
 @RequiredArgsConstructor
@@ -41,10 +43,24 @@ public class PrescriptionController {
     }
 
 
-    @DeleteMapping("/{prescriptionMedicineId}")
-    public ResponseEntity<ResponseObject> deleteMedicine(@PathVariable("prescriptionMedicineId") String prescriptionMedicineId) {
+//    @DeleteMapping("/{prescriptionMedicineId}")
+//    public ResponseEntity<ResponseObject> deleteMedicine(@PathVariable("prescriptionMedicineId") String prescriptionMedicineId) {
+//        try {
+//            prescriptionService.deletePrescriptionMedicine(prescriptionMedicineId);
+//            return ResponseObject.APIRepsonse(200, "Deleted presctiprion medicine successfully", HttpStatus.OK, null);
+//        } catch (AppException e) {
+//            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+//        } catch (Exception e) {
+//            return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
+//        }
+//    }
+    @DeleteMapping("/deletePrescriptionMedicineId")
+    public ResponseEntity<ResponseObject> deleteMedicine(@RequestParam String prescriptionId , @RequestParam String medicineId) {
         try {
-            prescriptionService.deletePrescriptionMedicine(prescriptionMedicineId);
+            log.info(prescriptionId + medicineId);
+            prescriptionService.deletePrescriptionMedicine(prescriptionId, medicineId);
+            log.info(prescriptionId + medicineId);
+
             return ResponseObject.APIRepsonse(200, "Deleted presctiprion medicine successfully", HttpStatus.OK, null);
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);

@@ -90,16 +90,16 @@ public class PrescriptionService {
 
         return prescriptionResponse;
     }
-
-    public void deletePrescriptionMedicine(String id){
-        PrescriptionMedicine prescriptionMedicine = prescriptionMedicineRepository.findById(id).orElseThrow(() ->
-                new AppException(ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getCode(),
-                        ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
-        prescriptionMedicineRepository.delete(prescriptionMedicine);
-
+    @Transactional
+    public void deletePrescriptionMedicine(String prescriptionId, String medicineId ){
+        PrescriptionMedicine prescriptionMedicine = prescriptionMedicineRepository.findByPrescription_IdAndMedicine_MedicineId(prescriptionId,medicineId);
+      if(prescriptionMedicine != null) {
+            prescriptionMedicineRepository.deleteByPrescription_IdAndMedicine_MedicineId(prescriptionId,medicineId);
+        }else {
+            throw new AppException(404, "Can not found prescriptionMedicine By prescriptionId and MedicineId",
+                    HttpStatus.NOT_FOUND);
+        }
     }
-
-
     public List<PrescriptionResponse> getPrescriptionsByAppointmentId(String appointmentId) {
 
         List<Prescription> prescriptions = prescriptionRepository.findByAppointmentId(appointmentId);
