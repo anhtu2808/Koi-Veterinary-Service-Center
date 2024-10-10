@@ -66,7 +66,16 @@ public class TreatmentController {
      if(list != null ){
          return ResponseObject.APIRepsonse(201, "Found successfully! ", HttpStatus.CREATED, list);
      }else{
-         return ResponseObject.APIRepsonse(404, "Can not found ", HttpStatus.NOT_FOUND,"");
+         return ResponseObject.APIRepsonse(404,"Can not found ", HttpStatus.NOT_FOUND,"");
+     }
+ }
+ @GetMapping("/secondPayment")
+ public ResponseEntity<ResponseObject> getSecondPayment( @RequestParam String  appointmentId) {
+     Object list =  treatmentService.getSecondPayment(appointmentId);
+     if(list != null ){
+         return ResponseObject.APIRepsonse(200, "Found successfully! ", HttpStatus.CREATED, list);
+     }else{
+         return ResponseObject.APIRepsonse(404,"Can not found ", HttpStatus.NOT_FOUND,"");
      }
  }
 }

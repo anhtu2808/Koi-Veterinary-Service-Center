@@ -14,11 +14,16 @@ public interface AppointmentMapper {
     @Mapping( target = "veterinarian",ignore = true)
     @Mapping(target = "service" , ignore = true)
     @Mapping(target = "depositedMoney", ignore = true)
+    @Mapping(source = "appointmentRequest.distance",target = "distance")
     Appointment toAppointment(AppointmentRequest appointmentRequest);
 
-    @Mapping( target = "customerId",ignore = true)
-    @Mapping( target = "serviceId",ignore = true)
-    @Mapping(target = "vetId" , ignore = true)
+//    @Mapping( target = "customerId",ignore = true)
+//    @Mapping( target = "serviceId",ignore = true)
+//    @Mapping(target = "vetId" , ignore = true)
+    @Mapping(source = "appointment.customer.customerId" , target = "customerId")
+    @Mapping(source = "appointment.customer.user.fullName" ,target = "customerName")
+    @Mapping(source = "appointment.service.serviceId",target = "serviceId")
+    @Mapping(source = "appointment.service.serviceName",target = "serviceName")
     AppointmentResponse toAppointmentResponse(Appointment appointment);
 
 
