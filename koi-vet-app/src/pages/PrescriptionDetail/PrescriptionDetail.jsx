@@ -1,7 +1,11 @@
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { fetchPrescriptionByIdAPI, updatePrescriptionAPI } from "../../apis";
+import {
+  deletePrescriptionAPI,
+  fetchPrescriptionByIdAPI,
+  updatePrescriptionAPI,
+} from "../../apis";
 
 function PrescriptionDetail(props) {
   const [prescriptionData, setPrescriptionData] = useState([]);
@@ -44,6 +48,9 @@ function PrescriptionDetail(props) {
 
     // Call the update API here with the updated medicine details
     await updatePrescriptionAPI(props.prescriptionId, {
+      name: prescriptionData.name,
+      note: prescriptionData.note,
+      appointmentId: prescriptionData.appointmentId,
       prescriptionMedicines: newPrescriptionData,
     });
   };
@@ -119,7 +126,31 @@ function PrescriptionDetail(props) {
         );
       },
     },
+    {
+      title: "Delete",
+      key: "delete",
+      render: (text, record) => {
+        return (
+          <Button
+            onClick={() =>
+              handleDeletePrescriptionMedicine(record.prescriptionMedicineId)
+            }
+          >
+            Delete
+          </Button>
+        );
+      },
+    },
   ];
+
+  const handleDeletePrescriptionMedicine = async (prescriptionMedicineId) => {
+    await deletePrescriptionAPI(prescriptionMedicineId);
+    setPrescriptionData((prev) =>
+      prev.filter(
+        (medicine) => medicine.prescriptionMedicineId !== prescriptionMedicineId
+      )
+    );
+  };
 
   return (
     <div className="container text-center">

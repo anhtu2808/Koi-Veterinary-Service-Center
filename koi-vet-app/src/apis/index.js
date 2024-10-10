@@ -238,7 +238,11 @@ export const updatePrescriptionAPI = async (prescriptionId, data) => {
     return response.data;
 }
 
-
+export const deletePrescriptionAPI = async (prescriptionMedicineId) => {
+    const response = await api.delete(`/prescriptions/${prescriptionMedicineId}`)
+    return response.data;
+}
+    
 
 //Treatment API
 export const updateKoiTreatmentAPI = async (updatedData) => {
