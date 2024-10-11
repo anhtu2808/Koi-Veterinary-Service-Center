@@ -34,6 +34,7 @@ public class MedicineService {
             response.setMedicineId(medicine.getMedicineId());
             response.setName(medicine.getName());
             response.setDescription(medicine.getDescription());
+            response.setMedUnit(medicine.getMedUnit());
             medicinesResponse.add(response);
         }
         return medicinesResponse;
@@ -49,6 +50,7 @@ public class MedicineService {
         response.setMedicineId(medicine.getMedicineId());
         response.setName(medicine.getName());
         response.setDescription(medicine.getDescription());
+        response.setMedUnit(medicine.getMedUnit());
 
         return response;
     }
@@ -58,8 +60,9 @@ public class MedicineService {
         Medicine medicine = new Medicine();
         medicine.setName(medicineRequest.getName());
         medicine.setDescription(medicineRequest.getDescription());
+        medicine.setMedUnit(medicineRequest.getMedUnit());
         medicine = medicineRepository.save(medicine);
-        return new MedicineResponse(medicine.getMedicineId(), medicine.getName(), medicine.getDescription());
+        return new MedicineResponse(medicine.getMedicineId(), medicine.getName(), medicine.getDescription(), medicine.getMedUnit());
     }
 
     //u thuoc
@@ -70,8 +73,9 @@ public class MedicineService {
 
         medicine.setName(medicineRequest.getName());
         medicine.setDescription(medicineRequest.getDescription());
+        medicine.setMedUnit(medicineRequest.getMedUnit());
         medicine = medicineRepository.save(medicine);
-        return new MedicineResponse(medicine.getMedicineId(), medicine.getName(), medicine.getDescription());
+        return new MedicineResponse(medicine.getMedicineId(), medicine.getName(), medicine.getDescription(), medicine.getMedUnit());
     }
 
     //d thuoc

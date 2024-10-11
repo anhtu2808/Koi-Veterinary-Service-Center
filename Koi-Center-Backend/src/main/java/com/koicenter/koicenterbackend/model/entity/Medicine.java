@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.entity;
 
+import com.koicenter.koicenterbackend.model.enums.MedUnit;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +23,8 @@ public class Medicine {
     String medicineId;
     String name;
     String description;
+    @Enumerated(EnumType.STRING)
+    MedUnit medUnit;
 
 
     @OneToMany(mappedBy = "medicine", cascade = CascadeType.ALL, orphanRemoval = true)
