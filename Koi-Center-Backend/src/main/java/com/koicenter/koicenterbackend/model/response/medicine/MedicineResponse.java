@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.response.medicine;
 
+import com.koicenter.koicenterbackend.model.enums.MedUnit;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,4 +13,5 @@ public class MedicineResponse {
     String medicineId;
     String name;
     String description;
+    MedUnit medUnit;
 }

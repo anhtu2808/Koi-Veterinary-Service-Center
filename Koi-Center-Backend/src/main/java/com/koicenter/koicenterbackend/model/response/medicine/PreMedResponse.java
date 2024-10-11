@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.model.response.medicine;
 
+import com.koicenter.koicenterbackend.model.enums.MedUnit;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class PreMedResponse {
     String medicineName;
     int quantity;
     String dosage;
+    MedUnit medUnit;
 }
