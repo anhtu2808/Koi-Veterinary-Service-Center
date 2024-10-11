@@ -210,12 +210,12 @@ public class PaymentController {
                 if (appointmentResponse == null) {
                     return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
                 }
-                if (appointmentResponse != null) {
-                    insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
-                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
-                } else {
-                    return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
-                }
+                insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
+                Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
+                User user = userRepository.findByUserId(customer.getUser().getUserId());
+                String emailContent = buildEmailContent(appointmentResponse, amountTemp);
+                sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
+                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
             } else {
                 System.out.println("Thanh toán thất bại: " + message);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
