@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
     public class KoiRequest {
         String breed;
         int age;
-        float height;
+        float length;
         float weight;
         String healthStatus;
         String notes;

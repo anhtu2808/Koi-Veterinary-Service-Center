@@ -14,7 +14,8 @@ public class KoiResponse {
     String koiId;
     String breed;
     int age;
-    float height;
+    float length;
+
     float weight;
     String healthStatus;
     String notes;

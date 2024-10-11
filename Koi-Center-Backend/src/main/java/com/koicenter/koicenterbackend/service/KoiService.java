@@ -42,7 +42,7 @@ public class KoiService {
         koiResponse.setKoiId(koi.getKoiId());
         koiResponse.setBreed(koi.getBreed());
         koiResponse.setAge(koi.getAge());
-        koiResponse.setHeight(koi.getHeight());
+        koiResponse.setLength(koi.getLength());
         koiResponse.setWeight(koi.getWeight());
         koiResponse.setHealthStatus(koi.getHealthStatus());
         koiResponse.setNotes(koi.getNotes());
@@ -57,7 +57,7 @@ public class KoiService {
 
         koi.setBreed(request.getBreed());
         koi.setAge(request.getAge());
-        koi.setHeight(request.getHeight());
+        koi.setLength(request.getLength());
         koi.setWeight(request.getWeight());
         koi.setHealthStatus(request.getHealthStatus());
         koi.setNotes(request.getNotes());
@@ -69,7 +69,7 @@ public class KoiService {
         koiResponse.setKoiId(koi.getKoiId());
         koiResponse.setBreed(request.getBreed());
         koiResponse.setAge(request.getAge());
-        koiResponse.setHeight(request.getHeight());
+        koiResponse.setLength(request.getLength());
         koiResponse.setWeight(request.getWeight());
         koiResponse.setHealthStatus(request.getHealthStatus());
         koiResponse.setNotes(request.getNotes());
@@ -82,7 +82,7 @@ public class KoiService {
             Koi koi = new Koi();
             koi.setBreed(koiRequest.getBreed());
             koi.setAge(koiRequest.getAge());
-            koi.setHeight(koiRequest.getHeight());
+            koi.setLength(koiRequest.getLength());
             koi.setWeight(koiRequest.getWeight());
             koi.setHealthStatus(koiRequest.getHealthStatus());
             koi.setNotes(koiRequest.getNotes());
