@@ -6,6 +6,7 @@ import {
   fetchPrescriptionByIdAPI,
   updatePrescriptionAPI,
 } from "../../apis";
+import { message } from "antd";
 
 function PrescriptionDetail(props) {
   const [prescriptionData, setPrescriptionData] = useState([]);
@@ -129,27 +130,33 @@ function PrescriptionDetail(props) {
     {
       title: "Delete",
       key: "delete",
-      render: (text, record) => {
-        return (
-          <Button
-            onClick={() =>
-              handleDeletePrescriptionMedicine(record.prescriptionMedicineId)
-            }
-          >
-            Delete
-          </Button>
-        );
-      },
+      render: (text, record) => (
+        <Button
+          variant="danger"
+          onClick={() =>
+            handleDeletePrescriptionMedicine(record.prescriptionMedicineId)
+          }
+        >
+          Delete
+        </Button>
+      ),
     },
   ];
 
   const handleDeletePrescriptionMedicine = async (prescriptionMedicineId) => {
-    await deletePrescriptionAPI(prescriptionMedicineId);
-    setPrescriptionData((prev) =>
-      prev.filter(
-        (medicine) => medicine.prescriptionMedicineId !== prescriptionMedicineId
-      )
-    );
+    try {
+      await deletePrescriptionAPI(prescriptionMedicineId);
+      setPrescriptionData((prev) =>
+        prev.filter(
+          (medicine) =>
+            medicine.prescriptionMedicineId !== prescriptionMedicineId
+        )
+      );
+      message.success("Medicine deleted successfully");
+    } catch (error) {
+      console.error("Error deleting medicine:", error);
+      message.error("Failed to delete medicine. Please try again.");
+    }
   };
 
   return (
