@@ -8,10 +8,12 @@ import com.koicenter.koicenterbackend.model.momo.RequestType;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.treament.TreamentRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.koi.KoiTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
 import com.koicenter.koicenterbackend.repository.InvoiceRepository;
+import com.koicenter.koicenterbackend.service.AppointmentService;
 import com.koicenter.koicenterbackend.service.CreateOrderMoMo;
 import com.koicenter.koicenterbackend.service.PaymentService;
 import com.koicenter.koicenterbackend.service.TreatmentService;
@@ -45,6 +47,8 @@ public class PaymentController {
     private static TreamentRequest treamentRequestTemp;
     private static Float amountTemp;
     private static String appointmentIdTemp = "";
+    @Autowired
+    AppointmentService  appointmentService;
     @PostMapping("/vn-pay")
     public ResponseEntity<ResponseObject> pay(HttpServletRequest request, @RequestBody TreamentRequest treamentRequest) {
         try {
@@ -72,23 +76,14 @@ public class PaymentController {
                 if (treatmentRequest == null) {
                     return ResponseObject.APIRepsonse(400, "Treatment request not found", HttpStatus.BAD_REQUEST, null);
                 }
-                List<Object> appointmentResponse = treatmentService.createAppointments(treatmentRequest.getSelected(), treatmentRequest.getAppointmentRequest());
-                if (appointmentResponse.isEmpty()) {
+                AppointmentResponse appointmentResponse = appointmentService.createAppointment(treatmentRequest.getAppointmentRequest());
+                if (appointmentResponse == null) {
                     return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
                 }
-                Object firstObject = appointmentResponse.get(0);
-                String appointmentId = null;
-                if (firstObject instanceof PondTreatmentResponse firstAppointment) {
-                    appointmentId = firstAppointment.getAppointmentId();
-                } else if (firstObject instanceof KoiTreatmentResponse firstAppointment) {
-                    appointmentId = firstAppointment.getAppointmentId();
-                }
-                if (appointmentId != null) {
-                    insertToInvoice(appointmentId, amountTemp);
-                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
-                } else {
-                    return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
-                }
+
+
+                insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
+                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
             }
@@ -163,19 +158,12 @@ public class PaymentController {
                 if (treatmentRequest == null) {
                     return ResponseObject.APIRepsonse(400, "Treatment request not found", HttpStatus.BAD_REQUEST, null);
                 }
-                List<Object> appointmentResponse = treatmentService.createAppointments(treatmentRequest.getSelected(), treatmentRequest.getAppointmentRequest());
-                if (appointmentResponse.isEmpty()) {
+                AppointmentResponse appointmentResponse = appointmentService.createAppointment(treatmentRequest.getAppointmentRequest());
+                if (appointmentResponse == null) {
                     return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
                 }
-                Object firstObject = appointmentResponse.get(0);
-                String appointmentId = null;
-                if (firstObject instanceof PondTreatmentResponse firstAppointment) {
-                    appointmentId = firstAppointment.getAppointmentId();
-                } else if (firstObject instanceof KoiTreatmentResponse firstAppointment) {
-                    appointmentId = firstAppointment.getAppointmentId();
-                }
-                if (appointmentId != null) {
-                    insertToInvoice(appointmentId, amountTemp);
+                if (appointmentResponse != null) {
+                    insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
                     return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
                 } else {
                     return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
