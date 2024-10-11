@@ -91,10 +91,8 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
   };
   useEffect(() => {
     if (isAppointment) {
-      if (isUpdate) {
-        fetchTreatment(); // lấy dữ liệu treatment
-        fetchPrescriptions(); // lấy dữ liệu đơn thuốc
-      }
+      fetchTreatment(); // lấy dữ liệu treatment
+      fetchPrescriptions(); // lấy dữ liệu đơn thuốc
     } else {
       fetchKoiByKoiId();
     }
