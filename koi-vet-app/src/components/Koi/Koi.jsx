@@ -145,7 +145,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                             <div className='d-flex gap-3'>
                                                 {isAppointment ?
                                                     <>
-                                                        <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/koidetail/${treatment.koiTreatmentId}?appointmentId=${appointmentId}`)}>
+                                                        <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/koidetail/${appointmentId}?treatmentId=${treatment.koiTreatmentId}`)}>
                                                             View Details
                                                         </button>
                                                     </>

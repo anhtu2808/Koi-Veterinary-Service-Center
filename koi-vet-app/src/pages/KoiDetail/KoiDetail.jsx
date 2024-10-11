@@ -21,7 +21,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
   const [isEditing, setIsEditing] = useState(false);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const appointmentId = searchParams.get('appointmentId');
+  const treatmentId = searchParams.get('treatmentId');
 
   const [treatmentData, setTreatmentData] = useState({
     "koiTreatmentId": null,
@@ -32,7 +32,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
     "prescription_id": null
   });
   const [prescriptions, setPrescriptions] = useState([]);
-  const { treatmentId, koiId } = useParams();
+  const { appointmentId, koiId } = useParams();
   const navigate = useNavigate();
   const handleChangeTreatmentData = (e) => {
     setTreatmentData({ ...treatmentData, [e.target.name]: e.target.value })
@@ -170,17 +170,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
           </div>
         </div>
 
-        {/* <div className="form-group">
-          <label>Health Status</label>
-          <input
-            type="text"
-            value={koiData.healthStatus}
-            onChange={(e) => setKoiData({ ...koiData, healthStatus: e.target.value })}
-            placeholder="Enter health status"
-            disabled={!isEditing && !isCreate}
-          />
-        </div> */}
-        {isAppointment ?
+        {isAppointment && !isCreate ?
           <div className="gap-6 row">
             <div className="form-group col-md-6">
               <label>Health Issue</label>
@@ -237,11 +227,17 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
           />
         </div>
 
-
         <div className="button-group">
-          <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
-            Back
-          </button>
+          {isCreate && isAppointment ?
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Back
+            </button>
+            :
+            <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
+              Back
+            </button>
+          }
+
 
           {isEditing && isUpdate && !isCreate ? (
             <div className=" d-flex gap-2">
