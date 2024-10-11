@@ -20,7 +20,7 @@ public class Koi {
     String koiId;
     String breed;
     int age;
-    float height;
+    float length;
     float weight;
     @Column(name = "health_status")
     String healthStatus;

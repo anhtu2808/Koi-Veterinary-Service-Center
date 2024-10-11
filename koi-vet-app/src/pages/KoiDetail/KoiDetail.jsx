@@ -1,85 +1,102 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, fetchPrescriptionByAppointmentIdAPI, updateKoiInformationAPI } from "../../apis";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, fetchPrescriptionByAppointmentIdAPI, fetchTreatmentByIdAPI, updateKoiInformationAPI, updateKoiTreatmentAPI } from "../../apis";
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
 import { fishSpecies } from "../../utils/constants";
+import { useSelector } from "react-redux";
 
 
 
-function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, appointmentId, isAppointment, customerId }) {
+function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment, customerId }) {
   const [koiData, setKoiData] = useState({
     breed: "",
     age: "",
-    height: "",
+    length: "",
     weight: "",
     healthStatus: "",
     note: "",
     image: "",
+    koiId: null,
     customerId: customerId
   })
-  const [isEditing, setIsEditing] = useState(false);
   const [treatmentData, setTreatmentData] = useState({
-    healthIssue: "",
-    treatment: "",
-    prescription: "",
+    "koiTreatmentId": null,
+    "koiId": null,
+    "appointmentId": null,
+    "healthIssue": null,
+    "treatment": null,
+    "prescription_id": null
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const treatmentId = searchParams.get('treatmentId');
+  const appointmentId = searchParams.get('appointmentId');
+  const role = useSelector(state => state.user.role);
   const [prescriptions, setPrescriptions] = useState([]);
-  const koiId = useParams().koiId;
+  const { koiId } = useParams();
   const navigate = useNavigate();
-
+  const handleChangeTreatmentData = (name, value) => {
+    setTreatmentData({ ...treatmentData, [name]: value === "None" ? null : value });
+  }
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Ngăn không cho form tự động submit
+    e.preventDefault();
+    if (isAppointment) {
+      if (isCreate) {//bác sĩ thêm cá koi vào cuộc hẹn
+        const response = await addKoiToAppointmentAPI(appointmentId, { ...koiData, customerId: cusId })
+        toast.success(response.data.message);
+        onUpdate(); // Call the callback function reload list Koi
+        onClose();
+      }
+      if (isUpdate) {   // bác sĩ cập nhật thông tin cá koi
+        await updateKoiInformationAPI(koiData.koiId, koiData);
+        const updateTreatment = await updateKoiTreatmentAPI(treatmentData)
+        toast.success(updateTreatment.data.message);
+        setIsEditing(false);
+      }
+    } else {
+      if (isCreate) {
+        const response = await createKoiAPI(koiData);
+        toast.success(response.data.message);
+        onUpdate(); // Call the callback function reload list Koi
+        onClose();
+      }
+      if (isUpdate) {
+        setIsEditing(false)
+        const response = await updateKoiInformationAPI(koiData.koiId, koiData);
+        console.log("koiData", koiData)
+        toast.success(response.data.message);
+      }
+    }
 
-
-    if (isCreate && !isAppointment) { // Customer create new koi
-      // Tạo mới Koi
-      const response = await createKoiAPI(koiData);
-      toast.success(response.data.message);
-      onUpdate(); // Call the callback function reload list Koi
-      onClose(); // Close modal popup
-      console.log("koiData", koiData)
-    }
-    if (isAppointment) { // veterinarian add koi to appointment
-      // veterinarian add koi to appointment
-      const response = await addKoiToAppointmentAPI(appointmentId, { ...koiData, customerId: cusId })
-      console.log("response", response)
-      toast.success(response.data.message);
-      onUpdate(); // Call the callback function reload list Koi
-      onClose();
-    }
-    if (isUpdate || isEditing) { // Customer or Veterinarian update koi information
-      // Cập nhật thông tin Koi
-      const response = await updateKoiInformationAPI(koiId, koiData);
-      toast.success(response.data.message);
-      setIsEditing(false);
-      console.log("koiData", koiData)
-    }
 
   };
 
   const handleUpdateButton = () => {
     setIsEditing(!isEditing); // Bật chế độ chỉnh sửa khi nhấn "Update"
   };
-
+  const fetchPrescriptions = async () => {
+    const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
+    setPrescriptions(response.data)
+  }
+  const fetchTreatment = async () => {
+    const response = await fetchTreatmentByIdAPI(treatmentId);
+    setTreatmentData({ ...treatmentData, ...response.data })
+    setKoiData(response.data.koi)
+  }
+  const fetchKoiByKoiId = async () => {
+    const response = await fetchKoiByKoiIdAPI(koiId);
+    setKoiData(response.data)
+  };
   useEffect(() => {
-    if (!isCreate && koiId) {
-      const fetchKoiByKoiId = async () => {
-        try {
-          const response = await fetchKoiByKoiIdAPI(koiId);
-          setKoiData(response.data)
-        } catch (error) {
-          toast.error("Error fetching Koi data.");
-        }
-      };
-      const fetchPrescriptions = async () => {
-        const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
-        setPrescriptions(response.data)
-      }
+    if (isAppointment) {
+      fetchTreatment(); // lấy dữ liệu treatment
+      fetchPrescriptions(); // lấy dữ liệu đơn thuốc
+    } else {
       fetchKoiByKoiId();
-      fetchPrescriptions();
     }
-  }, [koiId, isCreate, customerId, appointmentId]);
+  }, [koiId, isCreate, customerId, appointmentId, treatmentId]);
 
   return (
     <div className="col-9 mx-auto">
@@ -128,13 +145,13 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, appointmentId
             />
           </div>
           <div>
-            <label>Height (cm)</label>
+            <label>Length (cm)</label>
             <input
               type="number"
               step="0.1"
-              value={koiData.height}
-              onChange={(e) => setKoiData({ ...koiData, height: e.target.value })}
-              placeholder="Enter height"
+              value={koiData.length}
+              onChange={(e) => setKoiData({ ...koiData, length: e.target.value })}
+              placeholder="Enter length"
               disabled={!isEditing && !isCreate}
             />
           </div>
@@ -151,73 +168,74 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, appointmentId
           </div>
         </div>
 
-        {/* <div className="form-group">
-          <label>Health Status</label>
-          <input
-            type="text"
-            value={koiData.healthStatus}
-            onChange={(e) => setKoiData({ ...koiData, healthStatus: e.target.value })}
-            placeholder="Enter health status"
-            disabled={!isEditing && !isCreate}
-          />
-        </div> */}
-        <div className="gap-6 row">
-          <div className="form-group col-md-6">
-            <label>Health Issue</label>
-            <textarea
-              value={koiData.treatment}
-              onChange={(e) => setKoiData({ ...koiData, treatment: e.target.value })}
-              placeholder="Enter treatment"
-              disabled={!isEditing && !isCreate}
-            />
+        {isAppointment ?
+          <div className="gap-6 row">
+            <div className="form-group col-md-6">
+              <label>Health Issue</label>
+              <textarea
+                name="healthIssue"
+                value={treatmentData.healthIssue}
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                placeholder="Enter treatment"
+                disabled={!isEditing && !isCreate}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label>Treatment</label>
+              <textarea
+                value={koiData.treatment}
+                name="treatment"
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                placeholder="Enter treatment"
+                disabled={(!isEditing && !isCreate )|| role === "CUSTOMER"}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label>Prescription</label>
+              <select
+                className="form-select"
+                value={treatmentData.prescription_id || "None"}
+                name="prescription_id"
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
+              >
+                <option value="None">None</option>
+                {prescriptions.map(prescription => (
+                  <option key={prescription.id} value={prescription.id}>
+                    {prescription.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
+              <button type="button" className="btn btn-primary">Add Prescription</button>
+              <button type="button" className="btn btn-primary">View Prescriptions</button>
+            </div>
           </div>
-          <div className="form-group col-md-6">
-            <label>Treatment</label>
-            <textarea
-              value={koiData.treatment}
-              onChange={(e) => setKoiData({ ...koiData, treatment: e.target.value })}
-              placeholder="Enter treatment"
-              disabled={!isEditing && !isCreate}
-            />
-          </div>
-          <div className="form-group col-md-6">
-            <label>Prescription</label>
-            <select
-              className="form-select"
-              value={koiData.breed}
-              onChange={(e) => setKoiData({ ...koiData, breed: e.target.value })}
-              disabled={!isEditing && !isCreate}
-            >
-              <option value="" disabled>Select prescription</option>
-              {prescriptions.map((prescription) => (
-                <option key={prescription.id} value={prescription.id}>
-                  {prescription.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
-            <button type="button" className="btn btn-primary">Add Prescription</button>
-            <button type="button" className="btn btn-primary">View Prescriptions</button>
-          </div>
-        </div>
+          : null}
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Image URL</label>
           <input
             type="text"
             value={koiData.image}
             onChange={(e) => setKoiData({ ...koiData, image: e.target.value })}
             placeholder="Enter image URL"
-            disabled={!isEditing && !isCreate}
+            disabled={!isEditing && !isCreate"}
           />
-        </div>
-
+        </div> */}
 
         <div className="button-group">
-          <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
-            Back
-          </button>
+          {isCreate && isAppointment ?
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Back
+            </button>
+            :
+            <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
+              Back
+            </button>
+          }
+
 
           {isEditing && isUpdate && !isCreate ? (
             <div className=" d-flex gap-2">

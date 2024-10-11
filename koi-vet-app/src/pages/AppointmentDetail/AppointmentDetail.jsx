@@ -99,7 +99,7 @@ function AppointmentDetail() {
         if (role !== ROLE.CUSTOMER) {
           setNavigateLink({
             link: `/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
-            title: "Koi Information"
+            title: "Koi Information" 
           })
         } else {
           setNavigateLink({
@@ -142,7 +142,9 @@ function AppointmentDetail() {
   const handleAssignVet = (e) => {
     e.preventDefault();
     if (e.target.value !== "SKIP") {
-      setAppointment({ ...appointment, vetId: e.target.value });
+      setAppointment({ ...appointment, vetId: e.target.value, status: APPOINTMENT_STATUS.BOOKING_COMPLETE });
+    } else {
+      setAppointment({ ...appointment, vetId: null, status: APPOINTMENT_STATUS.CREATED });
     }
     console.log(appointment);
   };
@@ -197,23 +199,39 @@ function AppointmentDetail() {
       <AdminHeader title="Appointment Detail" />
 
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="appointmentId" className="form-label">
-            Appointment ID
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="appointmentId"
-            value={appointment.appointmentId}
-            disabled
-          />
+        <div className="row">
+          <div className="mb-3 col-md-6">
+            <label htmlFor="appointmentId" className="form-label">
+              Appointment ID
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="appointmentId"
+              value={appointment.appointmentId}
+              disabled
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="createDate" className="form-label">
+              Created Date
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="createDate"
+              name="createDate"
+              value={new Date(appointment.createdAt).toLocaleString()}
+              disabled
+            />
+          </div>
         </div>
+
 
         <div className="row mb-3">
           <div className="col-md-6">
             <label htmlFor="customerId" className="form-label">
-              Customer
+              Customer <i className="fa-solid fa-user" ></i>
             </label>
             <input
               type="text"
@@ -256,7 +274,7 @@ function AppointmentDetail() {
           <div className="col-md-6">
 
             <label htmlFor="vetId" className="form-label">
-              Veterinarian
+              Veterinarian <i className="fa-solid fa-user-doctor" ></i>
             </label>
             <select
               className="form-select"
@@ -264,7 +282,7 @@ function AppointmentDetail() {
               name="vetId"
               value={appointment.vetId}
               onChange={(e) => handleAssignVet(e)}
-              disabled={!isEditing && role !== ROLE.VETERINARIAN}
+              disabled={role === ROLE.VETERINARIAN || !isEditing ||(appointment.status !== APPOINTMENT_STATUS.CREATED && appointment.status !== APPOINTMENT_STATUS.BOOKING_COMPLETE)}
             >
               <option value={"SKIP"}>Not assigned</option>
               {vetList.map((vet) => (
@@ -293,7 +311,7 @@ function AppointmentDetail() {
         <div className="row mb-3">
           <div className="col-md-6">
             <label htmlFor="type" className="form-label">
-              Type
+              Appointment Type
             </label>
             <select
               className="form-select"
@@ -309,17 +327,16 @@ function AppointmentDetail() {
             </select>
           </div>
           <div className="col-md-6">
-            <label htmlFor="location" className="form-label">
-              Location
+            <label htmlFor="serviceType" className="form-label">
+              Service Type
             </label>
             <input
               type="text"
               className="form-control"
-              id="location"
-              name="location"
-              value={appointment.location}
-              onChange={handleInputChange}
-              disabled={!isEditing}
+              id="serviceType"
+              name="serviceType"
+              value={service.serviceFor}
+              disabled
             />
           </div>
         </div>
@@ -327,7 +344,7 @@ function AppointmentDetail() {
         <div className="row mb-3">
           <div className="col-md-4">
             <label htmlFor="appointmentDate" className="form-label">
-              Appointment Date
+              Appointment Date <i className="fa-solid fa-calendar" ></i>
             </label>
             <input
               type="date"
@@ -341,7 +358,7 @@ function AppointmentDetail() {
           </div>
           <div className="col-md-4">
             <label htmlFor="startTime" className="form-label">
-              Start Time
+              Start Time <i className="fa-solid fa-clock" ></i>
             </label>
             <input
               type="time"
@@ -355,7 +372,7 @@ function AppointmentDetail() {
           </div>
           <div className="col-md-4">
             <label htmlFor="endTime" className="form-label">
-              End Time
+              End Time <i className="fa-solid fa-clock" ></i>
             </label>
             <input
               type="time"
@@ -363,6 +380,32 @@ function AppointmentDetail() {
               id="endTime"
               name="endTime"
               value={appointment.endTime}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            />
+          </div>
+          <div className="col-md-6 mt-3">
+            <label htmlFor="result" className="form-label">
+              Result
+            </label>
+            <textarea
+              className="form-control"
+              id="result"
+              name="result"
+              value={appointment.result}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            ></textarea>
+          </div>
+          <div className="col-md-6 mt-3">
+            <label htmlFor="location" className="form-label">
+              Location <i className="fa-solid fa-location-dot" ></i>
+            </label>
+            <textarea
+              className="form-control"
+              id="location"
+              name="location"
+              value={appointment.location}
               onChange={handleInputChange}
               disabled={!isEditing}
             />
@@ -398,14 +441,15 @@ function AppointmentDetail() {
         >
           Back to All Appointments
         </button>
+        {navigateLink.link ?
+          <button
+            onClick={() => navigate(navigateLink.link)}
+            type="button"
+            className="btn btn-primary"
+          >
+            {navigateLink.title}
+          </button> : null}
 
-        <button
-          onClick={() => navigate(navigateLink.link)}
-          type="button"
-          className="btn btn-primary"
-        >
-          {navigateLink.title}
-        </button>
 
       </div>
 

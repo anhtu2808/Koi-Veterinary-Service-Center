@@ -68,7 +68,7 @@ public class CustomerService {
             koiResponse.setKoiId(koi.getKoiId());
             koiResponse.setBreed(koi.getBreed());
             koiResponse.setAge(koi.getAge());
-            koiResponse.setHeight(koi.getHeight());
+            koiResponse.setLength(koi.getLength());
             koiResponse.setWeight(koi.getWeight());
             koiResponse.setHealthStatus(koi.getHealthStatus());
             koiResponse.setNotes(koi.getNotes());

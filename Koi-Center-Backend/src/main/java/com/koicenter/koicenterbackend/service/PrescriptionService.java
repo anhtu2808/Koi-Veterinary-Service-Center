@@ -78,6 +78,7 @@ public class PrescriptionService {
             MedicineResponse medicineResponse = new MedicineResponse();
             medicineResponse.setMedicineId(medicine.getMedicineId());
             medicineResponse.setName(medicine.getName());
+            medicineResponse.setMedUnit(medicine.getMedUnit());
             medicineResponse.setDescription(medicine.getDescription());
 
             prescriptionMedicineResponse.setMedicine(medicineResponse);
@@ -90,16 +91,16 @@ public class PrescriptionService {
 
         return prescriptionResponse;
     }
-
-    public void deletePrescriptionMedicine(String id){
-        PrescriptionMedicine prescriptionMedicine = prescriptionMedicineRepository.findById(id).orElseThrow(() ->
-                new AppException(ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getCode(),
-                        ErrorCode.PRESCRIPTION_MEDICINE_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
-        prescriptionMedicineRepository.delete(prescriptionMedicine);
-
+    @Transactional
+    public void deletePrescriptionMedicine(String prescriptionId, String medicineId ){
+        PrescriptionMedicine prescriptionMedicine = prescriptionMedicineRepository.findByPrescription_IdAndMedicine_MedicineId(prescriptionId,medicineId);
+      if(prescriptionMedicine != null) {
+            prescriptionMedicineRepository.deleteByPrescription_IdAndMedicine_MedicineId(prescriptionId,medicineId);
+        }else {
+            throw new AppException(404, "Can not found prescriptionMedicine By prescriptionId and MedicineId",
+                    HttpStatus.NOT_FOUND);
+        }
     }
-
-
     public List<PrescriptionResponse> getPrescriptionsByAppointmentId(String appointmentId) {
 
         List<Prescription> prescriptions = prescriptionRepository.findByAppointmentId(appointmentId);
@@ -127,6 +128,7 @@ public class PrescriptionService {
                 medicineResponse.setMedicineId(medicine.getMedicineId());
                 medicineResponse.setName(medicine.getName());
                 medicineResponse.setDescription(medicine.getDescription());
+                medicineResponse.setMedUnit(medicine.getMedUnit());
 
                 prescriptionMedicineResponse.setMedicine(medicineResponse);
                 prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
@@ -153,6 +155,7 @@ public class PrescriptionService {
             PreMedResponse preMedResponse = new PreMedResponse();
             preMedResponse.setMedicineId(medicine.getMedicineId());
             preMedResponse.setMedicineName(medicine.getName());
+            preMedResponse.setMedUnit(medicine.getMedUnit());
             preMedResponse.setQuantity(prescriptionMedicine.getQuantity());
             preMedResponse.setDosage(prescriptionMedicine.getDosage());
 
@@ -202,6 +205,7 @@ public class PrescriptionService {
             medResponse.setMedicineId(med.getMedicineId());
             medResponse.setName(med.getName());
             medResponse.setDescription(med.getDescription());
+            medResponse.setMedUnit(med.getMedUnit());
 
             prescriptionMedicineResponse.setMedicine(medResponse);
             prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
@@ -226,6 +230,7 @@ public class PrescriptionService {
         MedicineResponse medicineResponse = new MedicineResponse();
         medicineResponse.setMedicineId(medicine.getMedicineId());
         medicineResponse.setName(medicine.getName());
+        medicineResponse.setMedUnit(medicine.getMedUnit());
         medicineResponse.setDescription(medicine.getDescription());
         prescriptionMedicineResponse.setMedicine(medicineResponse);
         prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());

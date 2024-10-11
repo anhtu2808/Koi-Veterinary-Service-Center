@@ -22,7 +22,6 @@ function AllAppointment() {
   const role = useSelector((state) => state.user.role);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
     const fetchAppointmentForVet = async (vetId, status) => {
@@ -124,7 +123,7 @@ function AllAppointment() {
         <table className="table table-striped table-sm tableleft">
           <thead>
             <tr>
-              <th>ID</th> <th>User</th> <th>Service</th> <th>Type</th> <th>Time</th><th>Date</th><th>Status</th><th>Action</th>
+              <th>ID</th> <th>User</th> <th>Service</th><th>Create Date</th> <th>Type</th> <th>Time</th><th>Date</th><th>Status</th><th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -148,6 +147,7 @@ function AllAppointment() {
                     <td>{index + 1}</td>
                     <td>{appointmentDetail.customerName}</td>
                     <td>{appointmentDetail.serviceName}</td>
+                    <td>{new Date(appointmentDetail.createdAt).toLocaleString()}</td>
                     <td>{appointmentDetail.type}</td>
                     <td>{formatTime(appointmentDetail.startTime)}</td>
                     <td>{formatDate(appointmentDetail.appointmentDate)}</td>

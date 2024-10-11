@@ -11,15 +11,11 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
     const [koiTreatmentList, setKoiTreatmentList] = useState([]);
     const customerId = useSelector(state => state?.user?.customer?.customerId)
     const navigate = useNavigate();
+    const role = useSelector(state => state?.user?.role);
     const [prescriptions, setPrescriptions] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({})
     //open modal for when click add new koi BTN
-
-    const handleUpdateTreatment = (treatment, healthIssue, koiTreatmentId) => {
-        setIsModalOpen(true);
-        setModalData({ treatment, healthIssue, koiTreatmentId })
-    };
     const handleSubmitTreatment = () => {
         onUpdateTreatment();
         setIsModalOpen(false);
@@ -27,6 +23,19 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
+
+    const handleViewDetal = (koiId, treatmentId) => {
+        if (isAppointment) {
+            if (role === "CUSTOMER") {
+                navigate(`/profile/koidetail/${appointmentId}?treatmentId=${treatmentId}&appointmentId=${appointmentId}`)
+            } else {
+                navigate(`/admin/koidetail/${appointmentId}?treatmentId=${treatmentId}&appointmentId=${appointmentId}`)
+            }
+        } else {
+          
+            navigate(`${koiId}`) // eq navigate(`/profile/koi/${koiId}`)
+        }
+    }
 
     useEffect(() => {
         const fetchKois = async () => {
@@ -98,10 +107,19 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                             <tr>
                                 {/* <th>Koi Id</th> */}
                                 <th>Breed</th>
-                                <th>{isAppointment ? "Health Issue" : "Health Status"}</th>
-                                <th>{isAppointment ? "Treatment" : "Age"}</th>
+                                {isAppointment ?
+                                    <>
+                                        <th>Health Issue</th>
+                                        <th>Treatment</th>
+                                        <th>Prescription</th>
+                                    </> :
+                                    <>
+                                        <th>Age</th>
+                                        <th>Length</th>
+                                        <th>Weight</th>
+                                        <th>Note</th>
+                                    </>}
                                 <th>Image</th>
-                                {isAppointment ? <th>PRESCRIPTION</th> : <th> Note</th>}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -111,49 +129,47 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                 const isSelected = selectedKois?.includes(treatment?.koi?.koiId);
                                 return (
                                     <tr key={treatment?.koi?.koiId} className={isSelected ? 'table-primary' : ''}>
-                                        {/* <td>{index + 1}</td> */}
                                         <td>{treatment?.koi?.breed}</td>
-                                        <td > {isAppointment ? treatment?.healthIssue : treatment?.koi?.healthStatus}</td>
-                                        <td>{isAppointment ? treatment?.treatment : treatment?.koi?.age}</td>
+                                        {isAppointment ?
+                                            <>
+                                                <td>{treatment?.koi?.healthIssue}</td>
+                                                <td>{treatment?.koi?.treatment}</td>
+                                                <td >
+                                                    <select
+                                                        className="form-select w-120"
+                                                        aria-label="Default select example"
+                                                        onChange={(e) => handleChangePrescription(treatment?.koiTreatmentId, e.target.value, treatment?.koi?.koiId)}
+                                                        value={treatment.prescription_id || "None"}
+                                                        disabled={role === "CUSTOMER"}
+                                                    >
+                                                        <option value="None">None</option>
+                                                        {prescriptions.map(prescription => (
+                                                            <option key={prescription.id} value={prescription.id}>
+                                                                {prescription.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </td>
+                                            </> :
+                                            <>
+                                                <td>{treatment?.koi?.age}</td>
+                                                <td>{treatment?.koi?.length}</td>
+                                                <td>{treatment?.koi?.weight}</td>
+                                                <td>{treatment?.koi?.note}</td>
+                                            </>}
+
                                         <td>
                                             <div className="koi-image">
                                                 <img src="https://visinhcakoi.com/wp-content/uploads/2021/07/ca-koi-showa-2-600x874-1.jpg" alt="hình cá" />
                                             </div>
                                         </td>
-                                        {isAppointment ? (
-                                            <td >
-                                                <select
-                                                    className="form-select w-120"
-                                                    aria-label="Default select example"
-                                                    onChange={(e) => handleChangePrescription(treatment?.koiTreatmentId, e.target.value, treatment?.koi?.koiId)}
-                                                    value={treatment.prescription_id || "None"}
-                                                >
-                                                    <option value="None">None</option>
-                                                    {prescriptions.map(prescription => (
-                                                        <option key={prescription.id} value={prescription.id}>
-                                                            {prescription.name}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                        ) : (
-                                            <td>
-                                                {treatment?.koi?.note}
-                                            </td>
-                                        )}
+
                                         <td>
                                             <div className='d-flex gap-3'>
-                                                {isAppointment ?
-                                                    <>
-                                                        <button className="btn btn-sm btn-primary" onClick={() => navigate(`/admin/koidetail/${treatment.koi.koiId}`)}>
-                                                            View Details
-                                                        </button>
-                                                    </>
-
-                                                    :
-                                                    <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/koi/${treatment.koi.koiId}`)}>
+                                                
+                                                    <button className="btn btn-sm btn-primary" onClick={() => handleViewDetal(treatment.koi.koiId, treatment?.koiTreatmentId)}>
                                                         View Details
-                                                    </button>}
+                                                    </button>                                    
                                                 {isBooking && (
                                                     <button
                                                         className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
@@ -178,10 +194,8 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                         onRequestClose={handleCloseModal}
                         children={
                             <Treatment
-
                                 treatment={modalData.treatment}
                                 isKoi={true}
-
                                 treatmentId={modalData.koiTreatmentId}
                                 onUpdate={handleSubmitTreatment}
                                 healthIssue={modalData.healthIssue}
@@ -190,7 +204,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                     />
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

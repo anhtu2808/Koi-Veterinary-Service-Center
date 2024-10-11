@@ -33,6 +33,8 @@ public class Appointment {
     LocalTime endTime;
     String location;
     String result;
+    float distance ;
+    String code ;
     @Column(name = "created_at")
     ZonedDateTime createdAt;
     @Enumerated(EnumType.STRING)

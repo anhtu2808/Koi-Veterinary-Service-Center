@@ -36,7 +36,7 @@ public class AuthenticateService {
     public boolean checkLogin(LoginRequest loginRequest) {
 
         User user = userRepository.findByUsername(loginRequest.getUsername());
-        if (user == null) {
+        if (user == null || !user.isStatus()) {
             throw new AppException(ErrorCode.INVALID_LOGIN.getCode(), ErrorCode.INVALID_LOGIN.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         boolean authenticated = passwordEncoder.matches(loginRequest.getPassword(), user.getPassword());

@@ -27,4 +27,7 @@ public class AppointmentRequest {
     String serviceId;
     String serviceName;
     String vetId;
+    float distance ;
+
+
 }

@@ -41,7 +41,6 @@ import Pond from './components/Pond/Pond';
 import PaymentFailPage from './pages/PaymentFailPage/PaymentFailPage';
 import PondTreatmentPage from './pages/PondTreatmentPage/PondTreatmentPage';
 import GGM from './pages/GoogleMeet/GGM';
-import PaymentSuccessPage from './pages/PaymentSuccessPage/PaymentSuccessPage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -82,12 +81,11 @@ function App() {
               <Route path='/services' element={<ServicePage />} />
               <Route path='/vetprofile/:vetId' element={<VetProfile />} />
               <Route path='/booking/paymentfail' element={<PaymentFailPage />} />
-              <Route path='/booking/paymentsuccess' element={<PaymentSuccessPage/>} />
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>
                 <Route path='/booking' element={<BookingPage />} />
-                <Route path="/createkoi" element={<KoiDetail />} />
-                <Route path="/createpond" element={<PondDetail />} />
+                <Route path="/createkoi" element={<KoiDetail isCreate={true} />} />
+                <Route path="/createpond" element={<PondDetail isCreate={true} />} />
                 <Route path="/profile/*" element={
                   <ProfileLayout>
                     <Routes>
@@ -96,19 +94,18 @@ function App() {
                       <Route path='/koi/:koiId' element={
                         <KoiDetail
                           isCreate={false}
-                          isUpdate={true} />
+                          isUpdate={true}
+                          isAppointment={false} />
                       } />
-
-                      <Route path='/pond' element={<Pond />} />
-                      <Route path='/pond/:pondId' element={<PondDetail />} />
+                       <Route path="/koi/:koiId" element={<KoiDetail isUpdate={false} isCreate={false} />} />
+                       <Route path="/pond/:pondId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} />} />
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
                       <Route path="/google-meet/:appointmentId" element={<GGM/>} />
-                      <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={false} isVeterinarian={false} isCreate={false} />} />
-                      <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} />} />
                       <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
                       <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
-
+                      <Route path="/koidetail/:appointmentId" element={<KoiDetail isUpdate={false} isCreate={false} isAppointment={true} />} />
+                      <Route path="/ponddetail/:appointmentId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} isAppointment={true} />} />
                     </Routes>
                   </ProfileLayout>
 
@@ -139,9 +136,9 @@ function App() {
                 <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
                 <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
                 <Route path="/google-meet/:appointmentId" element={<GGM/>} />
-                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isVeterinarian={true} isCreate={false} />} />
-                <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false} />} />
-                <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true} />} />
+                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true}  isCreate={false} isAppointment={true} />} />
+                <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false} isAppointment={true} />} />
+                <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true} isAppointment={false} />} />
                 <Route path="/invoice" element={<InvoiceListPage />} />
                 <Route path="/medicine" element={<Medicine />} />
                 <Route path="/medpage" element={< MedicineListPage />} />

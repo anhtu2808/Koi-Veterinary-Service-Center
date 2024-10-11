@@ -111,6 +111,7 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/prescriptions").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/prescriptions").permitAll()
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/prescriptions/deletePrescriptionMedicineId").permitAll()
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/medicines").permitAll()

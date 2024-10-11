@@ -261,6 +261,11 @@ export const fetchPondTreatmentByIdAPI = async (pondTreatmentId) => {
     return response.data;
 }
 
+export const fetchTreatmentByIdAPI = async (id) => {
+    const response = await api.get(`/treatments/${id}`)
+    return response.data;
+}
+
 //prescription API
 export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/prescriptions?appointmentId=${appointmentId}`)
@@ -272,5 +277,6 @@ export const fetchRedirectPaymentAPI = async (amount, bankCode,appointmentData) 
     const response = await api.post(`payment/vn-pay?amount=${amount}&bankCode=${bankCode}`,appointmentData)
     return response.data;
 }
+
 
 
