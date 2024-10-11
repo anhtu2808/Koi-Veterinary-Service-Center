@@ -284,3 +284,4 @@ export const fetchRedirectPaymentAPI = async (amount, bankCode,appointmentData) 
 }
 
 
+

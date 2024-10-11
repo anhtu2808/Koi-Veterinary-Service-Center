@@ -30,7 +30,8 @@ function Payment() {
         "depositedMoney": serviceInfo.basePrice * 100,  // Số tiền đã đặt cọc
         "customerId": customerInfo.customerId,  // ID khách hàng
         "vetId": bookingData.vetId,  // ID bác sĩ thú y
-        "serviceId": bookingData.serviceId  // ID dịch vụ
+        "serviceId": bookingData.serviceId ,// ID dịch vụ
+        "distance": 0
       }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

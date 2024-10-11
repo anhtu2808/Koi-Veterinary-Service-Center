@@ -62,7 +62,7 @@ public class TreatmentController {
     }
  @GetMapping("/{id}")
  public ResponseEntity<ResponseObject> createAppointment( @PathVariable String  id) {
-    Object list =  treatmentService.findKoiPondID(id);
+    Object list =  treatmentService.searchTreamentByKoiIdOrPondId(id);
      if(list != null ){
          return ResponseObject.APIRepsonse(201, "Found successfully! ", HttpStatus.CREATED, list);
      }else{
