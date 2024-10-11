@@ -6,6 +6,7 @@ import KoiDetail from '../KoiDetail/KoiDetail';
 import { fetchPrescriptionByAppointmentIdAPI } from '../../apis';
 import MedicineListPage from '../MedicineListPage/MedicineListPage';
 import PrescriptionDetail from '../PrescriptionDetail/PrescriptionDetail'; // Import PrescriptionDetail
+import { useSelector } from 'react-redux';
 
 
 const KoiTreatmentPage = () => {
@@ -17,7 +18,8 @@ const KoiTreatmentPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const customerId = queryParams.get('customerId');
-  console.log("customerId", customerId)
+  const role = useSelector(state => state.user.role);
+  console.log(role)
   const navigate = useNavigate();
   const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
   const [selectedPrescriptionId, setSelectedPrescriptionId] = useState(null);  // Lưu Prescription ID được chọn
@@ -39,7 +41,7 @@ const KoiTreatmentPage = () => {
       setPrescriptions(response.data)
     }
     fetchPrescription()
-  }, [appointmentId,koiUpdateTrigger])
+  }, [appointmentId, koiUpdateTrigger])
 
 
 
@@ -81,11 +83,12 @@ const KoiTreatmentPage = () => {
 
 
       {/* Add New Koi Button */}
-      <div className="text-center">
-        <button className="btn btn-primary" onClick={() => handleAddNewKoi()}>
+      {role !== "CUSTOMER" ?
+        <div className="text-center">
+          <button className="btn btn-primary" onClick={() => handleAddNewKoi()}>
           Add New Koi
         </button>
-      </div>
+      </div> : null}
 
       {/* Modal for KoiDetail */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
@@ -129,24 +132,25 @@ const KoiTreatmentPage = () => {
               ))}
             </tbody>
           </table>
-          <button className="btn btn-primary" onClick={handleOpenMedicineModal}>
-            Add Prescription
-          </button>
-          <Modal isOpen={isMedicineModalOpen} onClose={handleCloseMedicineModal}>
-        <MedicineListPage 
-          appointmentId={appointmentId}
-          onPrescriptionCreated={() => {
-            handleCloseMedicineModal();
-            handleKoiUpdate()
-            // Có thể thêm logic để refresh danh sách prescription
-          }}
-        />
-      </Modal>
+          {role !== "CUSTOMER" ?
+            <button className="btn btn-primary" onClick={handleOpenMedicineModal}>Add Prescription</button>
+            : null}
 
-      <Modal isOpen={isPrescriptionModalOpen} onClose={handleClosePrescriptionModal}>
+          <Modal isOpen={isMedicineModalOpen} onClose={handleCloseMedicineModal}>
+            <MedicineListPage
+              appointmentId={appointmentId}
+              onPrescriptionCreated={() => {
+                handleCloseMedicineModal();
+                handleKoiUpdate()
+                // Có thể thêm logic để refresh danh sách prescription
+              }}
+            />
+          </Modal>
+
+          <Modal isOpen={isPrescriptionModalOpen} onClose={handleClosePrescriptionModal}>
             {selectedPrescriptionId && (
-              <PrescriptionDetail 
-              prescriptionId={selectedPrescriptionId} />
+              <PrescriptionDetail
+                prescriptionId={selectedPrescriptionId} />
             )}
           </Modal>
 
