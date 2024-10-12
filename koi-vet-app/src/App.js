@@ -42,6 +42,7 @@ import PaymentFailPage from './pages/PaymentFailPage/PaymentFailPage';
 import PondTreatmentPage from './pages/PondTreatmentPage/PondTreatmentPage';
 import GGM from './pages/GoogleMeet/GGM';
 import PaymentSuccessPage from './pages/PaymentSuccessPage/PaymentSuccessPage';
+import Rating from './pages/Rating/Rating';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)

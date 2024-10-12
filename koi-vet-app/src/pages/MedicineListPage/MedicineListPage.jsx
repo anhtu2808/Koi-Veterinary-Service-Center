@@ -154,23 +154,20 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
     }
   };
 
-  // // Handle deleting a medicine from the list
-  // const handleDeleteMedicine = (medicineId) => {
-  //   setSelectedMedicines((prev) =>
-  //     prev.filter((medicine) => medicine.medicineId !== medicineId)
-  //   );
-  // };
+  // Xử lý khi người dùng nhấn nút Delete
+  const handleDeleteMedicine = async (medicineId) => {
+    try {
+      await deleteMedicineByIdAPI(medicineId); // Gọi API để xóa thuốc
+      message.success("Medicine deleted successfully.");
 
-  // Handle editing a medicine's dosage or quantity
-  // const handleEditMedicine = (medicineId, field, value) => {
-  //   setSelectedMedicines((prev) =>
-  //     prev.map((medicine) =>
-  //       medicine.medicineId === medicineId
-  //         ? { ...medicine, [field]: value }
-  //         : medicine
-  //     )
-  //   );
-  // };
+      // Cập nhật lại danh sách thuốc đã chọn sau khi xóa
+      setSelectedMedicines((prev) =>
+        prev.filter((medicine) => medicine.medicineId !== medicineId)
+      );
+    } catch (error) {
+      message.error("Failed to delete medicine.");
+    }
+  };
 
   // Create prescription
   const handleCreatePrescription = async () => {
@@ -288,6 +285,15 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
           ) : (
             <Button onClick={() => handleEdit(record)}>Edit</Button>
           )}
+          {/* Nút Delete với xác nhận xóa */}
+          <Popconfirm
+            title="Are you sure you want to delete this medicine?"
+            onConfirm={() => handleDeleteMedicine(record.medicineId)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
         </div>
       ),
     },
