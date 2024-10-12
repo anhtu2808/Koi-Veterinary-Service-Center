@@ -37,7 +37,7 @@ public class CustomerService {
                     HttpStatus.NOT_FOUND);
         }
 
-        List<Pond> ponds = pondRepository.getPondsByCustomerId(customerId);
+        List<Pond> ponds = pondRepository.findByCustomer_CustomerIdAndStatusTrue(customerId);
         if (ponds.isEmpty()) {
             throw new AppException(ErrorCode.POND_NOT_EXITS.getCode(),
                     ErrorCode.POND_NOT_EXITS.getMessage(),
@@ -47,7 +47,7 @@ public class CustomerService {
         for (Pond pond : ponds) {
             PondResponse pondResponse = new PondResponse();
             pondResponse.setPondId(pond.getPondId());
-            pondResponse.setStatus(pond.getStatus());
+            pondResponse.setStatus(pond.isStatus());
             pondResponse.setDepth(pond.getDepth());
             pondResponse.setPerimeter(pond.getPerimeter());
             pondResponse.setTemperature(pond.getTemperature());
@@ -61,7 +61,21 @@ public class CustomerService {
     }
 
     public List<KoiResponse> getKoiByCustomerId(String customerId) {
-        List<Koi> kois = koiRepository.getKoiByCustomerId(customerId);
+
+        boolean exists = customerRepository.existsById(customerId);
+        if (!exists) {
+            throw new AppException(ErrorCode.CUSTOMER_NOT_EXITS.getCode(),
+                    ErrorCode.CUSTOMER_NOT_EXITS.getMessage(),
+                    HttpStatus.NOT_FOUND);
+        }
+
+        List<Koi> kois = koiRepository.findByCustomer_CustomerIdAndStatusTrue(customerId);
+        if (kois.isEmpty()) {
+            throw new AppException(ErrorCode.POND_NOT_EXITS.getCode(),
+                    ErrorCode.POND_NOT_EXITS.getMessage(),
+                    HttpStatus.NOT_FOUND);
+        }
+
         List<KoiResponse> koiResponses = new ArrayList<>();
         for (Koi koi : kois) {
             KoiResponse koiResponse = new KoiResponse();
@@ -70,7 +84,7 @@ public class CustomerService {
             koiResponse.setAge(koi.getAge());
             koiResponse.setLength(koi.getLength());
             koiResponse.setWeight(koi.getWeight());
-            koiResponse.setHealthStatus(koi.getHealthStatus());
+            koiResponse.setStatus(koi.isStatus());
             koiResponse.setNotes(koi.getNotes());
             koiResponse.setImage(koi.getImage());
             koiResponses.add(koiResponse);

@@ -63,4 +63,17 @@ public class PondController {
             return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST,null);
         }
     }
+
+
+    @DeleteMapping("/{pondId}")
+    public ResponseEntity<ResponseObject> deletePond(@PathVariable("pondId") String pondId) {
+        try {
+            pondService.deletepond(pondId);
+            return ResponseObject.APIRepsonse(200, "Deleted pond successfully", HttpStatus.OK, null);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+            return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+    }
 }

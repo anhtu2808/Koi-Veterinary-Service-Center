@@ -75,4 +75,15 @@ public class    KoiController {
     }
 
 
+    @DeleteMapping("/{koiId}")
+    public ResponseEntity<ResponseObject> deleteKoi(@PathVariable("koiId") String koiId) {
+        try {
+            koiService.deleteKoi(koiId);
+            return ResponseObject.APIRepsonse(200, "Deleted koi successfully", HttpStatus.OK, null);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+            return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+    }
 }
