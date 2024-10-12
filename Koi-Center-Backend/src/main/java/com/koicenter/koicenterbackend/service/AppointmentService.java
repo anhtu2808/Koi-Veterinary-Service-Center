@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Customer;
+import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.AppointmentStatus;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
@@ -13,10 +14,7 @@ import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequ
 import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.veterinarian.VetScheduleResponse;
 import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianResponse;
-import com.koicenter.koicenterbackend.repository.AppointmentRepository;
-import com.koicenter.koicenterbackend.repository.CustomerRepository;
-import com.koicenter.koicenterbackend.repository.ServicesRepository;
-import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
+import com.koicenter.koicenterbackend.repository.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -50,7 +48,7 @@ public class AppointmentService {
     VeterinarianRepository veterinarianRepository;
     AppointmentMapper appointmentMapper;
     VetScheduleService vetScheduleService;
-
+    UserRepository userRepository ;
 
     public List<AppointmentResponse> getAllAppointmentsByCustomerId(String customerId, String status) {
         List<Appointment> appointments = appointmentRepository.findAllByCustomerId(customerId);
@@ -350,6 +348,32 @@ public class AppointmentService {
             count++ ;
         }
         return aphabet+count;
+    }
+    public List<AppointmentResponse> getAppointmentByUserName(String full_name) {
+        List<Appointment> appointments = new ArrayList<>();
+        if (full_name!= null){
+            User user = userRepository.findByFullName(full_name);
+            if (user != null) {
+                Customer customer = customerRepository.findByUser_UserId(user.getUserId());
+                if (customer != null) {
+                    appointments = appointmentRepository.findAllByCustomerId(customer.getCustomerId());
+                }else {
+                    throw new AppException(ErrorCode.CUSTOMER_NOT_FOUND.getCode(),ErrorCode.CUSTOMER_NOT_FOUND.getMessage(),HttpStatus.NOT_FOUND);
+                }
+            }else{
+                throw new AppException(ErrorCode.USER_NOT_EXISTS.getCode(),ErrorCode.USER_NOT_EXISTS.getMessage(),HttpStatus.NOT_FOUND);
+            }
+        }else{
+            appointments = appointmentRepository.findAll();
+        }
+
+
+
+        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            appointmentResponses.add(appointmentMapper.toAppointmentResponse(appointment));
+        }
+        return appointmentResponses ;
     }
 
 }
