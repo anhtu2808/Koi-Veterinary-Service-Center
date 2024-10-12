@@ -78,6 +78,7 @@ public class PrescriptionService {
             MedicineResponse medicineResponse = new MedicineResponse();
             medicineResponse.setMedicineId(medicine.getMedicineId());
             medicineResponse.setName(medicine.getName());
+            medicineResponse.setMedUnit(medicine.getMedUnit());
             medicineResponse.setDescription(medicine.getDescription());
 
             prescriptionMedicineResponse.setMedicine(medicineResponse);
@@ -127,6 +128,7 @@ public class PrescriptionService {
                 medicineResponse.setMedicineId(medicine.getMedicineId());
                 medicineResponse.setName(medicine.getName());
                 medicineResponse.setDescription(medicine.getDescription());
+                medicineResponse.setMedUnit(medicine.getMedUnit());
 
                 prescriptionMedicineResponse.setMedicine(medicineResponse);
                 prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
@@ -153,6 +155,7 @@ public class PrescriptionService {
             PreMedResponse preMedResponse = new PreMedResponse();
             preMedResponse.setMedicineId(medicine.getMedicineId());
             preMedResponse.setMedicineName(medicine.getName());
+            preMedResponse.setMedUnit(medicine.getMedUnit());
             preMedResponse.setQuantity(prescriptionMedicine.getQuantity());
             preMedResponse.setDosage(prescriptionMedicine.getDosage());
 
@@ -202,6 +205,7 @@ public class PrescriptionService {
             medResponse.setMedicineId(med.getMedicineId());
             medResponse.setName(med.getName());
             medResponse.setDescription(med.getDescription());
+            medResponse.setMedUnit(med.getMedUnit());
 
             prescriptionMedicineResponse.setMedicine(medResponse);
             prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());
@@ -226,6 +230,7 @@ public class PrescriptionService {
         MedicineResponse medicineResponse = new MedicineResponse();
         medicineResponse.setMedicineId(medicine.getMedicineId());
         medicineResponse.setName(medicine.getName());
+        medicineResponse.setMedUnit(medicine.getMedUnit());
         medicineResponse.setDescription(medicine.getDescription());
         prescriptionMedicineResponse.setMedicine(medicineResponse);
         prescriptionMedicineResponse.setQuantity(prescriptionMedicine.getQuantity());

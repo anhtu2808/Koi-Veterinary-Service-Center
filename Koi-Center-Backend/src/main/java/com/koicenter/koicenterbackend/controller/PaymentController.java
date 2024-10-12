@@ -1,28 +1,41 @@
 package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.configuration.CustomEnviroment;
+import com.koicenter.koicenterbackend.exception.AppException;
+import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.Appointment;
+import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Invoice;
+import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.momo.PaymentResponse;
 import com.koicenter.koicenterbackend.model.momo.RequestType;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.treament.TreamentRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
+import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.koi.KoiTreatmentResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondTreatmentResponse;
+import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
+import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.InvoiceRepository;
-import com.koicenter.koicenterbackend.service.CreateOrderMoMo;
-import com.koicenter.koicenterbackend.service.PaymentService;
-import com.koicenter.koicenterbackend.service.TreatmentService;
+import com.koicenter.koicenterbackend.repository.UserRepository;
+import com.koicenter.koicenterbackend.service.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.SecretKey;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,6 +58,17 @@ public class PaymentController {
     private static TreamentRequest treamentRequestTemp;
     private static Float amountTemp;
     private static String appointmentIdTemp = "";
+    @Autowired
+    AppointmentService  appointmentService;
+    @Autowired
+    private UserRepository userRepository;
+    @Value("${myapp.api-key}")
+    private String privateKey;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    SendEmalService sendEmalService;
+
     @PostMapping("/vn-pay")
     public ResponseEntity<ResponseObject> pay(HttpServletRequest request, @RequestBody TreamentRequest treamentRequest) {
         try {
@@ -72,30 +96,49 @@ public class PaymentController {
                 if (treatmentRequest == null) {
                     return ResponseObject.APIRepsonse(400, "Treatment request not found", HttpStatus.BAD_REQUEST, null);
                 }
-                List<Object> appointmentResponse = treatmentService.createAppointments(treatmentRequest.getSelected(), treatmentRequest.getAppointmentRequest());
-                if (appointmentResponse.isEmpty()) {
+                AppointmentResponse appointmentResponse = appointmentService.createAppointment(treatmentRequest.getAppointmentRequest());
+                if (appointmentResponse == null) {
                     return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
                 }
-                Object firstObject = appointmentResponse.get(0);
-                String appointmentId = null;
-                if (firstObject instanceof PondTreatmentResponse firstAppointment) {
-                    appointmentId = firstAppointment.getAppointmentId();
-                } else if (firstObject instanceof KoiTreatmentResponse firstAppointment) {
-                    appointmentId = firstAppointment.getAppointmentId();
-                }
-                if (appointmentId != null) {
-                    insertToInvoice(appointmentId, amountTemp);
-                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
-                } else {
-                    return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
-                }
+
+
+                insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
+                Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
+                User user = userRepository.findByUserId(customer.getUser().getUserId());
+                String emailContent = buildEmailContent(appointmentResponse, amountTemp);
+
+                sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
+                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
             }
-        } catch (Exception e) {
+            } catch (Exception e) {
             return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
+
+    private String buildEmailContent(AppointmentResponse appointmentResponse, Float amount) {
+        String customerName = appointmentResponse.getCustomerName() != null ? appointmentResponse.getCustomerName() : "Customer";
+        String serviceName = appointmentResponse.getServiceName() != null ? appointmentResponse.getServiceName() : "Koi Service";
+        String appointmentDate = appointmentResponse.getAppointmentDate() != null ? appointmentResponse.getAppointmentDate().toString() : "N/A";
+        String amountPaid = amount != null ? String.format("%.2f", amount) : "N/A";
+
+        return "Dear " + customerName + ",\n\n" +
+                "We are pleased to inform you that your payment for the koi center service has been SUCCESSFULLY processed. Below are the details of your recent booking:\n\n" +
+                "Service Details:\n" +
+                "Service Name: " + serviceName + "\n" +
+                "Date of Service: " + appointmentDate + "\n" +
+                "Total Amount Paid: " + amountPaid + " VND\n\n" +
+                "We truly appreciate your trust in our services and are committed to ensuring the best care for your koi. Our team will be ready to assist you at the scheduled time to provide a smooth and professional experience.\n\n" +
+                "Should you have any questions or need to modify your appointment, please do not hesitate to contact us at 0967101980 or via email at koicenter.swp@gmail.com.\n\n" +
+                "Once again, thank you for choosing KOI MED CENTER. We look forward to serving you and ensuring the health and happiness of your koi.\n\n" +
+                "Warm regards,\n" +
+                "KOI MED CENTER\n" +
+                "0967101980\n" +
+                "koicenter.swp@gmail.com";
+    }
+
+
     private void insertToInvoice(String appointmentId, Float ammout) {
         Invoice newInvoice = Invoice.builder()
                 .paymentStatus(true)
@@ -163,23 +206,16 @@ public class PaymentController {
                 if (treatmentRequest == null) {
                     return ResponseObject.APIRepsonse(400, "Treatment request not found", HttpStatus.BAD_REQUEST, null);
                 }
-                List<Object> appointmentResponse = treatmentService.createAppointments(treatmentRequest.getSelected(), treatmentRequest.getAppointmentRequest());
-                if (appointmentResponse.isEmpty()) {
+                AppointmentResponse appointmentResponse = appointmentService.createAppointment(treatmentRequest.getAppointmentRequest());
+                if (appointmentResponse == null) {
                     return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
                 }
-                Object firstObject = appointmentResponse.get(0);
-                String appointmentId = null;
-                if (firstObject instanceof PondTreatmentResponse firstAppointment) {
-                    appointmentId = firstAppointment.getAppointmentId();
-                } else if (firstObject instanceof KoiTreatmentResponse firstAppointment) {
-                    appointmentId = firstAppointment.getAppointmentId();
-                }
-                if (appointmentId != null) {
-                    insertToInvoice(appointmentId, amountTemp);
-                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
-                } else {
-                    return ResponseObject.APIRepsonse(500, "Appointment ID is null", HttpStatus.INTERNAL_SERVER_ERROR, null);
-                }
+                insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
+                Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
+                User user = userRepository.findByUserId(customer.getUser().getUserId());
+                String emailContent = buildEmailContent(appointmentResponse, amountTemp);
+                sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
+                return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
             } else {
                 System.out.println("Thanh toán thất bại: " + message);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
@@ -189,6 +225,4 @@ public class PaymentController {
             return ResponseObject.APIRepsonse(500, "Error callback: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
-
-
 }
