@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PondUpdateRequest {
-    String status;
+    boolean status;
     //@Min(value = 0, message = "Depth must be greater than or equal to 0")
     float depth;
     //@Min(value = 0, message = "Perimeter must be greater than or equal to 0")

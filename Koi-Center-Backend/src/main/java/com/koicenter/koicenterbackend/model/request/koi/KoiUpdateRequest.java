@@ -16,7 +16,7 @@ public class KoiUpdateRequest {
     int age;
     float length;
     float weight;
-    String healthStatus;
+    boolean status;
     String notes;
     String image;
 }

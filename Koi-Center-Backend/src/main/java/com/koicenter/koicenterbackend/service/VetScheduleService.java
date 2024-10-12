@@ -8,7 +8,6 @@ import com.koicenter.koicenterbackend.mapper.VeterinariansMapper;
 import com.koicenter.koicenterbackend.model.entity.VetSchedule;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
-import com.koicenter.koicenterbackend.model.enums.StatusVetSchedule;
 import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.schedual.DayResponse;
 import com.koicenter.koicenterbackend.model.response.schedual.SlotResponse;
@@ -22,13 +21,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalTime;
-
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -193,7 +189,10 @@ public class VetScheduleService {
     }
 
     public List<VetScheduleResponse> slotDateTime(VetScheduleRequest vetScheduleRequest, String caculator) {
-        int count = (vetScheduleRequest.getAppointmentType().equals("CENTER") ? 1 : 2) * (caculator.equals("add") ? 1 : -1);
+        int count = (vetScheduleRequest.getAppointmentType().equals(AppointmentType.CENTER) ? 1 : 2) * (caculator.equals("add") ? 1 : -1);
+        log.info("AppointmentType : " + vetScheduleRequest.getAppointmentType());
+        log.info("/ncount = " + count);
+
         List<VetScheduleResponse> vetScheduleResponse = new ArrayList<>();
         if (vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
             VetSchedule vetSchedule = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
@@ -204,7 +203,11 @@ public class VetScheduleService {
         } else if (vetScheduleRequest.getAppointmentType().toString().equals("CENTER")) {
             VetSchedule vetSchedule = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
             int currentBookingCount = vetSchedule.getCustomerBookingCount();
-            vetSchedule.setCustomerBookingCount(vetScheduleRequest.getCustomerBookingCount() + count);
+            vetSchedule.setCustomerBookingCount(currentBookingCount + count);
+            log.info(vetSchedule.getScheduleId());
+            log.info("AppointmentType : " + vetScheduleRequest.getAppointmentType());
+            log.info("currentBookingCount = " + currentBookingCount +  "" +  count);
+
             vetScheduleResponse.add(vetScheduleMapper.toVetScheduleResponse(vetSchedule));
         } else if (vetScheduleRequest.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
             List<VetSchedule> vetSchedules = scheduleRepository.findVetScheduleByDate(vetScheduleRequest.getDate());

@@ -18,6 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Getter
+@Setter
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -62,4 +64,5 @@ public class Appointment {
 
     @OneToMany(mappedBy = "appointment")
     List<KoiTreatment> koiTreatments;
+
 }

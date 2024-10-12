@@ -22,8 +22,8 @@ public class Koi {
     int age;
     float length;
     float weight;
-    @Column(name = "health_status")
-    String healthStatus;
+    @Column(columnDefinition = "BIT")
+    boolean status;
     @Lob        // dùng đẻ chưa các văn  bản dài
     String notes;
     String image;

@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
         int age;
         float length;
         float weight;
-        String healthStatus;
+        boolean status;
         String notes;
         String image;
         String customerId;

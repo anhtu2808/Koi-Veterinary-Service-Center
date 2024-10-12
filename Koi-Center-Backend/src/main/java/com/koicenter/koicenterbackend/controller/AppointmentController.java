@@ -89,4 +89,13 @@ public class AppointmentController {
             return ResponseObject.APIRepsonse(404, "Appointment not found", HttpStatus.NOT_FOUND,"");
         }
     }
+    @GetMapping("/userName/{userName}")
+    public ResponseEntity<ResponseObject> getAppointmentByUserName(@PathVariable String userName) {
+        List<AppointmentResponse> list =  appointmentService.getAppointmentByUserName(userName);
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(200, "UserName found successfully By Appointment ID ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "UserName not found", HttpStatus.NOT_FOUND,"");
+        }
+    }
 }
