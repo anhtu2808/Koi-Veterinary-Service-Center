@@ -6,6 +6,7 @@ import {
   Table,
   AutoComplete,
   InputNumber,
+  Select,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
@@ -39,6 +40,52 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
   const [editingMedicineId, setEditingMedicineId] = useState(null);
   const [editingMedicines, setEditingMedicines] = useState({});
   const [isEditing, setIsEditing] = useState({}); // Trạng thái cho từng thuốc
+  const [isCreating, setIsCreating] = useState(false); // Trạng thái mở/đóng form tạo thuốc
+  const [newMedicineData, setNewMedicineData] = useState({
+    name: "",
+    description: "",
+    medUnit: "",
+  });
+
+  // Mở form tạo thuốc
+  const handleOpenCreateMedicineForm = () => {
+    setIsCreating(true);
+  };
+
+  // Đóng form tạo thuốc và reset dữ liệu
+  const handleCloseCreateMedicineForm = () => {
+    setIsCreating(false);
+    setNewMedicineData({ name: "", description: "", medUnit: "" });
+  };
+
+  // Xử lý thay đổi dữ liệu trong form
+  const handleNewMedicineInputChange = (field, value) => {
+    setNewMedicineData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Gọi API để tạo thuốc mới
+  const handleCreateMedicine = async () => {
+    const { name, description, medUnit } = newMedicineData;
+
+    if (!name || !description || !medUnit) {
+      message.error("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      await createMedicineAPI(newMedicineData); // Gọi API để tạo thuốc
+      message.success("Medicine created successfully.");
+
+      // Cập nhật lại danh sách thuốc
+      const updatedMedicines = await fetchMedicinesAPI();
+      setAvailableMedicines(updatedMedicines.data || []);
+
+      handleCloseCreateMedicineForm(); // Đóng form sau khi tạo thành công
+    } catch (error) {
+      message.error("Failed to create medicine.");
+    }
+  };
+
   useEffect(() => {
     // Fetch all medicines for search suggestion
     const fetchAllMedicines = async () => {
@@ -333,7 +380,7 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
 
       {/* Add new medicine button */}
       <Button onClick={handleAddNewMedicine} disabled={isAdding}>
-        Add New Medicine
+        +
       </Button>
 
       {/* If adding a new medicine */}
@@ -397,6 +444,59 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
       >
         Create Prescription
       </Button>
+      {isCreating ? (
+        <Row className="mt-4">
+          <Col md={12}>
+            <Form>
+              <Form.Item label="Medicine Name" required>
+                <Input
+                  placeholder="Enter medicine name"
+                  value={newMedicineData.name}
+                  onChange={(e) =>
+                    handleNewMedicineInputChange("name", e.target.value)
+                  }
+                />
+              </Form.Item>
+
+              <Form.Item label="Description" required>
+                <Input
+                  placeholder="Enter description"
+                  value={newMedicineData.description}
+                  onChange={(e) =>
+                    handleNewMedicineInputChange("description", e.target.value)
+                  }
+                />
+              </Form.Item>
+
+              <Form.Item label="Unit" required>
+                <Select
+                  placeholder="Select unit"
+                  value={newMedicineData.medUnit}
+                  onChange={(value) =>
+                    handleNewMedicineInputChange("medUnit", value)
+                  }
+                  style={{ width: "100%" }}
+                >
+                  <Select.Option value="PACKAGE">PACKAGE</Select.Option>
+                  <Select.Option value="PILL">PILL</Select.Option>
+                  <Select.Option value="BOTTLE">BOTTLE</Select.Option>
+                </Select>
+              </Form.Item>
+
+              <div style={{ display: "flex", gap: "8px" }}>
+                <Button onClick={handleCreateMedicine} type="primary">
+                  Create Medicine
+                </Button>
+                <Button onClick={handleCloseCreateMedicineForm}>Cancel</Button>
+              </div>
+            </Form>
+          </Col>
+        </Row>
+      ) : (
+        <Button onClick={handleOpenCreateMedicineForm} className="mt-4">
+          Create Medicine
+        </Button>
+      )}
     </Container>
   );
 }
