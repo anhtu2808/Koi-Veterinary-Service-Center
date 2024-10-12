@@ -108,6 +108,7 @@ public class AppointmentService {
                 .customerName(appointment.getCustomer().getUser().getFullName())
                 .serviceName(appointment.getService().getServiceName())
                 .serviceId(appointment.getService().getServiceId())
+                .distance(appointment.getDistance())
                 .build();
         if(appointment.getVeterinarian()!=null){
 
