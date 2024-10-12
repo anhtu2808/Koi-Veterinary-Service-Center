@@ -18,7 +18,8 @@ public class Pond {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "pond_id")
     String pondId;
-    String status;
+    @Column(columnDefinition = "BIT")
+    boolean status;
     float depth;
     float perimeter;
     float temperature;

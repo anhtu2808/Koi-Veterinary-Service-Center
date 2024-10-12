@@ -13,4 +13,5 @@ public interface KoiRepository extends JpaRepository<Koi, String> {
     @Query(value = "SELECT * FROM koi WHERE customer_id = ?1", nativeQuery = true)
     List<Koi> getKoiByCustomerId(String customerId);
     Koi findKoiByKoiId(String koiId);
+    List<Koi> findByCustomer_CustomerIdAndStatusTrue(String customerId);
 }

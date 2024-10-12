@@ -4,9 +4,11 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.mapper.PondMapper;
 import com.koicenter.koicenterbackend.model.entity.Customer;
+import com.koicenter.koicenterbackend.model.entity.Koi;
 import com.koicenter.koicenterbackend.model.entity.Pond;
 import com.koicenter.koicenterbackend.model.request.pond.PondRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondUpdateRequest;
+import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.PondRepository;
@@ -48,7 +50,7 @@ public class PondService {
                 ErrorCode.POND_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
         PondResponse pondResponse = new PondResponse();
         pondResponse.setPondId(pond.getPondId());
-        pondResponse.setStatus(pond.getStatus());
+        pondResponse.setStatus(pond.isStatus());
         pondResponse.setDepth(pond.getDepth());
         pondResponse.setPerimeter(pond.getPerimeter());
         pondResponse.setTemperature(pond.getTemperature());
@@ -65,7 +67,7 @@ public class PondService {
         Pond pond = pondRepository.findById(pondId).orElseThrow(()
                 -> new AppException(ErrorCode.POND_NOT_EXITS.getCode(),
                 ErrorCode.POND_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
-        pond.setStatus(request.getStatus());
+        pond.setStatus(request.isStatus());
         pond.setDepth(request.getDepth());
         pond.setPerimeter(request.getPerimeter());
         pond.setTemperature(request.getTemperature());
@@ -80,7 +82,7 @@ public class PondService {
 
     public PondResponse createPond (PondRequest pondRequest){
         Pond pond = new Pond();
-        pond.setStatus(pondRequest.getStatus());
+        pond.setStatus(true); //tao pond moi de true lun
         pond.setDepth(pondRequest.getDepth());
         pond.setPerimeter(pondRequest.getPerimeter());
         pond.setTemperature(pondRequest.getTemperature());
@@ -91,5 +93,14 @@ public class PondService {
         Customer customer = customerRepository.findByCustomerId(pondRequest.getCustomerId());
         pond.setCustomer(customer);
         return pondMapper.toPondResponse( pondRepository.save(pond)) ;
+    }
+
+
+    public void deletepond(String pondId) {
+        Pond pond = pondRepository.findById(pondId).orElseThrow(()
+                -> new AppException(ErrorCode.POND_NOT_EXITS.getCode(),
+                ErrorCode.POND_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        pond.setStatus(false);
+        pondRepository.save(pond);
     }
 }

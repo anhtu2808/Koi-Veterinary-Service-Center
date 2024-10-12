@@ -1,7 +1,5 @@
 package com.koicenter.koicenterbackend.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.koicenter.koicenterbackend.model.enums.StatusVetSchedule;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,8 +25,6 @@ public class VetSchedule {
     LocalTime endTime;
     int customerBookingCount;
 
-    @Enumerated(EnumType.STRING)
-    StatusVetSchedule status;
 
     @ManyToOne
     @JoinColumn(name = "vet_id", referencedColumnName = "vet_id")

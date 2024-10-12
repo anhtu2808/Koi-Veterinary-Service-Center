@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PondRequest {
     String pondId;
-    String status;
+    boolean status;
     float depth;
     float perimeter;
     float temperature;

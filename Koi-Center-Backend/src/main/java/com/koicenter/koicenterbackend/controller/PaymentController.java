@@ -96,18 +96,41 @@ public class PaymentController {
                 if (treatmentRequest == null) {
                     return ResponseObject.APIRepsonse(400, "Treatment request not found", HttpStatus.BAD_REQUEST, null);
                 }
-                AppointmentResponse appointmentResponse = appointmentService.createAppointment(treatmentRequest.getAppointmentRequest());
-                if (appointmentResponse == null) {
-                    return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
+                if(treatmentRequest.getSelected().isEmpty()){
+                    AppointmentResponse appointmentResponse = appointmentService.createAppointment(treatmentRequest.getAppointmentRequest());
+                    if (appointmentResponse == null) {
+                        return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
+                    }
+                    insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
+                    Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
+                    User user = userRepository.findByUserId(customer.getUser().getUserId());
+                    String emailContent = buildEmailContent(appointmentResponse, amountTemp);
+                    sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
+                }else{
+                    List<Object> appointmentResponse = treatmentService.createAppointments(treatmentRequest.getSelected(), treatmentRequest.getAppointmentRequest());
+                    if (appointmentResponse.isEmpty()) {
+                        return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
+                    }
+                    Object firstObject = appointmentResponse.get(0);
+                    String appointmentId = null;
+                    if (firstObject instanceof PondTreatmentResponse firstAppointment) {
+                        appointmentId = firstAppointment.getAppointmentId();
+                    } else if (firstObject instanceof KoiTreatmentResponse firstAppointment) {
+                        appointmentId = firstAppointment.getAppointmentId();
+                    }
+                    if (appointmentId != null) {
+                        insertToInvoice(appointmentId, amountTemp);
+                        Customer customer = customerRepository.findByCustomerId(treatmentRequest.getAppointmentRequest().getCustomerId());
+                        User user = userRepository.findByUserId(customer.getUser().getUserId());
+                        AppointmentResponse appointment = AppointmentResponse.builder()
+                                .appointmentDate(treatmentRequest.getAppointmentRequest().getAppointmentDate())
+                                .customerName(treatmentRequest.getAppointmentRequest().getCustomerName())
+                                .serviceName(treatmentRequest.getAppointmentRequest().getServiceName())
+                                .build();
+                        String emailContent = buildEmailContent(appointment, amountTemp);
+                        sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
+                    }
                 }
-
-
-                insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
-                Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
-                User user = userRepository.findByUserId(customer.getUser().getUserId());
-                String emailContent = buildEmailContent(appointmentResponse, amountTemp);
-
-                sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
                 return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create("http://localhost:3000/booking/paymentfailed")).build();
@@ -130,11 +153,11 @@ public class PaymentController {
                 "Date of Service: " + appointmentDate + "\n" +
                 "Total Amount Paid: " + amountPaid + " VND\n\n" +
                 "We truly appreciate your trust in our services and are committed to ensuring the best care for your koi. Our team will be ready to assist you at the scheduled time to provide a smooth and professional experience.\n\n" +
-                "Should you have any questions or need to modify your appointment, please do not hesitate to contact us at 0967101980 or via email at koicenter.swp@gmail.com.\n\n" +
+                "Should you have any questions or need to modify your appointment, please do not hesitate to contact us at 0345999999 or via email at koicenter.swp@gmail.com.\n\n" +
                 "Once again, thank you for choosing KOI MED CENTER. We look forward to serving you and ensuring the health and happiness of your koi.\n\n" +
                 "Warm regards,\n" +
                 "KOI MED CENTER\n" +
-                "0967101980\n" +
+                "0345999999\n" +
                 "koicenter.swp@gmail.com";
     }
 
@@ -206,15 +229,41 @@ public class PaymentController {
                 if (treatmentRequest == null) {
                     return ResponseObject.APIRepsonse(400, "Treatment request not found", HttpStatus.BAD_REQUEST, null);
                 }
-                AppointmentResponse appointmentResponse = appointmentService.createAppointment(treatmentRequest.getAppointmentRequest());
-                if (appointmentResponse == null) {
-                    return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
+                if(treatmentRequest.getSelected().isEmpty()){
+                    AppointmentResponse appointmentResponse = appointmentService.createAppointment(treatmentRequest.getAppointmentRequest());
+                    if (appointmentResponse == null) {
+                        return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
+                    }
+                    insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
+                    Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
+                    User user = userRepository.findByUserId(customer.getUser().getUserId());
+                    String emailContent = buildEmailContent(appointmentResponse, amountTemp);
+                    sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
+                }else{
+                    List<Object> appointmentResponse = treatmentService.createAppointments(treatmentRequest.getSelected(), treatmentRequest.getAppointmentRequest());
+                    if (appointmentResponse.isEmpty()) {
+                        return ResponseObject.APIRepsonse(404, "No appointments created", HttpStatus.NOT_FOUND, null);
+                    }
+                    Object firstObject = appointmentResponse.get(0);
+                    String appointmentId = null;
+                    if (firstObject instanceof PondTreatmentResponse firstAppointment) {
+                        appointmentId = firstAppointment.getAppointmentId();
+                    } else if (firstObject instanceof KoiTreatmentResponse firstAppointment) {
+                        appointmentId = firstAppointment.getAppointmentId();
+                    }
+                    if (appointmentId != null) {
+                        insertToInvoice(appointmentId, amountTemp);
+                        Customer customer = customerRepository.findByCustomerId(treatmentRequest.getAppointmentRequest().getCustomerId());
+                        User user = userRepository.findByUserId(customer.getUser().getUserId());
+                        AppointmentResponse appointment = AppointmentResponse.builder()
+                                .appointmentDate(treatmentRequest.getAppointmentRequest().getAppointmentDate())
+                                .customerName(treatmentRequest.getAppointmentRequest().getCustomerName())
+                                .serviceName(treatmentRequest.getAppointmentRequest().getServiceName())
+                                .build();
+                        String emailContent = buildEmailContent(appointment, amountTemp);
+                        sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
+                    }
                 }
-                insertToInvoice(appointmentResponse.getAppointmentId(), amountTemp);
-                Customer customer = customerRepository.findByCustomerId(appointmentResponse.getCustomerId());
-                User user = userRepository.findByUserId(customer.getUser().getUserId());
-                String emailContent = buildEmailContent(appointmentResponse, amountTemp);
-                sendEmalService.sendMailSender(user.getEmail(), emailContent, "🧑‍⚕️💉❤️ Confirmation of Your Koi Service Appointment");
                 return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/booking/paymentsuccess")).build();
             } else {
                 System.out.println("Thanh toán thất bại: " + message);

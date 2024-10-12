@@ -12,4 +12,6 @@ import java.util.List;
 public interface PondRepository extends JpaRepository<Pond, String> {
     @Query(value = "SELECT * FROM pond WHERE customer_id = ?1", nativeQuery = true)
     List<Pond> getPondsByCustomerId(String customerId);
+    List<Pond> findByCustomer_CustomerIdAndStatusTrue(String customerId);
+
 }
