@@ -24,6 +24,8 @@ public enum ErrorCode {
     NO_SCHEDULE_FOUND(401,"No schedule found"),
     PRESCRIPTION_ID_NOT_FOUND(401,"Prescription id not found"),
     PRESCRIPTION_MEDICINE_ID_NOT_FOUND(401,"Prescription medicine id not found"),
+    INVOICE_ID_NOT_FOUND(401,"Invoice id not found"),
+    APPOINTMENT_ID_NOT_FOUND(401,"Appointment id not found"),
     ;
     private int code;
     private String message;
