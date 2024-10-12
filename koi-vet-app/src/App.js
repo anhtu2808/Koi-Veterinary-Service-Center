@@ -66,6 +66,7 @@ function App() {
 
     <Router>
       <Routes>
+      <Route path="/medpage" element={<MedicineListPage />} />
         <Route path="/ggm" element={<GGM />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

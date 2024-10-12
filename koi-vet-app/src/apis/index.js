@@ -239,12 +239,7 @@ export const updatePrescriptionAPI = async (prescriptionId, data) => {
 }
 
 export const deletePrescriptionAPI = async (prescriptionMedicineId) => {
-    const response = await api.delete(`/prescriptions/${prescriptionMedicineId}`)
-    return response.data;
-}
-
-export const fetchPrescriptionMedicineByIdAPI = async (prescriptionMedicineId) => {
-    const response = await api.get(`/prescriptions/${prescriptionMedicineId}`)
+    const response = await api.delete(`/prescriptions/${prescriptionMedicineId}`);
     return response.data;
 }
 
