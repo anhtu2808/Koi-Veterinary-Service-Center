@@ -1,4 +1,12 @@
-import { Form, Input, message, Popconfirm, Table, AutoComplete } from "antd";
+import {
+  Form,
+  Input,
+  message,
+  Popconfirm,
+  Table,
+  AutoComplete,
+  InputNumber,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import {
@@ -21,18 +29,22 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
     description: "",
     dosage: "",
     quantity: "",
+    medUnit: "",
   });
   const [selectedMedicines, setSelectedMedicines] = useState([]);
   const [prescriptionDetails, setPrescriptionDetails] = useState({
     name: "",
     note: "",
   });
-
+  const [editingMedicineId, setEditingMedicineId] = useState(null);
+  const [editingMedicines, setEditingMedicines] = useState({});
+  const [isEditing, setIsEditing] = useState({}); // Trạng thái cho từng thuốc
   useEffect(() => {
     // Fetch all medicines for search suggestion
     const fetchAllMedicines = async () => {
       const response = await fetchMedicinesAPI();
       setAvailableMedicines(response.data || []);
+      console.log(response.data);
     };
     fetchAllMedicines();
   }, []);
@@ -46,6 +58,7 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
       description: "",
       dosage: "",
       quantity: "",
+      medUnit: "",
     });
   };
 
@@ -71,6 +84,7 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
       medicineId: selectedMedicine.medicineId, // Keep medicineId for later usage
       name: selectedMedicine.name, // Display name in the input field
       description: selectedMedicine.description,
+      medUnit: selectedMedicine.medUnit,
     }));
   };
 
@@ -90,9 +104,53 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
         description: "",
         dosage: "",
         quantity: "",
+        medUnit: "",
       });
     } else {
       message.error("Please fill in all fields.");
+    }
+  };
+
+  // Hàm bắt đầu chỉnh sửa
+  const handleEdit = (record) => {
+    setEditingMedicines((prev) => ({
+      ...prev,
+      [record.medicineId]: { ...record },
+    }));
+    setIsEditing((prev) => ({
+      ...prev,
+      [record.medicineId]: true, // Bật chế độ chỉnh sửa
+    }));
+  };
+
+  const handleSave = async (medicineId) => {
+    const originalMedicine = selectedMedicines.find(
+      (medicine) => medicine.medicineId === medicineId
+    );
+
+    const updatedMedicine = {
+      ...originalMedicine, // Giữ lại các thông tin cũ nếu không chỉnh sửa
+      ...editingMedicines[medicineId], // Ghi đè các trường đã chỉnh sửa (dosage, quantity)
+    };
+
+    try {
+      await updateMedicineByIdAPI(medicineId, updatedMedicine);
+      message.success("Medicine updated successfully.");
+
+      // Cập nhật danh sách thuốc đã chọn sau khi lưu thành công
+      setSelectedMedicines((prev) =>
+        prev.map((medicine) =>
+          medicine.medicineId === medicineId ? updatedMedicine : medicine
+        )
+      );
+
+      // Tắt chế độ chỉnh sửa
+      setIsEditing((prev) => ({
+        ...prev,
+        [medicineId]: false,
+      }));
+    } catch (error) {
+      message.error("Failed to update medicine.");
     }
   };
 
@@ -104,15 +162,15 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
   // };
 
   // Handle editing a medicine's dosage or quantity
-  const handleEditMedicine = (medicineId, field, value) => {
-    setSelectedMedicines((prev) =>
-      prev.map((medicine) =>
-        medicine.medicineId === medicineId
-          ? { ...medicine, [field]: value }
-          : medicine
-      )
-    );
-  };
+  // const handleEditMedicine = (medicineId, field, value) => {
+  //   setSelectedMedicines((prev) =>
+  //     prev.map((medicine) =>
+  //       medicine.medicineId === medicineId
+  //         ? { ...medicine, [field]: value }
+  //         : medicine
+  //     )
+  //   );
+  // };
 
   // Create prescription
   const handleCreatePrescription = async () => {
@@ -128,8 +186,11 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
       createdDate: new Date(),
       prescriptionMedicines: selectedMedicines.map((medicine) => ({
         medicineId: medicine.medicineId,
+        name: medicine.name,
+        description: medicine.description,
         dosage: medicine.dosage,
         quantity: medicine.quantity,
+        medUnit: medicine.medUnit,
       })),
     };
 
@@ -143,6 +204,16 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
     } catch (error) {
       message.error("Failed to create prescription.");
     }
+  };
+
+  const handleSelectedMedicineChange = (medicineId, field, value) => {
+    setEditingMedicines((prev) => ({
+      ...prev,
+      [medicineId]: {
+        ...prev[medicineId],
+        [field]: value,
+      },
+    }));
   };
 
   // Columns for the medicine table
@@ -166,12 +237,19 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
       title: "Dosage",
       dataIndex: "dosage",
       key: "dosage",
-      render: (text, record) => (
+      render: (_, record) => (
         <Input
-          value={record.dosage}
-          onChange={(e) =>
-            handleEditMedicine(record.medicineId, "dosage", e.target.value)
+          value={
+            editingMedicines[record.medicineId]?.dosage ?? record.dosage // Dùng "??" để tránh lỗi ghi đè không cần thiết
           }
+          onChange={(e) =>
+            handleSelectedMedicineChange(
+              record.medicineId,
+              "dosage",
+              e.target.value
+            )
+          }
+          disabled={!isEditing[record.medicineId]} // Chỉ cho phép chỉnh sửa nếu đang ở chế độ chỉnh sửa
         />
       ),
     },
@@ -181,25 +259,36 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
       key: "quantity",
       render: (text, record) => (
         <Input
-          value={record.quantity}
-          onChange={(e) =>
-            handleEditMedicine(record.medicineId, "quantity", e.target.value)
+          value={
+            editingMedicines[record.medicineId]?.quantity ?? record.quantity // Dùng "??" để lấy giá trị hợp lệ hoặc giữ nguyên giá trị gốc
           }
+          onChange={(e) =>
+            handleSelectedMedicineChange(
+              record.medicineId,
+              "quantity",
+              e.target.value
+            )
+          }
+          disabled={!isEditing[record.medicineId]} // Chỉ cho phép chỉnh sửa nếu đang ở chế độ chỉnh sửa
         />
       ),
+    },
+    {
+      title: "Unit",
+      dataIndex: "medUnit",
+      key: "medUnit",
     },
     {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <Popconfirm
-          title="Are you sure you want to delete this medicine?"
-          // onConfirm={() => handleDeleteMedicine(record.medicineId)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button type="danger">Delete</Button>
-        </Popconfirm>
+        <div style={{ display: "flex", gap: "8px" }}>
+          {isEditing[record.medicineId] ? (
+            <Button onClick={() => handleSave(record.medicineId)}>Save</Button>
+          ) : (
+            <Button onClick={() => handleEdit(record)}>Edit</Button>
+          )}
+        </div>
       ),
     },
   ];
@@ -261,17 +350,26 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
               allowClear // Thêm thuộc tính để cho phép xóa nhanh bằng nút xóa
               style={{ width: "100%", marginBottom: "16px" }}
             />
-            <Input
-              placeholder="Dosage"
-              value={newMedicine.dosage}
-              onChange={(e) => handleInputChange("dosage", e.target.value)}
-              style={{ marginBottom: "16px" }}
-            />
-            <Input
-              placeholder="Quantity"
-              value={newMedicine.quantity}
-              onChange={(e) => handleInputChange("quantity", e.target.value)}
-            />
+            <Form>
+              <Form.Item label="Dosage" required>
+                <Input
+                  placeholder="Dosage"
+                  value={newMedicine.dosage}
+                  onChange={(e) => handleInputChange("dosage", e.target.value)}
+                  style={{ marginBottom: "16px" }}
+                />
+              </Form.Item>
+              <Form.Item label="Quantity" required>
+                <Input
+                  placeholder="Quantity"
+                  value={newMedicine.quantity}
+                  onChange={(e) =>
+                    handleInputChange("quantity", e.target.value)
+                  }
+                />
+              </Form.Item>
+            </Form>
+
             <Button onClick={handleDone}>Done</Button>
           </Col>
         </Row>
