@@ -7,15 +7,15 @@ import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResp
 import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
 @Mapper(componentModel = "spring")
 public interface AppointmentMapper {
     @Mapping( target = "customer",ignore = true)
     @Mapping( target = "veterinarian",ignore = true)
     @Mapping(target = "service" , ignore = true)
     @Mapping(target = "depositedMoney", ignore = true)
-    @Mapping(source = "appointmentRequest.distance",target = "distance")
-    Appointment toAppointment(AppointmentRequest appointmentRequest);
+    @Mapping(target = "result", ignore = true)
+    @Mapping(target = "code",ignore = true)
+  Appointment toAppointment(AppointmentRequest appointmentRequest);
 
 //    @Mapping( target = "customerId",ignore = true)
 //    @Mapping( target = "serviceId",ignore = true)
@@ -24,6 +24,7 @@ public interface AppointmentMapper {
     @Mapping(source = "appointment.customer.user.fullName" ,target = "customerName")
     @Mapping(source = "appointment.service.serviceId",target = "serviceId")
     @Mapping(source = "appointment.service.serviceName",target = "serviceName")
+    @Mapping(source = "appointment.code" , target = "code")
     AppointmentResponse toAppointmentResponse(Appointment appointment);
 
 
