@@ -41,6 +41,7 @@ import Pond from './components/Pond/Pond';
 import PaymentFailPage from './pages/PaymentFailPage/PaymentFailPage';
 import PondTreatmentPage from './pages/PondTreatmentPage/PondTreatmentPage';
 import GGM from './pages/GoogleMeet/GGM';
+import PaymentSuccessPage from './pages/PaymentSuccessPage/PaymentSuccessPage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -79,6 +80,7 @@ function App() {
               <Route path='/veterinarians' element={<VeterinarianPage />} />
               <Route path='/services' element={<ServicePage />} />
               <Route path='/vetprofile/:vetId' element={<VetProfile />} />
+              <Route path='/booking/paymentsuccess' element={<PaymentSuccessPage />} />
               <Route path='/booking/paymentfail' element={<PaymentFailPage />} />
               {/* Protected routes */}
               <Route element={<UserProtectedRoute />}>
