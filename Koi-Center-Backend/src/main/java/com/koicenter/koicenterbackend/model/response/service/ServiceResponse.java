@@ -21,4 +21,5 @@ public class ServiceResponse {
     float koiPrice;
     ServiceType serviceFor;
     String image;
+    boolean status ;
 }

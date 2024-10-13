@@ -4,6 +4,6 @@ public enum Role {
     ADMIN,
     CUSTOMER,
     GUEST,
-    VETENARIAN,
+    VETERINARIAN,
 
 }

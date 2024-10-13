@@ -52,6 +52,7 @@ public class ServiceService {
         response.setKoiPrice(service.getKoiPrice());
         response.setServiceFor(service.getServiceFor());
         response.setImage(service.getImage());
+        response.setStatus(service.isStatus());
         return response;
     }
 

@@ -1,5 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
+import com.koicenter.koicenterbackend.model.Role;
+import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
 
 import com.koicenter.koicenterbackend.model.request.user.UpdateUserRequest;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -50,5 +54,10 @@ public class UserController {
         }else {
             return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, null);
         }
+    }
+    @GetMapping("/get")
+    public ResponseEntity<ResponseObject> getUserByRole(@RequestParam String role){
+        List<UserResponse> userList = userService.getListUserByRole(role);
+        return ResponseObject.APIRepsonse(200, "List", HttpStatus.OK, userList);
     }
 }
