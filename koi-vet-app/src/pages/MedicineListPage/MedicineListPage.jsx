@@ -5,7 +5,6 @@ import {
   Popconfirm,
   Table,
   AutoComplete,
-  InputNumber,
   Select,
 } from "antd";
 import React, { useEffect, useState } from "react";
@@ -37,7 +36,6 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
     name: "",
     note: "",
   });
-  const [editingMedicineId, setEditingMedicineId] = useState(null);
   const [editingMedicines, setEditingMedicines] = useState({});
   const [isEditing, setIsEditing] = useState({}); // Trạng thái cho từng thuốc
   const [isCreating, setIsCreating] = useState(false); // Trạng thái mở/đóng form tạo thuốc

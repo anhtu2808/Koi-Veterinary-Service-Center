@@ -43,6 +43,7 @@ import PondTreatmentPage from './pages/PondTreatmentPage/PondTreatmentPage';
 import GGM from './pages/GoogleMeet/GGM';
 import PaymentSuccessPage from './pages/PaymentSuccessPage/PaymentSuccessPage';
 import Rating from './pages/Rating/Rating';
+import ImageUpload from './components/testImage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -68,6 +69,7 @@ function App() {
     <Router>
       <Routes>
       <Route path="/medpage" element={<MedicineListPage />} />
+        <Route path="/image" element={<ImageUpload />} />
         <Route path="/ggm" element={<GGM />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -146,8 +148,7 @@ function App() {
                 <Route path="/medicine" element={<Medicine />} />
                 <Route path="/medpage" element={< MedicineListPage />} />
               </Route>
-
-
+          
               {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
               {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
               Add more admin routes as needed

@@ -123,7 +123,7 @@ function AllAppointment() {
         <table className="table table-striped table-sm tableleft">
           <thead>
             <tr>
-              <th>ID</th> <th>User</th> <th>Service</th><th>Create Date</th> <th>Type</th> <th>Time</th><th>Date</th><th>Status</th><th>Action</th>
+              <th>Code</th> <th>User</th> <th>Service</th><th>Create Date</th> <th>Type</th> <th>Time</th><th>Date</th><th>Status</th><th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -144,7 +144,7 @@ function AllAppointment() {
                 :
                 appointments.map((appointmentDetail, index) => (
                   <tr key={index}>
-                    <td>{index + 1}</td>
+                    <td>{appointmentDetail.code}</td>
                     <td>{appointmentDetail.customerName}</td>
                     <td>{appointmentDetail.serviceName}</td>
                     <td>{new Date(appointmentDetail.createdAt).toLocaleString()}</td>

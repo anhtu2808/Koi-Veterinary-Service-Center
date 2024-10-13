@@ -6,6 +6,7 @@ import {
   fetchPrescriptionByIdAPI,
   updatePrescriptionAPI,
 } from "../../apis";
+import "./PrescriptionDetail.css";
 import { message } from "antd";
 
 function PrescriptionDetail(props) {
@@ -134,7 +135,10 @@ function PrescriptionDetail(props) {
         <Button
           variant="danger"
           onClick={() =>
-            handleDeletePrescriptionMedicine(record.prescriptionMedicineId)
+            handleDeletePrescriptionMedicine(
+              props.prescriptionId,
+              record.medicineId
+            )
           }
         >
           Delete
@@ -143,14 +147,17 @@ function PrescriptionDetail(props) {
     },
   ];
 
-  const handleDeletePrescriptionMedicine = async (prescriptionMedicineId) => {
+  const handleDeletePrescriptionMedicine = async (
+    prescriptionId,
+    medicineId
+  ) => {
     try {
-      await deletePrescriptionAPI(prescriptionMedicineId);
+      // Call the correct API function
+      await deletePrescriptionAPI(prescriptionId, medicineId);
+
+      // Update the local state to reflect the deletion
       setPrescriptionData((prev) =>
-        prev.filter(
-          (medicine) =>
-            medicine.prescriptionMedicineId !== prescriptionMedicineId
-        )
+        prev.filter((medicine) => medicine.medicineId !== medicineId)
       );
       message.success("Medicine deleted successfully");
     } catch (error) {

@@ -150,7 +150,8 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.GET, "api/v1/payment/momo-pay").permitAll()
                             .requestMatchers(HttpMethod.POST, "api/v1/payment/momo-pay-callback").permitAll()
-
+                            .requestMatchers(HttpMethod.GET,"api/v1/images")
+                            .permitAll()
                             .anyRequest().authenticated();
                 });
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));
