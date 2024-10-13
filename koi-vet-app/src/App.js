@@ -69,7 +69,6 @@ function App() {
 
     <Router>
       <Routes>
-      <Route path="/usermanagement" element={<UserManagementPage />} />
       <Route path="/medpage" element={<MedicineListPage />} />
         <Route path="/image" element={<ImageUpload />} />
         <Route path="/ggm" element={<GGM />} />
@@ -113,6 +112,7 @@ function App() {
                       <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
                       <Route path="/koidetail/:appointmentId" element={<KoiDetail isUpdate={false} isCreate={false} isAppointment={true} />} />
                       <Route path="/ponddetail/:appointmentId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} isAppointment={true} />} />
+                      <Route path="/usermanagement" element={<UserManagementPage />} />
                     </Routes>
                   </ProfileLayout>
 

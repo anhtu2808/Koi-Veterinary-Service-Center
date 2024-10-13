@@ -303,4 +303,10 @@ export const fetchUpLoadImageAPI = async (image) => {
 }
 
 
+// User API
+export const fetchAllUsersAPI = async (role) => {
+    const response = await api.get(`/users/get?role=${role}`);
+    return response.data;
+}
+
 
