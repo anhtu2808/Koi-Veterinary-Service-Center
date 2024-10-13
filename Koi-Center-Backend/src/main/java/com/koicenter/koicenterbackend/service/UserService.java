@@ -5,7 +5,9 @@ import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.mapper.UserMapper;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
+import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
 import com.koicenter.koicenterbackend.model.request.user.UpdateUserRequest;
 import com.koicenter.koicenterbackend.model.response.user.CustomerDTO;
@@ -28,6 +30,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -172,5 +176,60 @@ public class UserService {
             return false;
         }
      return true;
+    }
+
+    public List<UserResponse> getListUserByRole(String role) {
+       List<User> userList = userRepository.findByRole(Role.valueOf(role));
+       List<UserResponse> userResponseList = new ArrayList<>();
+
+       for (User user : userList) {
+           if (user.getRole() == Role.CUSTOMER) {
+               UserResponse userResponse = UserResponse.builder()
+                       .user_id(user.getUserId())
+                       .username(user.getUsername())
+                       .fullName(user.getFullName())
+                       .role(user.getRole())
+                       .status(user.isStatus())
+                       .email(user.getEmail())
+                       .veterinarian(null)
+                       .build();
+               Customer customer = customerRepository.findByUser_UserId(user.getUserId());
+               if (customer != null) {
+                   CustomerDTO customerDTO = CustomerDTO.builder()
+                           .customerId(customer.getCustomerId())
+                           .phone(customer.getPhone())
+                           .address(customer.getAddress())
+                           .image(customer.getImage())
+                           .build();
+                   userResponse.setCustomer(customerDTO);
+                   userResponseList.add(userResponse);
+               }
+           }else if (user.getRole() == Role.VETERINARIAN) {
+               UserResponse userResponse = UserResponse.builder()
+                       .user_id(user.getUserId())
+                       .username(user.getUsername())
+                       .fullName(user.getFullName())
+                       .role(user.getRole())
+                       .status(user.isStatus())
+                       .email(user.getEmail())
+                       .customer(null)
+                       .build();
+               Veterinarian veterinarian = veterinarianRepository.findByUserId(user.getUserId());
+               if (veterinarian != null) {
+                   VeterinarianDTO veterinarianDTO = VeterinarianDTO.builder()
+                           .phone(veterinarian.getPhone())
+                           .vetId(veterinarian.getVetId())
+                           .description(veterinarian.getDescription())
+                           .image(veterinarian.getImage())
+                           .googleMeet(veterinarian.getGoogleMeet())
+                           .veterinarianStatus(veterinarian.getStatus())
+                           .build();
+                   userResponse.setVeterinarian(veterinarianDTO);
+                   userResponseList.add(userResponse);
+               }
+
+           }
+       }
+       return userResponseList;
     }
 }
