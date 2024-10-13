@@ -12,9 +12,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateUserRequest {
-    String username;
-    String full_name;
+    String userId;
+    String fullName;
     String email;
-    String phone_number;
+    String phoneNumber;
+    String address;
 }
 
