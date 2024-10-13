@@ -283,6 +283,12 @@ export const fetchRedirectPaymentAPI = async (amount, bankCode, appointmentData)
     return response.data;
 }
 
+export const fetchSecondInfoPaymentAPI = async (appointmentId) => {
+    const response = await api.get(`treatments/secondPayment?appointmentId=${appointmentId}`)
+    return response.data;
+}
+
+//Upload Image API
 export const fetchUpLoadImageAPI = async (image) => {
     const response = await api.get(`images/presigned-url?imageName=${image.name}`);
     const presignedUrl = await response.data; // URL file trên S3 (bỏ query params)

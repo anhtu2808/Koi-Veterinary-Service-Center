@@ -99,7 +99,7 @@ function AppointmentDetail() {
         if (role !== ROLE.CUSTOMER) {
           setNavigateLink({
             link: `/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
-            title: "Koi Information" 
+            title: "Koi Information"
           })
         } else {
           setNavigateLink({
@@ -282,7 +282,7 @@ function AppointmentDetail() {
               name="vetId"
               value={appointment.vetId}
               onChange={(e) => handleAssignVet(e)}
-              disabled={role === ROLE.VETERINARIAN || !isEditing ||(appointment.status !== APPOINTMENT_STATUS.CREATED && appointment.status !== APPOINTMENT_STATUS.BOOKING_COMPLETE)}
+              disabled={role === ROLE.VETERINARIAN || !isEditing || (appointment.status !== APPOINTMENT_STATUS.CREATED && appointment.status !== APPOINTMENT_STATUS.BOOKING_COMPLETE)}
             >
               <option value={"SKIP"}>Not assigned</option>
               {vetList.map((vet) => (
@@ -414,15 +414,26 @@ function AppointmentDetail() {
 
         <div className="d-flex justify-content-between align-items-center mb-3">
           {role !== ROLE.CUSTOMER && (
-            <div className="col-md-6">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                {isEditing ? "Cancel" : "Edit"}
-              </button>
-            </div>
+            <>
+              <div className="col-md-6">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
+                  {isEditing ? "Cancel" : "Edit"}
+                </button>
+              </div>
+              {appointment.status === APPOINTMENT_STATUS.FINISH ?
+
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => navigate(`/admin/paymentcheckout/${appointmentId}`)}
+                >
+                  Create Bill
+                </button> : null}
+            </>
           )}
           {isEditing && (
             <button type="submit" className="btn btn-primary">
