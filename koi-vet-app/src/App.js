@@ -68,6 +68,7 @@ function App() {
 
     <Router>
       <Routes>
+      <Route path="/usermanagement" element={<UserManagementPage />} />
       <Route path="/medpage" element={<MedicineListPage />} />
         <Route path="/image" element={<ImageUpload />} />
         <Route path="/ggm" element={<GGM />} />

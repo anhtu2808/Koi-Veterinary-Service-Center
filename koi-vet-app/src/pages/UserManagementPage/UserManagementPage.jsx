@@ -6,7 +6,7 @@ import AdminHeader from "../../components/AdminHeader/AdminHeader";
 function UserManagementPage() {
   return (
     <>
-    <AdminHeader title="User Management"/>
+      <AdminHeader title="User Management" />
       <div className="row mb-3 justify-content-center">
         <div className="col-md-8">
           <div className="input-group">
@@ -21,9 +21,10 @@ function UserManagementPage() {
         <table className="table table-striped table-sm tableleft">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Create Date</th>
-              <th>Role</th>
+              <th>Image</th>
+              <th>Username</th>
+              <th>Phone</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -141,7 +142,6 @@ function UserManagementPage() {
         </ul>
       </nav>
     </>
-
   );
 }
 
