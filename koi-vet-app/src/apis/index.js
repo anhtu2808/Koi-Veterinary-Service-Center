@@ -238,10 +238,13 @@ export const updatePrescriptionAPI = async (prescriptionId, data) => {
     return response.data;
 }
 
-export const deletePrescriptionAPI = async (prescriptionMedicineId) => {
-    const response = await api.delete(`/prescriptions/${prescriptionMedicineId}`);
+export const deletePrescriptionAPI = async (prescriptionId, medicineId) => {
+    const response = await api.delete(
+        `/prescriptions/deletePrescriptionMedicineId`, 
+        { params: { prescriptionId, medicineId } }
+    );
     return response.data;
-}
+};
 
 //Treatment API
 export const updateKoiTreatmentAPI = async (updatedData) => {
