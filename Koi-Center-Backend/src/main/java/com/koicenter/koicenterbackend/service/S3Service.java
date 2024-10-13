@@ -8,6 +8,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequ
 
 import java.net.URL;
 import java.time.Duration;
+import java.util.UUID;
 
 @Service
 public class S3Service {
@@ -23,7 +24,7 @@ public class S3Service {
     public URL generatePresignedUrl(String objectKey) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
-                .key(objectKey)
+                .key(UUID.randomUUID()+ "_"+ objectKey )
                 .build();
 
         PresignedPutObjectRequest presignedRequest = s3Presigner.presignPutObject(b -> b
