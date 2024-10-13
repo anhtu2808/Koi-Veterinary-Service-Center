@@ -44,7 +44,7 @@ public class KoiService {
         koiResponse.setAge(koi.getAge());
         koiResponse.setLength(koi.getLength());
         koiResponse.setWeight(koi.getWeight());
-        koiResponse.setHealthStatus(koi.getHealthStatus());
+        koiResponse.setStatus(koi.isStatus());
         koiResponse.setNotes(koi.getNotes());
         koiResponse.setImage(koi.getImage());
         return koiResponse;
@@ -59,7 +59,7 @@ public class KoiService {
         koi.setAge(request.getAge());
         koi.setLength(request.getLength());
         koi.setWeight(request.getWeight());
-        koi.setHealthStatus(request.getHealthStatus());
+        koi.setStatus(request.isStatus());
         koi.setNotes(request.getNotes());
         koi.setImage(request.getImage());
         koiRepository.save(koi);
@@ -71,7 +71,7 @@ public class KoiService {
         koiResponse.setAge(request.getAge());
         koiResponse.setLength(request.getLength());
         koiResponse.setWeight(request.getWeight());
-        koiResponse.setHealthStatus(request.getHealthStatus());
+        koiResponse.setStatus(request.isStatus());
         koiResponse.setNotes(request.getNotes());
         koiResponse.setImage(request.getImage());
 
@@ -84,7 +84,7 @@ public class KoiService {
             koi.setAge(koiRequest.getAge());
             koi.setLength(koiRequest.getLength());
             koi.setWeight(koiRequest.getWeight());
-            koi.setHealthStatus(koiRequest.getHealthStatus());
+            koi.setStatus(true);  //tao koi moi nen de la true
             koi.setNotes(koiRequest.getNotes());
             koi.setImage(koiRequest.getImage());
             Customer customer = new Customer();
@@ -92,4 +92,14 @@ public class KoiService {
             koi.setCustomer(customer);
             return koiMapper.toKoiResponse( koiRepository.save(koi)) ;
         }
+
+    public void deleteKoi(String koiId) {
+        Koi koi = koiRepository.findById(koiId).orElseThrow(()
+                -> new AppException(ErrorCode.KOI_NOT_EXITS.getCode(),
+                ErrorCode.KOI_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        koi.setStatus(false);
+        koiRepository.save(koi);
+    }
+
+
 }

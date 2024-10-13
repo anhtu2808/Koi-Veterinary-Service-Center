@@ -60,8 +60,8 @@ public class TreatmentController {
             return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST, "");
         }
     }
- @GetMapping("/search")
- public ResponseEntity<ResponseObject> searchTreamentByKoiIdOrPondId( @RequestParam String  id) {
+ @GetMapping("/{id}")
+ public ResponseEntity<ResponseObject> createAppointment( @PathVariable String  id) {
     Object list =  treatmentService.searchTreamentByKoiIdOrPondId(id);
      if(list != null ){
          return ResponseObject.APIRepsonse(201, "Found successfully! ", HttpStatus.CREATED, list);

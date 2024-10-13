@@ -132,7 +132,7 @@ public class TreatmentService {
             PondTreatmentResponse pondTreatmentResponse = new PondTreatmentResponse();
             Pond pond = pondRepository.findById(pondTreatment.getPond().getPondId()).orElseThrow(() -> new RuntimeException("Not Found Pond"));
             pondTreatmentResponse.setPondId(pondTreatment.getPond().getPondId());
-            pondTreatmentResponse.setPondTreatmentId(pondTreatment.getPondTreatmentId());
+            pondTreatmentResponse.setPondTreatmentId(id);
             pondTreatmentResponse.setPond(pondMapper.toPondResponse(pond));
             pondTreatmentResponse.setAppointmentId(pondTreatment.getAppointment().getAppointmentId());
             pondTreatmentResponse.setHealthIssue(pondTreatment.getHealthIssue());
@@ -142,7 +142,7 @@ public class TreatmentService {
             KoiTreatmentResponse koiTreatmentResponse = new KoiTreatmentResponse();
             Koi koi = koiRepository.findById(koiTreatment.getKoi().getKoiId()).orElseThrow(() -> new RuntimeException("Not Found Koi"));
             koiTreatmentResponse.setKoiId(koiTreatment.getKoi().getKoiId());
-            koiTreatmentResponse.setKoiTreatmentId(koiTreatment.getKoiTreatmentId());
+            koiTreatmentResponse.setKoiTreatmentId(id);
             koiTreatmentResponse.setKoi(koiMapper.toKoiResponse(koi));
             koiTreatmentResponse.setAppointmentId(koiTreatment.getAppointment().getAppointmentId());
             koiTreatmentResponse.setHealthIssue(koiTreatment.getHealthIssue());

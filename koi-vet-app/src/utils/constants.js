@@ -34,3 +34,5 @@ export const SERVICE_FOR = {
   "Ochiba Shigure", "Doitsu", "Koromo", "Other"
 ];
 
+export const ROW_PER_PAGE = [10, 20, 30, 40, 50];
+

@@ -86,8 +86,8 @@ export const createAppointmentAPI = async (appointmentCreateRequest) => {
     return response.data;
 }
 
-export const fetchAllAppointmentAPI = async (status) => {
-    const response = await api.get(`/appointments?status=${status}`);
+export const fetchAllAppointmentAPI = async (status, offSet, pageSize) => {
+    const response = await api.get(`appointments?status=${status}&offSet=${offSet}&pageSize=${pageSize}`);
     return response.data;
 }
 export const fetchAppointmentByCustomerIdAPI = async (customerId, status) => {
@@ -154,7 +154,7 @@ export const createPondAPI = async (data) => {
 
 
 export const fetchPondsByAppointmentIdAPI = async (appointmentId) => {
-    const response = await api.get(`/treatments/ponds/${appointmentId}`);
+    const response = await api.get(`/appointments/${appointmentId}/ponds/`);
     return response.data;
 }
 
@@ -180,7 +180,7 @@ export const createKoiAPI = async (data) => {
 }
 
 export const fetchKoisByAppointmentIdAPI = async (appointmentId) => {
-    const response = await api.get(`/treatments/kois/${appointmentId}`);
+    const response = await api.get(`/appointments/${appointmentId}/kois/`);
     return response.data;
 }
 
@@ -233,7 +233,18 @@ export const fetchPrescriptionByIdAPI = async (prescriptionId) => {
     return response.data;
 }
 
+export const updatePrescriptionAPI = async (prescriptionId, data) => {
+    const response = await api.put(`/prescriptions/${prescriptionId}`, data)
+    return response.data;
+}
 
+export const deletePrescriptionAPI = async (prescriptionId, medicineId) => {
+    const response = await api.delete(
+        `/prescriptions/deletePrescriptionMedicineId`, 
+        { params: { prescriptionId, medicineId } }
+    );
+    return response.data;
+};
 
 //Treatment API
 export const updateKoiTreatmentAPI = async (updatedData) => {
@@ -242,6 +253,19 @@ export const updateKoiTreatmentAPI = async (updatedData) => {
 }
 export const updatePondTreatmentAPI = async (updatedData) => {
     const response = await api.put(`/treatments/updatePondTreatment`, updatedData)
+    return response.data;
+}
+export const fetchKoiTreatmentByIdAPI = async (koiTreatmentId) => {
+    const response = await api.get(`/treatments/kois/${koiTreatmentId}`)
+    return response.data;
+}
+export const fetchPondTreatmentByIdAPI = async (pondTreatmentId) => {
+    const response = await api.get(`/treatments/ponds/${pondTreatmentId}`)
+    return response.data;
+}
+
+export const fetchTreatmentByIdAPI = async (id) => {
+    const response = await api.get(`/treatments/${id}`)
     return response.data;
 }
 
@@ -253,8 +277,9 @@ export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
 
 //Payment API
 export const fetchRedirectPaymentAPI = async (amount, bankCode,appointmentData) => {
-    const response = await api.post(`payment/vn-pay?amount=${amount}&bankCode=${bankCode}&appointmentId=123`,appointmentData)
+    const response = await api.post(`payment/vn-pay?amount=${amount}&bankCode=${bankCode}`,appointmentData)
     return response.data;
 }
+
 
 

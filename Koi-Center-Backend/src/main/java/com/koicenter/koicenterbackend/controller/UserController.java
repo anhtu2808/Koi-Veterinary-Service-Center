@@ -2,6 +2,7 @@ package com.koicenter.koicenterbackend.controller;
 
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
 
+import com.koicenter.koicenterbackend.model.request.user.UpdateUserRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 import com.koicenter.koicenterbackend.service.UserService;
@@ -39,6 +40,15 @@ public class UserController {
             return ResponseObject.APIRepsonse(200, "User info retrieved successfully!", HttpStatus.OK, myInfo);
         } else {
             return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, "");
+        }
+    }
+    @PutMapping("/update")
+    public ResponseEntity<ResponseObject> update(@RequestBody UpdateUserRequest updateUserRequest){
+        boolean isUpdated = userService.updateUser(updateUserRequest);
+        if(isUpdated){
+            return ResponseObject.APIRepsonse(200, "User updated successfully!", HttpStatus.OK, null);
+        }else {
+            return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, null);
         }
     }
 }

@@ -7,10 +7,16 @@ import { APPOINTMENT_STATUS, BOOKING_TYPE, ROLE, SERVICE_FOR } from "../../utils
 import { useSelector } from "react-redux";
 import Loading from "../../components/Loading/Loading";
 
+const updateAppointment = async (appointmentData, appointmentId) => {
+  try {
+    await updateAppointmentAPI(appointmentData, appointmentId);
+  } catch (error) {
+    console.error("Error updating appointment:", error);
+  }
+}
 function AppointmentDetail() {
   const { appointmentId } = useParams();
   const navigate = useNavigate();
-  // });  
   const [vetList, setVetList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [service, setService] = useState({});
@@ -82,58 +88,88 @@ function AppointmentDetail() {
     const fetchService = async () => {
       const responseService = await fecthServiceByServiceIdAPI(appointment.serviceId);
       setService(responseService.data);
-      switch (responseService.data.serviceFor) {
-        case SERVICE_FOR.KOI:
-          if (role !== ROLE.CUSTOMER) {
-            setNavigateLink({
-              link: `/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
-              title: "Koi Information"
-            })
-          } else {
-            setNavigateLink({
-              link: `/profile/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
-              title: "Koi Information"
-            })
-          }
-          break;
-        case SERVICE_FOR.POND:
-          if (role !== ROLE.CUSTOMER) {
-            setNavigateLink({
-              link: `/admin/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
-              title: "Pond Information"
-            })
-          } else {
-            setNavigateLink({
-              link: `/profile/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
-              title: "Pond Information"
-            })
-          }
-          break;
-        case SERVICE_FOR.ONLINE:
-          if (role !== ROLE.CUSTOMER) {
-            setNavigateLink({
-              link: `/admin/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`,
-              title: "Google Meet"
-            })
-          } else {
-            setNavigateLink({
-              link: `/profile/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`,
-              title: "Google Meet"
-            })
-          }
-          break;
-        default:
-          break;
-      }
+
     }
     fetchService();
-  }, [appointment.serviceId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appointment.serviceId, role]);
+  useEffect(() => {
+    switch (service.serviceFor) {
+      case SERVICE_FOR.KOI:
+        if (role !== ROLE.CUSTOMER) {
+          setNavigateLink({
+            link: `/admin/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+            title: "Koi Information" 
+          })
+        } else {
+          setNavigateLink({
+            link: `/profile/koi-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+            title: "Koi Information"
+          })
+        }
+        break;
+      case SERVICE_FOR.POND:
+        if (role !== ROLE.CUSTOMER) {
+          setNavigateLink({
+            link: `/admin/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+            title: "Pond Information"
+          })
+        } else {
+          setNavigateLink({
+            link: `/profile/pond-treatment/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+            title: "Pond Information"
+          })
+        }
+        break;
+      case SERVICE_FOR.ONLINE:
+        if (role !== ROLE.CUSTOMER) {
+          setNavigateLink({
+            link: `/admin/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+            title: "Google Meet"
+          })
+        } else {
+          setNavigateLink({
+            link: `/profile/google-meet/${appointment.appointmentId}?customerId=${appointment.customerId}`,
+            title: "Google Meet"
+          })
+        }
+        break;
+      default:
+        break;
+    }
+  }, [role, service]);
 
   const handleAssignVet = (e) => {
     e.preventDefault();
-    setAppointment({ ...appointment, vetId: e.target.value })
-
+    if (e.target.value !== "SKIP") {
+      setAppointment({ ...appointment, vetId: e.target.value, status: APPOINTMENT_STATUS.BOOKING_COMPLETE });
+    } else {
+      setAppointment({ ...appointment, vetId: null, status: APPOINTMENT_STATUS.CREATED });
+    }
+    console.log(appointment);
   };
+  const handleStartFinish = () => {
+
+    if (appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE) {
+      const confirmAction = window.confirm("Are you sure to start?");
+      if (!confirmAction) {
+        return;
+      } else {
+        setAppointment({ ...appointment, status: APPOINTMENT_STATUS.PROCESS })
+        updateAppointment({ ...appointment, status: APPOINTMENT_STATUS.PROCESS }, appointmentId)
+      }
+    } else if (appointment.status === APPOINTMENT_STATUS.PROCESS) {
+      const confirmAction = window.confirm("Are you sure to finish?");
+      if (!confirmAction) {
+        return;
+      } else {
+        setAppointment({ ...appointment, status: APPOINTMENT_STATUS.FINISH })
+        console.log({ ...appointment, status: APPOINTMENT_STATUS.FINISH });
+        updateAppointment({ ...appointment, status: APPOINTMENT_STATUS.FINISH }, appointmentId)
+      }
+    }
+
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -163,23 +199,39 @@ function AppointmentDetail() {
       <AdminHeader title="Appointment Detail" />
 
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="appointmentId" className="form-label">
-            Appointment ID
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="appointmentId"
-            value={appointment.appointmentId}
-            disabled
-          />
+        <div className="row">
+          <div className="mb-3 col-md-6">
+            <label htmlFor="appointmentId" className="form-label">
+              Appointment ID
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="appointmentId"
+              value={appointment.appointmentId}
+              disabled
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="createDate" className="form-label">
+              Created Date
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="createDate"
+              name="createDate"
+              value={new Date(appointment.createdAt).toLocaleString()}
+              disabled
+            />
+          </div>
         </div>
+
 
         <div className="row mb-3">
           <div className="col-md-6">
             <label htmlFor="customerId" className="form-label">
-              Customer
+              Customer <i className="fa-solid fa-user" ></i>
             </label>
             <input
               type="text"
@@ -194,29 +246,43 @@ function AppointmentDetail() {
             <label htmlFor="status" className="form-label">
               Status
             </label>
-            <input
-              type="text"
-              className="form-control"
-              id="status"
-              name="status"
-              value={statusDisplayMap[appointment.status] || appointment.status}
-              disabled={true}
-            />
+            <div className="d-flex gap-3">
+              <input
+                type="text"
+                className="form-control"
+                id="status"
+                name="status"
+                value={statusDisplayMap[appointment.status] || appointment.status}
+                disabled={true}
+              />
+              {appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE || appointment.status === APPOINTMENT_STATUS.PROCESS ?
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => handleStartFinish()}
+                >
+                  {appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE ? "Start" : null}
+                  {appointment.status === APPOINTMENT_STATUS.PROCESS ? "Finish" : null}
+
+                </button>
+                : null}
+            </div>
           </div>
         </div>
 
         <div className="row mb-3">
           <div className="col-md-6">
+
             <label htmlFor="vetId" className="form-label">
-              Veterinarian
+              Veterinarian <i className="fa-solid fa-user-doctor" ></i>
             </label>
             <select
               className="form-select"
               id="vetId"
               name="vetId"
               value={appointment.vetId}
-              onChange={handleAssignVet}
-              disabled={!isEditing}
+              onChange={(e) => handleAssignVet(e)}
+              disabled={role === ROLE.VETERINARIAN || !isEditing ||(appointment.status !== APPOINTMENT_STATUS.CREATED && appointment.status !== APPOINTMENT_STATUS.BOOKING_COMPLETE)}
             >
               <option value={"SKIP"}>Not assigned</option>
               {vetList.map((vet) => (
@@ -245,7 +311,7 @@ function AppointmentDetail() {
         <div className="row mb-3">
           <div className="col-md-6">
             <label htmlFor="type" className="form-label">
-              Type
+              Appointment Type
             </label>
             <select
               className="form-select"
@@ -261,17 +327,16 @@ function AppointmentDetail() {
             </select>
           </div>
           <div className="col-md-6">
-            <label htmlFor="location" className="form-label">
-              Location
+            <label htmlFor="serviceType" className="form-label">
+              Service Type
             </label>
             <input
               type="text"
               className="form-control"
-              id="location"
-              name="location"
-              value={appointment.location}
-              onChange={handleInputChange}
-              disabled={!isEditing}
+              id="serviceType"
+              name="serviceType"
+              value={service.serviceFor}
+              disabled
             />
           </div>
         </div>
@@ -279,7 +344,7 @@ function AppointmentDetail() {
         <div className="row mb-3">
           <div className="col-md-4">
             <label htmlFor="appointmentDate" className="form-label">
-              Appointment Date
+              Appointment Date <i className="fa-solid fa-calendar" ></i>
             </label>
             <input
               type="date"
@@ -293,7 +358,7 @@ function AppointmentDetail() {
           </div>
           <div className="col-md-4">
             <label htmlFor="startTime" className="form-label">
-              Start Time
+              Start Time <i className="fa-solid fa-clock" ></i>
             </label>
             <input
               type="time"
@@ -307,7 +372,7 @@ function AppointmentDetail() {
           </div>
           <div className="col-md-4">
             <label htmlFor="endTime" className="form-label">
-              End Time
+              End Time <i className="fa-solid fa-clock" ></i>
             </label>
             <input
               type="time"
@@ -319,17 +384,45 @@ function AppointmentDetail() {
               disabled={!isEditing}
             />
           </div>
+          <div className="col-md-6 mt-3">
+            <label htmlFor="result" className="form-label">
+              Result
+            </label>
+            <textarea
+              className="form-control"
+              id="result"
+              name="result"
+              value={appointment.result}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            ></textarea>
+          </div>
+          <div className="col-md-6 mt-3">
+            <label htmlFor="location" className="form-label">
+              Location <i className="fa-solid fa-location-dot" ></i>
+            </label>
+            <textarea
+              className="form-control"
+              id="location"
+              name="location"
+              value={appointment.location}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            />
+          </div>
         </div>
 
         <div className="d-flex justify-content-between align-items-center mb-3">
           {role !== ROLE.CUSTOMER && (
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              {isEditing ? "Cancel" : "Edit"}
-            </button>
+            <div className="col-md-6">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
+            </div>
           )}
           {isEditing && (
             <button type="submit" className="btn btn-primary">
@@ -348,15 +441,16 @@ function AppointmentDetail() {
         >
           Back to All Appointments
         </button>
-        {navigateLink.link && (
+        {navigateLink.link ?
           <button
             onClick={() => navigate(navigateLink.link)}
             type="button"
             className="btn btn-primary"
           >
             {navigateLink.title}
-          </button>
-        )}
+          </button> : null}
+
+
       </div>
 
     </>

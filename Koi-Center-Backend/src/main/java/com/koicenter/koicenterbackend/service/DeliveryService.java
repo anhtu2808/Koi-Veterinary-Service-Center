@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class DeliveryService {
     @Autowired
@@ -27,5 +30,34 @@ public class DeliveryService {
 
         return new DeliveryResponse(delivery.getDeliveryId(), delivery.getFromPlace(), delivery.getToPlace(), delivery.getPrice());
 
+    }
+
+    public List<DeliveryResponse> getAllDeliveries() {
+        List<Delivery> deliveries = deliveryRepository.findAll();
+        List<DeliveryResponse> deliveryResponses = new ArrayList<>();
+        for (Delivery delivery : deliveries) {
+            DeliveryResponse deli = new DeliveryResponse();
+            deli.setDeliveryId(delivery.getDeliveryId());
+            deli.setFromPlace(delivery.getFromPlace());
+            deli.setToPlace(delivery.getToPlace());
+            deli.setPrice(delivery.getPrice());
+            deliveryResponses.add(deli);
+        }
+        return deliveryResponses;
+    }
+
+
+    public DeliveryResponse getDeliveryById(String id) {
+
+        Delivery delivery = deliveryRepository.findById(id).orElseThrow(()->
+                new AppException(ErrorCode.DELIVERY_ID_NOT_EXITS.getCode(),
+                        ErrorCode.DELIVERY_ID_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+
+        DeliveryResponse deliveryResponse = new DeliveryResponse();
+        deliveryResponse.setDeliveryId(delivery.getDeliveryId());
+        deliveryResponse.setFromPlace(delivery.getFromPlace());
+        deliveryResponse.setToPlace(delivery.getToPlace());
+        deliveryResponse.setPrice(delivery.getPrice());
+        return deliveryResponse;
     }
 }

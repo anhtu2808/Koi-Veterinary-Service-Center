@@ -1,10 +1,17 @@
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { fetchPrescriptionByIdAPI } from "../../apis";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import {
+  deletePrescriptionAPI,
+  fetchPrescriptionByIdAPI,
+  updatePrescriptionAPI,
+} from "../../apis";
+import "./PrescriptionDetail.css";
+import { message } from "antd";
 
 function PrescriptionDetail(props) {
   const [prescriptionData, setPrescriptionData] = useState([]);
+  const [editingMedicines, setEditingMedicines] = useState({});
 
   useEffect(() => {
     const handlefetchPrescriptionId = async () => {
@@ -13,6 +20,52 @@ function PrescriptionDetail(props) {
     };
     handlefetchPrescriptionId();
   }, [props.prescriptionId]);
+
+  const handleEdit = (medicineId) => {
+    setEditingMedicines((prev) => ({
+      ...prev,
+      [medicineId]: {
+        editing: true,
+        ...prescriptionData.find((m) => m.medicineId === medicineId),
+      },
+    }));
+  };
+
+  const handleSave = async (medicineId) => {
+    const updatedMedicine = editingMedicines[medicineId];
+    const newPrescriptionData = prescriptionData.map((medicine) =>
+      medicine.medicineId === medicineId
+        ? {
+            ...medicine,
+            dosage: updatedMedicine.dosage,
+            quantity: updatedMedicine.quantity,
+          }
+        : medicine
+    );
+    setPrescriptionData(newPrescriptionData);
+    setEditingMedicines((prev) => ({
+      ...prev,
+      [medicineId]: { editing: false },
+    }));
+
+    // Call the update API here with the updated medicine details
+    await updatePrescriptionAPI(props.prescriptionId, {
+      name: prescriptionData.name,
+      note: prescriptionData.note,
+      appointmentId: prescriptionData.appointmentId,
+      prescriptionMedicines: newPrescriptionData,
+    });
+  };
+
+  const handleChange = (medicineId, field, value) => {
+    setEditingMedicines((prev) => ({
+      ...prev,
+      [medicineId]: {
+        ...prev[medicineId],
+        [field]: value,
+      },
+    }));
+  };
 
   const columns = [
     {
@@ -29,13 +82,89 @@ function PrescriptionDetail(props) {
       title: "Dosage",
       dataIndex: "dosage",
       key: "dosage",
+      render: (text, record) => {
+        const isEditing = editingMedicines[record.medicineId]?.editing;
+        return isEditing ? (
+          <input
+            type="text"
+            value={editingMedicines[record.medicineId]?.dosage}
+            onChange={(e) =>
+              handleChange(record.medicineId, "dosage", e.target.value)
+            }
+          />
+        ) : (
+          text
+        );
+      },
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
+      render: (text, record) => {
+        const isEditing = editingMedicines[record.medicineId]?.editing;
+        return isEditing ? (
+          <input
+            type="number"
+            value={editingMedicines[record.medicineId]?.quantity}
+            onChange={(e) =>
+              handleChange(record.medicineId, "quantity", e.target.value)
+            }
+          />
+        ) : (
+          text
+        );
+      },
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (text, record) => {
+        const isEditing = editingMedicines[record.medicineId]?.editing;
+        return isEditing ? (
+          <Button onClick={() => handleSave(record.medicineId)}>Save</Button>
+        ) : (
+          <Button onClick={() => handleEdit(record.medicineId)}>Edit</Button>
+        );
+      },
+    },
+    {
+      title: "Delete",
+      key: "delete",
+      render: (text, record) => (
+        <Button
+          variant="danger"
+          onClick={() =>
+            handleDeletePrescriptionMedicine(
+              props.prescriptionId,
+              record.medicineId
+            )
+          }
+        >
+          Delete
+        </Button>
+      ),
     },
   ];
+
+  const handleDeletePrescriptionMedicine = async (
+    prescriptionId,
+    medicineId
+  ) => {
+    try {
+      // Call the correct API function
+      await deletePrescriptionAPI(prescriptionId, medicineId);
+
+      // Update the local state to reflect the deletion
+      setPrescriptionData((prev) =>
+        prev.filter((medicine) => medicine.medicineId !== medicineId)
+      );
+      message.success("Medicine deleted successfully");
+    } catch (error) {
+      console.error("Error deleting medicine:", error);
+      message.error("Failed to delete medicine. Please try again.");
+    }
+  };
 
   return (
     <div className="container text-center">

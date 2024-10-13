@@ -6,7 +6,7 @@ import {
   fetchAllAppointmentByVetIdAPI,
   fetchAppointmentByCustomerIdAPI,
 } from "../../apis";
-import { ROLE, APPOINTMENT_STATUS } from "../../utils/constants";
+import { ROLE, APPOINTMENT_STATUS, ROW_PER_PAGE } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import Loading from "../../components/Loading/Loading";
@@ -14,11 +14,15 @@ import Loading from "../../components/Loading/Loading";
 function AllAppointment() {
   const [appointments, setAppointments] = useState([]);
   const [status, setStatus] = useState("ALL");
+  const [offSet, setOffSet] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const customerId = useSelector((state) => state?.user?.customer?.customerId);
   const [title, setTitle] = useState("All Appointments");
   const vetId = useSelector((state) => state?.user?.veterinarian?.vetId);
   const role = useSelector((state) => state.user.role);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(0);
+
   useEffect(() => {
     const fetchAppointmentForVet = async (vetId, status) => {
       const response = await fetchAllAppointmentByVetIdAPI(vetId, status);
@@ -28,7 +32,7 @@ function AllAppointment() {
     };
 
     const fetchAppointmentForStaff = async () => {
-      const response = await fetchAllAppointmentAPI(status);
+      const response = await fetchAllAppointmentAPI(status, offSet, pageSize);
       setAppointments(response?.data);
       setIsLoading(false);
     };
@@ -50,7 +54,7 @@ function AllAppointment() {
       setTitle("My Appointments");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role, customerId, status]);
+  }, [role, customerId, status, pageSize, offSet]);
 
   const handleChangeStatus = (status) => {
     setStatus(status);
@@ -88,26 +92,26 @@ function AllAppointment() {
       </div>
       <div className="row mb-3 justify-content-center">
         <nav className="w-100">
-          <div class="nav nav-tabs " id="nav-tab" role="tablist">
-            <button class="nav-link active custom-text-color" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" onClick={() => handleChangeStatus("ALL")}>
+          <div className="nav nav-tabs " id="nav-tab" role="tablist">
+            <button className="nav-link active custom-text-color" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" onClick={() => handleChangeStatus("ALL")}>
               <i className="fas fa-list-ul me-2"></i>All
             </button>
-            <button class="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.CREATED)}>
-              <i class="fa-solid fa-hourglass-start "></i> Waiting Confirm
+            <button className="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.CREATED)}>
+              <i className="fa-solid fa-hourglass-start "></i> Waiting Confirm
             </button>
-            <button class="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.BOOKING_COMPLETE)}>
+            <button className="nav-link custom-text-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.BOOKING_COMPLETE)}>
               <i className="fas fa-user-md me-2"></i>Veterinarian Assigned
             </button>
-            <button class="nav-link custom-text-color" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.PROCESS)}>
+            <button className="nav-link custom-text-color" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.PROCESS)}>
               <i className="fas fa-spinner me-2"></i>Process
             </button>
-            <button class="nav-link custom-text-color" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.READY_FOR_PAYMENT)}>
+            <button className="nav-link custom-text-color" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.READY_FOR_PAYMENT)}>
               <i className="fas fa-dollar-sign me-2 text-warning"></i>Ready For Payment
             </button>
-            <button class="nav-link custom-text-color" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.FINISH)}>
+            <button className="nav-link custom-text-color" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.FINISH)}>
               <i className="fas fa-flag-checkered me-2 text-success"></i>Finish
             </button>
-            <button class="nav-link custom-text-color" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.CANCEL)}>
+            <button className="nav-link custom-text-color" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.CANCEL)}>
               <i className="fas fa-ban me-2 text-danger"></i>Cancel
             </button>
           </div>
@@ -119,7 +123,7 @@ function AllAppointment() {
         <table className="table table-striped table-sm tableleft">
           <thead>
             <tr>
-              <th>ID</th> <th>User</th> <th>Service</th> <th>Type</th> <th>Time</th><th>Date</th><th>Status</th><th>Action</th>
+              <th>Code</th> <th>User</th> <th>Service</th><th>Create Date</th> <th>Type</th> <th>Time</th><th>Date</th><th>Status</th><th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -127,11 +131,11 @@ function AllAppointment() {
 
 
             {isLoading ?
-              
-                <td colSpan="7" className="text-center">
-                  <Loading />
-                </td>
-             
+
+              <td colSpan="7" className="text-center">
+                <Loading />
+              </td>
+
               :
               appointments.length === 0 ?
                 <tr>
@@ -140,9 +144,10 @@ function AllAppointment() {
                 :
                 appointments.map((appointmentDetail, index) => (
                   <tr key={index}>
-                    <td>{index + 1}</td>
+                    <td>{appointmentDetail.code}</td>
                     <td>{appointmentDetail.customerName}</td>
                     <td>{appointmentDetail.serviceName}</td>
+                    <td>{new Date(appointmentDetail.createdAt).toLocaleString()}</td>
                     <td>{appointmentDetail.type}</td>
                     <td>{formatTime(appointmentDetail.startTime)}</td>
                     <td>{formatDate(appointmentDetail.appointmentDate)}</td>
@@ -172,7 +177,7 @@ function AllAppointment() {
                           to={`/profile/appointment/${appointmentDetail.appointmentId}`}
                           className="btn btn-sm btn-outline-dark"
                         >
-                          <i class="fa fa-eye" aria-hidden="true"></i>
+                          <i className="fa fa-eye" aria-hidden="true"></i>
                         </Link>
                         :
                         <Link
@@ -195,6 +200,10 @@ function AllAppointment() {
 
           </tbody>
         </table>
+        <div className="d-flex justify-content-center">
+          
+        </div>
+
       </div>
     </>
 

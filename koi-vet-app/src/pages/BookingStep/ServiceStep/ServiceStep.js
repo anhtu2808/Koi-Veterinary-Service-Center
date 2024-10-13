@@ -51,6 +51,9 @@ export const ServiceStep = () => {
                                         isBooking={true}
                                         serviceName={service.serviceName}
                                         serviceFor={service.serviceFor}
+                                        basePrice={service.basePrice}
+                                        pondPrice={service.pondPrice}
+                                        koiPrice={service.koiPrice}
                                     />
                                 )
                             })

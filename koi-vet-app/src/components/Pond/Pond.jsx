@@ -72,13 +72,13 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                 } else {
                     response = await fetchPondsByCustomerIdAPI(customerId);
                     console.log(response.data)
-                    const KoiList = response.data.map(KoiTreatment =>
+                    const pondList = response.data.map(pondTreatment =>
                     ({
-                        Koi: KoiTreatment,
+                        pond: pondTreatment,
                     })
                     )
-                    setPondTreatmentList(KoiList);
-                    console.log(KoiList);
+                    setPondTreatmentList(pondList);
+                    console.log(pondList);
                 }
 
             } catch (error) {
@@ -109,7 +109,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                                 return (
                                     <>
 
-                                        <div key={pondTreatment.pond.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
+                                        <div key={pondTreatment.pond?.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
                                             <div className="col-md-6 mt-2">
                                                 <h4>{"Đây là hồ cá pond của anh tú"}</h4>
                                                 <p><strong>Depth:</strong> {pondTreatment?.pond?.depth} m</p>
@@ -136,7 +136,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                                                                     </button>
                                                                 </>
                                                                 :
-                                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment?.pond?.pondId}`)}>
+                                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment?.pond.pondId}`)}>
                                                                     View Details
                                                                 </button>}
 

@@ -7,6 +7,7 @@ import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
+import com.koicenter.koicenterbackend.model.request.user.UpdateUserRequest;
 import com.koicenter.koicenterbackend.model.response.user.CustomerDTO;
 import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 
@@ -155,5 +156,21 @@ public class UserService {
          return userRepository.save(user);
 
 
+    }
+
+    public boolean updateUser(UpdateUserRequest updateUserRequest) {
+        try {
+            Customer customer = customerRepository.findByUser_UserId(updateUserRequest.getUserId());;
+            customer.setAddress(updateUserRequest.getAddress());
+            customer.setPhone(updateUserRequest.getPhoneNumber());
+            User user = userRepository.findByUserId(updateUserRequest.getUserId());
+            user.setFullName(updateUserRequest.getFullName());
+            user.setEmail(updateUserRequest.getEmail());
+            userRepository.save(user);
+            customerRepository.save(customer);
+        }catch (Exception e) {
+            return false;
+        }
+     return true;
     }
 }
