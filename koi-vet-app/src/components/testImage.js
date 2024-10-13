@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../utils/authorizedAxious';
+import { fetchUpLoadImageAPI } from '../apis';
 
 const ImageUpload = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -13,29 +14,8 @@ const ImageUpload = () => {
             alert("Please choose a file first!");
             return;
         }
-
-        try {
-            // Gọi API từ Spring Boot để lấy Pre-signed URL
-            const response = await api.get(`images/presigned-url?imageName=${selectedFile.name}`);
-            const presignedUrl = await response.data;  // API trả về URL
-            console.log(`Presigned URL: ${presignedUrl}`);
-            // Upload file trực tiếp lên S3 bằng Pre-signed URL
-            const uploadResponse = await fetch(presignedUrl, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': selectedFile.type,
-                },
-                body: selectedFile,
-            });
-
-            if (uploadResponse.ok) {
-                alert('File uploaded successfully!');
-            } else {
-                alert('Failed to upload file.');
-            }
-        } catch (error) {
-            console.error("Error uploading file:", error);
-        }
+      const response = await fetchUpLoadImageAPI(selectedFile);
+        console.log(response);
     };
 
     return (

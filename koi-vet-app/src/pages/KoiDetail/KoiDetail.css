@@ -42,4 +42,24 @@
   max-width: 100%;
   border-radius: 8px;
   margin-top: 10px;
+
 }
+.koi-profile-image{
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: var(--color-primary); /* Màu nền */
+  color: white; /* Màu chữ */
+  border-radius: 5px; /* Bo góc */
+  text-align: center; /* Căn giữa chữ */
+}
+
+.custom-file-upload input {
+  display: none; /* Ẩn input file gốc */
+}
+

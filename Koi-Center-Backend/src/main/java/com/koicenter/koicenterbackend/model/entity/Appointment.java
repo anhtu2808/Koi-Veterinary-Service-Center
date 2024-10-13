@@ -55,6 +55,9 @@ public class Appointment {
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
     Invoice invoice;
 
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
+    Feedback feedback;
+
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     Service service;

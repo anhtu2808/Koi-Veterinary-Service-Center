@@ -160,7 +160,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
 
                                         <td>
                                             <div className="koi-image">
-                                                <img src="https://visinhcakoi.com/wp-content/uploads/2021/07/ca-koi-showa-2-600x874-1.jpg" alt="hình cá" />
+                                                <img src={treatment?.koi?.image} alt="hình cá" />
                                             </div>
                                         </td>
 
