@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PondResponse {
     String pondId;
-    String status;
+    boolean status;
     float depth;
     float perimeter;
     float temperature;

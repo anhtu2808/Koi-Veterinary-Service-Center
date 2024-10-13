@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useSelector } from "react-redux";
-import { createAppointmentAPI, fecthServiceByServiceIdAPI, fetchVetByVetIdAPI } from "../../apis";
+import { createAppointmentAPI, fecthServiceByServiceIdAPI, fetchRedirectPaymentAPI, fetchVetByVetIdAPI } from "../../apis";
 import { toast } from "react-toastify";
 import { APPOINTMENT_STATUS } from "../../utils/constants";
 
@@ -17,28 +17,30 @@ function Payment() {
 
   useEffect(() => {
     setAppointmentCreateRequest({
-      "selected":bookingData.selected,
-      "appointmentRequest":{
-      "appointmentDate": bookingData.date,
-      "status": bookingData.vetId !== "SKIP" ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
-      "startTime": bookingData.startAt, // Định dạng thời gian
-      "endTime": bookingData.endAt, // Định dạng thời gian
-      "location": customerInfo.address, // Địa điểm
-      "result": null,  // Kết quả
-      "createdAt": new Date(),  // Định dạng cho ZonedDateTime
-      "type": bookingData.type,  // Enum AppointmentType
-      "depositedMoney": serviceInfo.basePrice,  // Số tiền đã đặt cọc
-      "customerId": customerInfo.customerId,  // ID khách hàng
-      "vetId": bookingData.vetId,  // ID bác sĩ thú y
-      "serviceId": bookingData.serviceId  // ID dịch vụ
-    }})
+      "selected": bookingData.selected,
+      "appointmentRequest": {
+        "appointmentDate": bookingData.date,
+        "status": bookingData.vetId !== "SKIP" ? APPOINTMENT_STATUS.BOOKING_COMPLETE : APPOINTMENT_STATUS.CREATED,
+        "startTime": bookingData.startAt, // Định dạng thời gian
+        "endTime": bookingData.endAt, // Định dạng thời gian
+        "location": customerInfo.address, // Địa điểm
+        "result": null,  // Kết quả
+        "createdAt": new Date(),  // Định dạng cho ZonedDateTime
+        "type": bookingData.type,  // Enum AppointmentType
+        "depositedMoney": serviceInfo.basePrice * 100,  // Số tiền đã đặt cọc
+        "customerId": customerInfo.customerId,  // ID khách hàng
+        "vetId": bookingData.vetId,  // ID bác sĩ thú y
+        "serviceId": bookingData.serviceId ,// ID dịch vụ
+        "distance": 0
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerInfo, vetInfo, serviceInfo, bookingData])
   const handlePayment = async (appointmentCreateRequest) => {
-    const response = await createAppointmentAPI(appointmentCreateRequest)
+    const response = await fetchRedirectPaymentAPI(serviceInfo.basePrice * 1000, "NCB", appointmentCreateRequest)
     console.log(response)
     if (response.status === 200) {
-      toast.success(response.data.message)
+      window.location.href = response.data
     } else {
       toast.error(response.data.message)
     }
@@ -212,17 +214,18 @@ function Payment() {
               <div className="payment-summary mb-4">
                 <h5 className="mb-3">Payment Summary</h5>
                 <div className="row">
-                  <div className="col-6">Subtotal:</div>
-                  <div className="col-6 text-end">$100.00</div>
+                  <div className="col-6">Service Fee:</div>
+                  <div className="col-6 text-end">${(serviceInfo.basePrice * 1000).toLocaleString()}</div>
                 </div>
                 <div className="row">
-                  <div className="col-6">Service Fee:</div>
-                  <div className="col-6 text-end">${serviceInfo.basePrice}</div>
+                  <div className="col-6">Subtotal:</div>
+                  <div className="col-6 text-end">$0</div>
                 </div>
+
                 <hr />
                 <div className="row total">
                   <div className="col-6">Total (incl. tax):</div>
-                  <div className="col-6 text-end">$121.00</div>
+                  <div className="col-6 text-end">${(serviceInfo.basePrice * 1000).toLocaleString()}</div>
                 </div>
               </div>
 

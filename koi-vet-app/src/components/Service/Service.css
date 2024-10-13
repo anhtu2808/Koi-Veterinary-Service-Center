@@ -1,0 +1,18 @@
+.custom-service-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-img-fluid {
+    width: 100%;
+    height: auto;
+    display: block; /* Ensures the image is treated as a block element */
+    object-fit: cover; /* Ensures the image covers the container without stretching */
+  }
+  
+  .custom-price-info {
+    font-size: 0.9rem;
+    color: #555;
+  }
