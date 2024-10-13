@@ -25,9 +25,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
     @Query(value = "SELECT * FROM koi_vet_db.appointment WHERE vet_id = :vetId", nativeQuery = true)
     List<Appointment> findAllByVetId(@Param("vetId") String vetId);
 
+    List<Appointment> findByCustomer_CustomerIdOrderByCreatedAtDesc(String customerId);
+    List<Appointment> findByVeterinarian_VetIdOrderByCreatedAtDesc(String vetId);
     Page<Appointment> findByStatusOrderByCreatedAtDesc(AppointmentStatus status, Pageable pageable);
 
-
+    List<Appointment> findAllByService_ServiceId(String serviceId);
 
 
     List<Appointment> findAllByOrderByCreatedAtDesc();

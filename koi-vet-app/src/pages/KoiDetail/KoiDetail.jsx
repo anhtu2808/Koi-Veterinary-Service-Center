@@ -16,7 +16,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
     weight: "",
     healthStatus: "",
     note: "",
-    image: "",
+    image: null,
     koiId: null,
     customerId: customerId
   })
@@ -32,6 +32,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const treatmentId = searchParams.get('treatmentId');
+  const [image, setImage] = useState(null);
   const appointmentId = searchParams.get('appointmentId');
   const role = useSelector(state => state.user.role);
   const [prescriptions, setPrescriptions] = useState([]);
@@ -39,6 +40,10 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
   const navigate = useNavigate();
   const handleChangeTreatmentData = (name, value) => {
     setTreatmentData({ ...treatmentData, [name]: value === "None" ? null : value });
+  }
+  const handleUploadImage = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +55,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
         onClose();
       }
       if (isUpdate) {   // bác sĩ cập nhật thông tin cá koi
-        await updateKoiInformationAPI(koiData.koiId, koiData);
+        await updateKoiInformationAPI(koiData.koiId, koiData, image);
         const updateTreatment = await updateKoiTreatmentAPI(treatmentData)
         toast.success(updateTreatment.data.message);
         setIsEditing(false);
@@ -64,7 +69,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
       }
       if (isUpdate) {
         setIsEditing(false)
-        const response = await updateKoiInformationAPI(koiData.koiId, koiData);
+        const response = await updateKoiInformationAPI(koiData.koiId, koiData, image);
         console.log("koiData", koiData)
         toast.success(response.data.message);
       }
@@ -130,8 +135,21 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
           </div>
           <div className="col-md-1"></div>
           <div className="col-md-6">
-            <img className="w-100 rounded-3" src="https://bizweb.dktcdn.net/100/307/111/files/ca-koi-tancho-5ff10c55-deb0-4b26-ae3c-5c27d8cf8c89.jpg?v=1533735289075" alt="Koi" />
+            <img className="w-100 koi-profile-image rounded-3" src={image ? URL.createObjectURL(image) : koiData.image} alt="Koi" />
+            {isEditing && ( // Only show the upload input if isEditing is true
+              <div className="form-group mt-3 text-center">
+                <label className="custom-file-upload">
+                  <input
+                    type="file" 
+                    onChange={handleUploadImage}
+                    disabled={!isEditing}
+                  />
+                  Upload Image <i className="fa-solid fa-image"></i>
+                </label>
+              </div>
+            )}
           </div>
+
         </div>
         <div className="form-group d-flex justify-content-between gap-3">
           <div>
@@ -187,7 +205,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
                 name="treatment"
                 onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
                 placeholder="Enter treatment"
-                disabled={(!isEditing && !isCreate )|| role === "CUSTOMER"}
+                disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
               />
             </div>
             <div className="form-group col-md-6">
@@ -214,16 +232,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
           </div>
           : null}
 
-        {/* <div className="form-group">
-          <label>Image URL</label>
-          <input
-            type="text"
-            value={koiData.image}
-            onChange={(e) => setKoiData({ ...koiData, image: e.target.value })}
-            placeholder="Enter image URL"
-            disabled={!isEditing && !isCreate"}
-          />
-        </div> */}
+
 
         <div className="button-group">
           {isCreate && isAppointment ?

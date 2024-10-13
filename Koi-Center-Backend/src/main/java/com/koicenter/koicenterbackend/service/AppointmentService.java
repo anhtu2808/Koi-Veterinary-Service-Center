@@ -51,7 +51,7 @@ public class AppointmentService {
     UserRepository userRepository ;
 
     public List<AppointmentResponse> getAllAppointmentsByCustomerId(String customerId, String status) {
-        List<Appointment> appointments = appointmentRepository.findAllByCustomerId(customerId);
+        List<Appointment> appointments = appointmentRepository.findByCustomer_CustomerIdOrderByCreatedAtDesc(customerId);
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 
 
@@ -74,7 +74,8 @@ public class AppointmentService {
                         .customerName(appointment.getCustomer().getUser().getFullName())
                         .serviceId(appointment.getService().getServiceId())
                         .serviceName(appointment.getService().getServiceName())
-
+                        .code(appointment.getCode())
+                        .distance(appointment.getDistance())
                         .build();
                         if(appointment.getVeterinarian()!=null) {
                             response.setVetId(appointment.getVeterinarian().getVetId());
@@ -120,8 +121,7 @@ public class AppointmentService {
     }
 
     public List<AppointmentResponse> getAllAppointmentByVetId(String vetId, String status) {
-        List<Appointment> appointments = appointmentRepository.findAllByVetId(vetId);
-
+        List<Appointment> appointments = appointmentRepository.findByVeterinarian_VetIdOrderByCreatedAtDesc(vetId);
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 
         if (appointments == null) { // Thêm kiểm tra null
@@ -153,6 +153,8 @@ public class AppointmentService {
                         .customerName(appointment.getCustomer().getUser().getFullName())
                         .serviceId(appointment.getService().getServiceId())
                         .vetId(appointment.getVeterinarian().getVetId())
+                        .code(appointment.getCode())
+                        .distance(appointment.getDistance())
                         .build();
                 appointmentResponses.add(response);
             }

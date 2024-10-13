@@ -1,5 +1,6 @@
 //file này để call API tâp trung
 import api from "../utils/authorizedAxious"
+import axios from "axios";
 
 /* Authentication API*/
 export const fetchLoginAPI = async (username, password) => {
@@ -101,7 +102,7 @@ export const fetchAppointmentByIdAPI = async (appointmentId) => {
 }
 
 export const updateAppointmentAPI = async (appointmentData, appointmentId) => {
-    const response = await api.put(`/appointments/update`, {...appointmentData, appointmentId});
+    const response = await api.put(`/appointments/update`, { ...appointmentData, appointmentId });
     return response.data;
 }
 export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
@@ -112,13 +113,13 @@ export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
 export const addKoiToAppointmentAPI = async (appointmentId, koiData) => {
     const saveKoi = await createKoiAPI(koiData)
 
-    const response = await api.post(`/treatments/kois`, {koiId:saveKoi.data.koiId, appointmentId:appointmentId});
+    const response = await api.post(`/treatments/kois`, { koiId: saveKoi.data.koiId, appointmentId: appointmentId });
     return response.data;
 }
 export const addPondToAppointmentAPI = async (appointmentId, pondData) => {
     const savePond = await createPondAPI(pondData)
 
-    const response = await api.post(`/treatments/ponds`, {pondId:savePond.data.pondId, appointmentId:appointmentId});
+    const response = await api.post(`/treatments/ponds`, { pondId: savePond.data.pondId, appointmentId: appointmentId });
     return response.data;
 }
 //API Schedule
@@ -170,8 +171,9 @@ export const fetchKoisByCustomerIdAPI = async (customerId) => {
     return response.data;
 }
 
-export const updateKoiInformationAPI = async (koiId, data) => {
-    const response = await api.put(`/kois/${koiId}`, data);
+export const updateKoiInformationAPI = async (koiId, koiData,image) => {
+    const imageURL = await fetchUpLoadImageAPI(image);
+    const response = await api.put(`/kois/${koiId}`, {...koiData,image:imageURL});
     return response.data;
 }
 export const createKoiAPI = async (data) => {
@@ -224,8 +226,8 @@ export const createMedicineAPI = async (data) => {
 
 //Prescription API
 export const createPrescriptionAPI = async (data) => {
-        const response = await api.post(`/prescriptions`,data);
-        return response.data;
+    const response = await api.post(`/prescriptions`, data);
+    return response.data;
 }
 
 export const fetchPrescriptionByIdAPI = async (prescriptionId) => {
@@ -240,7 +242,7 @@ export const updatePrescriptionAPI = async (prescriptionId, data) => {
 
 export const deletePrescriptionAPI = async (prescriptionId, medicineId) => {
     const response = await api.delete(
-        `/prescriptions/deletePrescriptionMedicineId`, 
+        `/prescriptions/deletePrescriptionMedicineId`,
         { params: { prescriptionId, medicineId } }
     );
     return response.data;
@@ -276,9 +278,22 @@ export const fetchPrescriptionByAppointmentIdAPI = async (appointmentId) => {
 }
 
 //Payment API
-export const fetchRedirectPaymentAPI = async (amount, bankCode,appointmentData) => {
-    const response = await api.post(`payment/vn-pay?amount=${amount}&bankCode=${bankCode}`,appointmentData)
+export const fetchRedirectPaymentAPI = async (amount, bankCode, appointmentData) => {
+    const response = await api.post(`payment/vn-pay?amount=${amount}&bankCode=${bankCode}`, appointmentData)
     return response.data;
+}
+
+export const fetchUpLoadImageAPI = async (image) => {
+    const response = await api.get(`images/presigned-url?imageName=${image.name}`);
+    const presignedUrl = await response.data; // URL file trên S3 (bỏ query params)
+    await axios.put(presignedUrl, image, {
+        headers: {
+            'Content-Type': image.type,
+        },
+    });
+    const imageURL = presignedUrl.split("?")[0];
+    console.log("imageURL", imageURL)
+    return imageURL;
 }
 
 
