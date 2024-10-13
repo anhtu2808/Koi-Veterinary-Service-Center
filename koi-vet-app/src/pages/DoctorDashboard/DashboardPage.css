@@ -1,0 +1,29 @@
+    .dataCard {
+    border: 1px solid #ccc; /* Card border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Padding inside the card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #fff; /* Card background color */
+  }
+  
+  .headcard {
+    border: 1px solid #ccc; /* Card border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Padding inside the card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #fff; /* Card background color */
+  }
+  
+  .numberCard {
+    height: 300px; /* Set a fixed height for the chart card */
+    width: 500px;
+  }
+  
+  .categoryCard {
+    height: 300px; /* Set a fixed height for the chart card */
+  }
+  
+  .revenueCard {
+    height: 300px; /* Set a fixed height for the chart card */
+  }
+  

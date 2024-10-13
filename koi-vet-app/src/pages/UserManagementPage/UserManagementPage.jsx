@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./UserManagementPage.css";
-import { Link } from "react-router-dom";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import { fetchAllUsersAPI } from "../../apis";
 import { ROLE } from "../../utils/constants";

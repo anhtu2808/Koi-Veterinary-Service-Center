@@ -8,7 +8,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage/HomePage';
 import Medicine from './pages/Medicine/Medicine';
-import DocterDashboard from './pages/DoctorDashboard/DocterDashboard';
 import VeterinarianPage from './pages/VeterinarianPage/VeterinarianPage';
 import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage';
 import MyProfile from './pages/MyProfile/MyProfile';
@@ -45,6 +44,7 @@ import PaymentSuccessPage from './pages/PaymentSuccessPage/PaymentSuccessPage';
 import Rating from './pages/Rating/Rating';
 import ImageUpload from './components/testImage';
 import PaymentCheckout from './pages/PaymentCheckout/PaymentCheckout';
+import DashboardPage from './pages/DoctorDashboard/DashboardPage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -112,7 +112,6 @@ function App() {
                       <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
                       <Route path="/koidetail/:appointmentId" element={<KoiDetail isUpdate={false} isCreate={false} isAppointment={true} />} />
                       <Route path="/ponddetail/:appointmentId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} isAppointment={true} />} />
-                      <Route path="/usermanagement" element={<UserManagementPage />} />
                     </Routes>
                   </ProfileLayout>
 
@@ -130,7 +129,7 @@ function App() {
             <Routes>
               {/* Protected routes */}
               <Route element={<AdminProtectedRoute />}>
-                <Route path="/" element={<DocterDashboard />} />
+                <Route path="/" element={<DashboardPage />} />
                 <Route path="/usermanagement" element={<UserManagementPage />} />
                 <Route path="/appointment" element={<AllAppointment />} />
                 <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
@@ -150,6 +149,7 @@ function App() {
                 <Route path="/medicine" element={<Medicine />} />
                 <Route path="/medpage" element={< MedicineListPage />} />
                 <Route path="/paymentcheckout/:appointmentId" element={<PaymentCheckout />} />
+                <Route path="/usermanagement" element={<UserManagementPage />} />
               </Route>
           
               {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
