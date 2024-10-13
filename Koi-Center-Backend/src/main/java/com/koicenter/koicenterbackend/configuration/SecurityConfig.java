@@ -128,6 +128,10 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "api/v1/news/id").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/news").permitAll()
 
+                            .requestMatchers(HttpMethod.POST, "/api/v1/feedbacks/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/feedbacks/**").permitAll()
+
+
                             .requestMatchers(HttpMethod.GET, "api/v1/mail/sendEmail").permitAll()
                            .requestMatchers(HttpMethod.GET, "api/v1/payment/vn-pay").permitAll()
                             .requestMatchers(HttpMethod.GET, "api/v1/payment/vn-pay-callback").permitAll()

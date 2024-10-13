@@ -29,7 +29,7 @@ public enum ErrorCode {
     INVOICE_ID_NOT_FOUND(401,"Invoice id not found"),
     APPOINTMENT_ID_NOT_FOUND(404,"Appointment id not found"),
     APPOINTMENT_NOT_FOUND(404,"Appointment not found"),
-
+    STAR_NOT_EXISTS(401,"Star must between 0 to 5 " )
     ;
     private int code;
     private String message;
