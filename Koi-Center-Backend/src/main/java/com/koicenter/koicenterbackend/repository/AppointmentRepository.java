@@ -36,4 +36,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
 
     List<Appointment> findAllByOrderByCreatedAtDesc();
     List<Appointment> findByCreatedAtBetween( ZonedDateTime starDate , ZonedDateTime endDate);
+
+
+    @Query(value = "SELECT * FROM appointment WHERE MONTH(created_at) = :month", nativeQuery = true)
+    List<Appointment> findByCreatedAtMonth(@Param("month") int month);
+    @Query(value = "SELECT * FROM appointment WHERE YEAR(created_at) = :year", nativeQuery = true)
+    List<Appointment> findByCreatedAtYear(@Param("year") int year);
+    @Query(value = "SELECT * FROM appointment WHERE Date(created_at) = :date", nativeQuery = true)
+    List<Appointment> findByCreatedAtDate(@Param("date") int date);
+
+
+
 }

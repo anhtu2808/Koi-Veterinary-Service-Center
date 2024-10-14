@@ -41,7 +41,6 @@ public class InvoiceController {
             return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " + time , HttpStatus.NOT_FOUND, null);
         }
         return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
-
     }
 
 }
