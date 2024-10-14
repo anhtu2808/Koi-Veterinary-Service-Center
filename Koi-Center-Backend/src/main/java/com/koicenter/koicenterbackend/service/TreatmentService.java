@@ -164,7 +164,7 @@ public class TreatmentService {
         float price = 0 ;
         float totalQuantity = 0 ;
         for (Delivery delivery : deliverys) {
-        if (delivery.getFromPlace()<=  locationPrice && locationPrice<=delivery.getToPlace()) {
+        if (delivery.getFromPlace()<=  appointment.getDistance() && appointment.getDistance()<=delivery.getToPlace()) {
             price = delivery.getPrice();
             log.info("deliveryPrice" + price);
             }
