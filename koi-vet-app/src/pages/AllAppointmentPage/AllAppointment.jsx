@@ -139,7 +139,7 @@ function AllAppointment() {
               :
               appointments.length === 0 ?
                 <tr>
-                  <td colSpan="7" className="text-center">No appointments found</td>
+                  <td colSpan="9" className="text-center">No appointments found</td>
                 </tr>
                 :
                 appointments.map((appointmentDetail, index) => (

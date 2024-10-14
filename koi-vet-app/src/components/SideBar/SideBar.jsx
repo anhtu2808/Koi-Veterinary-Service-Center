@@ -42,23 +42,16 @@ function SideBar() {
             <i className="fas fa-users"></i> Users
           </Link>
         </li>
-        {role === ROLE.VETERINARIAN && (
+        {(role === ROLE.VETERINARIAN || role === ROLE.STAFF) && (
           <li className="nav-item">
             <Link to="/admin/appointment" className={`nav-link ${location.pathname === '/admin/appointment' ? 'active' : ''}`}>
               <i className="far fa-calendar-alt"></i> All Appointments
             </Link>
           </li>
         )}
-        {role === ROLE.STAFF && (
-          <li className="nav-item">
-            <Link to="/admin/appointment" className={`nav-link ${location.pathname === '/admin/appointment' ? 'active' : ''}`}>
-              <i className="fas fa-sitemap"></i> All Appointments
-            </Link>
-          </li>
-        )}
         <li className="nav-item">
-          <Link to="#" className="nav-link">
-            <i className="far fa-images"></i> Photos
+          <Link to="/admin/servicemanagement" className={`nav-link ${location.pathname === '/admin/servicemanagement' ? 'active' : ''}`}>
+            <i className="fas fa-cogs"></ i> Services Management
           </Link>
         </li>
         <li className="nav-item">

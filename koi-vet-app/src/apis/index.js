@@ -283,6 +283,12 @@ export const fetchRedirectPaymentAPI = async (amount, bankCode, appointmentData)
     return response.data;
 }
 
+export const fetchSecondInfoPaymentAPI = async (appointmentId) => {
+    const response = await api.get(`treatments/secondPayment?appointmentId=${appointmentId}`)
+    return response.data;
+}
+
+//Upload Image API
 export const fetchUpLoadImageAPI = async (image) => {
     const response = await api.get(`images/presigned-url?imageName=${image.name}`);
     const presignedUrl = await response.data; // URL file trên S3 (bỏ query params)
@@ -296,5 +302,57 @@ export const fetchUpLoadImageAPI = async (image) => {
     return imageURL;
 }
 
+
+// User API
+export const fetchAllUsersAPI = async (role) => {
+    const response = await api.get(`/users/get?role=${role}`);
+    return response.data;
+}
+
+// Invoice API
+export const updateInvoiceAPI = async (invoiceId, data) => {
+    const response = await api.put(`/invoices/update/${invoiceId}`, data);
+    return response.data;
+}
+
+//Rating
+export const fetchAllRatingByServiceIdAPI = async (serviceId) => {
+    const response = await api.get(`/feedbacks/${serviceId}`);
+    return response.data;
+}
+
+export const createRatingAPI = async (appointmentId, data) => {
+    const response = await api.post(`/feedbacks/${appointmentId}`, data);
+    return response.data;
+}
+
+
+
+// News API
+export const fetchAllNewsAPI = async () => {
+    const response = await api.get('/news');
+    return response.data;
+}
+
+export const fetchNewsByIdAPI = async (id) => {
+    const response = await api.get(`/news/id?id=${id}`);
+    return response.data;
+}
+
+export const createNewsAPI = async (data) => {
+    const response = await api.post('/news', data);
+    return response.data;
+}
+
+export const updateNewsAPI = async (newId, data) => {
+    const response = await api.put(`/news/update?newId=${newId}`, data);
+    return response.data;
+}
+
+//Home Visit Price API
+export const fetchHomeVisitPriceAPI = async () => {
+    const response = await api.get('/deliveries');
+    return response.data;
+}
 
 
