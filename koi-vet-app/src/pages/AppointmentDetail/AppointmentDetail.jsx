@@ -202,7 +202,7 @@ function AppointmentDetail() {
         <div className="row">
           <div className="mb-3 col-md-6">
             <label htmlFor="appointmentId" className="form-label">
-             Appointment Code
+              Appointment Code
             </label>
             <input
               type="text"
@@ -309,7 +309,7 @@ function AppointmentDetail() {
         </div>
 
         <div className="row mb-3">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label htmlFor="type" className="form-label">
               Appointment Type
             </label>
@@ -326,7 +326,7 @@ function AppointmentDetail() {
               <option value={BOOKING_TYPE.ONLINE}>Online</option>
             </select>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label htmlFor="serviceType" className="form-label">
               Service Type
             </label>
@@ -339,10 +339,24 @@ function AppointmentDetail() {
               disabled
             />
           </div>
+          <div className="col-md-4">
+            <label htmlFor="depositedMoney" className="form-label">
+              Deposited Money (VND) <i className="fa-solid fa-money-bill" ></i>
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="depositedMoney"
+              name="depositedMoney"
+              value={appointment.depositedMoney.toLocaleString()}
+              disabled
+            />
+          </div>
+
         </div>
 
         <div className="row mb-3">
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label htmlFor="appointmentDate" className="form-label">
               Appointment Date <i className="fa-solid fa-calendar" ></i>
             </label>
@@ -356,7 +370,7 @@ function AppointmentDetail() {
               disabled={!isEditing}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label htmlFor="startTime" className="form-label">
               Start Time <i className="fa-solid fa-clock" ></i>
             </label>
@@ -370,7 +384,7 @@ function AppointmentDetail() {
               disabled={!isEditing}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label htmlFor="endTime" className="form-label">
               End Time <i className="fa-solid fa-clock" ></i>
             </label>
@@ -380,6 +394,20 @@ function AppointmentDetail() {
               id="endTime"
               name="endTime"
               value={appointment.endTime}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            />
+          </div>
+          <div className="col-md-3">
+            <label htmlFor="distance" className="form-label ">
+              Distance (km) <i className="fa-solid fa-ruler" ></i>
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              id="distance"
+              name="distance"
+              value={appointment.distance}
               onChange={handleInputChange}
               disabled={!isEditing}
             />
@@ -410,6 +438,7 @@ function AppointmentDetail() {
               disabled={!isEditing}
             />
           </div>
+          
         </div>
 
         <div className="d-flex justify-content-between align-items-center mb-3">
