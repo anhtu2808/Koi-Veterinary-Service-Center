@@ -46,6 +46,8 @@ public class TreatmentService {
     ServicesRepository servicesRepository;
     KoiMapper koiMapper ;
     DeliveryRepository deliveryRepository ;
+    private final InvoiceRepository invoiceRepository;
+
     public <T> List<T> createAppointments(List<String> selected, AppointmentRequest appointmentRequest) {
         AppointmentResponse appointmentResponse = appointmentService.createAppointment(appointmentRequest);
         log.info("AppointmentID " + appointmentResponse.getAppointmentId());
@@ -156,7 +158,7 @@ public class TreatmentService {
         List<KoiTreatment> koiTreatments = koiTreatmentRepository.findKoiTreatmentsByAppointment_AppointmentId(appointment.getAppointmentId());
         List<PondTreatment> pondTreatments = pondTreatmentRepository.findPondTreatmentsByAppointment_AppointmentId(appointment.getAppointmentId());
         List<Delivery> deliverys= deliveryRepository.findAll() ;
-
+        Invoice invoice = invoiceRepository.findByAppointment_AppointmentId(appointmentId);
         float locationPrice = 0 ; // km
         int quantity  = 0 ;
         float price = 0 ;
@@ -178,7 +180,9 @@ public class TreatmentService {
             appointmentResponse.setQuantity(quantity);
             appointmentResponse.setLocationPrice(locationPrice);
             appointmentResponse.setTotalQuantity(totalQuantity);
-            appointmentResponse.setBalance(totalQuantity+locationPrice);
+            appointmentResponse.setUnpaidMoney(totalQuantity+locationPrice);
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney());
+            appointmentResponse.setInvoiceId(invoice.getInvoiceId());
             return(T)appointmentResponse;
         }else if (!pondTreatments.isEmpty()){
             for(PondTreatment pondTreatment : pondTreatments){
@@ -189,9 +193,12 @@ public class TreatmentService {
             log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
             appointmentResponse.setQuantity(quantity);
-            appointmentResponse.setLocationPrice(locationPrice);
-            appointmentResponse.setTotalQuantity(totalQuantity);
-            appointmentResponse.setBalance(totalQuantity+locationPrice);
+            appointmentResponse.setLocationPrice(locationPrice); // gia di chuyen
+            appointmentResponse.setTotalQuantity(totalQuantity); // gia tien con da kham
+            appointmentResponse.setUnpaidMoney(totalQuantity+locationPrice); // tong con lai phai tra
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney());// so tien da tra
+            appointmentResponse.setInvoiceId(invoice.getInvoiceId());
+
             return(T)appointmentResponse;
         }
         return null ;

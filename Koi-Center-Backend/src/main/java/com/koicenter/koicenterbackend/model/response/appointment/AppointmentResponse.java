@@ -36,8 +36,9 @@ public class AppointmentResponse {
      float locationPrice ;
      int quantity ;
      float totalQuantity ;
-     float balance ;
+     float unpaidMoney ;
      String code ;
+     String invoiceId ;
 
 
 }
