@@ -180,7 +180,8 @@ public class TreatmentService {
             appointmentResponse.setQuantity(quantity);
             appointmentResponse.setLocationPrice(locationPrice);
             appointmentResponse.setTotalQuantity(totalQuantity);
-            appointmentResponse.setBalance(totalQuantity+locationPrice);
+            appointmentResponse.setUnpaidMoney(totalQuantity+locationPrice);
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney());
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
             return(T)appointmentResponse;
         }else if (!pondTreatments.isEmpty()){
@@ -192,9 +193,10 @@ public class TreatmentService {
             log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
             appointmentResponse.setQuantity(quantity);
-            appointmentResponse.setLocationPrice(locationPrice);
-            appointmentResponse.setTotalQuantity(totalQuantity);
-            appointmentResponse.setBalance(totalQuantity+locationPrice);
+            appointmentResponse.setLocationPrice(locationPrice); // gia di chuyen
+            appointmentResponse.setTotalQuantity(totalQuantity); // gia tien con da kham
+            appointmentResponse.setUnpaidMoney(totalQuantity+locationPrice); // tong con lai phai tra
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney());// so tien da tra
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
 
             return(T)appointmentResponse;

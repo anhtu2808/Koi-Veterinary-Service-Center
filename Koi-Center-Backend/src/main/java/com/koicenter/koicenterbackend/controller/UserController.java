@@ -60,4 +60,13 @@ public class UserController {
         List<UserResponse> userList = userService.getListUserByRole(role);
         return ResponseObject.APIRepsonse(200, "List", HttpStatus.OK, userList);
     }
+    @DeleteMapping("")
+    public ResponseEntity<ResponseObject> deleteUser(@RequestParam String userId){
+        boolean isDeleted = userService.deleteUser(userId);
+        if(isDeleted){
+            return ResponseObject.APIRepsonse(200, "User deleted successfully!", HttpStatus.OK, null);
+        }else {
+            return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, null);
+        }
+    }
 }

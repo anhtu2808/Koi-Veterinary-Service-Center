@@ -189,7 +189,7 @@ public class UserService {
         List<UserResponse> userResponseList = new ArrayList<>();
 
         for (User user : userList) {
-            if (user.getRole() == Role.CUSTOMER) {
+            if (user.getRole() == Role.CUSTOMER && user.isStatus()) {
                 UserResponse userResponse = UserResponse.builder()
                         .user_id(user.getUserId())
                         .username(user.getUsername())
@@ -211,7 +211,7 @@ public class UserService {
                     userResponse.setCustomer(customerDTO);
                     userResponseList.add(userResponse);
                 }
-            } else if (user.getRole() == Role.VETERINARIAN) {
+            } else if (user.getRole() == Role.VETERINARIAN && user.isStatus()) {
                 UserResponse userResponse = UserResponse.builder()
                         .user_id(user.getUserId())
                         .username(user.getUsername())
@@ -235,7 +235,7 @@ public class UserService {
                     userResponse.setVeterinarian(veterinarianDTO);
                     userResponseList.add(userResponse);
                 }
-            } else if (user.getRole() == Role.STAFF) {
+            } else if (user.getRole() == Role.STAFF && user.isStatus()) {
                 UserResponse userResponse = UserResponse.builder()
                         .user_id(user.getUserId())
                         .username(user.getUsername())
@@ -263,6 +263,17 @@ public class UserService {
             }
         }
         return userResponseList;
+    }
+
+    public boolean deleteUser(String userId) {
+        try {
+            User user = userRepository.findByUserId(userId);
+            user.setStatus(false);
+            userRepository.save(user);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
     }
 }
 
