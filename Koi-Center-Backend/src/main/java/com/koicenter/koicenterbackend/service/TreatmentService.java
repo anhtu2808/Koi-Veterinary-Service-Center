@@ -177,11 +177,12 @@ public class TreatmentService {
             locationPrice = price * appointment.getDistance() ;
             log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
-            appointmentResponse.setQuantity(quantity);
-            appointmentResponse.setLocationPrice(locationPrice);
-            appointmentResponse.setTotalQuantity(totalQuantity);
-            appointmentResponse.setUnpaidMoney(totalQuantity+locationPrice);
-            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney());
+            appointmentResponse.setQuantity(quantity); // so luong ca pond
+            appointmentResponse.setTotalHomeVisitFee(locationPrice); // tong (gia phi di chuyen )
+            appointmentResponse.setHomeVisitPrice(price); // gia tien theo khoang cach
+            appointmentResponse.setTotalKoiPondFee(totalQuantity); // tien ca tien pond * quantity
+            appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney()); // tien da lay
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
             return(T)appointmentResponse;
         }else if (!pondTreatments.isEmpty()){
@@ -192,12 +193,14 @@ public class TreatmentService {
             locationPrice = price * appointment.getDistance() ;
             log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
-            appointmentResponse.setQuantity(quantity);
-            appointmentResponse.setLocationPrice(locationPrice); // gia di chuyen
-            appointmentResponse.setTotalQuantity(totalQuantity); // gia tien con da kham
-            appointmentResponse.setUnpaidMoney(totalQuantity+locationPrice); // tong con lai phai tra
-            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney());// so tien da tra
+            appointmentResponse.setQuantity(quantity); // so luong ca pond
+            appointmentResponse.setTotalHomeVisitFee(locationPrice); // tong (gia phi di chuyen )
+            appointmentResponse.setHomeVisitPrice(price); // gia tien theo khoang cach
+            appointmentResponse.setTotalKoiPondFee(totalQuantity); // tien ca tien pond * quantity
+            appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney()); // tien da lay
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
+
 
             return(T)appointmentResponse;
         }
