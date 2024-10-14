@@ -38,6 +38,7 @@ public class AppointmentResponse {
      float totalQuantity ;
      float balance ;
      String code ;
+     String invoiceId ;
 
 
 }
