@@ -264,5 +264,16 @@ public class UserService {
         }
         return userResponseList;
     }
+
+    public boolean deleteUser(String userId) {
+        try {
+            User user = userRepository.findByUserId(userId);
+            user.setStatus(false);
+            userRepository.save(user);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
 }
 
