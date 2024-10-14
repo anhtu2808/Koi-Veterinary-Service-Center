@@ -163,11 +163,12 @@ function AppointmentDetail() {
       if (!confirmAction) {
         return;
       } else {
-        setAppointment({ ...appointment, status: APPOINTMENT_STATUS.FINISH })
-        console.log({ ...appointment, status: APPOINTMENT_STATUS.FINISH });
-        updateAppointment({ ...appointment, status: APPOINTMENT_STATUS.FINISH }, appointmentId)
+        setAppointment({ ...appointment, status: APPOINTMENT_STATUS.READY_FOR_PAYMENT });
+        console.log({ ...appointment, status: APPOINTMENT_STATUS.READY_FOR_PAYMENT });
+        updateAppointment({ ...appointment, status: APPOINTMENT_STATUS.READY_FOR_PAYMENT }, appointmentId)
       }
     }
+    setIsEditing(false);
 
   }
   const handleSubmit = async (e) => {
@@ -262,7 +263,7 @@ function AppointmentDetail() {
                   onClick={() => handleStartFinish()}
                 >
                   {appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE ? "Start" : null}
-                  {appointment.status === APPOINTMENT_STATUS.PROCESS ? "Finish" : null}
+                  {appointment.status === APPOINTMENT_STATUS.PROCESS ? "Checkout" : null}
 
                 </button>
                 : null}
@@ -453,14 +454,14 @@ function AppointmentDetail() {
                   {isEditing ? "Cancel" : "Edit"}
                 </button>
               </div>
-              {appointment.status === APPOINTMENT_STATUS.FINISH ?
+              {appointment.status === APPOINTMENT_STATUS.READY_FOR_PAYMENT && !isEditing ?
 
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={() => navigate(`/admin/paymentcheckout/${appointmentId}`)}
+                  onClick={() => navigate(`/admin/paymentcheckout/${appointmentId}`,{ state: { appointment } })}
                 >
-                  Checkout
+                  Invoice
                 </button> : null}
             </>
           )}

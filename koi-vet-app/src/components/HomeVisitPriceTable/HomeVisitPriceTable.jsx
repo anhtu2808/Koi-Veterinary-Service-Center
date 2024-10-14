@@ -15,14 +15,14 @@ const HomeVisitPriceTable = () => {
   }, []);
   return (
     <div className="delivery-pricing-table">
-      <h1 className="delivery-pricing-title">Delivery Pricing Table</h1>
+      <h1 className="delivery-pricing-title">Home Visit Pricing Table</h1>
       <table className="delivery-pricing-table-content">
         <thead>
           <tr>
             <th>ID</th>
             <th>From (km)</th>
             <th>To (km)</th>
-            <th>Price (VND)</th>
+            <th>Price (VND/km)</th>
           </tr>
         </thead>
         <tbody>
