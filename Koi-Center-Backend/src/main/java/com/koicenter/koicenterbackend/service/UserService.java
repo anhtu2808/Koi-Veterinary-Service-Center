@@ -4,15 +4,20 @@ import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.mapper.UserMapper;
 import com.koicenter.koicenterbackend.model.entity.Customer;
+import com.koicenter.koicenterbackend.model.entity.Staff;
 import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
+import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
 import com.koicenter.koicenterbackend.model.request.user.UpdateUserRequest;
+import com.koicenter.koicenterbackend.model.response.staff.StaffDTO;
 import com.koicenter.koicenterbackend.model.response.user.CustomerDTO;
 import com.koicenter.koicenterbackend.model.response.user.UserResponse;
 
 import com.koicenter.koicenterbackend.model.response.veterinarian.VeterinarianDTO;
 import com.koicenter.koicenterbackend.repository.CustomerRepository;
+import com.koicenter.koicenterbackend.repository.StaffRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.repository.VeterinarianRepository;
 import io.jsonwebtoken.Claims;
@@ -28,6 +33,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -48,6 +55,8 @@ public class UserService {
 
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    private StaffRepository staffRepository;
 
     public boolean getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
@@ -153,14 +162,15 @@ public class UserService {
         user.setFullName(newUser.getFullName());
         user.setRole(Role.VETERINARIAN);
         user.setStatus(true);
-         return userRepository.save(user);
+        return userRepository.save(user);
 
 
     }
 
     public boolean updateUser(UpdateUserRequest updateUserRequest) {
         try {
-            Customer customer = customerRepository.findByUser_UserId(updateUserRequest.getUserId());;
+            Customer customer = customerRepository.findByUser_UserId(updateUserRequest.getUserId());
+            ;
             customer.setAddress(updateUserRequest.getAddress());
             customer.setPhone(updateUserRequest.getPhoneNumber());
             User user = userRepository.findByUserId(updateUserRequest.getUserId());
@@ -168,9 +178,91 @@ public class UserService {
             user.setEmail(updateUserRequest.getEmail());
             userRepository.save(user);
             customerRepository.save(customer);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
-     return true;
+        return true;
+    }
+
+    public List<UserResponse> getListUserByRole(String role) {
+        List<User> userList = userRepository.findByRole(Role.valueOf(role));
+        List<UserResponse> userResponseList = new ArrayList<>();
+
+        for (User user : userList) {
+            if (user.getRole() == Role.CUSTOMER) {
+                UserResponse userResponse = UserResponse.builder()
+                        .user_id(user.getUserId())
+                        .username(user.getUsername())
+                        .fullName(user.getFullName())
+                        .role(user.getRole())
+                        .status(user.isStatus())
+                        .email(user.getEmail())
+                        .veterinarian(null)
+                        .staff(null)
+                        .build();
+                Customer customer = customerRepository.findByUser_UserId(user.getUserId());
+                if (customer != null) {
+                    CustomerDTO customerDTO = CustomerDTO.builder()
+                            .customerId(customer.getCustomerId())
+                            .phone(customer.getPhone())
+                            .address(customer.getAddress())
+                            .image(customer.getImage())
+                            .build();
+                    userResponse.setCustomer(customerDTO);
+                    userResponseList.add(userResponse);
+                }
+            } else if (user.getRole() == Role.VETERINARIAN) {
+                UserResponse userResponse = UserResponse.builder()
+                        .user_id(user.getUserId())
+                        .username(user.getUsername())
+                        .fullName(user.getFullName())
+                        .role(user.getRole())
+                        .status(user.isStatus())
+                        .email(user.getEmail())
+                        .customer(null)
+                        .staff(null)
+                        .build();
+                Veterinarian veterinarian = veterinarianRepository.findByUserId(user.getUserId());
+                if (veterinarian != null) {
+                    VeterinarianDTO veterinarianDTO = VeterinarianDTO.builder()
+                            .phone(veterinarian.getPhone())
+                            .vetId(veterinarian.getVetId())
+                            .description(veterinarian.getDescription())
+                            .image(veterinarian.getImage())
+                            .googleMeet(veterinarian.getGoogleMeet())
+                            .veterinarianStatus(veterinarian.getStatus())
+                            .build();
+                    userResponse.setVeterinarian(veterinarianDTO);
+                    userResponseList.add(userResponse);
+                }
+            } else if (user.getRole() == Role.STAFF) {
+                UserResponse userResponse = UserResponse.builder()
+                        .user_id(user.getUserId())
+                        .username(user.getUsername())
+                        .fullName(user.getFullName())
+                        .role(user.getRole())
+                        .status(user.isStatus())
+                        .email(user.getEmail())
+                        .customer(null)
+                        .veterinarian(null)
+                        .build();
+                Staff staff = staffRepository.findByUser_UserId(user.getUserId());
+                if (staff != null) {
+                    StaffDTO staffDTO = StaffDTO.builder()
+                            .staffId(staff.getStaffId())
+                            .salary(staff.getSalary())
+                            .hireDate(staff.getHireDate())
+                            .phone(staff.getPhone())
+                            .image(staff.getImage())
+                            .address(staff.getAddress())
+                            .status(staff.getStatus())
+                            .build();
+                    userResponse.setStaff(staffDTO);
+                    userResponseList.add(userResponse);
+                }
+            }
+        }
+        return userResponseList;
     }
 }
+
