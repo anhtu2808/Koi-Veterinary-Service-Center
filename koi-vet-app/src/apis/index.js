@@ -349,4 +349,10 @@ export const updateNewsAPI = async (newId, data) => {
     return response.data;
 }
 
+//Home Visit Price API
+export const fetchHomeVisitPriceAPI = async () => {
+    const response = await api.get('/deliveries');
+    return response.data;
+}
+
 
