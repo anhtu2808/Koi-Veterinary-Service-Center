@@ -2,6 +2,9 @@ import React from "react";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 
+defaults.maintainAspectRatio = false;
+defaults.responsive = true;
+
 function DashboardPage() {
   return (
     <div className="container">

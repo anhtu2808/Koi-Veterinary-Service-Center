@@ -310,3 +310,38 @@ export const fetchAllUsersAPI = async (role) => {
 }
 
 
+//Rating
+export const fetchAllRatingByServiceIdAPI = async (serviceId) => {
+    const response = await api.get(`/feedbacks/${serviceId}`);
+    return response.data;
+}
+
+export const createRatingAPI = async (appointmentId, data) => {
+    const response = await api.post(`/feedbacks/${appointmentId}`, data);
+    return response.data;
+}
+
+
+
+// News API
+export const fetchAllNewsAPI = async () => {
+    const response = await api.get('/news');
+    return response.data;
+}
+
+export const fetchNewsByIdAPI = async (id) => {
+    const response = await api.get(`/news/id?id=${id}`);
+    return response.data;
+}
+
+export const createNewsAPI = async (data) => {
+    const response = await api.post('/news', data);
+    return response.data;
+}
+
+export const updateNewsAPI = async (newId, data) => {
+    const response = await api.put(`/news/update?newId=${newId}`, data);
+    return response.data;
+}
+
+
