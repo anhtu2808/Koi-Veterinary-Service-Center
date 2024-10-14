@@ -92,15 +92,7 @@ th {
     background-color: #f1f3f4;
     font-weight: 600;
 }
-.status {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 12px;
-}
-.status {
-    background-color: #e8f0fe;
-    color: #1a73e8;
-}
+
 .role.employee {
     background-color: #fce8e6;
     color: #ea4335;
@@ -109,13 +101,4 @@ th {
     margin-right: 10px;
     color: #5f6368;
     cursor: pointer;
-}
-.pagination {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 20px;
-}
-.pagination select, .pagination span {
-    margin-right: 10px;
 }

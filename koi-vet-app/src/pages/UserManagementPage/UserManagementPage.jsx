@@ -74,13 +74,27 @@ function UserManagementPage() {
       </nav>
       <div className="table-responsive">
         <table className="table table-striped table-sm tableleft">
+          <colgroup>
+            <col style={{ width: "10%" }} /> {/* Image */}
+            <col style={{ width: "15%" }} /> {/* Username */}
+            <col style={{ width: "15%" }} /> {/* Fullname */}
+            <col style={{ width: "20%" }} /> {/* Email */}
+            <col style={{ width: "10%" }} /> {/* Phone */}
+            {(role === ROLE.CUSTOMER || role === ROLE.STAFF) && (
+              <col style={{ width: "20%" }} />
+            )}
+            <col style={{ width: "10%" }} /> {/* Action */}
+          </colgroup>
           <thead>
             <tr>
               <th>Image</th>
               <th>Username</th>
+              <th>Fullname</th>
               <th>Email</th>
               <th>Phone</th>
-              <th>Status</th>
+              {(role === ROLE.CUSTOMER || role === ROLE.STAFF) && (
+                <th>Address</th>
+              )}
               <th>Action</th>
             </tr>
           </thead>
@@ -92,6 +106,7 @@ function UserManagementPage() {
                     <img src={user.image} alt="User" className="img-fluid" />
                   </td>
                   <td>{user.username}</td>
+                  <td>{user.fullName}</td>
                   <td>{user.email}</td>
                   <td>
                     {role === ROLE.CUSTOMER
@@ -100,7 +115,9 @@ function UserManagementPage() {
                       ? user.veterinarian?.phone
                       : user.staff?.phone}
                   </td>
-                  <td>{user.status}</td>
+                  {(role === ROLE.CUSTOMER || role === ROLE.STAFF) && (
+                    <td>{user.customer?.address || user.staff?.address}</td>
+                  )}
                   <td>
                     <button className="btn btn-sm btn-outline-secondary">
                       <i className="fas fa-edit"></i>
