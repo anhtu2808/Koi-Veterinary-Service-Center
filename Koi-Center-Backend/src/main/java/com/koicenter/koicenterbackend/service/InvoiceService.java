@@ -126,9 +126,12 @@ public class InvoiceService {
                 log.info("Appointment ID : " + appointment1.getAppointmentId());
             }
         }
-//        if(time="month"){
-//
-//        }
+        else if(time=="month"){
+            Appointment appointment = appointmentRepository.findAllByOrderByCreatedAtDesc().stream().findFirst().orElseThrow(() -> new AppException(
+                    ErrorCode.APPOINTMENT_NOT_FOUND.getCode(),
+                    ErrorCode.APPOINTMENT_NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND));
+        }
         return dashboardResponse ;
     }
 
