@@ -11,13 +11,18 @@ const PaymentCheckout = () => {
   const navigate = useNavigate();
 
   const handleCheckout = async () => {
-    const response = await updateInvoiceAPI(appointmentDetail.invoiceId, {
-      "updateDate": new Date(),
-      "totalPrice": appointmentDetail.depositedMoney + appointmentDetail.balance,
-      "paymentStatus": true,
-      "appointmentId": appointmentId
-    })
-    toast.success("Checkout successful");
+    const confirmAction = window.confirm("Are you sure to confirm checkout?");
+    if (!confirmAction) {
+      return;
+    } else {
+      await updateInvoiceAPI(appointmentDetail.invoiceId, {
+        "updateDate": new Date(),
+        "totalPrice": appointmentDetail.depositedMoney + appointmentDetail.balance,
+        "paymentStatus": true,
+        "appointmentId": appointmentId
+      })
+      toast.success("Checkout successful");
+    }
   }
 
   useEffect(() => {
@@ -84,7 +89,7 @@ const PaymentCheckout = () => {
 
                 <div className="summary">
                   <p><strong>Deposited Money:</strong> {appointmentDetail.depositedMoney} VND</p>
-                  <p><strong>Balance:</strong> {appointmentDetail.balance} VND</p>
+                  <p><strong>Balance:</strong> {appointmentDetail.balanceDue} VND</p>
                 </div>
               </div>
             </>
@@ -92,9 +97,9 @@ const PaymentCheckout = () => {
         }
 
       </div>
-      <div className='button-container d-flex justify-content-between'>
+      <div className='button-container d-flex justify-content-between mt-3'>
         <button className='btn btn-primary' onClick={() => navigate(-1)}>Back</button>
-        <button className='btn btn-primary' onClick={() => handleCheckout()}>Checkout</button>
+        <button className='btn btn-primary' onClick={() => handleCheckout()}>Confirm Checkout</button>
       </div>
     </div>
 
