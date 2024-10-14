@@ -309,4 +309,9 @@ export const fetchAllUsersAPI = async (role) => {
     return response.data;
 }
 
+// Invoice API
+export const updateInvoiceAPI = async (invoiceId, data) => {
+    const response = await api.put(`/invoices/update/${invoiceId}`, data);
+    return response.data;
+}
 

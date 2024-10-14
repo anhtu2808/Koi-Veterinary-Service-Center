@@ -202,13 +202,13 @@ function AppointmentDetail() {
         <div className="row">
           <div className="mb-3 col-md-6">
             <label htmlFor="appointmentId" className="form-label">
-              Appointment ID
+             Appointment Code
             </label>
             <input
               type="text"
               className="form-control"
               id="appointmentId"
-              value={appointment.appointmentId}
+              value={appointment.code}
               disabled
             />
           </div>
@@ -431,7 +431,7 @@ function AppointmentDetail() {
                   className="btn btn-primary"
                   onClick={() => navigate(`/admin/paymentcheckout/${appointmentId}`)}
                 >
-                  Create Bill
+                  Checkout
                 </button> : null}
             </>
           )}
