@@ -10,6 +10,7 @@ import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.enums.VeterinarianStatus;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
+import com.koicenter.koicenterbackend.model.request.authentication.UpdatePasswordRequest;
 import com.koicenter.koicenterbackend.model.request.user.UpdateUserRequest;
 import com.koicenter.koicenterbackend.model.response.staff.StaffDTO;
 import com.koicenter.koicenterbackend.model.response.user.CustomerDTO;
@@ -26,6 +27,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -274,6 +276,15 @@ public class UserService {
         }catch (Exception e) {
             return false;
         }
+    }
+    @Transactional
+    public boolean updatePassword(UpdatePasswordRequest passwordRequest) {
+        User user = userRepository.findByUserId(passwordRequest.getUserId());
+        if (encoder.matches(passwordRequest.getCurrentPassword(), user.getPassword())) {
+            userRepository.updatePassword(encoder.encode(passwordRequest.getNewPassword()), user.getUserId());
+            return true;
+        }
+        return false;
     }
 }
 
