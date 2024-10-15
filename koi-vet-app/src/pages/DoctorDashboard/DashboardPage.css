@@ -15,8 +15,11 @@
   }
   
   .numberCard {
-    height: 300px; /* Set a fixed height for the chart card */
-    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 350px; /* Set a fixed height for the chart card */
+    margin: 20px 1px;
   }
   
   .categoryCard {
@@ -27,3 +30,39 @@
     height: 300px; /* Set a fixed height for the chart card */
   }
   
+  .appointment-dashboard {
+    margin-top: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+  }
+
+  .doughnut-line-chart{
+    margin-bottom: 20px;
+  }
+
+  .dashboard-card{
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .dataCard, .headcard {
+    color: white; /* Change text color to white */
+  }
+  
+  .nav-link {
+    color: white !important; /* Ensure tab links are white */
+  }
+  
+  .card {
+    color: white; /* Card text color */
+  }
+  
+  .dataCard, .headcard, .card {
+    border: 1px solid #204e9a; /* Match the border with the card background */
+    border-radius: 8px;         /* Rounded corners for consistency */
+    padding: 16px;              /* Padding inside the card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #204e9a;  /* Card background color */
+    color: white;               /* Ensure text is white */
+  }
