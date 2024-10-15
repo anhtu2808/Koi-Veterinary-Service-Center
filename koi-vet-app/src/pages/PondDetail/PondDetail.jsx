@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./PondDetail.css";
 import pond_default from "../../assets/img/pond_default.jpg"
-import { fetchPondByPondIdAPI, updatePondInformationAPI, addPondToAppointmentAPI, updatePondTreatmentAPI, createPondAPI } from "../../apis";
+import { fetchPondByPondIdAPI, updatePondInformationAPI, addPondToAppointmentAPI, updatePondTreatmentAPI, createPondAPI, fetchTreatmentByIdAPI, fetchPrescriptionByAppointmentIdAPI } from "../../apis";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -35,15 +35,31 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
   const role = useSelector(state => state?.user?.role);
   const { pondId } = useParams();
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchPondData = async (pondId) => {
-      const response = await fetchPondByPondIdAPI(pondId);
-      setPondData(response.data);
-    };
 
-    fetchPondData(pondId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const fetchPrescriptions = async () => {
+    const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
+    setPrescriptions(response.data)
+  }
+  const fetchTreatment = async () => {
+    const response = await fetchTreatmentByIdAPI(treatmentId);
+    setTreatmentData({ ...treatmentData, ...response.data })
+    setPondData(response.data.pond)
+  }
+  const fetchPondByPondId = async () => {
+    const response = await fetchPondByPondIdAPI(pondId);
+    setPondData(response.data)
+  };
+  useEffect(() => {
+    if (!isCreate) { // nếu không trong chế độ create thì mới lấy dữ liệu cá koi
+      if (isAppointment) {
+        fetchTreatment(); // lấy dữ liệu treatment
+        fetchPrescriptions(); // lấy dữ liệu đơn thuốc
+      } else {
+        fetchPondByPondId(); // lấy dữ liệu hồ cá
+      }
+    }
+
+  }, [pondId, isCreate, cusId, appointmentId, treatmentId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -133,11 +149,15 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
         <div className="col-md-4 ">
           {renderField("Depth (m)", pondData.depth, "depth")}
           {renderField("Perimeter (m)", pondData.perimeter, "perimeter")}
+          <div className="col-md-12">
+            <label htmlFor="notes" className="form-label">Notes</label>
+            <textarea className=" form-control pb-3"  id="notes" name="notes" value={pondData.notes} onChange={handleInputChange} disabled={!isEditing && !isCreate}></textarea>
+          </div>
         </div>
         <div className="col-md-1"> </div>
         <div className="col-md-7 text-center">
-          <h5>Hình ảnh hồ cá pond</h5>
-          <img src={pondData.image || pond_default} alt="Pond" className="img-fluid rounded" />
+          <label className="form-label text-start">Pond Image</label>
+          <img src={pondData.image || pond_default} alt="Pond" className=" w-100 koi-profile-image rounded-3" />
 
         </div>
         <div className="col-md-6 mt-4">
@@ -150,7 +170,7 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
           {renderField("Water Quality", pondData.waterQuality, "waterQuality")}
         </div>
         {isAppointment ?
-          <div className="gap-6 row">
+          < >
             <div className="form-group col-md-6">
               <label>Health Issue</label>
               <textarea
@@ -192,13 +212,10 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
               <button type="button" className="btn btn-primary">Add Prescription</button>
               <button type="button" className="btn btn-primary">View Prescriptions</button>
             </div>
-          </div>
+          </>
           : null}
 
-        <div className="col-md-12">
-          <label htmlFor="notes" className="form-label">Notes</label>
-          <textarea className="form-control" id="notes" name="notes" value={pondData.notes} onChange={handleInputChange} disabled={!isEditing && !isCreate}></textarea>
-        </div>
+
 
         <div className="button-group mt-4">
           {isCreate && isAppointment ?
