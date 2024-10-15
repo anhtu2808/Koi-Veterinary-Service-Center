@@ -1,5 +1,7 @@
 package com.koicenter.koicenterbackend.service;
 
+import com.koicenter.koicenterbackend.exception.AppException;
+import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.mapper.PondMapper;
 import com.koicenter.koicenterbackend.mapper.PondTreatmentMapper;
 import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
@@ -20,6 +22,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -80,11 +83,16 @@ public class TreatmentService {
 
     public PondTreatmentResponse updatePondTreatment(PondTreatmentRequest pondTreatmentRequest) {
 
-        PondTreatment pondTreatment = pondTreatmentRepository.findById(pondTreatmentRequest.getPondTreatmentId()).orElseThrow(() ->
-                new RuntimeException("PondTreatment not found"));
+        PondTreatment pondTreatment = pondTreatmentRepository.findById(pondTreatmentRequest.getPondTreatmentId()).orElseThrow(() -> new AppException(
+                        ErrorCode.PONDTREATMENT_ID_NOT_FOUND.getCode(),
+                        ErrorCode.PONDTREATMENT_ID_NOT_FOUND.getMessage(),
+                        HttpStatus.NOT_FOUND));
 
         if (pondTreatmentRequest.getPrescription_id() != null) {
-            Prescription prescription = prescriptionRepository.findById(pondTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
+            Prescription prescription = prescriptionRepository.findById(pondTreatmentRequest.getPrescription_id()).orElseThrow(() -> new AppException(
+                    ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getCode(),
+                    ErrorCode.PRESCRIPTION_MEDICINE_ID_NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND));
             pondTreatment.setPrescription(prescription);
         } else {
             pondTreatment.setPrescription(null);
@@ -104,10 +112,17 @@ public class TreatmentService {
     public KoiTreatmentResponse updateKoiTreatment(KoiTreatmentRequest koiTreatmentRequest) {
 
         KoiTreatment koiTreatment = koiTreatmentRepository.findById(koiTreatmentRequest.getKoiTreatmentId()).orElseThrow(
-                () -> new RuntimeException("Not Found KoiTreatment ")
+                () -> new AppException(
+                        ErrorCode.KOITREATMENT_ID_NOT_FOUND.getCode(),
+                        ErrorCode.KOITREATMENT_ID_NOT_FOUND.getMessage(),
+                        HttpStatus.NOT_FOUND)
         );
         if (koiTreatmentRequest.getPrescription_id() != null) {
-            Prescription prescription = prescriptionRepository.findById(koiTreatmentRequest.getPrescription_id()).orElseThrow(() -> new RuntimeException("Not Found Precepstion "));
+            Prescription prescription = prescriptionRepository.findById(koiTreatmentRequest.getPrescription_id()).orElseThrow(() -> new AppException(
+                    ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getCode(),
+                    ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND
+            ));
             koiTreatment.setPrescription(prescription);
         } else {
             koiTreatment.setPrescription(null);
@@ -127,12 +142,13 @@ public class TreatmentService {
     public <T> T searchTreamentByKoiIdOrPondId(String id) {
         KoiTreatment koiTreatment = koiTreatmentRepository.findKoiTreatmentByKoiTreatmentId(id);
         PondTreatment pondTreatment = pondTreatmentRepository.findPondTreatmentByPondTreatmentId(id);
-//        log.info("koi treament ID "+ koiTreatment.getKoi().getKoiId());
-//        log.info("pond treament ID "+ pondTreatment.getPond().getPondId());
-
         if (pondTreatment != null) {
             PondTreatmentResponse pondTreatmentResponse = new PondTreatmentResponse();
-            Pond pond = pondRepository.findById(pondTreatment.getPond().getPondId()).orElseThrow(() -> new RuntimeException("Not Found Pond"));
+            Pond pond = pondRepository.findById(pondTreatment.getPond().getPondId()).orElseThrow(() -> new AppException(
+                    ErrorCode.POND_ID_NOT_FOUND.getCode(),
+                    ErrorCode.POND_ID_NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND
+            ));
             pondTreatmentResponse.setPondId(pondTreatment.getPond().getPondId());
             pondTreatmentResponse.setPondTreatmentId(id);
             pondTreatmentResponse.setPond(pondMapper.toPondResponse(pond));
@@ -142,7 +158,11 @@ public class TreatmentService {
             return (T) pondTreatmentResponse;
         } else if (koiTreatment != null) {
             KoiTreatmentResponse koiTreatmentResponse = new KoiTreatmentResponse();
-            Koi koi = koiRepository.findById(koiTreatment.getKoi().getKoiId()).orElseThrow(() -> new RuntimeException("Not Found Koi"));
+            Koi koi = koiRepository.findById(koiTreatment.getKoi().getKoiId()).orElseThrow(() -> new AppException(
+                    ErrorCode.KOI_ID_NOT_FOUND.getCode(),
+                    ErrorCode.KOI_ID_NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND
+            ));
             koiTreatmentResponse.setKoiId(koiTreatment.getKoi().getKoiId());
             koiTreatmentResponse.setKoiTreatmentId(id);
             koiTreatmentResponse.setKoi(koiMapper.toKoiResponse(koi));

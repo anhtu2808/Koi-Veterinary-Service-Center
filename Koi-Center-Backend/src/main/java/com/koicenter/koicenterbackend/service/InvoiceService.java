@@ -59,10 +59,13 @@ public class InvoiceService {
                 ErrorCode.APPOINTMENT_ID_NOT_FOUND.getCode(),
                 ErrorCode.APPOINTMENT_ID_NOT_FOUND.getMessage()
                 , HttpStatus.NOT_FOUND));
-
-        invoice.setUpdatDate(invoiceRequest.getUpdateDate());
-        invoice.setTotalPrice(invoiceRequest.getTotalPrice());
+        if(invoiceRequest.getCreateAt()!=null){
         invoice.setCreateAt(invoiceRequest.getCreateAt());
+        }
+        if(invoiceRequest.getUpdateDate()!=null){
+            invoice.setUpdatDate(invoiceRequest.getUpdateDate());
+        }
+        invoice.setTotalPrice(invoiceRequest.getTotalPrice());
         invoice.setPaymentStatus(invoiceRequest.isPaymentStatus());
         invoice.setAppointment(appointment);
 

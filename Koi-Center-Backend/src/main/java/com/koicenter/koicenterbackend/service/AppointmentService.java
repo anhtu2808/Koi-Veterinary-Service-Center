@@ -274,6 +274,9 @@ public class AppointmentService {
             if(appointmentRequest.getCode()!=null){
                 appointment.setCode(appointmentRequest.getCode());
             }
+            if(appointmentRequest.getCreatedAt()!=null){
+                appointment.setCreatedAt(appointmentRequest.getCreatedAt());
+            }
             appointment.setCustomer(customer);
             appointment.setService(service);
 
@@ -289,7 +292,10 @@ public class AppointmentService {
             appointmentResponse.setServiceId(appointment.getService().getServiceId());
             return appointmentResponse;
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "AppointmentById not found");
+            throw new AppException(
+                    ErrorCode.APPOINTMENT_ID_NOT_FOUND.getCode(),
+                    ErrorCode.APPOINTMENT_ID_NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND);
         }
     }
     public List<AppointmentResponse> getAllAppointments(String status,int offset,int pageSize) {

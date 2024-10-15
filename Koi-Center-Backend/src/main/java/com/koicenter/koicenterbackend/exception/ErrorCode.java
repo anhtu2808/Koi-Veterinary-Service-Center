@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 public enum ErrorCode {
+    USER_ID_NOT_EXITS(404,"User id not found"),
     USER_EXISTED(401,"User already existed"),
     USER_NOT_EXISTS(403,"User not found "),
     INVALID_LOGIN(401,"Invalid username or password"),
@@ -29,7 +30,13 @@ public enum ErrorCode {
     INVOICE_ID_NOT_FOUND(401,"Invoice id not found"),
     APPOINTMENT_ID_NOT_FOUND(404,"Appointment id not found"),
     APPOINTMENT_NOT_FOUND(404,"Appointment not found"),
-    STAR_NOT_EXISTS(401,"Star must between 0 to 5 " )
+    STAR_NOT_EXISTS(401,"Star must between 0 to 5 " ),
+    PONDTREATMENT_ID_NOT_FOUND(404,"Pond Treatment ID not found"),
+    KOITREATMENT_ID_NOT_FOUND(404,"KOi Treatment ID not found"),
+    POND_ID_NOT_FOUND(404,"Pond ID not found"),
+        KOI_ID_NOT_FOUND(404,"Koi ID not found")
+
+
     ;
     private int code;
     private String message;
