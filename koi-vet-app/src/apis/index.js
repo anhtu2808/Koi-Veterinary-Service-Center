@@ -65,6 +65,7 @@ export const fetchVetForAssignAPI = async (appointmentData) => {
 
 
 
+
 // Vet API for Service
 export const fecthAllServicesAPI = async () => {
     const response = await api.get('/services');
@@ -248,6 +249,11 @@ export const deletePrescriptionAPI = async (prescriptionId, medicineId) => {
     return response.data;
 };
 
+export const deletePrescriptionByIdAPI = async (prescriptionId) => {
+    const response = await api.delete(`/prescriptions/deletePrescriptionByPrescriptionId?prescriptionId=${prescriptionId}`)
+    return response.data;
+}
+
 //Treatment API
 export const updateKoiTreatmentAPI = async (updatedData) => {
     const response = await api.put(`/treatments/updateKoiTreatment`, updatedData)
@@ -354,5 +360,7 @@ export const fetchHomeVisitPriceAPI = async () => {
     const response = await api.get('/deliveries');
     return response.data;
 }
+
+
 
 
