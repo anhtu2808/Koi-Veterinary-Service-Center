@@ -55,8 +55,8 @@ function SideBar() {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="#" className="nav-link">
-            <i className="far fa-envelope"></i> Message
+          <Link to="/admin/schedule" className="nav-link">
+            <i className="fas fa-calendar-alt"></i> Veterinarian Schedule
           </Link>
         </li>
         <li className="nav-item">

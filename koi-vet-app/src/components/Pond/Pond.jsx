@@ -10,59 +10,33 @@ import Modal from '../Modal/Modal';
 
 const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId, isVeterinarian }) => {
     const navigate = useNavigate();
-    const customerId = useSelector(state => state?.user?.customer?.customerId)
     const [pondTreatmentList, setPondTreatmentList] = useState([])
+    const customerId = useSelector(state => state?.user?.customer?.customerId)
+    const role = useSelector(state => state?.user?.role);
     const [prescriptions, setPrescriptions] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({})
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
     //open modal for when click add treatment
-    const handleUpdateTreatment = (treatment, healthIssue, pondTreatmentId) => {
-        setIsModalOpen(true);
-        console.log("debug nef")
-        setModalData({ treatment, healthIssue, pondTreatmentId })
-        console.log({ treatment, healthIssue, pondTreatmentId })
-    };
-
     const handleSubmitTreatment = () => {
         onUpdateTreatment();
         setIsModalOpen(false);
-        onUpdate()
     };
-    // lưu lại đơn thuốc
-    const handleChangePrescription = (treatmentId, prescriptionId, pondId) => {
-        const updatePrescriptionId = async () => {
-            try {
-                const response = await updatePondTreatmentAPI({
-                    pondTreatmentId: treatmentId,
-                    prescription_id: prescriptionId === "None" ? null : prescriptionId,
-                    pondId: pondId,
-                });
-                toast.success(response.message);
-
-                // Update the local state or data source to reflect the change
-                setPondTreatmentList(prevList =>
-                    prevList.map(treatment =>
-                        treatment.pondTreatmentId === treatmentId
-                            ? { ...treatment, prescription_id: prescriptionId === "None" ? null : prescriptionId }
-                            : treatment
-                    )
-                );
-            } catch (error) {
-                toast.error('Failed to update prescription');
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+    const handleViewDetail = (pondId, treatmentId) => {
+        if (isAppointment) {
+            if (role === "CUSTOMER") {
+                navigate(`/profile/ponddetail/${appointmentId}?treatmentId=${treatmentId}&appointmentId=${appointmentId}`)
+            } else {
+                navigate(`/admin/ponddetail/${appointmentId}?treatmentId=${treatmentId}&appointmentId=${appointmentId}`)
             }
-        };
-        const fetchPrescriptions = async () => {
-            const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
-            setPrescriptions(response.data)
+        } else {
+            navigate(`/profile/pond/${pondId}`)
         }
-        fetchPrescriptions();
-        updatePrescriptionId();
-    };
+    }
     useEffect(() => {
-        const fetchPonds = async () => {
+        const fetchKois = async () => {
             try {
                 let response;
                 if (isAppointment) {
@@ -82,16 +56,42 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                 }
 
             } catch (error) {
-                console.error('Error fetching Koi list:', error);
+                console.error('Error fetching koi list:', error);
             }
         };
         const fetchPrescriptions = async () => {
             const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
             setPrescriptions(response.data)
         }
-        fetchPonds();
+        fetchKois();
         fetchPrescriptions();
     }, [customerId, isAppointment, appointmentId, updateTrigger]);
+
+   // lưu lại đơn thuốc
+   const handleChangePrescription = (treatmentId, prescriptionId, pondId) => {
+    const updatePrescriptionId = async () => {
+        try {
+            const response = await updatePondTreatmentAPI({
+                pondTreatmentId: treatmentId,
+                prescription_id: prescriptionId === "None" ? null : prescriptionId,
+                pondId: pondId,
+            });
+            toast.success(response.message);
+
+            // Update the local state or data source to reflect the change
+            setPondTreatmentList(prevList =>
+                prevList.map(treatment =>
+                    treatment.pondTreatmentId === treatmentId
+                        ? { ...treatment, prescription_id: prescriptionId === "None" ? null : prescriptionId }
+                        : treatment
+                )
+            );
+        } catch (error) {
+            toast.error('Failed to update prescription');
+        }
+    };
+    updatePrescriptionId();
+};
     return (
         <div className="container mt-4">
             <div className="card mb-4">
@@ -130,9 +130,6 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                                                                 <>
                                                                     <button className="btn btn-sm btn-primary px-3" onClick={() => navigate(`/admin/ponddetail/${pondTreatment?.pond?.pondId}`)}>
                                                                         View Details
-                                                                    </button>
-                                                                    <button className="btn btn-sm btn-primary mt-3" onClick={() => handleUpdateTreatment(pondTreatment?.treatment, pondTreatment?.healthIssue, pondTreatment?.pondTreatmentId)}>
-                                                                        Enter <br /> Treatment
                                                                     </button>
                                                                 </>
                                                                 :
