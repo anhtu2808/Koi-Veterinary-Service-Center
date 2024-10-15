@@ -15,8 +15,11 @@
   }
   
   .numberCard {
-    height: 300px; /* Set a fixed height for the chart card */
-    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 350px; /* Set a fixed height for the chart card */
+    margin: 20px 1px;
   }
   
   .categoryCard {
@@ -25,5 +28,21 @@
   
   .revenueCard {
     height: 300px; /* Set a fixed height for the chart card */
+  }
+  
+  .appointment-dashboard {
+    margin-top: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+  }
+
+  .doughnut-line-chart{
+    margin-bottom: 20px;
+  }
+
+  .dashboard-card{
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
   }
   

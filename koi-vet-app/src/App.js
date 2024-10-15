@@ -69,7 +69,7 @@ function App() {
 
     <Router>
       <Routes>
-      <Route path="/medpage" element={<MedicineListPage />} />
+        <Route path="/medpage" element={<MedicineListPage />} />
         <Route path="/image" element={<ImageUpload />} />
         <Route path="/ggm" element={<GGM />} />
         <Route path="/login" element={<Login />} />
@@ -97,17 +97,23 @@ function App() {
                     <Routes>
                       <Route path="/" element={<MyProfile />} />
                       <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />} />
+                      <Route path='/pond' element={<Pond isAppointment={false} title="All My Pond" />} />
                       <Route path='/koi/:koiId' element={
                         <KoiDetail
                           isCreate={false}
                           isUpdate={true}
                           isAppointment={false} />
                       } />
-                       <Route path="/koi/:koiId" element={<KoiDetail isUpdate={false} isCreate={false} />} />
-                       <Route path="/pond/:pondId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} />} />
+                      <Route path='/pond/:pondId' element={
+                        <PondDetail
+                          isCreate={false}
+                          isUpdate={true}
+                          isAppointment={false} />
+                      } />
+
                       <Route path='/appointment' element={<AllAppointment />} />
                       <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
-                      <Route path="/google-meet/:appointmentId" element={<GGM/>} />
+                      <Route path="/google-meet/:appointmentId" element={<GGM />} />
                       <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
                       <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
                       <Route path="/koidetail/:appointmentId" element={<KoiDetail isUpdate={false} isCreate={false} isAppointment={true} />} />
@@ -141,8 +147,8 @@ function App() {
                 <Route path="/ponddetail" element={<PondDetail />} />
                 <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
                 <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
-                <Route path="/google-meet/:appointmentId" element={<GGM/>} />
-                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true}  isCreate={false} isAppointment={true} />} />
+                <Route path="/google-meet/:appointmentId" element={<GGM />} />
+                <Route path="/koidetail/:koiId" element={<KoiDetail isUpdate={true} isCreate={false} isAppointment={true} />} />
                 <Route path="/ponddetail/:pondId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false} isAppointment={true} />} />
                 <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true} isAppointment={false} />} />
                 <Route path="/invoice" element={<InvoiceListPage />} />
@@ -151,7 +157,7 @@ function App() {
                 <Route path="/paymentcheckout/:appointmentId" element={<PaymentCheckout />} />
                 <Route path="/usermanagement" element={<UserManagementPage />} />
               </Route>
-          
+
               {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
               {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
               Add more admin routes as needed

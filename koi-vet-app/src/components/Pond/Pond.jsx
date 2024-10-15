@@ -4,63 +4,38 @@ import './Pond.css';
 import { fetchPondsByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescriptionByAppointmentIdAPI, updatePondTreatmentAPI } from '../../apis';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import pond_default from '../../assets/img/pond_default.jpg'
 
 import Treatment from '../Treatment/Treatment';
 import Modal from '../Modal/Modal';
 
 const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId, isVeterinarian }) => {
     const navigate = useNavigate();
-    const customerId = useSelector(state => state?.user?.customer?.customerId)
     const [pondTreatmentList, setPondTreatmentList] = useState([])
+    const customerId = useSelector(state => state?.user?.customer?.customerId)
+    const role = useSelector(state => state?.user?.role);
     const [prescriptions, setPrescriptions] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({})
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
     //open modal for when click add treatment
-    const handleUpdateTreatment = (treatment, healthIssue, pondTreatmentId) => {
-        setIsModalOpen(true);
-        console.log("debug nef")
-        setModalData({ treatment, healthIssue, pondTreatmentId })
-        console.log({ treatment, healthIssue, pondTreatmentId })
-    };
-
     const handleSubmitTreatment = () => {
         onUpdateTreatment();
         setIsModalOpen(false);
-        onUpdate()
     };
-    // lưu lại đơn thuốc
-    const handleChangePrescription = (treatmentId, prescriptionId, pondId) => {
-        const updatePrescriptionId = async () => {
-            try {
-                const response = await updatePondTreatmentAPI({
-                    pondTreatmentId: treatmentId,
-                    prescription_id: prescriptionId === "None" ? null : prescriptionId,
-                    pondId: pondId,
-                });
-                toast.success(response.message);
-
-                // Update the local state or data source to reflect the change
-                setPondTreatmentList(prevList =>
-                    prevList.map(treatment =>
-                        treatment.pondTreatmentId === treatmentId
-                            ? { ...treatment, prescription_id: prescriptionId === "None" ? null : prescriptionId }
-                            : treatment
-                    )
-                );
-            } catch (error) {
-                toast.error('Failed to update prescription');
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+    const handleViewDetail = (pondId, treatmentId) => {
+        if (isAppointment) {
+            if (role === "CUSTOMER") {
+                navigate(`/profile/ponddetail/${appointmentId}?treatmentId=${treatmentId}&appointmentId=${appointmentId}`)
+            } else {
+                navigate(`/admin/ponddetail/${appointmentId}?treatmentId=${treatmentId}&appointmentId=${appointmentId}`)
             }
-        };
-        const fetchPrescriptions = async () => {
-            const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
-            setPrescriptions(response.data)
+        } else {
+            navigate(`/profile/pond/${pondId}`)
         }
-        fetchPrescriptions();
-        updatePrescriptionId();
-    };
+    }
     useEffect(() => {
         const fetchPonds = async () => {
             try {
@@ -82,7 +57,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                 }
 
             } catch (error) {
-                console.error('Error fetching Koi list:', error);
+                console.error('Error fetching pond list:', error);
             }
         };
         const fetchPrescriptions = async () => {
@@ -92,6 +67,32 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
         fetchPonds();
         fetchPrescriptions();
     }, [customerId, isAppointment, appointmentId, updateTrigger]);
+
+   // lưu lại đơn thuốc
+   const handleChangePrescription = (treatmentId, prescriptionId, pondId) => {
+    const updatePrescriptionId = async () => {
+        try {
+            const response = await updatePondTreatmentAPI({
+                pondTreatmentId: treatmentId,
+                prescription_id: prescriptionId === "None" ? null : prescriptionId,
+                pondId: pondId,
+            });
+            toast.success(response.message);
+
+            // Update the local state or data source to reflect the change
+            setPondTreatmentList(prevList =>
+                prevList.map(treatment =>
+                    treatment.pondTreatmentId === treatmentId
+                        ? { ...treatment, prescription_id: prescriptionId === "None" ? null : prescriptionId }
+                        : treatment
+                )
+            );
+        } catch (error) {
+            toast.error('Failed to update prescription');
+        }
+    };
+    updatePrescriptionId();
+};
     return (
         <div className="container mt-4">
             <div className="card mb-4">
@@ -104,59 +105,46 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                     <div className=" mb-4">
 
                         <div className="card-body">
-                            {pondTreatmentList.map(pondTreatment => {
-                                const isSelected = selectedPonds?.includes(pondTreatment?.pond?.pondId);
+                            {pondTreatmentList.map(treatment => {
+                                const isSelected = selectedPonds?.includes(treatment?.pond?.pondId);
                                 return (
                                     <>
 
-                                        <div key={pondTreatment.pond?.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
+                                        <div key={treatment.pond?.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
                                             <div className="col-md-6 mt-2">
                                                 <h4>{"Đây là hồ cá pond của anh tú"}</h4>
-                                                <p><strong>Depth:</strong> {pondTreatment?.pond?.depth} m</p>
-                                                <p><strong>Perimeter:</strong> {pondTreatment?.pond?.perimeter} m</p>
-                                                <p><strong>Filter System:</strong> {pondTreatment?.pond?.filterSystem}</p>
-                                                <p><strong>Notes:</strong> {pondTreatment?.pond?.notes}</p>
-                                                <p><strong>Health Issue:</strong> {pondTreatment?.healthIssue}</p>
-                                                <p><strong>Treatment:</strong> {pondTreatment?.treatment}</p>
+                                                <p><strong>Depth:</strong> {treatment?.pond?.depth} m</p>
+                                                <p><strong>Perimeter:</strong> {treatment?.pond?.perimeter} m</p>
+                                                <p><strong>Filter System:</strong> {treatment?.pond?.filterSystem}</p>
+                                                <p><strong>Notes:</strong> {treatment?.pond?.notes}</p>
+                                                <p><strong>Health Issue:</strong> {treatment?.healthIssue}</p>
+                                                <p><strong>Treatment:</strong> {treatment?.treatment}</p>
                                             </div>
                                             <div className="col-md-4">
-                                                <img src={"https://honnonbomiennam.vn/wp-content/uploads/2022/05/46.jpg"} alt={pondTreatment.pond?.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
+                                                <img src={treatment?.pond?.image || pond_default} alt={treatment.pond?.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
                                             </div>
                                             <div className="col-md-2">
                                                 <div className='row gap-3'>
                                                     <div className='d-flex row flex-column align-items-center gap-2'>
-                                                        <div className='col-md-6'>
-                                                            {isVeterinarian ?
-                                                                <>
-                                                                    <button className="btn btn-sm btn-primary px-3" onClick={() => navigate(`/admin/ponddetail/${pondTreatment?.pond?.pondId}`)}>
-                                                                        View Details
-                                                                    </button>
-                                                                    <button className="btn btn-sm btn-primary mt-3" onClick={() => handleUpdateTreatment(pondTreatment?.treatment, pondTreatment?.healthIssue, pondTreatment?.pondTreatmentId)}>
-                                                                        Enter <br /> Treatment
-                                                                    </button>
-                                                                </>
-                                                                :
-                                                                <button className="btn btn-sm btn-primary" onClick={() => navigate(`/profile/pond/${pondTreatment?.pond.pondId}`)}>
-                                                                    View Details
-                                                                </button>}
-
-                                                            {isBooking && (
-                                                                <button
-                                                                    className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
-                                                                    onClick={() => handleAddPondToBooking(pondTreatment?.pond?.pondId)}
-                                                                >
-                                                                    {isSelected ? 'Remove' : 'Add'}
-                                                                </button>
-                                                            )}
-                                                        </div>
-                                                        <div className='col-md-12 mt-4'>
-                                                            <p className='fs-6 fw-normal'> Select Prescription: </p>
-                                                        </div>
+                                                    <div className='d-flex gap-3'>
+                                                
+                                                <button className="btn btn-sm btn-primary" onClick={() => handleViewDetail(treatment.pond.pondId, treatment?.pondTreatmentId)}>
+                                                    View Details
+                                                </button>                                    
+                                            {isBooking && (
+                                                <button
+                                                    className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
+                                                    onClick={() => handleAddPondToBooking(treatment.pond.pondId)}
+                                                >
+                                                    {isSelected ? 'Remove' : 'Add'}
+                                                </button>
+                                            )}
+                                        </div>
                                                         <select
                                                             className="form-select w-120"
                                                             aria-label="Default select example"
-                                                            onChange={(e) => handleChangePrescription(pondTreatment?.pondTreatmentId, e.target.value, pondTreatment?.pond?.pondId)}
-                                                            value={pondTreatment?.prescription_id || "None"}
+                                                            onChange={(e) => handleChangePrescription(treatment?.pondTreatmentId, e.target.value, treatment?.pond?.pondId)}
+                                                            value={treatment?.prescription_id || "None"}
                                                         >
                                                             <option value="None">None</option>
                                                             {prescriptions.map(prescription => (
@@ -186,8 +174,8 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment,updateTrigger,
                     children={
                         <Treatment
                             treatment={modalData.treatment}
-                            isKoi={false}
                             isPond={true}
+                            isKoi={false}
                             treatmentId={modalData.pondTreatmentId}
                             onUpdate={handleSubmitTreatment}
                             healthIssue={modalData.healthIssue}

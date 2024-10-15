@@ -4,6 +4,7 @@ import com.koicenter.koicenterbackend.model.Role;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.request.authentication.RegisterRequest;
 
+import com.koicenter.koicenterbackend.model.request.authentication.UpdatePasswordRequest;
 import com.koicenter.koicenterbackend.model.request.user.UpdateUserRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.user.UserResponse;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @RestController
@@ -68,5 +70,17 @@ public class UserController {
         }else {
             return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, null);
         }
+    }
+    @PostMapping("/updatePassword")
+    public ResponseEntity<ResponseObject> updatePassword(@RequestBody UpdatePasswordRequest passwordRequest) {
+        boolean isPasswordUpdated = userService.updatePassword(passwordRequest);
+        if (isPasswordUpdated) {
+            return ResponseObject.APIRepsonse(200, "Password updated successfully", HttpStatus.OK, "");
+        } else if (Objects.equals(passwordRequest.getCurrentPassword(), passwordRequest.getNewPassword())) {
+            return ResponseObject.APIRepsonse(404, "New password must be different from the current password", HttpStatus.BAD_REQUEST, "");
+        } else {
+            return ResponseObject.APIRepsonse( 404, "Your current password is incorrect", HttpStatus.BAD_REQUEST, "");
+        }
+
     }
 }

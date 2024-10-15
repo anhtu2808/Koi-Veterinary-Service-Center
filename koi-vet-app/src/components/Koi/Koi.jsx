@@ -7,14 +7,14 @@ import { toast } from 'react-toastify';
 import Modal from '../Modal/Modal';
 import Treatment from '../Treatment/Treatment';
 
-const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois, isVeterinarian }) => {
+const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois }) => {
+    const navigate = useNavigate();
     const [koiTreatmentList, setKoiTreatmentList] = useState([]);
     const customerId = useSelector(state => state?.user?.customer?.customerId)
-    const navigate = useNavigate();
     const role = useSelector(state => state?.user?.role);
     const [prescriptions, setPrescriptions] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalData, setModalData] = useState({})
+    const [modalData] = useState({})
     //open modal for when click add new koi BTN
     const handleSubmitTreatment = () => {
         onUpdateTreatment();
@@ -24,7 +24,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
         setIsModalOpen(false);
     };
 
-    const handleViewDetal = (koiId, treatmentId) => {
+    const handleViewDetail = (koiId, treatmentId) => {
         if (isAppointment) {
             if (role === "CUSTOMER") {
                 navigate(`/profile/koidetail/${appointmentId}?treatmentId=${treatmentId}&appointmentId=${appointmentId}`)
@@ -32,8 +32,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                 navigate(`/admin/koidetail/${appointmentId}?treatmentId=${treatmentId}&appointmentId=${appointmentId}`)
             }
         } else {
-          
-            navigate(`${koiId}`) // eq navigate(`/profile/koi/${koiId}`)
+            navigate(`/profile/koi/${koiId}`) // eq navigate(`/profile/koi/${koiId}`)
         }
     }
 
@@ -167,7 +166,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                         <td>
                                             <div className='d-flex gap-3'>
                                                 
-                                                    <button className="btn btn-sm btn-primary" onClick={() => handleViewDetal(treatment.koi.koiId, treatment?.koiTreatmentId)}>
+                                                    <button className="btn btn-sm btn-primary" onClick={() => handleViewDetail(treatment.koi.koiId, treatment?.koiTreatmentId)}>
                                                         View Details
                                                     </button>                                    
                                                 {isBooking && (

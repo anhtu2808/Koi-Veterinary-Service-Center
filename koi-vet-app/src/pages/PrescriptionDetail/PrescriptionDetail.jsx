@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import {
   deletePrescriptionAPI,
+  deletePrescriptionByIdAPI,
   fetchPrescriptionByIdAPI,
   updatePrescriptionAPI,
 } from "../../apis";
@@ -117,6 +118,11 @@ function PrescriptionDetail(props) {
       },
     },
     {
+      title: "Unit",
+      dataIndex: "medUnit",
+      key: "medUnit",
+    },
+    {
       title: "Actions",
       key: "actions",
       render: (text, record) => {
@@ -152,14 +158,17 @@ function PrescriptionDetail(props) {
     medicineId
   ) => {
     try {
-      // Call the correct API function
       await deletePrescriptionAPI(prescriptionId, medicineId);
-
-      // Update the local state to reflect the deletion
-      setPrescriptionData((prev) =>
-        prev.filter((medicine) => medicine.medicineId !== medicineId)
+      const updatedPrescriptionData = prescriptionData.filter(
+        (medicine) => medicine.medicineId !== medicineId
       );
+
+      setPrescriptionData(updatedPrescriptionData);
       message.success("Medicine deleted successfully");
+      if (updatedPrescriptionData.length === 0) {
+        await deletePrescriptionByIdAPI(prescriptionId);
+        message.success("Prescription deleted because no medicine");
+      }
     } catch (error) {
       console.error("Error deleting medicine:", error);
       message.error("Failed to delete medicine. Please try again.");

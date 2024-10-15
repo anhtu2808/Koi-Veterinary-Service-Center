@@ -90,7 +90,7 @@ const KoiTreatmentPage = () => {
         </button>
       </div> : null}
 
-      {/* Modal for KoiDetail */}
+      {/* Modal for add koi to Appoinment */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <KoiDetail
           cusId={customerId}

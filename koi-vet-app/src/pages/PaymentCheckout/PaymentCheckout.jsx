@@ -1,23 +1,35 @@
 import React, { useEffect, useState } from 'react'
-import { fecthServiceByServiceIdAPI, fetchSecondInfoPaymentAPI, updateInvoiceAPI } from '../../apis';
-import { useNavigate, useParams } from 'react-router-dom';
+import { fecthServiceByServiceIdAPI, fetchSecondInfoPaymentAPI, updateAppointmentAPI, updateInvoiceAPI } from '../../apis';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import './PaymentCheckout.css';
 import { toast } from 'react-toastify';
 import HomeVisitPriceTable from '../../components/HomeVisitPriceTable/HomeVisitPriceTable';
+import { APPOINTMENT_STATUS } from '../../utils/constants';
 const PaymentCheckout = () => {
   const [appointmentDetail, setAppointmentDetail] = useState(null);
+  const location = useLocation();
+  const { appointment } = location.state || {}; // Nhận state appointment
   const [serviceDetail, setServiceDetail] = useState(null);
   const { appointmentId } = useParams();
   const navigate = useNavigate();
 
   const handleCheckout = async () => {
-    const response = await updateInvoiceAPI(appointmentDetail.invoiceId, {
-      "updateDate": new Date(),
-      "totalPrice": appointmentDetail.depositedMoney + appointmentDetail.balance,
-      "paymentStatus": true,
-      "appointmentId": appointmentId
-    })
-    toast.success("Checkout successful");
+    const confirmAction = window.confirm("Are you sure to confirm checkout?");
+    if (!confirmAction) {
+      return;
+    } else {
+      const invoiceResponse = await updateInvoiceAPI(appointmentDetail.invoiceId, appointment)
+      if (invoiceResponse.status === 200) {
+        await updateAppointmentAPI(
+          {
+            ...appointment,
+            status: APPOINTMENT_STATUS.FINISH
+          }, appointmentId)
+
+      } else {
+        toast.error("Checkout failed");
+      }
+    }
   }
 
   useEffect(() => {
@@ -84,7 +96,7 @@ const PaymentCheckout = () => {
 
                 <div className="summary">
                   <p><strong>Deposited Money:</strong> {appointmentDetail.depositedMoney} VND</p>
-                  <p><strong>Balance:</strong> {appointmentDetail.balance} VND</p>
+                  <p><strong>Balance Due:</strong> {appointmentDetail.balanceDue} VND</p>
                 </div>
               </div>
             </>
@@ -92,9 +104,9 @@ const PaymentCheckout = () => {
         }
 
       </div>
-      <div className='button-container d-flex justify-content-between'>
+      <div className='button-container d-flex justify-content-between mt-3'>
         <button className='btn btn-primary' onClick={() => navigate(-1)}>Back</button>
-        <button className='btn btn-primary' onClick={() => handleCheckout()}>Checkout</button>
+        <button className='btn btn-primary' onClick={() => handleCheckout()}>Confirm Checkout</button>
       </div>
     </div>
 

@@ -176,8 +176,6 @@ public class PaymentController {
     @GetMapping("/momo-pay")
     public ResponseEntity<ResponseObject> payWithMoMo(HttpServletRequest request, @RequestBody TreamentRequest treamentRequest) {
         try {
-//            String appointmentId = "627062bb-a967-4728-989b-4fcdcd51943f";
-
             String amount = request.getParameter("amount");
             amountTemp = Float.parseFloat(amount);
             treamentRequestTemp = treamentRequest;

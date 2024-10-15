@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import koi_default from "../../assets/img/koi_default.jpg"
 import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, fetchPrescriptionByAppointmentIdAPI, fetchTreatmentByIdAPI, updateKoiInformationAPI, updateKoiTreatmentAPI } from "../../apis";
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
@@ -33,7 +34,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
   const searchParams = new URLSearchParams(location.search);
   const treatmentId = searchParams.get('treatmentId');
   const [image, setImage] = useState(null);
-  const appointmentId = searchParams.get('appointmentId');
+  const { appointmentId } = useParams();
   const role = useSelector(state => state.user.role);
   const [prescriptions, setPrescriptions] = useState([]);
   const { koiId } = useParams();
@@ -95,12 +96,15 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
     setKoiData(response.data)
   };
   useEffect(() => {
-    if (isAppointment) {
-      fetchTreatment(); // lấy dữ liệu treatment
-      fetchPrescriptions(); // lấy dữ liệu đơn thuốc
-    } else {
-      fetchKoiByKoiId();
+    if (!isCreate) { // nếu không trong chế độ create thì mới lấy dữ liệu cá koi
+      if (isAppointment) {
+        fetchTreatment(); // lấy dữ liệu treatment
+        fetchPrescriptions(); // lấy dữ liệu đơn thuốc
+      } else {
+        fetchKoiByKoiId();
+      }
     }
+
   }, [koiId, isCreate, customerId, appointmentId, treatmentId]);
 
   return (
@@ -108,7 +112,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
       <h1>{isCreate ? "Create New Koi" : "Update Koi Information"}</h1>
       <form onSubmit={handleSubmit}>
         <div className="col-12-md row my-5">
-          <div className="form-group col-md-5">
+          <div className="form-group col-md-7">
             <label>Breed:</label>
             <select
               className="form-select"
@@ -134,15 +138,15 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
             </div>
           </div>
           <div className="col-md-1"></div>
-          <div className="col-md-6">
-            <img className="w-100 koi-profile-image rounded-3" src={image ? URL.createObjectURL(image) : koiData.image} alt="Koi" />
-            {isEditing && ( // Only show the upload input if isEditing is true
+          <div className="col-md-4">
+            <img className="w-100 koi-profile-image rounded-3" src={(image ? URL.createObjectURL(image) : koiData.image) || koi_default} alt="Koi" />
+            {(isEditing || isCreate) && ( // Only show the upload input if isEditing is true
               <div className="form-group mt-3 text-center">
                 <label className="custom-file-upload">
                   <input
-                    type="file" 
+                    type="file"
                     onChange={handleUploadImage}
-                    disabled={!isEditing}
+                    disabled={!isEditing && !isCreate} // cho phép upload khi trong chế độ create hoặc edit
                   />
                   Upload Image <i className="fa-solid fa-image"></i>
                 </label>
@@ -252,7 +256,6 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
               <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                 Save
               </button>
-
             </div>
           ) : isCreate ? <button type="submit" className="btn btn-primary">
             Create
