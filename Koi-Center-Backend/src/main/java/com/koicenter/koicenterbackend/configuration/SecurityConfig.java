@@ -156,7 +156,13 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.GET, "api/v1/payment/momo-pay").permitAll()
                             .requestMatchers(HttpMethod.POST, "api/v1/payment/momo-pay-callback").permitAll()
+
+
+                            .requestMatchers(HttpMethod.POST, "api/v1/forgotPassword/sendMail").permitAll()
+                            .requestMatchers(HttpMethod.POST, "api/v1/forgotPassword/verifyOtp").permitAll()
+
                             .requestMatchers(HttpMethod.GET,"api/v1/images")
+
                             .permitAll()
                             .anyRequest().authenticated();
                 });
