@@ -142,7 +142,10 @@ public class VetScheduleService {
         for (VetScheduleResponse vetScheduleResponse : vetScheduleResponses) { // lich cua tat ca cac bac si co service ID ddo
             if (vetScheduleRequest.getAppointmentType().toString().equals("CENTER") || vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
                 if (vetScheduleRequest.getStartTime().equals(vetScheduleResponse.getStart_time()) && vetScheduleRequest.getEndTime().equals(vetScheduleResponse.getEnd_time()) && vetScheduleRequest.getDate().equals(vetScheduleResponse.getDate()) && vetScheduleResponse.getCustomerBookingCount() < 2) {
-                    Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+                    Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new AppException(
+                            ErrorCode.VETERINARIAN_ID_NOT_EXITS.getCode(),
+                            ErrorCode.VETERINARIAN_ID_NOT_EXITS.getMessage(),
+                            HttpStatus.NOT_FOUND));
                     VeterinarianResponse response = new VeterinarianResponse();
                     response = veterinariansMapper.toVeterinarianResponse(veterinarian);
                     response.setUser(userMapper.toUserResponse(veterinarian.getUser()));
@@ -160,7 +163,10 @@ public class VetScheduleService {
                     }
                     if (slotMorning >= 4) {
                         log.info("toi dango day ");
-                        Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+                        Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new AppException(
+                                ErrorCode.VETERINARIAN_ID_NOT_EXITS.getCode(),
+                                ErrorCode.VETERINARIAN_ID_NOT_EXITS.getMessage(),
+                                HttpStatus.NOT_FOUND));
                         VeterinarianResponse response = new VeterinarianResponse();
                         response = veterinariansMapper.toVeterinarianResponse(veterinarian);
                         response.setUser(userMapper.toUserResponse(veterinarian.getUser()));
@@ -176,7 +182,10 @@ public class VetScheduleService {
                         vetID = vetScheduleResponse.getVet_Id();
                     }
                     if (slotAfternoon >= 4) {
-                        Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+                        Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleResponse.getVet_Id()).orElseThrow(() -> new AppException(
+                                ErrorCode.VETERINARIAN_ID_NOT_EXITS.getCode(),
+                                ErrorCode.VETERINARIAN_ID_NOT_EXITS.getMessage(),
+                                HttpStatus.NOT_FOUND));
                         VeterinarianResponse response = new VeterinarianResponse();
                         response = veterinariansMapper.toVeterinarianResponse(veterinarian);
                         response.setUser(userMapper.toUserResponse(veterinarian.getUser()));
@@ -190,9 +199,6 @@ public class VetScheduleService {
 
     public List<VetScheduleResponse> slotDateTime(VetScheduleRequest vetScheduleRequest, String caculator) {
         int count = (vetScheduleRequest.getAppointmentType().equals(AppointmentType.CENTER) ? 1 : 2) * (caculator.equals("add") ? 1 : -1);
-        log.info("AppointmentType : " + vetScheduleRequest.getAppointmentType());
-        log.info("/ncount = " + count);
-
         List<VetScheduleResponse> vetScheduleResponse = new ArrayList<>();
         if (vetScheduleRequest.getAppointmentType().toString().equals("ONLINE")) {
             VetSchedule vetSchedule = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
@@ -204,10 +210,6 @@ public class VetScheduleService {
             VetSchedule vetSchedule = scheduleRepository.findVetSchedule(vetScheduleRequest.getVet_id(), vetScheduleRequest.getStartTime(), vetScheduleRequest.getEndTime(), vetScheduleRequest.getDate());
             int currentBookingCount = vetSchedule.getCustomerBookingCount();
             vetSchedule.setCustomerBookingCount(currentBookingCount + count);
-            log.info(vetSchedule.getScheduleId());
-            log.info("AppointmentType : " + vetScheduleRequest.getAppointmentType());
-            log.info("currentBookingCount = " + currentBookingCount +  "" +  count);
-
             vetScheduleResponse.add(vetScheduleMapper.toVetScheduleResponse(vetSchedule));
         } else if (vetScheduleRequest.getAppointmentType().toString().toLowerCase().equalsIgnoreCase(AppointmentType.HOME.toString().toLowerCase())) {
             List<VetSchedule> vetSchedules = scheduleRepository.findVetScheduleByDate(vetScheduleRequest.getDate());
@@ -273,16 +275,10 @@ public class VetScheduleService {
                 dayResponses.add(dayResponse);
             }
         }
-
         return dayResponses;
     }
-
     public List<VetScheduleResponse> createVetScheduleByDate(List<LocalDate> dates, String vetId) {
         Veterinarian veterinarian = veterinarianRepository.findByVetId(vetId);
-        log.info("vetId"+ veterinarian.getVetId());
-//                findById(vetId).orElseThrow(()
-//                -> new AppException(ErrorCode.VETERINARIAN_ID_NOT_EXITS.getCode(),
-//                ErrorCode.VETERINARIAN_ID_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
         int[] startime = {7,8,9,10,13,14,15,16};
         int[] endTime ={8,9,10,11,14,15,16,17};
         List<VetScheduleResponse> vetScheduleResponses = new ArrayList<>();

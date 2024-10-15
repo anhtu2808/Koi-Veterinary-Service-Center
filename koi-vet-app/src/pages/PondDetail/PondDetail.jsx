@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./PondDetail.css";
 import pond_default from "../../assets/img/pond_default.jpg"
-import { fetchPondByPondIdAPI, updatePondInformationAPI, addPondToAppointmentAPI, updatePondTreatmentAPI, createPondAPI } from "../../apis";
+import { fetchPondByPondIdAPI, updatePondInformationAPI, addPondToAppointmentAPI, updatePondTreatmentAPI, createPondAPI, fetchTreatmentByIdAPI, fetchPrescriptionByAppointmentIdAPI } from "../../apis";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -35,15 +35,31 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
   const role = useSelector(state => state?.user?.role);
   const { pondId } = useParams();
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchPondData = async (pondId) => {
-      const response = await fetchPondByPondIdAPI(pondId);
-      setPondData(response.data);
-    };
 
-    fetchPondData(pondId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const fetchPrescriptions = async () => {
+    const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
+    setPrescriptions(response.data)
+  }
+  const fetchTreatment = async () => {
+    const response = await fetchTreatmentByIdAPI(treatmentId);
+    setTreatmentData({ ...treatmentData, ...response.data })
+    setPondData(response.data.pond)
+  }
+  const fetchPondByPondId = async () => {
+    const response = await fetchPondByPondIdAPI(pondId);
+    setPondData(response.data)
+  };
+  useEffect(() => {
+    if (!isCreate) { // nếu không trong chế độ create thì mới lấy dữ liệu cá koi
+      if (isAppointment) {
+        fetchTreatment(); // lấy dữ liệu treatment
+        fetchPrescriptions(); // lấy dữ liệu đơn thuốc
+      } else {
+        fetchPondByPondId(); // lấy dữ liệu hồ cá
+      }
+    }
+
+  }, [pondId, isCreate, cusId, appointmentId, treatmentId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -65,13 +81,8 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
     }
 
   }
-  const handleUpdate = async () => {
-    const updatePond = async () => {
-      const response = await updatePondInformationAPI(pondId, pondData);
-      console.log("Pond updated:", response.data);
-      setIsEditing(false);
-    }
-    updatePond();
+  const handleUpdateButton = () => {
+    setIsEditing(!isEditing); // Bật chế độ chỉnh sửa khi nhấn "Update"
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -127,110 +138,118 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
         value={value}
         onChange={handleInputChange}
         disabled={!isEditing && !isCreate}
-        required
       />
     </div>
   );
 
   return (
-    <div className="col-md-9 mx-auto row">
-      <h1 className="mb-4 text-center">Pond Detail</h1>
-      <div className="col-md-4 ">
-        {renderField("Pond ID", pondData.pondId, "pondId")}
-        {renderField("Depth (m)", pondData.depth, "depth")}
-        {renderField("Perimeter (m)", pondData.perimeter, "perimeter")}
-      </div>
-      <div className="col-md-1"> </div>
-      <div className="col-md-7 text-center">
-        <h5>Hình ảnh hồ cá pond</h5>
-        {pondData.image && (
-          <img
-            src={pond_default}
-            alt="Pond"
-            className="img-fluid rounded"
-          />
-        )}
-      </div>
-      <div className="col-md-4 mt-4">
-        {renderField("Filter System", pondData.filterSystem, "filterSystem")}
-      </div>
-      <div className="col-md-4 mt-4">
-        {renderField("Temperature (°C)", pondData.temperature, "temperature")}
-      </div>
-      <div className="col-md-4 mt-4">
-        {renderField("Water Quality", pondData.waterQuality, "waterQuality")}
-      </div>
-      {isAppointment ?
-        <div className="gap-6 row">
-          <div className="form-group col-md-6">
-            <label>Health Issue</label>
-            <textarea
-              name="healthIssue"
-              value={treatmentData.healthIssue}
-              onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
-              placeholder="Enter treatment"
-              disabled={!isEditing && !isCreate}
-            />
-          </div>
-          <div className="form-group col-md-6">
-            <label>Treatment</label>
-            <textarea
-              value={pondData.treatment}
-              name="treatment"
-              onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
-              placeholder="Enter treatment"
-              disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
-            />
-          </div>
-          <div className="form-group col-md-6">
-            <label>Prescription</label>
-            <select
-              className="form-select"
-              value={treatmentData.prescription_id || "None"}
-              name="prescription_id"
-              onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
-              disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
-            >
-              <option value="None">None</option>
-              {prescriptions.map(prescription => (
-                <option key={prescription.id} value={prescription.id}>
-                  {prescription.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
-            <button type="button" className="btn btn-primary">Add Prescription</button>
-            <button type="button" className="btn btn-primary">View Prescriptions</button>
+    <form onSubmit={handleSubmit}>
+      <div className="col-md-9 mx-auto row">
+        <h1 className="mb-4 text-center">Pond Detail</h1>
+        <div className="col-md-4 ">
+          {renderField("Depth (m)", pondData.depth, "depth")}
+          {renderField("Perimeter (m)", pondData.perimeter, "perimeter")}
+          <div className="col-md-12">
+            <label htmlFor="notes" className="form-label">Notes</label>
+            <textarea className=" form-control pb-3"  id="notes" name="notes" value={pondData.notes} onChange={handleInputChange} disabled={!isEditing && !isCreate}></textarea>
           </div>
         </div>
-        : null}
+        <div className="col-md-1"> </div>
+        <div className="col-md-7 text-center">
+          <label className="form-label text-start">Pond Image</label>
+          <img src={pondData.image || pond_default} alt="Pond" className=" w-100 koi-profile-image rounded-3" />
 
-      <div className="col-md-12">
-        <label htmlFor="notes" className="form-label">Notes</label>
-        <textarea className="form-control" id="notes" name="notes" value={pondData.notes} onChange={handleInputChange} disabled={!isEditing && !isCreate}></textarea>
+        </div>
+        <div className="col-md-6 mt-4">
+          {renderField("Filter System", pondData.filterSystem, "filterSystem")}
+        </div>
+        <div className="col-md-3 mt-4">
+          {renderField("Temperature (°C)", pondData.temperature, "temperature")}
+        </div>
+        <div className="col-md-3 mt-4">
+          {renderField("Water Quality", pondData.waterQuality, "waterQuality")}
+        </div>
+        {isAppointment ?
+          < >
+            <div className="form-group col-md-6">
+              <label>Health Issue</label>
+              <textarea
+                name="healthIssue"
+                value={treatmentData.healthIssue}
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                placeholder="Enter treatment"
+                disabled={!isEditing && !isCreate}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label>Treatment</label>
+              <textarea
+                value={pondData.treatment}
+                name="treatment"
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                placeholder="Enter treatment"
+                disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label>Prescription</label>
+              <select
+                className="form-select"
+                value={treatmentData.prescription_id || "None"}
+                name="prescription_id"
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
+              >
+                <option value="None">None</option>
+                {prescriptions.map(prescription => (
+                  <option key={prescription.id} value={prescription.id}>
+                    {prescription.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
+              <button type="button" className="btn btn-primary">Add Prescription</button>
+              <button type="button" className="btn btn-primary">View Prescriptions</button>
+            </div>
+          </>
+          : null}
+
+
+
+        <div className="button-group mt-4">
+          {isCreate && isAppointment ?
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Back
+            </button>
+            :
+            <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
+              Back
+            </button>
+          }
+
+
+          {isEditing && isUpdate && !isCreate ? (
+            <div className=" d-flex gap-2">
+              <button type="button" className="btn btn-secondary" onClick={handleUpdateButton}>Cancel</button>
+              <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+                Save
+              </button>
+
+            </div>
+          ) : isCreate ? <button type="submit" className="btn btn-primary">
+            Create
+          </button> : null}
+          {!isEditing && isUpdate ? (
+            <button type="button" className="btn btn-primary" onClick={handleUpdateButton}>
+              Update
+            </button>
+          ) : null}
+        </div>
+
+
       </div>
-
-      <div className="d-flex justify-content-between mt-4">
-        <button type="button" className="btn btn-primary" onClick={() => navigate(-1)}>Back</button>
-
-        {isCreate && isVeterinarian ? (<button type="button" className="btn btn-primary" onClick={handleAddNewPond} >
-          Add to this appointment
-        </button>
-        ) : null}
-        {isUpdate && isVeterinarian && isEditing ? (<button type="button" className="btn btn-primary" onClick={handleUpdate} >
-          {isUpdate ? "Update" : "Save Changes"}
-        </button>
-        ) : null}
-        {!isEditing ? (
-          <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(true)}>
-            Edit
-          </button>
-        ) : null}
-      </div>
-
-
-    </div>
+    </form>
   );
 };
 

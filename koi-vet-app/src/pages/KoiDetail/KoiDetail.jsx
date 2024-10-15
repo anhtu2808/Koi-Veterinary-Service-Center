@@ -34,7 +34,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
   const searchParams = new URLSearchParams(location.search);
   const treatmentId = searchParams.get('treatmentId');
   const [image, setImage] = useState(null);
-  const appointmentId = searchParams.get('appointmentId');
+  const { appointmentId } = useParams();
   const role = useSelector(state => state.user.role);
   const [prescriptions, setPrescriptions] = useState([]);
   const { koiId } = useParams();
@@ -256,7 +256,6 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
               <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                 Save
               </button>
-
             </div>
           ) : isCreate ? <button type="submit" className="btn btn-primary">
             Create

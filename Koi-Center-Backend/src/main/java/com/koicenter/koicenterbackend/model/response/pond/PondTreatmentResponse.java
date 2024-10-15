@@ -14,5 +14,6 @@ public class PondTreatmentResponse {
     private String treatment;
     private String pondId;
     private String appointmentId;
+    String prescriptionId;
     PondResponse pond;
 }

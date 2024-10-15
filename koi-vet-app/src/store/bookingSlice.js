@@ -8,6 +8,7 @@ const initialState = {
     vetId: "SKIP",
     date: null,
     startAt: null,
+    selectedDate: null,
     endAt: null,
     serviceId: null,
     paymentInfo: {},
@@ -22,29 +23,8 @@ const bookingSlice = createSlice({
     nextStep: (state) => {
       state.step += 1
     },
-    prevStep: (state) => {
-      state.step -= 1;
-      switch (state.step) {
-        case 0:
-          break;
-        case 1:
-          state.bookingData.serviceId = null;
-          break;
-        case 2:
-          state.bookingData.vetId = "SKIP";
-          break;
-        case 3:
-          state.bookingData.date = null;
-          state.bookingData.startAt = null;
-          state.bookingData.endAt = null;
-          break;
-        default:
-          break;
-
-      }
-    },
     setStep: (state, action) => {
-      state.step = action.payload
+      state.step = action.payload 
     },
     setBookingData: (state, action) => {
       state.bookingData = { ...state.bookingData, ...action.payload }

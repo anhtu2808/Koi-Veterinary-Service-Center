@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface PondTreatmentMapper {
     @Mapping(target="pondId",ignore = true)
     @Mapping(target="appointmentId",ignore = true)
+    @Mapping(source = "pondTreatment.prescription.id",target = "prescriptionId")
     PondTreatmentResponse toPondTreatmentResponse(PondTreatment pondTreatment);
 
 }
