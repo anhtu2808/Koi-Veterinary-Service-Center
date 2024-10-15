@@ -9,7 +9,7 @@ import pond_default from '../../assets/img/pond_default.jpg'
 import Treatment from '../Treatment/Treatment';
 import Modal from '../Modal/Modal';
 
-const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId, isVeterinarian }) => {
+const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId }) => {
     const navigate = useNavigate();
     const [pondTreatmentList, setPondTreatmentList] = useState([])
     const customerId = useSelector(state => state?.user?.customer?.customerId)
@@ -140,19 +140,21 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                                                 </button>
                                                             )}
                                                         </div>
-                                                        <select
-                                                            className="form-select w-120"
-                                                            aria-label="Default select example"
-                                                            onChange={(e) => handleChangePrescription(treatment?.pondTreatmentId, e.target.value, treatment?.pond?.pondId)}
-                                                            value={treatment?.prescription_id || "None"}
-                                                        >
-                                                            <option value="None">None</option>
-                                                            {prescriptions.map(prescription => (
-                                                                <option key={prescription?.id} value={prescription?.id}>
-                                                                    {prescription?.name}
-                                                                </option>
-                                                            ))}
-                                                        </select>
+                                                        {isAppointment &&
+                                                            <select
+                                                                className="form-select w-120"
+                                                                aria-label="Default select example"
+                                                                onChange={(e) => handleChangePrescription(treatment?.pondTreatmentId, e.target.value, treatment?.pond?.pondId)}
+                                                                value={treatment?.prescription_id || "None"}
+                                                                disabled={role !== "VETERINARIAN"}
+                                                            >
+                                                                <option value="None">None</option>
+                                                                {prescriptions.map(prescription => (
+                                                                    <option key={prescription?.id} value={prescription?.id}>
+                                                                        {prescription?.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>}
                                                     </div>
                                                 </div>
                                             </div>

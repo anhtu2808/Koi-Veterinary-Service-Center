@@ -107,6 +107,7 @@ const DatePickStep = () => {
   const handleTimeSlotClick = (startTime, endTime) => {
     dispatch(setBookingData({
       date: getLocalDateString(selectedDate),
+      selectedDate: selectedDate,
       startAt: startTime,
       endAt: endTime
     }));
@@ -139,6 +140,10 @@ const DatePickStep = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+    setSelectedDate(bookingData.selectedDate);
+  }, [bookingData.selectedDate])
 
   return (
     <div>

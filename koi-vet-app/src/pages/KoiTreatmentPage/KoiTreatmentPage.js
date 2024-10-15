@@ -109,7 +109,6 @@ const KoiTreatmentPage = () => {
           <table className="table table-bordered">
             <thead className="thead-light">
               <tr>
-                <th>Prescription ID </th>
                 <th>Prescription Name </th>
                 <th >Note</th>
                 <th>Action</th>
@@ -120,7 +119,6 @@ const KoiTreatmentPage = () => {
               {/* Chạy vòng for ở đây */}
               {prescriptions.map(prescription => (
                 <tr key={prescription.id}>
-                  <td>{prescription.id}</td>
                   <td>{prescription.name}</td>
                   <td>{prescription.note}</td>
                   <td>

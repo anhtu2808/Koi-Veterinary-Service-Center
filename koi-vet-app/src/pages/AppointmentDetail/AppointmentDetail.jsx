@@ -256,7 +256,7 @@ function AppointmentDetail() {
                 value={statusDisplayMap[appointment.status] || appointment.status}
                 disabled={true}
               />
-              {appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE || appointment.status === APPOINTMENT_STATUS.PROCESS ?
+              {role !== ROLE.CUSTOMER &&( appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE || appointment.status === APPOINTMENT_STATUS.PROCESS) ?
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -453,6 +453,15 @@ function AppointmentDetail() {
                 >
                   {isEditing ? "Cancel" : "Edit"}
                 </button>
+                {appointment.status === "FINISH" && (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => navigate(`/rating-feedback/${appointmentId}`)}
+                  >
+                    Rating & Feedback
+                  </button>
+                )}
               </div>
               {appointment.status === APPOINTMENT_STATUS.READY_FOR_PAYMENT && !isEditing ?
 
@@ -482,7 +491,7 @@ function AppointmentDetail() {
         >
           Back to All Appointments
         </button>
-        {navigateLink.link ?
+        {navigateLink.link && (appointment.status !== "FINISH"|| appointment.type !== "ONLINE")?
           <button
             onClick={() => navigate(navigateLink.link)}
             type="button"
@@ -490,7 +499,6 @@ function AppointmentDetail() {
           >
             {navigateLink.title}
           </button> : null}
-
 
       </div>
 

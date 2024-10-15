@@ -11,6 +11,7 @@ function Payment() {
   const bookingData = useSelector(state => state?.booking?.bookingData)
   const [serviceInfo, setServiceInfo] = useState({})
   const [vetInfo, setVetInfo] = useState({})
+  const [paymentOption, setPaymentOption] = useState(null)
   const [appointmentCreateRequest, setAppointmentCreateRequest] = useState({
 
   });
@@ -30,7 +31,7 @@ function Payment() {
         "depositedMoney": serviceInfo.basePrice * 100,  // Số tiền đã đặt cọc
         "customerId": customerInfo.customerId,  // ID khách hàng
         "vetId": bookingData.vetId,  // ID bác sĩ thú y
-        "serviceId": bookingData.serviceId ,// ID dịch vụ
+        "serviceId": bookingData.serviceId,// ID dịch vụ
         "distance": 0
       }
     })
@@ -45,7 +46,15 @@ function Payment() {
       toast.error(response.data.message)
     }
   }
-
+  // const handleChangeInfo = (name, value) => {
+  //   setAppointmentCreateRequest({
+  //     ...appointmentCreateRequest,
+  //       [name]: value
+  //   })
+  // };
+  const handleChangePaymentOption = (option) => {
+    setPaymentOption(option)
+  }
 
   // Combine date and time into a single string
   const combinedDateTime = `${bookingData?.date}T${bookingData?.startAt}`;
@@ -259,7 +268,7 @@ function Payment() {
 
               <button className="btn payment-btn w-100" id="checkoutBtn"
                 onClick={() => handlePayment(appointmentCreateRequest)}
-
+                disabled={!customerInfo.address || !customerInfo.phone}
               >
                 <i className="fas fa-lock me-2"></i> Proceed to Secure Checkout
               </button>

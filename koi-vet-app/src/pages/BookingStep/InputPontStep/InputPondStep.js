@@ -12,7 +12,7 @@ const InputPondStep = () => {
   const [pondUpdateTrigger, setPondUpdateTrigger] = useState(0);
   const dispatch = useDispatch();
   const selected = useSelector(state => state.booking.bookingData.selected);
-
+  const customerId = useSelector(state => state?.user?.customer?.customerId)
   const handleAddPondToBooking = (pondId) => {
     if (selected.includes(pondId)) {
       // If already selected, remove it
@@ -44,6 +44,7 @@ const InputPondStep = () => {
       <Pond
         isBooking={true}
         title={"Your Ponds"}
+        isAppointment={false}
         updateTrigger={pondUpdateTrigger}
         handleAddPondToBooking={handleAddPondToBooking}
         selectedPonds={selected}
@@ -60,6 +61,7 @@ const InputPondStep = () => {
         <PondDetail
           isCreate={true}
           isBooking={true}
+          cusId={customerId}
           onClose={handleCloseModal}
           onUpdate={handlePondUpdate}
         />

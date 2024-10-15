@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './BookingPage.css'
 import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../../components/Loading/Loading'
 import { ServiceStep } from '../BookingStep/ServiceStep/ServiceStep'
-import { nextStep, prevStep, setStep } from '../../store/bookingSlice'
+import { nextStep, prevStep, resetBoking, setBookingData, setStep } from '../../store/bookingSlice'
 import { useNavigate } from 'react-router-dom'
 import VeterinarianStep from '../BookingStep/VeterinarianStep/VeterinarianStep'
 import DatePickStep from '../BookingStep/DataPickStep/DatePickStep'
@@ -16,34 +16,105 @@ function BookingPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const step = useSelector(state => state.booking.step)
-  
+  const [nextTitle, setNextTitle] = useState('Next')
+  const [isNextButton, setIsNextButton] = useState(true)
   const date = useSelector(state => state.booking.bookingData.date)
   const startAt = useSelector(state => state.booking.bookingData.startAt)
   const endAt = useSelector(state => state.booking.bookingData.endAt)
+  const type = useSelector(state => state.booking.bookingData.type)
   const serviceFor = useSelector(state => state.booking.bookingData.serviceFor)
   const selected = useSelector(state => state.booking.bookingData.selected)
 
-  const handleNextStep = () => {
-    dispatch(nextStep())
+  const handleNextStepButton = () => {
+    switch (step) {
+      case 1: {
+        if (serviceFor === SERVICE_FOR.ONLINE) {
+          dispatch(setStep(3))
+        } else {
+          dispatch(setStep(2))
+        }
+        break;
+      }
+      case 2:
+        dispatch(setStep(3))
+        break
+      case 3:
+        if (serviceFor === SERVICE_FOR.KOI) {
+          dispatch(setStep(4))
+        }
+        else if (serviceFor === SERVICE_FOR.POND) {
+          dispatch(setStep(5))
+        }
+        else if (serviceFor === SERVICE_FOR.ONLINE) {
+          dispatch(setStep(6))
+        }
+        break
+      case 4:
+        dispatch(setStep(6))
+        break
+      case 5:
+        dispatch(setStep(6))
+        break
+      default:
+        break
+    }
   }
-  const handleSetStep = (step) => {
-    dispatch(setStep(step))
+
+  const handleBackButton = () => {
+    switch (step) {
+      case 1:
+        dispatch(resetBoking())
+        navigate('/')
+        break
+      case 2:
+        dispatch(
+          setBookingData({
+            serviceId: null,
+            serviceFor: null,
+            selected: []
+          })
+        )
+        dispatch(setStep(1))
+        break
+      case 3:
+        dispatch(setBookingData({
+          selectedDate: null,
+          vetId: "SKIP",
+          startAt: null,
+          endAt: null,
+          date: null
+        }))
+        dispatch(setStep(2))
+        break
+      case 4:
+        dispatch(setStep(3))
+        break
+      case 5:
+        dispatch(setStep(3))
+        break
+      case 6:
+        if (serviceFor === SERVICE_FOR.KOI) {
+          dispatch(setStep(4))
+        }
+        else if (serviceFor === SERVICE_FOR.POND) {
+          dispatch(setStep(5))
+        }
+        else if (serviceFor === SERVICE_FOR.ONLINE) {
+          dispatch(setStep(3))
+        }
+        break
+      default:
+        break
+    }
   }
-  const handleBackStep = () => {
-    if (step > 1) {
-      dispatch(prevStep());
+
+  useEffect(() => {
+    if (selected.length === 0) {
+      setNextTitle('Skip')
     } else {
-      navigate("/");
+      setNextTitle('Next')
     }
-  };
-  const handleBackStepInputKoi = () => {
-    if(serviceFor === SERVICE_FOR.KOI){
-      dispatch(setStep(4))
-    }
-    else if(serviceFor === SERVICE_FOR.POND){
-      dispatch(setStep(4))
-    }
-  }
+  }, [selected])
 
   console.log(step);
   const renderStepComponent = () => {
@@ -66,10 +137,35 @@ function BookingPage() {
   };
 
   useEffect(() => {
-    if (step === 0) {
-      navigate("/");
+    switch (step) {
+      case 0:
+        navigate("/");
+        break;
+      case 1:
+        setIsNextButton(false)
+        break;
+      case 2:
+        setIsNextButton(true)
+        setNextTitle('Skip')
+        break;
+      case 3:
+        setIsNextButton(false)
+        if (date && startAt && endAt) {
+          setNextTitle('Next')
+        }
+        break;
+      case 4:
+        setIsNextButton(true)
+        break;
+      case 5:
+        setIsNextButton(true)
+        break;
+      case 6:
+        setIsNextButton(false)
+        break;
+      default:
+        break;
     }
-    //eslint-disable-next-line
   }, [step]);
 
   return (
@@ -79,49 +175,20 @@ function BookingPage() {
       <div className="row">
         <div className="row d-flex justify-content-between">
           <div className="col-md-1">
-            {step === 6 ?
-              <button
-                className="btn btn-primary"
-                onClick={() => handleBackStepInputKoi()}
-              >
-                Back
-              </button>
-              :
-              <button
-                className="btn btn-primary"
-                onClick={() => handleBackStep()}
-              >
-                Back
-              </button>}
+            <button className="btn btn-primary " onClick={() => handleBackButton()}>Back</button>
           </div>
 
-          {step === 2 ? <div className="col-md-1">
-            <button className="btn btn-primary " onClick={() => handleNextStep()}>Skip</button>
-          </div> : null}
-          {step === 3 && serviceFor === SERVICE_FOR.KOI ? <div className="col-md-1">
-            {date && startAt && endAt ?
-              <button className="btn btn-primary " onClick={() => handleSetStep(4)}>Next</button> : null}
-
-          </div> : null}
-          {step === 3 && serviceFor === SERVICE_FOR.ONLINE ? <div className="col-md-1">
-            {date && startAt && endAt ?
-              <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Next</button> : null}
-
-          </div> : null}
-
-          {step === 3 && serviceFor === SERVICE_FOR.POND ?
-            <div className="col-md-1">
-              {date && startAt && endAt ?
-                <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Next</button> : null}
-            </div> : null}
-          {(step === 4 || step === 5) && (selected.length > 0 || selected.length > 0) ? <div className="col-md-1">
-            <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Next</button>
-          </div> : null}
-          {(step === 4 || step === 5) ? !(selected.length > 0 || selected.length > 0) ? <div className="col-md-1">
-            <button className="btn btn-primary " onClick={() => handleSetStep(6)}>Skip</button>
-          </div> : null : null}
-
-          {/* <button className="btn btn-primary" onClick={() => handleSetStep(step+1)}>nut next de test</button> */}
+          <div className="col-md-1">
+            {isNextButton ?
+              <button className="btn btn-primary" onClick={() => handleNextStepButton()}>{nextTitle}</button>
+              : null
+            }
+            {
+              step === 3 && date && startAt && endAt ?
+                <button className="btn btn-primary" onClick={() => handleNextStepButton()}>Next</button>
+                : null
+            }
+          </div>
 
         </div>
       </div>
