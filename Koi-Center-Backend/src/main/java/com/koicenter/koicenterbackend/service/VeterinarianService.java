@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
+import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.entity.Veterinarian;
 import com.koicenter.koicenterbackend.model.enums.Role;
@@ -39,7 +40,10 @@ public class VeterinarianService {
 
     //GET Veteriance ID
     public VeterinarianResponse getVeterinarianById(String veterinarianId) {
-        Veterinarian veterinarian = veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new RuntimeException("Veterinarian not found "));
+        Veterinarian veterinarian = veterinarianRepository.findById(veterinarianId).orElseThrow(() -> new AppException(
+                ErrorCode.VETERINARIAN_ID_NOT_EXITS.getCode(),
+                ErrorCode.VETERINARIAN_ID_NOT_EXITS.getMessage(),
+                HttpStatus.NOT_FOUND));
         VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
         veterinarianResponse.setVetId(veterinarian.getVetId());
         veterinarianResponse.setVetStatus(veterinarian.getStatus());
@@ -48,7 +52,10 @@ public class VeterinarianService {
         veterinarianResponse.setPhone(veterinarian.getPhone());
         veterinarianResponse.setUserId(veterinarian.getUser().getUserId());
 
-        User user = userRepository.findById(veterinarian.getUser().getUserId()).orElseThrow(() -> new RuntimeException("User not found "));
+        User user = userRepository.findById(veterinarian.getUser().getUserId()).orElseThrow(() -> new AppException(
+                ErrorCode.USER_ID_NOT_EXITS.getCode(),
+                ErrorCode.USER_ID_NOT_EXITS.getMessage(),
+                HttpStatus.NOT_FOUND));
         UserResponse userResponse = new UserResponse();
         userResponse.setUser_id(user.getUserId());
         userResponse.setFullName(user.getFullName());
@@ -137,12 +144,16 @@ public class VeterinarianService {
     }
     public List<VeterinarianResponse> getVeterinariansByServiceId(String serviceId) {
         List<Veterinarian> veterinarians = veterinarianRepository.findByServices_ServiceId(serviceId);
+
         if(veterinarians.isEmpty()){
             throw new AppException(404, "Not found", HttpStatus.NOT_FOUND);
         }
         List<VeterinarianResponse> responseList = new ArrayList<>();
         for (Veterinarian veterinarian : veterinarians) {
+            List<String> serviceNames = veterinarianRepository.findServiceNamesByVetId(veterinarian.getVetId());
+
             VeterinarianResponse veterinarianResponse = new VeterinarianResponse();
+            veterinarianResponse.setServiceNames(serviceNames);
             veterinarianResponse.setGoogleMeet(veterinarian.getGoogleMeet());
             veterinarianResponse.setPhone(veterinarian.getPhone());
             veterinarianResponse.setVetId(veterinarian.getVetId());
