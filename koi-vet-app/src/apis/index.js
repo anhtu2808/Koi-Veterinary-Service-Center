@@ -363,4 +363,8 @@ export const fetchHomeVisitPriceAPI = async () => {
 
 
 
-
+//dashboard API
+export const fetchDashboardAPI = async (time) => {
+    const response = await api.get(`/invoices/dashboard/${time}`);
+    return response.data;
+}

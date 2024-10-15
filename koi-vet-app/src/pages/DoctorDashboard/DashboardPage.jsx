@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
-import { Bar, Doughnut, Line } from "react-chartjs-2";
+import { Bar, Doughnut, Line, Radar } from "react-chartjs-2";
 import "./DashboardPage.css";
+import { fetchDashboardAPI } from "../../apis";
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 
 function DashboardPage() {
+  const [dashboardData, setDashboardData] = useState([]);
+
+  const [time, setTime] = useState("day");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetchDashboardAPI(time);
+      setDashboardData(response.data);
+    };
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 10000); // Lấy dữ liệu mỗi 10 giây
+    return () => clearInterval(intervalId);
+  }, [time]);
+
+  let totalAppointmentcard = 0;
+  let totalKoicard = 0;
+  let totalPondcard = 0;
+  let totalRevenuecard = 0;
+  for (let i = 0; i < dashboardData.length; i++) {
+    totalAppointmentcard += dashboardData[i].totalAppointment;
+    totalKoicard += dashboardData[i].totalKoi;
+    totalPondcard += dashboardData[i].totalPond;
+    totalRevenuecard += dashboardData[i].totalRevenue;
+  }
+
   return (
     <div
       className="container appointment-dashboard"
@@ -24,6 +51,7 @@ function DashboardPage() {
             role="tab"
             aria-controls="nav-contact"
             aria-selected="false"
+            onClick={() => setTime("day")}
           >
             <i className="fas fa-calendar-day me-2 text-primary"></i>Day
           </button>
@@ -36,6 +64,7 @@ function DashboardPage() {
             role="tab"
             aria-controls="nav-disabled"
             aria-selected="false"
+            onClick={() => setTime("month")}
           >
             <i className="fas fa-calendar-alt me-2 text-success"></i>
             Month
@@ -49,6 +78,7 @@ function DashboardPage() {
             role="tab"
             aria-controls="nav-disabled"
             aria-selected="false"
+            onClick={() => setTime("year")}
           >
             <i class="bi bi-calendar2-fill"></i> Year
           </button>
@@ -60,11 +90,16 @@ function DashboardPage() {
             className="card"
             style={{
               height: "100px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "bold",
               backgroundColor: "#E74C35",
               color: "white",
             }}
           >
             Total Appointment
+            <p>{totalAppointmentcard}</p>
           </div>
         </div>
         <div className="col-md-3">
@@ -72,11 +107,16 @@ function DashboardPage() {
             className="card"
             style={{
               height: "100px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "bold",
               backgroundColor: "#FFC001 ",
               color: "white",
             }}
           >
             Total Koi
+            <p>{totalKoicard}</p>
           </div>
         </div>
         <div className="col-md-3">
@@ -84,11 +124,16 @@ function DashboardPage() {
             className="card"
             style={{
               height: "100px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "bold",
               backgroundColor: "#01A15F",
               color: "white",
             }}
           >
             Total Pond
+            <p>{totalPondcard}</p>
           </div>
         </div>
         <div className="col-md-3">
@@ -96,11 +141,16 @@ function DashboardPage() {
             className="card"
             style={{
               height: "100px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "bold",
               backgroundColor: "#9479DA ",
               color: "white",
             }}
           >
             Total Revenue
+            <p>{totalRevenuecard} VND</p>
           </div>
         </div>
       </div>
@@ -112,11 +162,13 @@ function DashboardPage() {
           >
             <Bar
               data={{
-                labels: ["A", "B", "C", "D"], // cột Ox
+                labels: dashboardData.map((item) =>
+                  item.date ? item.date.split("T")[0] : "N/A"
+                ), // cột Ox
                 datasets: [
                   {
                     label: "Revenue",
-                    data: [100, 200, 300, 400], // cột Oy
+                    data: dashboardData.map((item) => item.totalRevenue || 0), // cột Oy
                     backgroundColor: "#9479DA",
                     borderColor: "#9479DA",
                   },
@@ -127,34 +179,35 @@ function DashboardPage() {
         </div>
       </div>
       <div className="row doughnut-line-chart">
-        <div className="col-md-3">
-          <div className="dataCard revenueCard">
-            <Doughnut
+        <div className="col-md-6">
+          <div className="dataCard categoryCard">
+            <Radar
               data={{
-                labels: ["Pond"], // cột Ox
+                labels: dashboardData.map(
+                  (item) => item.day || item.date.split("T")[0]
+                ),
                 datasets: [
                   {
-                    label: "Revenue",
-                    data: [200], // cột Oy
-                    backgroundColor: "#01A15F",
-                    borderColor: "#01A15F",
+                    label: "Koi",
+                    data: dashboardData.map((item) => item.totalKoi || 0), // Dữ liệu cho Koi và Pond
+                    backgroundColor: "rgba(75, 192, 192, 0.2)", // Màu nền
+                    borderColor: "rgba(75, 192, 192, 1)", // Màu viền
+                    borderWidth: 1,
+                    pointBackgroundColor: "rgba(75, 192, 192, 1)", // Màu điểm
+                    pointBorderColor: "#fff", // Màu viền điểm
+                    pointHoverBackgroundColor: "#fff", // Màu nền khi hover
+                    pointHoverBorderColor: "rgba(75, 192, 192, 1)", // Màu viền khi hover
                   },
-                ],
-              }}
-            />
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="dataCard revenueCard">
-            <Doughnut
-              data={{
-                labels: ["Koi"], // cột Ox
-                datasets: [
                   {
-                    label: "Revenue",
-                    data: [100], // cột Oy
-                    backgroundColor: "#FFC001",
-                    borderColor: "#FFC001",
+                    label: "Pond",
+                    data: dashboardData.map((item) => item.totalPond || 0), // Dữ liệu cho Koi và Pond
+                    backgroundColor: "rgba(255, 165, 0, 0.2)", // Màu nền
+                    borderColor: "rgba(255, 165, 0, 1)", // Màu viền
+                    borderWidth: 1,
+                    pointBackgroundColor: "rgba(255, 165, 0, 1)", // Màu điểm
+                    pointBorderColor: "#fff", // Màu viền điểm
+                    pointHoverBackgroundColor: "#fff", // Màu nền khi hover
+                    pointHoverBorderColor: "rgba(255, 165, 0, 1)", // Màu viền khi hover
                   },
                 ],
               }}
@@ -165,11 +218,13 @@ function DashboardPage() {
           <div className="dataCard categoryCard">
             <Line
               data={{
-                labels: ["A", "B", "C", "D"], // cột Ox
+                labels: dashboardData.map((item) => item.day || item.date), // cột Ox
                 datasets: [
                   {
                     label: "Appointment",
-                    data: [100, 300, 50, 150], // cột Oy
+                    data: dashboardData.map(
+                      (item) => item.totalAppointment || 0
+                    ), // cột Oy
                     borderColor: "#E74C35",
                     backgroundColor: "#E74C35",
                   },
