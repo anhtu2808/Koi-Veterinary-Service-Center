@@ -97,6 +97,7 @@ function App() {
                     <Routes>
                       <Route path="/" element={<MyProfile />} />
                       <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />} />
+                      <Route path='/pond' element={<Pond isAppointment={false} title="All My Pond" />} />
                       <Route path='/koi/:koiId' element={
                         <KoiDetail
                           isCreate={false}

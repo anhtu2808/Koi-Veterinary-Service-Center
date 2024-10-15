@@ -7,6 +7,7 @@ import Pond from "../../components/Pond/Pond";
 import PondDetail from "../PondDetail/PondDetail";
 import MedicineListPage from "../MedicineListPage/MedicineListPage";
 import PrescriptionDetail from "../PrescriptionDetail/PrescriptionDetail";
+import { useSelector } from "react-redux";
 
 const PondTreatmentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +17,7 @@ const PondTreatmentPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const customerId = queryParams.get("customerId");
-  console.log("customerId", customerId);
+  const role = useSelector(state => state?.user?.role);
   const navigate = useNavigate();
   const [isMedicineModalOpen, setIsMedicineModalOpen] = useState(false);
   const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);

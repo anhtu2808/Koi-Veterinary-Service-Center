@@ -443,7 +443,7 @@ function AppointmentDetail() {
         </div>
 
         <div className="d-flex justify-content-between align-items-center mb-3">
-          {role !== ROLE.CUSTOMER && (
+          {role !== ROLE.CUSTOMER && appointment.status !== APPOINTMENT_STATUS.FINISH && (
             <>
               <div className="col-md-6">
                 <button
