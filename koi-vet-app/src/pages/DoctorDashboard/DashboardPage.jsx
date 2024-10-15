@@ -10,7 +10,7 @@ function DashboardPage() {
   return (
     <div
       className="container appointment-dashboard"
-      style={{ backgroundColor: "#1f2b6c", color: "white" }}
+      style={{ backgroundColor: "#F1F3F4" }}
     >
       <h1>Dashboard</h1>
       <nav className="w-100" style={{ marginBottom: "20px" }}>
@@ -60,7 +60,7 @@ function DashboardPage() {
             className="card"
             style={{
               height: "100px",
-              backgroundColor: "#22887f",
+              backgroundColor: "#E74C35",
               color: "white",
             }}
           >
@@ -72,7 +72,7 @@ function DashboardPage() {
             className="card"
             style={{
               height: "100px",
-              backgroundColor: "#33dfd0",
+              backgroundColor: "#FFC001 ",
               color: "white",
             }}
           >
@@ -84,7 +84,7 @@ function DashboardPage() {
             className="card"
             style={{
               height: "100px",
-              backgroundColor: "#FFC300",
+              backgroundColor: "#01A15F",
               color: "white",
             }}
           >
@@ -96,7 +96,7 @@ function DashboardPage() {
             className="card"
             style={{
               height: "100px",
-              backgroundColor: "#C70039 ",
+              backgroundColor: "#9479DA ",
               color: "white",
             }}
           >
@@ -108,7 +108,7 @@ function DashboardPage() {
         <div className="col-md-12">
           <div
             className="dataCard numberCard"
-            style={{ backgroundColor: "#0f3490 " }}
+            // style={{ backgroundColor: "#0f3490 " }}
           >
             <Bar
               data={{
@@ -117,24 +117,10 @@ function DashboardPage() {
                   {
                     label: "Revenue",
                     data: [100, 200, 300, 400], // cột Oy
-                    backgroundColor: "rgba(201, 2, 255, 0.8)",
+                    backgroundColor: "#9479DA",
+                    borderColor: "#9479DA",
                   },
                 ],
-              }}
-              options={{
-                color: "white",
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    ticks: { color: "white" }, // X-axis labels
-                    grid: { color: "rgba(255, 255, 255, 0.2)" }, // Grid lines color
-                  },
-                  y: {
-                    ticks: { color: "white" }, // Y-axis labels
-                    grid: { color: "rgba(255, 255, 255, 0.2)" }, // Grid lines color
-                  },
-                },
               }}
             />
           </div>
@@ -142,68 +128,41 @@ function DashboardPage() {
       </div>
       <div className="row doughnut-line-chart">
         <div className="col-md-3">
-          <div
-            className="dataCard revenueCard"
-            style={{ backgroundColor: "#0f3490 " }}
-          >
+          <div className="dataCard revenueCard">
             <Doughnut
               data={{
-                labels: ["B"], // cột Ox
+                labels: ["Pond"], // cột Ox
                 datasets: [
                   {
                     label: "Revenue",
                     data: [200], // cột Oy
-                    backgroundColor: ["rgba(70, 210, 64, 0.8)"],
-                    borderColor: ["rgba(70, 210, 64, 0.8)"],
+                    backgroundColor: "#01A15F",
+                    borderColor: "#01A15F",
                   },
                 ],
-              }}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    labels: { color: "white" }, // Legend text color
-                  },
-                },
               }}
             />
           </div>
         </div>
         <div className="col-md-3">
-          <div
-            className="dataCard revenueCard"
-            style={{ backgroundColor: "#0f3490 " }}
-          >
+          <div className="dataCard revenueCard">
             <Doughnut
               data={{
-                labels: ["A"], // cột Ox
+                labels: ["Koi"], // cột Ox
                 datasets: [
                   {
                     label: "Revenue",
                     data: [100], // cột Oy
-                    backgroundColor: ["rgba(250, 192, 19, 0.8)"],
-                    borderColor: ["rgba(250, 192, 19, 0.8)"],
+                    backgroundColor: "#FFC001",
+                    borderColor: "#FFC001",
                   },
                 ],
-              }}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    labels: { color: "white" }, // Legend text color
-                  },
-                },
               }}
             />
           </div>
         </div>
         <div className="col-md-6">
-          <div
-            className="dataCard categoryCard"
-            style={{ backgroundColor: "#0f3490 " }}
-          >
+          <div className="dataCard categoryCard">
             <Line
               data={{
                 labels: ["A", "B", "C", "D"], // cột Ox
@@ -211,29 +170,10 @@ function DashboardPage() {
                   {
                     label: "Appointment",
                     data: [100, 300, 50, 150], // cột Oy
-                    borderColor: "red",
-                    backgroundColor: "red",
+                    borderColor: "#E74C35",
+                    backgroundColor: "#E74C35",
                   },
                 ],
-              }}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    ticks: { color: "white" },
-                    grid: { color: "rgba(255, 255, 255, 0.2)" },
-                  },
-                  y: {
-                    ticks: { color: "white" },
-                    grid: { color: "rgba(255, 255, 255, 0.2)" },
-                  },
-                },
-                plugins: {
-                  legend: {
-                    labels: { color: "white" },
-                  },
-                },
               }}
             />
           </div>

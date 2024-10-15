@@ -46,15 +46,3 @@
     font-weight: bold;
   }
   
-  .appointment-dashboard .nav-link {
-    color: white !important; /* Ensure tab links are white */
-  }
-  
-  .dataCard, .headcard, .card {
-    border: 1px solid #204e9a; /* Match the border with the card background */
-    border-radius: 8px;         /* Rounded corners for consistency */
-    padding: 16px;              /* Padding inside the card */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    background-color: #204e9a;  /* Card background color */
-    color: white;               /* Ensure text is white */
-  }
