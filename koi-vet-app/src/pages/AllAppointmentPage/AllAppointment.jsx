@@ -109,7 +109,7 @@ function AllAppointment() {
               <i className="fas fa-dollar-sign me-2 text-warning"></i>Ready For Payment
             </button>
             <button className="nav-link custom-text-color" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.FINISH)}>
-              <i className="fas fa-flag-checkered me-2 text-success"></i>Finish
+              <i className="fas fa-flag-checkered me-2 text-success"></i>Completed
             </button>
             <button className="nav-link custom-text-color" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" onClick={() => handleChangeStatus(APPOINTMENT_STATUS.CANCEL)}>
               <i className="fas fa-ban me-2 text-danger"></i>Cancel
@@ -163,7 +163,7 @@ function AllAppointment() {
                           case APPOINTMENT_STATUS.READY_FOR_PAYMENT:
                             return <button className="btn btn-sm btn-warning"> <i className="fas fa-dollar-sign me-2"></i>Ready For Payment</button>;
                           case APPOINTMENT_STATUS.FINISH:
-                            return <button className="btn btn-sm btn-success"> <i className="fas fa-flag-checkered me-2"></i>Finish</button>;
+                            return <button className="btn btn-sm btn-success"> <i className="fas fa-flag-checkered me-2"></i>Completed</button>;
                           case APPOINTMENT_STATUS.CANCEL:
                             return <button className="btn btn-sm btn-danger"> <i className="fas fa-ban me-2"></i>Cancel</button>;
                           default:

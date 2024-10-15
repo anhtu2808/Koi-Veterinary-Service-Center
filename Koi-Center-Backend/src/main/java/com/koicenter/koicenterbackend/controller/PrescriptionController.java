@@ -43,24 +43,21 @@ public class PrescriptionController {
     }
 
 
-//    @DeleteMapping("/{prescriptionMedicineId}")
-//    public ResponseEntity<ResponseObject> deleteMedicine(@PathVariable("prescriptionMedicineId") String prescriptionMedicineId) {
-//        try {
-//            prescriptionService.deletePrescriptionMedicine(prescriptionMedicineId);
-//            return ResponseObject.APIRepsonse(200, "Deleted presctiprion medicine successfully", HttpStatus.OK, null);
-//        } catch (AppException e) {
-//            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
-//        } catch (Exception e) {
-//            return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
-//        }
-//    }
+    @DeleteMapping("/deletePrescriptionByPrescriptionId")
+    public ResponseEntity<ResponseObject> deletePrescription(@RequestParam("prescriptionId") String prescriptionId) {
+        try {
+            prescriptionService.deletePrescriptionByPrescriptionId(prescriptionId);
+            return ResponseObject.APIRepsonse(200, "Deleted presctiprion  successfully", HttpStatus.OK, null);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        } catch (Exception e) {
+            return ResponseObject.APIRepsonse(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+    }
     @DeleteMapping("/deletePrescriptionMedicineId")
     public ResponseEntity<ResponseObject> deleteMedicine(@RequestParam String prescriptionId , @RequestParam String medicineId) {
         try {
-            log.info(prescriptionId + medicineId);
             prescriptionService.deletePrescriptionMedicine(prescriptionId, medicineId);
-            log.info(prescriptionId + medicineId);
-
             return ResponseObject.APIRepsonse(200, "Deleted presctiprion medicine successfully", HttpStatus.OK, null);
         } catch (AppException e) {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
@@ -112,6 +109,7 @@ public class PrescriptionController {
             return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
         }
     }
+
 
 }
 

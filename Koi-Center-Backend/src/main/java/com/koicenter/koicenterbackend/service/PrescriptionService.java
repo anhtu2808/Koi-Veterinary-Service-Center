@@ -14,12 +14,14 @@ import com.koicenter.koicenterbackend.repository.PrescriptionMedicineRepository;
 import com.koicenter.koicenterbackend.repository.TreatmentMedicineRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PrescriptionService {
@@ -237,6 +239,19 @@ public class PrescriptionService {
         prescriptionMedicineResponse.setDosage(prescriptionMedicine.getDosage());
 
         return prescriptionMedicineResponse;
+    }
+    @Transactional
+    public void deletePrescriptionByPrescriptionId(String prescriptionId) {
+        log.info("prescriptionId"+prescriptionId);
+
+                Prescription prescription = prescriptionRepository.findById(prescriptionId).orElseThrow(() -> new AppException(
+                ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getCode(),
+                ErrorCode.PRESCRIPTION_ID_NOT_FOUND.getMessage(),
+                HttpStatus.NOT_FOUND
+        ));
+        log.info("prescriptionId"+prescription.getId()
+        );
+        prescriptionRepository.delete(prescription);
     }
 
 

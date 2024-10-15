@@ -164,7 +164,7 @@ public class TreatmentService {
         float price = 0 ;
         float totalQuantity = 0 ;
         for (Delivery delivery : deliverys) {
-        if (delivery.getFromPlace()<=  locationPrice && locationPrice<=delivery.getToPlace()) {
+        if (delivery.getFromPlace()<=  appointment.getDistance() && appointment.getDistance()<=delivery.getToPlace()) {
             price = delivery.getPrice();
             log.info("deliveryPrice" + price);
             }
@@ -177,10 +177,12 @@ public class TreatmentService {
             locationPrice = price * appointment.getDistance() ;
             log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
-            appointmentResponse.setQuantity(quantity);
-            appointmentResponse.setLocationPrice(locationPrice);
-            appointmentResponse.setTotalQuantity(totalQuantity);
-            appointmentResponse.setBalance(totalQuantity+locationPrice);
+            appointmentResponse.setQuantity(quantity); // so luong ca pond
+            appointmentResponse.setTotalHomeVisitFee(locationPrice); // tong (gia phi di chuyen )
+            appointmentResponse.setHomeVisitPrice(price); // gia tien theo khoang cach
+            appointmentResponse.setTotalKoiPondFee(totalQuantity); // tien ca tien pond * quantity
+            appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney()); // tien da lay
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
             return(T)appointmentResponse;
         }else if (!pondTreatments.isEmpty()){
@@ -191,11 +193,14 @@ public class TreatmentService {
             locationPrice = price * appointment.getDistance() ;
             log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
-            appointmentResponse.setQuantity(quantity);
-            appointmentResponse.setLocationPrice(locationPrice);
-            appointmentResponse.setTotalQuantity(totalQuantity);
-            appointmentResponse.setBalance(totalQuantity+locationPrice);
+            appointmentResponse.setQuantity(quantity); // so luong ca pond
+            appointmentResponse.setTotalHomeVisitFee(locationPrice); // tong (gia phi di chuyen )
+            appointmentResponse.setHomeVisitPrice(price); // gia tien theo khoang cach
+            appointmentResponse.setTotalKoiPondFee(totalQuantity); // tien ca tien pond * quantity
+            appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney()); // tien da lay
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
+
 
             return(T)appointmentResponse;
         }

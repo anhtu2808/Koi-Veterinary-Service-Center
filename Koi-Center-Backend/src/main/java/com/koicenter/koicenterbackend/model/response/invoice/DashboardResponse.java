@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 @Data
 
@@ -19,8 +17,8 @@ public class DashboardResponse {
     int totalAppointment ; // tong so luong Appointment
     String time ;
     DayOfWeek day ;
-    String month ;
-    String year ;
+    Month month ;
+    Year year ;
     ZonedDateTime date ;
 
 

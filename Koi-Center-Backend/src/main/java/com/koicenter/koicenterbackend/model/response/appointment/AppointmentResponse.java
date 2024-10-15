@@ -33,12 +33,11 @@ public class AppointmentResponse {
      String vetId;
      String vetName;
      float distance ;
-     float locationPrice ;
+     float totalHomeVisitFee ;
+     float homeVisitPrice ;
      int quantity ;
-     float totalQuantity ;
-     float balance ;
+     float totalKoiPondFee ;
+     float balanceDue ;
      String code ;
      String invoiceId ;
-
-
 }
