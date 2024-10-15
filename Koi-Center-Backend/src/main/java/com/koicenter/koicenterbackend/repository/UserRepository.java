@@ -4,7 +4,9 @@ import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.enums.Role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +20,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     User findByFullName(String fullName);
 
     List<User> findByRole(Role role);
+    @Modifying
+    @Query(value = "UPDATE User u SET u.password = :newPassword WHERE u.userId = :userId")
+    void updatePassword(@Param("newPassword") String newPassword, @Param("userId") String userId);
 }
 
