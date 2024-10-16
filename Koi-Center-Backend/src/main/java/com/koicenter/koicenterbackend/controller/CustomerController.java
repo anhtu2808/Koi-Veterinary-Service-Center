@@ -4,12 +4,14 @@ package com.koicenter.koicenterbackend.controller;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Koi;
 import com.koicenter.koicenterbackend.model.entity.Pond;
+import com.koicenter.koicenterbackend.model.request.user.UpdateUserRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
 import com.koicenter.koicenterbackend.model.response.koi.KoiResponse;
 import com.koicenter.koicenterbackend.model.response.pond.PondResponse;
 import com.koicenter.koicenterbackend.service.AppointmentService;
 import com.koicenter.koicenterbackend.service.CustomerService;
+import com.koicenter.koicenterbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private AppointmentService appointmentService;
     @GetMapping("/{customerId}/kois")
@@ -60,6 +64,15 @@ public class CustomerController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseObject(404, "No appointments in status " + status, null));
+        }
+    }
+    @PutMapping("")
+    public ResponseEntity<ResponseObject> update(@RequestBody UpdateUserRequest updateUserRequest){
+        boolean isUpdated = userService.updateCustomer(updateUserRequest);
+        if(isUpdated){
+            return ResponseObject.APIRepsonse(200, "User updated successfully!", HttpStatus.OK, null);
+        }else {
+            return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, null);
         }
     }
     
