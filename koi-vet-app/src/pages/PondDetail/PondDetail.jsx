@@ -5,8 +5,8 @@ import { fetchPondByPondIdAPI, updatePondInformationAPI, addPondToAppointmentAPI
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-
-const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointmentId, isVeterinarian, isAppointment, cusId }) => {
+  
+const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAppointment, cusId }) => {
   const [pondData, setPondData] = useState({
     pondId: "",
     status: "",
@@ -19,6 +19,7 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
     filterSystem: "",
     customerId: cusId,
   });
+  const [image, setImage] = useState(null);
   const [treatmentData, setTreatmentData] = useState({
     "pondTreatmentId": null,
     "pondId": null,
@@ -35,7 +36,10 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
   const role = useSelector(state => state?.user?.role);
   const { pondId } = useParams();
   const navigate = useNavigate();
-
+  const handleUploadImage = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+  }
   const fetchPrescriptions = async () => {
     const response = await fetchPrescriptionByAppointmentIdAPI(appointmentId)
     setPrescriptions(response.data)
@@ -108,7 +112,7 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
       }
       if (isUpdate) {
         setIsEditing(false)
-        const response = await updatePondInformationAPI(pondData.pondId, pondData);
+        const response = await updatePondInformationAPI(pondData.pondId, pondData,image);
         console.log("pondData", pondData)
         toast.success(response.data.message);
       }
@@ -157,8 +161,19 @@ const PondDetail = ({ isCreate, isUpdate, isBooking, onClose, onUpdate, appointm
         <div className="col-md-1"> </div>
         <div className="col-md-7 text-center">
           <label className="form-label text-start">Pond Image</label>
-          <img src={pondData.image || pond_default} alt="Pond" className=" w-100 koi-profile-image rounded-3" />
-
+          <img src={image ? URL.createObjectURL(image) : pondData.image || pond_default} alt="Pond" className=" w-100 koi-profile-image rounded-3" />
+          {(isEditing || isCreate) && ( // Only show the upload input if isEditing is true
+              <div className="form-group mt-3 text-center">
+                <label className="custom-file-upload">
+                  <input
+                    type="file"
+                    onChange={handleUploadImage}
+                    disabled={!isEditing && !isCreate} // cho phép upload khi trong chế độ create hoặc edit
+                  />
+                  Upload Image <i className="fa-solid fa-image"></i>
+                </label>
+              </div>
+            )}
         </div>
         <div className="col-md-6 mt-4">
           {renderField("Filter System", pondData.filterSystem, "filterSystem")}

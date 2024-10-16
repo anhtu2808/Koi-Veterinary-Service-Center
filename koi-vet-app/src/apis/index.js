@@ -150,8 +150,9 @@ export const fetchPondByPondIdAPI = async (pondId) => {
     const response = await api.get(`/ponds/${pondId}`);
     return response.data;
 }
-export const updatePondInformationAPI = async (pondId, data) => {
-    const response = await api.put(`/ponds/${pondId}`, data);
+export const updatePondInformationAPI = async (pondId, data,image) => {
+    const imageURL = await fetchUpLoadImageAPI(image);
+    const response = await api.put(`/ponds/${pondId}`, {...data,image:imageURL});
     return response.data;
 }
 export const createPondAPI = async (data) => {
