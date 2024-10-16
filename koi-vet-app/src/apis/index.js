@@ -36,11 +36,6 @@ export const fetchMyInfoAPI = async () => {
     return response.data
 }
 
-export const updateMyInfoAPI = async (userData) => {
-    const response = await api.put('/users/updateMyInfo', userData);
-    return response.data;
-};
-
 //* Vet API */
 export const fetchVetsAPI = async () => {
     const response = await api.get('/veterinarians');
@@ -111,14 +106,14 @@ export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
     return response.data;
 }
 
-export const addKoiToAppointmentAPI = async (appointmentId, koiData,image) => {
-    const saveKoi = await createKoiAPI(koiData,image)
+export const addKoiToAppointmentAPI = async (appointmentId, koiData, image) => {
+    const saveKoi = await createKoiAPI(koiData, image)
 
     const response = await api.post(`/treatments/kois`, { koiId: saveKoi.data.koiId, appointmentId: appointmentId });
     return response.data;
 }
-export const addPondToAppointmentAPI = async (appointmentId, pondData,image) => {
-    const savePond = await createPondAPI(pondData,image)
+export const addPondToAppointmentAPI = async (appointmentId, pondData, image) => {
+    const savePond = await createPondAPI(pondData, image)
 
     const response = await api.post(`/treatments/ponds`, { pondId: savePond.data.pondId, appointmentId: appointmentId });
     return response.data;
@@ -150,14 +145,14 @@ export const fetchPondByPondIdAPI = async (pondId) => {
     const response = await api.get(`/ponds/${pondId}`);
     return response.data;
 }
-export const updatePondInformationAPI = async (pondId, data,image) => {
+export const updatePondInformationAPI = async (pondId, data, image) => {
     const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.put(`/ponds/${pondId}`, {...data,image:imageURL});
+    const response = await api.put(`/ponds/${pondId}`, { ...data, image: imageURL });
     return response.data;
 }
-export const createPondAPI = async (data,image) => {
+export const createPondAPI = async (data, image) => {
     const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.post('/ponds', {...data,image:imageURL});
+    const response = await api.post('/ponds', { ...data, image: imageURL });
     return response.data;
 }
 
@@ -179,14 +174,14 @@ export const fetchKoisByCustomerIdAPI = async (customerId) => {
     return response.data;
 }
 
-export const updateKoiInformationAPI = async (koiId, koiData,image) => {
+export const updateKoiInformationAPI = async (koiId, koiData, image) => {
     const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.put(`/kois/${koiId}`, {...koiData,image:imageURL});
+    const response = await api.put(`/kois/${koiId}`, { ...koiData, image: imageURL });
     return response.data;
 }
-export const createKoiAPI = async (data,image) => {
+export const createKoiAPI = async (data, image) => {
     const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.post('/kois', {...data,image:imageURL});
+    const response = await api.post('/kois', { ...data, image: imageURL });
     return response.data;
 }
 
@@ -303,7 +298,7 @@ export const fetchSecondInfoPaymentAPI = async (appointmentId) => {
 }
 
 //Upload Image API
-export const fetchUpLoadImageAPI = async (image) => {
+export const fetchUpLoadImageAPI = async (image) => { // api upload image lên S3
     const response = await api.get(`images/presigned-url?imageName=${image.name}`);
     const presignedUrl = await response.data; // URL file trên S3 (bỏ query params)
     await axios.put(presignedUrl, image, {
@@ -323,6 +318,11 @@ export const fetchAllUsersAPI = async (role) => {
     return response.data;
 }
 
+export const updateCustomerAPI = async (customerData, image) => {
+    const imageURL = await fetchUpLoadImageAPI(image);
+    const response = await api.put(`/customers/update`, { ...customerData, image: imageURL });
+    return response.data;
+}
 // Invoice API
 export const updateInvoiceAPI = async (invoiceId, data) => {
     const response = await api.put(`/invoices/update/${invoiceId}`, data);

@@ -8,6 +8,7 @@ import pond_default from '../../assets/img/pond_default.jpg'
 
 import Treatment from '../Treatment/Treatment';
 import Modal from '../Modal/Modal';
+import Select from 'react-select';
 
 const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId }) => {
     const navigate = useNavigate();
@@ -112,7 +113,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
 
                                         <div key={treatment.pond?.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
                                             <div className="col-md-5 mt-2">
-                                                <h4>{"Đây là hồ cá pond của anh tú"}</h4>
+                                                {/* <h4>{"Đây là hồ cá pond của anh tú"}</h4> */}
                                                 <p><strong>Depth:</strong> {treatment?.pond?.depth} m</p>
                                                 <p><strong>Perimeter:</strong> {treatment?.pond?.perimeter} m</p>
                                                 <p><strong>Filter System:</strong> {treatment?.pond?.filterSystem}</p>
@@ -141,20 +142,24 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                                             )}
                                                         </div>
                                                         {isAppointment &&
-                                                            <select
-                                                                className="form-select w-120"
-                                                                aria-label="Default select example"
-                                                                onChange={(e) => handleChangePrescription(treatment?.pondTreatmentId, e.target.value, treatment?.pond?.pondId)}
-                                                                value={treatment?.prescription_id || "None"}
-                                                                disabled={role !== "VETERINARIAN"}
-                                                            >
-                                                                <option value="None">None</option>
-                                                                {prescriptions.map(prescription => (
-                                                                    <option key={prescription?.id} value={prescription?.id}>
-                                                                        {prescription?.name}
-                                                                    </option>
-                                                                ))}
-                                                            </select>}
+                                                            <Select
+                                                                className="basic-single w-120"
+                                                                classNamePrefix="select"
+                                                                isDisabled={role !== "VETERINARIAN"}
+                                                                isSearchable={true} // Kích hoạt tìm kiếm
+                                                                placeholder="Select prescription"
+                                                                value={prescriptions.find(prescription => prescription.id === treatment?.prescription_id) || { value: "None", label: "None" }}
+                                                                onChange={(selectedOption) =>
+                                                                    handleChangePrescription(treatment?.pondTreatmentId, selectedOption.value, treatment?.pond?.pondId)
+                                                                }
+                                                                options={[
+                                                                    { value: "None", label: "None" },
+                                                                    ...prescriptions.map((prescription) => ({
+                                                                        value: prescription?.id,
+                                                                        label: prescription?.name
+                                                                    })),
+                                                                ]}
+                                                            />}
                                                     </div>
                                                 </div>
                                             </div>

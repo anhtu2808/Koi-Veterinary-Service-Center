@@ -10,19 +10,22 @@ import { ROLE, APPOINTMENT_STATUS, ROW_PER_PAGE } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import Loading from "../../components/Loading/Loading";
+import { Pagination, PaginationItem, Typography } from "@mui/material";
 
 function AllAppointment() {
   const [appointments, setAppointments] = useState([]);
   const [status, setStatus] = useState("ALL");
-  const [offSet, setOffSet] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const customerId = useSelector((state) => state?.user?.customer?.customerId);
   const [title, setTitle] = useState("All Appointments");
   const vetId = useSelector((state) => state?.user?.veterinarian?.vetId);
   const role = useSelector((state) => state.user.role);
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
   useEffect(() => {
     const fetchAppointmentForVet = async (vetId, status) => {
       const response = await fetchAllAppointmentByVetIdAPI(vetId, status);
@@ -32,7 +35,7 @@ function AllAppointment() {
     };
 
     const fetchAppointmentForStaff = async () => {
-      const response = await fetchAllAppointmentAPI(status, offSet, pageSize);
+      const response = await fetchAllAppointmentAPI(status, page-1, pageSize);
       setAppointments(response?.data);
       setIsLoading(false);
     };
@@ -54,7 +57,7 @@ function AllAppointment() {
       setTitle("My Appointments");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role, customerId, status, pageSize, offSet]);
+  }, [role, customerId, status, pageSize,page]);
 
   const handleChangeStatus = (status) => {
     setStatus(status);
@@ -200,8 +203,8 @@ function AllAppointment() {
 
           </tbody>
         </table>
-        <div className="d-flex justify-content-center">
-          
+        <div className="d-flex justify-content-center mt-3">
+        <Pagination count={10} page={page} onChange={handleChangePage} />
         </div>
 
       </div>

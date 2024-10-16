@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateMyInfoAPI } from "../../apis";
+import { updateCustomerAPI } from "../../apis";
 import { updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
 import "./MyProfile.css";
 import default_profile from "../../assets/img/profile_default.png"
@@ -19,12 +19,6 @@ const MyProfile = () => {
   }
   const handleEdit = () => {
     setIsEditing(true);
-    setEditedInfo({
-      fullName: myInfo.fullName,
-      email: myInfo.email,
-      phone: customer.phone,
-      address: customer.address,
-    });
   };
   const handleAllAppointment = () => {
     navigate("/profile/appointment");
@@ -38,10 +32,10 @@ const MyProfile = () => {
   const handleSave = async () => {
     setIsEditing(false);
     try {
-      const updatedInfo = await updateMyInfoAPI(editedInfo);
-    
-      dispatch(updateUserInfo(updatedInfo));
-    
+      const response = await updateCustomerAPI(editedInfo,image);
+      if(response.status === 200){
+        dispatch(updateUserInfo(response.data));
+      }
     } catch (error) {
       console.error("Error updating user info:", error);
     }
@@ -62,7 +56,7 @@ const MyProfile = () => {
             <div className="col-md-4 text-center mb-4">
            
               <img
-                src={image ? URL.createObjectURL(image) : myInfo.image || default_profile}
+                src="https://via.placeholder.com/150"
                 alt="User Avatar"
                 className="img-fluid rounded-circle mb-3"
                 style={{ width: "150px", height: "150px" }}
