@@ -332,6 +332,33 @@ public class VetScheduleService {
         }
         return vetScheduleResponses;
     }
+    public VetScheduleResponse createSlot (VetScheduleRequest vetScheduleRequest){
+        // truyền vetID , Star , end , date
+        VetSchedule vetSchedule = scheduleRepository.findVetSchedule(
+                vetScheduleRequest.getVet_id(),
+                vetScheduleRequest.getStartTime(),
+                vetScheduleRequest.getEndTime(),
+                vetScheduleRequest.getDate());
+        if (vetSchedule != null) {
+            throw new AppException(ErrorCode.VETSCHEDULE_EXISTED.getCode(),
+                    ErrorCode.VETSCHEDULE_EXISTED.getMessage(),
+                    HttpStatus.CONFLICT);
+        }else  {
+            Veterinarian veterinarian = veterinarianRepository.findById(vetScheduleRequest.getVet_id()).orElseThrow((() -> new AppException(
+                    ErrorCode.VETERINARIAN_ID_NOT_EXITS.getCode(),
+                    ErrorCode.VETERINARIAN_ID_NOT_EXITS.getMessage(),
+                    HttpStatus.NOT_FOUND)));
+            VetSchedule newVetSchedule = VetSchedule.builder()
+                    .customerBookingCount(0)
+                    .date(vetScheduleRequest.getDate())
+                    .startTime(vetScheduleRequest.getStartTime())
+                    .endTime(vetScheduleRequest.getEndTime())
+                    .veterinarian(veterinarian)
+                    .build();
+            scheduleRepository.save(vetSchedule);
+        }
+        return vetScheduleMapper.toVetScheduleResponse(vetSchedule);
+    }
 
 }
 

@@ -90,7 +90,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.POST, "api/v1/appointments").permitAll()
                             .requestMatchers(HttpMethod.PUT, "api/v1/appointments/update").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/appointments/userName/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/appointments/{vetId}/appointment").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/appointments/by-vetId/{vetId}").permitAll()
 
 
                             .requestMatchers(HttpMethod.PUT, "api/v1/invoices/update/**").permitAll()
@@ -160,6 +160,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, "/api/v1/deliveries").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/vetschedules").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/vetSchedules").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "api/v1/payment/momo-pay").permitAll()
                             .requestMatchers(HttpMethod.POST, "api/v1/payment/momo-pay-callback").permitAll()

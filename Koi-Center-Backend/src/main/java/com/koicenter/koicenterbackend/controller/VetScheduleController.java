@@ -78,6 +78,15 @@ public class VetScheduleController {
             return ResponseObject.APIRepsonse(400, "Can't create Veterinarians Schedule Create ", HttpStatus.BAD_REQUEST,"");
         }
     }
+    @PostMapping("")
+    public ResponseEntity<ResponseObject> createSlot(@RequestBody VetScheduleRequest vetScheduleRequest) {
+       VetScheduleResponse list = vetScheduleService.createSlot(vetScheduleRequest);
+        if( list != null ){
+            return ResponseObject.APIRepsonse(200, "Veterinarians schedule CREATE successfully ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(400, "Can't create Veterinarians Schedule Create ", HttpStatus.BAD_REQUEST,"");
+        }
+    }
     @PutMapping("/update")
     public ResponseEntity<ResponseObject> updateVetScheduleOfVeterinarian(@RequestBody VetScheduleRequest vetScheduleRequest) {
         vetScheduleRequest.setAppointmentType(AppointmentType.ONLINE);
@@ -116,6 +125,7 @@ public class VetScheduleController {
             return ResponseObject.APIRepsonse(404, "Veterinarians schedule not found By VetID and Date ", HttpStatus.NOT_FOUND,"");
         }
     }
+
 
 
 }
