@@ -45,6 +45,7 @@ import Rating from './pages/Rating/Rating';
 import ImageUpload from './components/testImage';
 import PaymentCheckout from './pages/PaymentCheckout/PaymentCheckout';
 import DashboardPage from './pages/DoctorDashboard/DashboardPage';
+import Schedual from './pages/Schdual/Schedual';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -156,6 +157,7 @@ function App() {
                 <Route path="/medpage" element={< MedicineListPage />} />
                 <Route path="/paymentcheckout/:appointmentId" element={<PaymentCheckout />} />
                 <Route path="/usermanagement" element={<UserManagementPage />} />
+                <Route path="/schedual" element={<Schedual />} />
               </Route>
 
               {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}

@@ -129,6 +129,11 @@ export const fetchScheduleByAppimentTypeAPI = async (type, vetId) => {
     return response.data;
 }
 
+export const createScheduleAPI = async (data) => {
+    const response = await api.post('/vetSchedules/create', data);
+    return response.data;
+}
+
 
 
 
