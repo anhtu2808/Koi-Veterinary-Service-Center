@@ -14,11 +14,19 @@ const MyProfile = () => {
   const customer = useSelector(state => state?.user?.customer);
   const navigate = useNavigate();
   const handleUploadImage = (event) => {
-    const file = event.target.files[0];
-    setImage(file);
+    setImage(event.target.files[0]);
   }
-  const handleEdit = () => {
-    setEditedInfo(myInfo);
+  const handleEdit = () => { 
+    setEditedInfo(
+      {
+        "userId": myInfo?.user_id,
+        "fullName": myInfo?.fullName,
+        "email": myInfo?.email,
+        "phoneNumber": customer?.phone,
+        "address": customer?.address,
+        "image": myInfo?.image
+      }
+    );
     setIsEditing(true);
   };
   const handleAllAppointment = () => {
@@ -57,7 +65,7 @@ const MyProfile = () => {
             <div className="col-md-4 text-center mb-4">
            
               <img
-                src="https://via.placeholder.com/150"
+                src={image ? URL.createObjectURL(image) : myInfo?.image || default_profile}
                 alt="User Avatar"
                 className="img-fluid rounded-circle mb-3"
                 style={{ width: "150px", height: "150px" }}
@@ -113,14 +121,14 @@ const MyProfile = () => {
                 </div>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label htmlFor="phone" className="form-label">Phone</label>
+                    <label htmlFor="phoneNumber" className="form-label">Phone</label>
                     {isEditing ? (
                       <input
                         type="tel"
                         className="form-control"
-                        id="phone"
-                        name="phone"
-                        value={editedInfo.phone}
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        value={editedInfo.phoneNumber}
                         onChange={handleChange}
                       />
                     ) : (

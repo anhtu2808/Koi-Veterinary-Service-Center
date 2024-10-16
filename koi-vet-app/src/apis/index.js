@@ -146,12 +146,18 @@ export const fetchPondByPondIdAPI = async (pondId) => {
     return response.data;
 }
 export const updatePondInformationAPI = async (pondId, data, image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
     const response = await api.put(`/ponds/${pondId}`, { ...data, image: imageURL });
     return response.data;
 }
 export const createPondAPI = async (data, image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
     const response = await api.post('/ponds', { ...data, image: imageURL });
     return response.data;
 }
@@ -179,12 +185,18 @@ export const fetchKoisByCustomerIdAPI = async (customerId) => {
 }
 
 export const updateKoiInformationAPI = async (koiId, koiData, image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
     const response = await api.put(`/kois/${koiId}`, { ...koiData, image: imageURL });
     return response.data;
 }
 export const createKoiAPI = async (data, image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
     const response = await api.post('/kois', { ...data, image: imageURL });
     return response.data;
 }
@@ -325,8 +337,12 @@ export const fetchAllUsersAPI = async (role) => {
 }
 
 export const updateCustomerAPI = async (customerData, image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.put(`/customers/update`, { ...customerData, image: imageURL });
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+
+    const response = await api.put(`/customers`, { ...customerData, image: imageURL });
     return response.data;
 }
 // Invoice API
@@ -380,5 +396,19 @@ export const fetchHomeVisitPriceAPI = async () => {
 //dashboard API
 export const fetchDashboardAPI = async (time) => {
     const response = await api.get(`/invoices/dashboard/${time}`);
+    return response.data;
+}
+
+//Schedual API
+export const updateSchedualAPI = async (schedualId, data) => {
+    const response = await api.put(`/vetSchedules/${schedualId}/update?schedualId=${schedualId}`, data);
+    return response.data;
+}
+export const fetchSchedualByVetIdAPI = async (vetId) => {
+    const response = await api.get(`/vetSchedules/${vetId}/scheduals`);
+    return response.data;
+}
+export const fetchSchedualByDateAndVetIdAPI = async (date, vetId) => {
+    const response = await api.get(`/vetSchedules/${vetId}/scheduals/by-date?date=${date}`);
     return response.data;
 }
