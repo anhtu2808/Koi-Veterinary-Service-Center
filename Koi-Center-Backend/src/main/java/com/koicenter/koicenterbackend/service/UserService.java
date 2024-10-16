@@ -169,15 +169,15 @@ public class UserService {
 
     }
 
-    public boolean updateUser(UpdateUserRequest updateUserRequest) {
+    public boolean updateCustomer(UpdateUserRequest updateUserRequest) {
         try {
             Customer customer = customerRepository.findByUser_UserId(updateUserRequest.getUserId());
-            ;
             customer.setAddress(updateUserRequest.getAddress());
             customer.setPhone(updateUserRequest.getPhoneNumber());
             User user = userRepository.findByUserId(updateUserRequest.getUserId());
             user.setFullName(updateUserRequest.getFullName());
             user.setEmail(updateUserRequest.getEmail());
+            user.setImage(updateUserRequest.getImage());
             userRepository.save(user);
             customerRepository.save(customer);
         } catch (Exception e) {
@@ -273,10 +273,11 @@ public class UserService {
             user.setStatus(false);
             userRepository.save(user);
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
+
     @Transactional
     public boolean updatePassword(UpdatePasswordRequest passwordRequest) {
         User user = userRepository.findByUserId(passwordRequest.getUserId());
@@ -286,5 +287,33 @@ public class UserService {
         }
         return false;
     }
+
+    public boolean updateUser(UpdateUserRequest updateUserRequest) {
+        try {
+            User user = userRepository.findByUserId(updateUserRequest.getUserId());
+            user.setImage(updateUserRequest.getImage());
+            user.setFullName(updateUserRequest.getFullName());
+            user.setEmail(updateUserRequest.getEmail());
+            if (user.getRole().equals(Role.CUSTOMER)) {
+                Customer customer = customerRepository.findByUser_UserId(updateUserRequest.getUserId());
+                customer.setPhone(updateUserRequest.getPhoneNumber());
+                customer.setAddress(updateUserRequest.getAddress());
+                customerRepository.save(customer);
+            } else if (user.getRole().equals(Role.VETERINARIAN)) {
+                Veterinarian veterinarian = veterinarianRepository.findByUserId(updateUserRequest.getUserId());
+                veterinarian.setPhone(updateUserRequest.getPhoneNumber());
+                veterinarianRepository.save(veterinarian);
+            } else if (user.getRole().equals(Role.STAFF)) {
+                Staff staff = staffRepository.findByUser_UserId(updateUserRequest.getUserId());
+                staff.setPhone(updateUserRequest.getPhoneNumber());
+                staffRepository.save(staff);
+            }
+            userRepository.save(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
+
 
