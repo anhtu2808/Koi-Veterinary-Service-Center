@@ -172,12 +172,12 @@ public class UserService {
     public boolean updateUser(UpdateUserRequest updateUserRequest) {
         try {
             Customer customer = customerRepository.findByUser_UserId(updateUserRequest.getUserId());
-            ;
             customer.setAddress(updateUserRequest.getAddress());
             customer.setPhone(updateUserRequest.getPhoneNumber());
             User user = userRepository.findByUserId(updateUserRequest.getUserId());
             user.setFullName(updateUserRequest.getFullName());
             user.setEmail(updateUserRequest.getEmail());
+            user.setImage(updateUserRequest.getImage());
             userRepository.save(user);
             customerRepository.save(customer);
         } catch (Exception e) {

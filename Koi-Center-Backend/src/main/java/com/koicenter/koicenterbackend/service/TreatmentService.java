@@ -223,6 +223,20 @@ public class TreatmentService {
 
 
             return(T)appointmentResponse;
+        }else if (appointment.getType().equals(AppointmentType.ONLINE)){
+            locationPrice = price * appointment.getDistance() ;
+            log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
+            AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
+            appointmentResponse.setQuantity(quantity); // so luong ca pond
+            appointmentResponse.setTotalHomeVisitFee(locationPrice); // tong (gia phi di chuyen )
+//            appointmentResponse.setHomeVisitPrice(price); // gia tien theo khoang cach
+//            appointmentResponse.setTotalKoiPondFee(totalQuantity); // tien ca tien pond * quantity
+            appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
+            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney()); // tien da lay
+            appointmentResponse.setInvoiceId(invoice.getInvoiceId());
+
+
+            return(T)appointmentResponse;
         }
         return null ;
     }
