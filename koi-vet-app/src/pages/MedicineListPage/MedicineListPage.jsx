@@ -19,6 +19,7 @@ import {
 import "./MedicineListPage.css";
 
 function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
+  console.log(appointmentId);
   const [filteredMedicines, setFilteredMedicines] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [availableMedicines, setAvailableMedicines] = useState([]);

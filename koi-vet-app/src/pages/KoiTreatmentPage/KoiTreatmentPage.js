@@ -24,6 +24,11 @@ const KoiTreatmentPage = () => {
   const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
   const [selectedPrescriptionId, setSelectedPrescriptionId] = useState(null);  // Lưu Prescription ID được chọn
   //open modal for when click add new koi BTN
+
+  const handlePrescriptionCreated = (newPrescription) => {
+    setPrescriptions((prev) => [...prev, newPrescription]);
+  };
+
   const handleAddNewKoi = () => {
     setIsModalOpen(true);
   };
@@ -53,9 +58,7 @@ const KoiTreatmentPage = () => {
     setIsMedicineModalOpen(false);
   }
 
-
-
-  const handleViewDetails = (prescriptionId) => {
+   const handleViewDetails = (prescriptionId) => {
     setSelectedPrescriptionId(prescriptionId);
     setIsPrescriptionModalOpen(true);
   };
@@ -142,6 +145,7 @@ const KoiTreatmentPage = () => {
                 handleKoiUpdate()
                 // Có thể thêm logic để refresh danh sách prescription
               }}
+              onClick={handlePrescriptionCreated}
             />
           </Modal>
 
