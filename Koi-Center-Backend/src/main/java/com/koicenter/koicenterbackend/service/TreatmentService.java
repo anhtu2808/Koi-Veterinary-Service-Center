@@ -209,7 +209,7 @@ public class TreatmentService {
             for(PondTreatment pondTreatment : pondTreatments){
                 quantity ++ ;
             }
-            totalQuantity = appointment.getService().getKoiPrice() * quantity  ;
+            totalQuantity = appointment.getService().getPondPrice() * quantity  ;
             locationPrice = price * appointment.getDistance() ;
             log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
@@ -223,7 +223,7 @@ public class TreatmentService {
 
 
             return(T)appointmentResponse;
-        }else if (appointment.getType().equals(AppointmentType.ONLINE)){
+        }else if (appointment.getType().equals(AppointmentType.ONLINE)||pondTreatments.isEmpty()&&koiTreatments.isEmpty()){
             locationPrice = price * appointment.getDistance() ;
             log.info("Location Price = "+ locationPrice + "Price = "+ price+ "Distance"+ appointment.getDistance() );
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
