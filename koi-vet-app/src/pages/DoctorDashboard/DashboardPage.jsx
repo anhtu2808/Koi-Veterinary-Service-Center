@@ -15,24 +15,102 @@ function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetchDashboardAPI(time);
-      setDashboardData(response.data);
+      console.log("API Data:", response.data); // Kiểm tra dữ liệu API
+      setDashboardData(response.data || []);
     };
     fetchData();
+  }, [time]);
 
-    const intervalId = setInterval(fetchData, 10000); // Lấy dữ liệu mỗi 10 giây
+  //Polling 10s
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      const response = await fetchDashboardAPI(time);
+      setDashboardData(response.data || []);
+    }, 10000);
     return () => clearInterval(intervalId);
   }, [time]);
 
-  let totalAppointmentcard = 0;
-  let totalKoicard = 0;
-  let totalPondcard = 0;
-  let totalRevenuecard = 0;
-  for (let i = 0; i < dashboardData.length; i++) {
-    totalAppointmentcard += dashboardData[i].totalAppointment;
-    totalKoicard += dashboardData[i].totalKoi;
-    totalPondcard += dashboardData[i].totalPond;
-    totalRevenuecard += dashboardData[i].totalRevenue;
-  }
+  // Xủ lý dữ liệu nếu như API trả về bị thiếu dữ liệu
+  const generateData = (length, formatter) => {
+    return Array.from({ length }).map((_, i) => formatter(i) || {});
+  };
+
+  // Tạo dữ liệu 7 ngày, 6 tháng, hoặc 3 năm tùy thuộc vào `time`
+  const formattedData = (() => {
+    if (time === "day") {
+      return generateData(7, (i) => {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const dateString = date.toISOString().split("T")[0] || [];
+        const matchedData = dashboardData.find((item) =>
+          item.date?.startsWith(dateString)
+        );
+        return (
+          matchedData || {
+            date: dateString,
+            totalAppointment: 0,
+            totalKoi: 0,
+            totalPond: 0,
+            totalRevenue: 0,
+          }
+        );
+      }).reverse();
+    } else if (time === "month") {
+      return generateData(6, (i) => {
+        const date = new Date();
+        date.setMonth(date.getMonth() - i);
+        const monthName = date
+          .toLocaleString("en-US", { month: "long" })
+          .toUpperCase();
+        const matchedData = dashboardData.find(
+          (item) => item.month === monthName
+        );
+        console.log(`Checking month: ${monthName}`); // Debugging line
+
+        return (
+          matchedData || {
+            month: monthName,
+            totalAppointment: 0,
+            totalKoi: 0,
+            totalPond: 0,
+            totalRevenue: 0,
+          }
+        );
+      }).reverse();
+    } else {
+      return generateData(3, (i) => {
+        const year = new Date().getFullYear() - i;
+        const matchedData = dashboardData.find((item) => item.year == year);
+        return (
+          matchedData || {
+            year: String(year),
+            totalAppointment: 0,
+            totalKoi: 0,
+            totalPond: 0,
+            totalRevenue: 0,
+          }
+        );
+      }).reverse();
+    }
+  })();
+
+  // Tổng hợp dữ liệu cho các card
+  const totalAppointmentcard = formattedData.reduce(
+    (acc, item) => acc + item.totalAppointment,
+    0
+  );
+  const totalKoicard = formattedData.reduce(
+    (acc, item) => acc + item.totalKoi,
+    0
+  );
+  const totalPondcard = formattedData.reduce(
+    (acc, item) => acc + item.totalPond,
+    0
+  );
+  const totalRevenuecard = formattedData.reduce(
+    (acc, item) => acc + item.totalRevenue,
+    0
+  );
 
   return (
     <div
@@ -44,9 +122,9 @@ function DashboardPage() {
         <div className="nav nav-tabs" id="nav-tab" role="tablist">
           <button
             className="nav-link custom-text-color"
-            id="nav-contact-tab"
+            id="nav-day-tab"
             data-bs-toggle="tab"
-            data-bs-target="#nav-contact"
+            data-bs-target="#nav-day"
             type="button"
             role="tab"
             aria-controls="nav-contact"
@@ -162,13 +240,15 @@ function DashboardPage() {
           >
             <Bar
               data={{
-                labels: dashboardData.map((item) =>
-                  item.date ? item.date.split("T")[0] : "N/A"
-                ), // cột Ox
+                labels: formattedData.map((item, index) =>
+                  time === "day"
+                    ? item.date || "N/A"
+                    : item.month || item.year || "N/A"
+                ),
                 datasets: [
                   {
                     label: "Revenue",
-                    data: dashboardData.map((item) => item.totalRevenue || 0), // cột Oy
+                    data: formattedData.map((item) => item.totalRevenue || 0),
                     backgroundColor: "#9479DA",
                     borderColor: "#9479DA",
                   },
@@ -183,13 +263,13 @@ function DashboardPage() {
           <div className="dataCard categoryCard">
             <Radar
               data={{
-                labels: dashboardData.map(
-                  (item) => item.day || item.date.split("T")[0]
+                labels: formattedData.map(
+                  (item) => item.date || item.month || item.year
                 ),
                 datasets: [
                   {
                     label: "Koi",
-                    data: dashboardData.map((item) => item.totalKoi || 0), // Dữ liệu cho Koi và Pond
+                    data: formattedData.map((item) => item.totalKoi),
                     backgroundColor: "rgba(75, 192, 192, 0.2)", // Màu nền
                     borderColor: "rgba(75, 192, 192, 1)", // Màu viền
                     borderWidth: 1,
@@ -200,7 +280,7 @@ function DashboardPage() {
                   },
                   {
                     label: "Pond",
-                    data: dashboardData.map((item) => item.totalPond || 0), // Dữ liệu cho Koi và Pond
+                    data: formattedData.map((item) => item.totalPond),
                     backgroundColor: "rgba(255, 165, 0, 0.2)", // Màu nền
                     borderColor: "rgba(255, 165, 0, 1)", // Màu viền
                     borderWidth: 1,
@@ -218,13 +298,13 @@ function DashboardPage() {
           <div className="dataCard categoryCard">
             <Line
               data={{
-                labels: dashboardData.map((item) => item.day || item.date), // cột Ox
+                labels: formattedData.map(
+                  (item) => item.date || item.month || item.year
+                ),
                 datasets: [
                   {
                     label: "Appointment",
-                    data: dashboardData.map(
-                      (item) => item.totalAppointment || 0
-                    ), // cột Oy
+                    data: formattedData.map((item) => item.totalAppointment),
                     borderColor: "#E74C35",
                     backgroundColor: "#E74C35",
                   },
