@@ -117,8 +117,8 @@ export const addKoiToAppointmentAPI = async (appointmentId, koiData,image) => {
     const response = await api.post(`/treatments/kois`, { koiId: saveKoi.data.koiId, appointmentId: appointmentId });
     return response.data;
 }
-export const addPondToAppointmentAPI = async (appointmentId, pondData) => {
-    const savePond = await createPondAPI(pondData)
+export const addPondToAppointmentAPI = async (appointmentId, pondData,image) => {
+    const savePond = await createPondAPI(pondData,image)
 
     const response = await api.post(`/treatments/ponds`, { pondId: savePond.data.pondId, appointmentId: appointmentId });
     return response.data;
@@ -155,8 +155,9 @@ export const updatePondInformationAPI = async (pondId, data,image) => {
     const response = await api.put(`/ponds/${pondId}`, {...data,image:imageURL});
     return response.data;
 }
-export const createPondAPI = async (data) => {
-    const response = await api.post('/ponds', data);
+export const createPondAPI = async (data,image) => {
+    const imageURL = await fetchUpLoadImageAPI(image);
+    const response = await api.post('/ponds', {...data,image:imageURL});
     return response.data;
 }
 

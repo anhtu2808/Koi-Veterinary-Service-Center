@@ -76,15 +76,6 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAp
     }));
   };
 
-  const handleAddNewPond = async () => {
-    const response = await addPondToAppointmentAPI(appointmentId, pondData);
-    if (response.status === 200) {
-      onUpdate()
-      console.log("Pond added:", response.data);
-      setIsEditing(false);
-    }
-
-  }
   const handleUpdateButton = () => {
     setIsEditing(!isEditing); // Bật chế độ chỉnh sửa khi nhấn "Update"
   };
@@ -92,20 +83,20 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAp
     e.preventDefault();
     if (isAppointment) {
       if (isCreate) {//bác sĩ thêm cá pond vào cuộc hẹn
-        const response = await addPondToAppointmentAPI(appointmentId, { ...pondData, customerId: cusId })
+        const response = await addPondToAppointmentAPI(appointmentId, { ...pondData, customerId: cusId },image)
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Pond
         onClose();
       }
       if (isUpdate) {   // bác sĩ cập nhật thông tin cá pond
-        await updatePondInformationAPI(pondData.pondId, pondData);
+        await updatePondInformationAPI(pondData.pondId, pondData,image);
         const updateTreatment = await updatePondTreatmentAPI(treatmentData)
         toast.success(updateTreatment.data.message);
         setIsEditing(false);
       }
     } else {
       if (isCreate) {
-        const response = await createPondAPI(pondData);
+        const response = await createPondAPI(pondData,image);
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Pond
         onClose();
@@ -113,7 +104,6 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAp
       if (isUpdate) {
         setIsEditing(false)
         const response = await updatePondInformationAPI(pondData.pondId, pondData,image);
-        console.log("pondData", pondData)
         toast.success(response.data.message);
       }
     }
