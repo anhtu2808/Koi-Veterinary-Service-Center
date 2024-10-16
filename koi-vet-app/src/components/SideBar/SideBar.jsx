@@ -54,11 +54,13 @@ function SideBar() {
             <i className="fas fa-cogs"></ i> Services Management
           </Link>
         </li>
+        {(role === ROLE.ADMIN || role === ROLE.STAFF) && (
         <li className="nav-item">
           <Link to="/admin/schedual" className="nav-link">
             <i className="fas fa-calendar-alt"></i> Veterinarian Schedual
-          </Link>
-        </li>
+            </Link>
+          </li>
+        )}
         <li className="nav-item">
           <Link to="#" className="nav-link">
             <i className="far fa-question-circle"></i> Help
