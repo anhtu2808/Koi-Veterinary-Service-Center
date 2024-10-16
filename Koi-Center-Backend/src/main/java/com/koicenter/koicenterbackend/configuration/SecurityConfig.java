@@ -70,6 +70,11 @@ public class SecurityConfig {
 
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/getVeterinariansByDateTime").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/{vetId}/schedules").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/{vetId}/schedules/by-date").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/api/v1/vetSchedules/{scheduleId}/schedules/update").permitAll()
+
+
                             .requestMatchers(HttpMethod.POST, "/api/v1/vetSchedules/create").permitAll()
                             .requestMatchers(HttpMethod.PUT, "/api/v1/vetSchedules/update").permitAll()
 
@@ -85,6 +90,8 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.POST, "api/v1/appointments").permitAll()
                             .requestMatchers(HttpMethod.PUT, "api/v1/appointments/update").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/appointments/userName/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/appointments/{vetId}/appointment").permitAll()
+
 
                             .requestMatchers(HttpMethod.PUT, "api/v1/invoices/update/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "api/v1/invoices/dashboard/**").permitAll()
