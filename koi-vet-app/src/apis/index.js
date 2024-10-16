@@ -161,6 +161,10 @@ export const fetchPondsByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/appointments/${appointmentId}/ponds/`);
     return response.data;
 }
+export const deletePondAPI = async (pondId) => {
+    const response = await api.delete(`/ponds/${pondId}`);
+    return response.data;
+}
 
 
 
@@ -190,8 +194,10 @@ export const fetchKoisByAppointmentIdAPI = async (appointmentId) => {
     return response.data;
 }
 
-
-
+export const deleteKoiAPI = async (koiId) => {
+    const response = await api.delete(`/kois/${koiId}`);
+    return response.data;
+}
 
 
 

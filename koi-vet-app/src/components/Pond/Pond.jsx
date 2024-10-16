@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Pond.css';
-import { fetchPondsByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescriptionByAppointmentIdAPI, updatePondTreatmentAPI } from '../../apis';
+import { fetchPondsByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescriptionByAppointmentIdAPI, updatePondTreatmentAPI, deletePondAPI } from '../../apis';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import pond_default from '../../assets/img/pond_default.jpg'
@@ -19,6 +19,12 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({})
     //open modal for when click add treatment
+    const [deleteTrigger, setDeleteTrigger] = useState(0);
+    const handleDeletePond = async (pondId) => {
+        const response = await deletePondAPI(pondId)
+        toast.success(response.message);
+        setDeleteTrigger(prev => prev + 1);
+    }
     const handleSubmitTreatment = () => {
         onUpdateTreatment();
         setIsModalOpen(false);
@@ -67,7 +73,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
         }
         fetchPonds();
         fetchPrescriptions();
-    }, [customerId, isAppointment, appointmentId, updateTrigger]);
+    }, [customerId, isAppointment, appointmentId, updateTrigger, deleteTrigger]);
 
     // lưu lại đơn thuốc
     const handleChangePrescription = (treatmentId, prescriptionId, pondId) => {
@@ -132,6 +138,13 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                                             <button className="btn btn-sm btn-primary " onClick={() => handleViewDetail(treatment.pond.pondId, treatment?.pondTreatmentId)}>
                                                                 View <br />Details
                                                             </button>
+                                                            {
+                                                                role === "CUSTOMER" && !isAppointment && (
+                                                                    <button className="btn btn-sm btn-danger" onClick={() => handleDeletePond(treatment.pond.pondId)}>
+                                                                        Delete
+                                                                    </button>
+                                                                )
+                                                            }
                                                             {isBooking && (
                                                                 <button
                                                                     className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}

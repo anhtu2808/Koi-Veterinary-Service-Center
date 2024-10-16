@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Koi.css';
 import { useNavigate } from 'react-router-dom';
-import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI, updateKoiTreatmentAPI, fetchPrescriptionByAppointmentIdAPI } from '../../apis';
+import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI, updateKoiTreatmentAPI, fetchPrescriptionByAppointmentIdAPI, deleteKoiAPI } from '../../apis';
 import { toast } from 'react-toastify';
 import Modal from '../Modal/Modal';
 import Treatment from '../Treatment/Treatment';
@@ -14,6 +14,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
     const role = useSelector(state => state?.user?.role);
     const [prescriptions, setPrescriptions] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [deleteTrigger, setDeleteTrigger] = useState(0);
     const [modalData] = useState({})
     //open modal for when click add new koi BTN
     const handleSubmitTreatment = () => {
@@ -23,6 +24,11 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
+    const handleDeleteKoi = async (koiId) => {
+        const response = await deleteKoiAPI(koiId)
+        toast.success(response.message);
+        setDeleteTrigger(prev => prev + 1);
+    }
 
     const handleViewDetail = (koiId, treatmentId) => {
         if (isAppointment) {
@@ -66,7 +72,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
         }
         fetchKois();
         fetchPrescriptions();
-    }, [customerId, isAppointment, appointmentId, updateTrigger]);
+    }, [customerId, isAppointment, appointmentId, updateTrigger, deleteTrigger]);
 
     // lưu lại đơn thuốc
     const handleChangePrescription = (treatmentId, prescriptionId, koiId) => {
@@ -113,9 +119,9 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                         <th>Prescription</th>
                                     </> :
                                     <>
-                                        <th>Age</th>
-                                        <th>Length</th>
-                                        <th>Weight</th>
+                                        <th>Age (years)</th>
+                                        <th>Length (cm)</th>
+                                        <th>Weight (kg)</th>
                                         <th>Note</th>
                                     </>}
                                 <th>Image</th>
@@ -152,8 +158,8 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                             </> :
                                             <>
                                                 <td>{treatment?.koi?.age}</td>
-                                                <td>{treatment?.koi?.length}</td>
-                                                <td>{treatment?.koi?.weight}</td>
+                                                <td>{treatment?.koi?.length} </td>
+                                                <td>{treatment?.koi?.weight} </td>
                                                 <td>{treatment?.koi?.note}</td>
                                             </>}
 
@@ -177,6 +183,13 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                         {isSelected ? 'Remove' : 'Add'}
                                                     </button>
                                                 )}
+                                                {
+                                                    role === "CUSTOMER" && !isAppointment && (
+                                                        <button className="btn btn-sm btn-danger" onClick={() => handleDeleteKoi(treatment.koi.koiId)}>
+                                                            Delete
+                                                        </button>
+                                                    )
+                                                }
                                             </div>
                                         </td>
 

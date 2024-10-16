@@ -5,7 +5,7 @@ import { fetchPondByPondIdAPI, updatePondInformationAPI, addPondToAppointmentAPI
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-  
+
 const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAppointment, cusId }) => {
   const [pondData, setPondData] = useState({
     pondId: "",
@@ -83,27 +83,27 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAp
     e.preventDefault();
     if (isAppointment) {
       if (isCreate) {//bác sĩ thêm cá pond vào cuộc hẹn
-        const response = await addPondToAppointmentAPI(appointmentId, { ...pondData, customerId: cusId },image)
+        const response = await addPondToAppointmentAPI(appointmentId, { ...pondData, customerId: cusId }, image)
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Pond
         onClose();
       }
       if (isUpdate) {   // bác sĩ cập nhật thông tin cá pond
-        await updatePondInformationAPI(pondData.pondId, pondData,image);
+        await updatePondInformationAPI(pondData.pondId, pondData, image);
         const updateTreatment = await updatePondTreatmentAPI(treatmentData)
         toast.success(updateTreatment.data.message);
         setIsEditing(false);
       }
     } else {
       if (isCreate) {
-        const response = await createPondAPI(pondData,image);
+        const response = await createPondAPI(pondData, image);
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Pond
         onClose();
       }
       if (isUpdate) {
         setIsEditing(false)
-        const response = await updatePondInformationAPI(pondData.pondId, pondData,image);
+        const response = await updatePondInformationAPI(pondData.pondId, pondData, image);
         toast.success(response.data.message);
       }
     }
@@ -145,7 +145,7 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAp
           {renderField("Perimeter (m)", pondData.perimeter, "perimeter")}
           <div className="col-md-12">
             <label htmlFor="notes" className="form-label">Notes</label>
-            <textarea className=" form-control pb-3"  id="notes" name="notes" value={pondData.notes} onChange={handleInputChange} disabled={!isEditing && !isCreate}></textarea>
+            <textarea className=" form-control pb-3" id="notes" name="notes" value={pondData.notes} onChange={handleInputChange} disabled={!isEditing && !isCreate}></textarea>
           </div>
         </div>
         <div className="col-md-1"> </div>
@@ -153,17 +153,17 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAp
           <label className="form-label text-start">Pond Image</label>
           <img src={image ? URL.createObjectURL(image) : pondData.image || pond_default} alt="Pond" className=" w-100 koi-profile-image rounded-3" />
           {(isEditing || isCreate) && ( // Only show the upload input if isEditing is true
-              <div className="form-group mt-3 text-center">
-                <label className="custom-file-upload">
-                  <input
-                    type="file"
-                    onChange={handleUploadImage}
-                    disabled={!isEditing && !isCreate} // cho phép upload khi trong chế độ create hoặc edit
-                  />
-                  Upload Image <i className="fa-solid fa-image"></i>
-                </label>
-              </div>
-            )}
+            <div className="form-group mt-3 text-center">
+              <label className="custom-file-upload">
+                <input
+                  type="file"
+                  onChange={handleUploadImage}
+                  disabled={!isEditing && !isCreate} // cho phép upload khi trong chế độ create hoặc edit
+                />
+                Upload Image <i className="fa-solid fa-image"></i>
+              </label>
+            </div>
+          )}
         </div>
         <div className="col-md-6 mt-4">
           {renderField("Filter System", pondData.filterSystem, "filterSystem")}
@@ -214,7 +214,7 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, appointmentId, isAp
               </select>
             </div>
             <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
-              <button type="button" className="btn btn-primary">Add Prescription</button>
+              {role === "VETERINARIAN" && <button type="button" className="btn btn-primary">Add Prescription</button>}
               <button type="button" className="btn btn-primary">View Prescriptions</button>
             </div>
           </>

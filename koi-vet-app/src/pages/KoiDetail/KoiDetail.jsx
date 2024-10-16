@@ -50,7 +50,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
     e.preventDefault();
     if (isAppointment) {
       if (isCreate) {//bác sĩ thêm cá koi vào cuộc hẹn
-        const response = await addKoiToAppointmentAPI(appointmentId, { ...koiData, customerId: cusId },image)
+        const response = await addKoiToAppointmentAPI(appointmentId, { ...koiData, customerId: cusId }, image)
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Koi
         onClose();
@@ -63,7 +63,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
       }
     } else {
       if (isCreate) {
-        const response = await createKoiAPI(koiData,image);
+        const response = await createKoiAPI(koiData, image);
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Koi
         onClose();
@@ -230,7 +230,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
               </select>
             </div>
             <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
-              <button type="button" className="btn btn-primary">Add Prescription</button>
+              {role === "VETERINARIAN" && <button type="button" className="btn btn-primary">Add Prescription</button>}
               <button type="button" className="btn btn-primary">View Prescriptions</button>
             </div>
           </div>
