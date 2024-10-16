@@ -99,7 +99,7 @@ public class AppointmentController {
             return ResponseObject.APIRepsonse(404, "UserName not found", HttpStatus.NOT_FOUND,"");
         }
     }
-    @GetMapping("/{vetId}/appointment")
+    @GetMapping("/by-vetId/{vetId}")
     public ResponseEntity<ResponseObject> getAppointmentByVetId(@PathVariable String vetId, @RequestParam LocalDate date) {
         List<AppointmentResponse> list =  appointmentService.getAppointmentByVetId(vetId,date);
         if(!list.isEmpty()){
