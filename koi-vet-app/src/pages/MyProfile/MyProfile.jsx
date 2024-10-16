@@ -18,6 +18,7 @@ const MyProfile = () => {
     setImage(file);
   }
   const handleEdit = () => {
+    setEditedInfo(myInfo);
     setIsEditing(true);
   };
   const handleAllAppointment = () => {

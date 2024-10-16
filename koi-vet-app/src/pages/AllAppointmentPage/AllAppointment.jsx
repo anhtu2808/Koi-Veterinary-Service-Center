@@ -126,7 +126,7 @@ function AllAppointment() {
         <table className="table table-striped table-sm tableleft">
           <thead>
             <tr>
-              <th>Code</th> <th>User</th> <th>Service</th><th>Create Date</th> <th>Type</th> <th>Time</th><th>Date</th><th>Status</th><th>Action</th>
+              <th>Code</th> <th>Customer</th> <th>Service</th><th>Create Date</th> <th>Type</th> <th>Time</th><th>Date</th><th>Status</th><th>Action</th>
             </tr>
           </thead>
           <tbody>
