@@ -3,14 +3,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateMyInfoAPI } from "../../apis";
 import { updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
 import "./MyProfile.css";
+import default_profile from "../../assets/img/profile_default.png"
 import { useNavigate } from "react-router-dom";
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
   const dispatch = useDispatch();
+  const [image, setImage] = useState(null);
   const myInfo = useSelector(state => state?.user);
   const customer = useSelector(state => state?.user?.customer);
   const navigate = useNavigate();
+  const handleUploadImage = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+  }
   const handleEdit = () => {
     setIsEditing(true);
     setEditedInfo({
@@ -54,14 +60,27 @@ const MyProfile = () => {
         <div className="card-body">
           <div className="row">
             <div className="col-md-4 text-center mb-4">
+           
               <img
-                src="https://via.placeholder.com/150"
+                src={image ? URL.createObjectURL(image) : myInfo.image || default_profile}
                 alt="User Avatar"
                 className="img-fluid rounded-circle mb-3"
                 style={{ width: "150px", height: "150px" }}
               />
-              <h4>{myInfo.fullName}</h4>
-              <p className="text-muted">{myInfo.email}</p>
+               {(isEditing) && ( // Only show the upload input if isEditing is true
+              <div className="form-group mt-3 text-center">
+                <label className="custom-file-upload">
+                  <input
+                    type="file"
+                    onChange={handleUploadImage}
+                    disabled={!isEditing} // cho phép upload khi trong chế độ create hoặc edit
+                  />
+                  Upload Image <i className="fa-solid fa-image"></i>
+                </label>
+              </div>
+            )}
+              {/* <h4>{myInfo.fullName}</h4>
+              <p className="text-muted">{myInfo.email}</p> */}
             </div>
             <div className="col-md-8">
               <form>
