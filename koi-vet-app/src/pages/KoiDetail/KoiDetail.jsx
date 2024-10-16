@@ -50,7 +50,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
     e.preventDefault();
     if (isAppointment) {
       if (isCreate) {//bác sĩ thêm cá koi vào cuộc hẹn
-        const response = await addKoiToAppointmentAPI(appointmentId, { ...koiData, customerId: cusId })
+        const response = await addKoiToAppointmentAPI(appointmentId, { ...koiData, customerId: cusId },image)
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Koi
         onClose();
@@ -63,7 +63,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
       }
     } else {
       if (isCreate) {
-        const response = await createKoiAPI(koiData);
+        const response = await createKoiAPI(koiData,image);
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Koi
         onClose();

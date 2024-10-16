@@ -111,8 +111,8 @@ export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
     return response.data;
 }
 
-export const addKoiToAppointmentAPI = async (appointmentId, koiData) => {
-    const saveKoi = await createKoiAPI(koiData)
+export const addKoiToAppointmentAPI = async (appointmentId, koiData,image) => {
+    const saveKoi = await createKoiAPI(koiData,image)
 
     const response = await api.post(`/treatments/kois`, { koiId: saveKoi.data.koiId, appointmentId: appointmentId });
     return response.data;
@@ -182,8 +182,9 @@ export const updateKoiInformationAPI = async (koiId, koiData,image) => {
     const response = await api.put(`/kois/${koiId}`, {...koiData,image:imageURL});
     return response.data;
 }
-export const createKoiAPI = async (data) => {
-    const response = await api.post('/kois', data);
+export const createKoiAPI = async (data,image) => {
+    const imageURL = await fetchUpLoadImageAPI(image);
+    const response = await api.post('/kois', {...data,image:imageURL});
     return response.data;
 }
 
