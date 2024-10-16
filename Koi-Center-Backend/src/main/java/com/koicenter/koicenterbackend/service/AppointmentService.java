@@ -111,6 +111,7 @@ public class AppointmentService {
                 .serviceId(appointment.getService().getServiceId())
                 .distance(appointment.getDistance())
                 .code(appointment.getCode())
+                .depositedMoney(appointment.getDepositedMoney())
                 .build();
         if(appointment.getVeterinarian()!=null){
 
@@ -383,6 +384,21 @@ public class AppointmentService {
         }
         return appointmentResponses ;
     }
+    public List<AppointmentResponse> getAppointmentByVetId(String vetId, LocalDate date){
+        List<Appointment> appointments = appointmentRepository.findByVeterinarian_VetIdAndAppointmentDate(vetId,date);
+        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
+        if (appointments != null) {
+            for (Appointment appointment : appointments ){
+                appointmentResponses.add(appointmentMapper.toAppointmentResponse(appointment));
+            }
+        }else {
+            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND.getCode(),
+                    ErrorCode.APPOINTMENT_NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND);
+        }
+        return appointmentResponses ;
+    }
+
 
 }
 

@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -96,6 +97,15 @@ public class AppointmentController {
             return ResponseObject.APIRepsonse(200, "UserName found successfully By Appointment ID ", HttpStatus.OK, list);
         }else{
             return ResponseObject.APIRepsonse(404, "UserName not found", HttpStatus.NOT_FOUND,"");
+        }
+    }
+    @GetMapping("/{vetId}/appointment")
+    public ResponseEntity<ResponseObject> getAppointmentByVetId(@PathVariable String vetId, @RequestParam LocalDate date) {
+        List<AppointmentResponse> list =  appointmentService.getAppointmentByVetId(vetId,date);
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(200, "Appointment found successfully By Appointment ID ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Appoitment  not found", HttpStatus.NOT_FOUND,"");
         }
     }
 }

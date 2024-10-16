@@ -297,6 +297,41 @@ public class VetScheduleService {
         }
         return vetScheduleResponses;
     }
+    public List<VetScheduleResponse> getScheduleByVetIDandDate(String vetId , LocalDate date ){
+        List<VetScheduleResponse> vetScheduleResponse = new ArrayList<>();
+        List<VetSchedule> vetSchedules = scheduleRepository.findByVeterinarianVetIdAndDate(vetId,date);
+        if(!vetSchedules.isEmpty()) {
+            for (VetSchedule vetSchedule : vetSchedules) {
+                if(vetSchedule.getCustomerBookingCount()< 2){
+                    vetScheduleResponse.add(vetScheduleMapper.toVetScheduleResponse(vetSchedule));
+                }
+            }
+        }else {
+            throw new AppException(ErrorCode.VETSCHEDULE_NOT_FOUND.getCode(),
+                    ErrorCode.VETSCHEDULE_NOT_FOUND.getMessage(),
+                    HttpStatus.NOT_FOUND);
+        }
+        return vetScheduleResponse;
+    }
+    public void updateDateTime(String scheduleId , int count ) {
+        VetSchedule vetSchedule = scheduleRepository.findById(scheduleId).orElseThrow((() -> new AppException(
+                ErrorCode.VETSCHEDULE_NOT_FOUND.getCode(),
+                ErrorCode.VETSCHEDULE_NOT_FOUND.getMessage(),
+                HttpStatus.NOT_FOUND)));
+        int customerBookingCount =  vetSchedule.getCustomerBookingCount();
+        vetSchedule.setCustomerBookingCount(count);
+        scheduleRepository.save(vetSchedule);
+    }
+    public List<VetScheduleResponse> getScheduleByVetId(String vetId) {
+        List<VetScheduleResponse> vetScheduleResponses = new ArrayList<>();
+        List<VetSchedule> vetSchedules = scheduleRepository.findByVeterinarianVetId(vetId);
+        for (VetSchedule vetSchedule : vetSchedules){
+            VetSchedule vetSchedule1 = new VetSchedule();
+            vetSchedule1.setDate(vetSchedule.getDate());
+            vetScheduleResponses.add(vetScheduleMapper.toVetScheduleResponse(vetSchedule1));
+        }
+        return vetScheduleResponses;
+    }
 
 }
 
