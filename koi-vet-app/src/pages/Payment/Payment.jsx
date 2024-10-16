@@ -224,17 +224,17 @@ function Payment() {
                 <h5 className="mb-3">Payment Summary</h5>
                 <div className="row">
                   <div className="col-6">Service Fee:</div>
-                  <div className="col-6 text-end">${(serviceInfo.basePrice * 1000).toLocaleString()}</div>
+                  <div className="col-6 text-end">{(serviceInfo.basePrice * 1000).toLocaleString()} VND</div>
                 </div>
                 <div className="row">
                   <div className="col-6">Subtotal:</div>
-                  <div className="col-6 text-end">$0</div>
+                  <div className="col-6 text-end">0 VND</div>
                 </div>
 
                 <hr />
                 <div className="row total">
                   <div className="col-6">Total (incl. tax):</div>
-                  <div className="col-6 text-end">${(serviceInfo.basePrice * 1000).toLocaleString()}</div>
+                  <div className="col-6 text-end">{(serviceInfo.basePrice * 1000).toLocaleString()} VND</div>
                 </div>
               </div>
 
