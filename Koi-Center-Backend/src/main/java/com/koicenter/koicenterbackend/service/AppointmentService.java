@@ -183,6 +183,11 @@ public class AppointmentService {
         log.info("service ID " + service.getServiceId());
         Appointment appointment = new Appointment();
         appointment = appointmentMapper.toAppointment(appointmentRequest);
+        if(appointmentRequest.getResult() == null){
+            appointment.setResult(null);
+        }else {
+            appointment.setResult(appointmentRequest.getResult());
+        }
         appointment.setCustomer(customer);
         appointment.setVeterinarian(veterinarian);
         appointment.setService(service);

@@ -160,6 +160,7 @@ public class VeterinarianService {
             veterinarianResponse.setDescription(veterinarian.getDescription());
             veterinarianResponse.setUserId(veterinarian.getUser().getUserId());
             veterinarianResponse.setVetStatus(veterinarian.getVeterinarianStatus() == null? "" : veterinarian.getVeterinarianStatus().toString() );
+            veterinarianResponse.setImageVeterinarian((veterinarian.getImage() != null ? veterinarian.getImage() : null));
             veterinarianResponse.setUserId(veterinarian.getUser().getUserId());
                     UserResponse userResponse = new UserResponse();
                     userResponse.setFullName(veterinarian.getUser().getFullName());
