@@ -19,6 +19,7 @@ public class UserResponse {
     String username;
     String email;
     String fullName;
+    String image;
     Role role;
     boolean status;
     CustomerDTO customer;
