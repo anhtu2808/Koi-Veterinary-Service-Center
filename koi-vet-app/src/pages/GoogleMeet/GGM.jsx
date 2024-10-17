@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./GGM.css";
 import GGMeet from "../../assets/img/GGMeet.jpg";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchAppointmentByIdAPI, fetchVetByVetIdAPI } from "../../apis";
 
 function GGM() {
@@ -9,6 +9,7 @@ function GGM() {
   const location = useLocation();
   const [appointment, setAppointment] = useState(null);
   const [veterinarian, setVeterinarian] = useState(null);
+  const navigate = useNavigate();
   const customerId = location?.state?.customerId;
   useEffect(() => {
     const fetchAppointment = async () => {
@@ -35,8 +36,9 @@ function GGM() {
           <div className="col-12 d-flex justify-content-center mb-4">
             <h2>Online Link</h2>
           </div>
-          <div className="col-lg-6 d-flex justify-content-center mb-4">
-            <Link to={`https://${veterinarian?.googleMeet}`}>
+          <div className="col-lg-6 d-flex justify-content-center mb-4 flex-column">
+            
+            <Link to={veterinarian?.googleMeet} target="_blank" className="mb-4">
 
               <img
                 src={GGMeet}
@@ -46,6 +48,10 @@ function GGM() {
               />
             </Link>
 
+          <button  className = "btn btn-primary w-15 col-2 mt-4" onClick={() => navigate(-1)}>
+           Back
+          </button>
+          
           </div>
           <div className="col-lg-6">
             <div className="mb-3">

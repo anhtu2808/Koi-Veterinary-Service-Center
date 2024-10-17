@@ -19,6 +19,7 @@ function AppointmentDetail() {
   const navigate = useNavigate();
   const [vetList, setVetList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [assignVetTrigger, setAssignVetTrigger] = useState(0);
   const [service, setService] = useState({});
   const [navigateLink, setNavigateLink] = useState({
     link: null,
@@ -137,7 +138,7 @@ function AppointmentDetail() {
       default:
         break;
     }
-  }, [role, service]);
+  }, [role, service, assignVetTrigger]);
 
   const handleAssignVet = (e) => {
     e.preventDefault();
@@ -175,6 +176,7 @@ function AppointmentDetail() {
     e.preventDefault();
     try {
       await updateAppointmentAPI(appointment, appointmentId);
+      setAssignVetTrigger(assignVetTrigger + 1)
       setIsEditing(false);
       // Optionally, show a success message
     } catch (error) {

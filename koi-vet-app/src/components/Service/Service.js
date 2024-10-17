@@ -25,7 +25,7 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
   return (
     <div className="col-md-4 mb-4">
       <div className="custom-service-card">
-        <img className="w-100 custom-img-fluid" src="https://cafishvet.com/wp-content/uploads/2024/09/Ultrasound-Jessie-Sanders-Fish-Vetranarian-2048x1366.jpg" alt={serviceName} />
+        <img className="w-100 custom-img-fluid" src={image || "https://cafishvet.com/wp-content/uploads/2024/09/Ultrasound-Jessie-Sanders-Fish-Vetranarian-2048x1366.jpg"} alt={serviceName} />
         <div className="p-3 d-flex flex-column description-container"  >
           <h5>{serviceName}</h5>
           <p className="description flex-grow-1 m-0 text-start" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>

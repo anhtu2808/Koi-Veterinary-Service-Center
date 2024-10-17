@@ -32,7 +32,7 @@ const Veterinarian = ({image,vetId,name,isBooking}) => {
                   <i className="fas fa-user"></i>
                   <i className="fas fa-phone"></i>
                   <i className="fas fa-envelope"></i>
-                </div>
+                </div>\
 
                   <button className="btn-view-profile mt-3" onClick={() => handleViewProfileVet()}>
                     View Profile
