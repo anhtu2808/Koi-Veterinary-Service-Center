@@ -48,6 +48,35 @@ public class UserController {
             return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, "");
         }
     }
+
+    @GetMapping("/get")
+    public ResponseEntity<ResponseObject> getUserByRole(@RequestParam String role) {
+        List<UserResponse> userList = userService.getListUserByRole(role);
+        return ResponseObject.APIRepsonse(200, "List", HttpStatus.OK, userList);
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<ResponseObject> deleteUser(@RequestParam String userId) {
+        boolean isDeleted = userService.deleteUser(userId);
+        if (isDeleted) {
+            return ResponseObject.APIRepsonse(200, "User deleted successfully!", HttpStatus.OK, null);
+        } else {
+            return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, null);
+        }
+    }
+
+    @PutMapping("/updatePassword")
+    public ResponseEntity<ResponseObject> updatePassword(@RequestBody UpdatePasswordRequest passwordRequest) {
+        boolean isPasswordUpdated = userService.updatePassword(passwordRequest);
+        if (isPasswordUpdated) {
+            return ResponseObject.APIRepsonse(200, "Password updated successfully", HttpStatus.OK, "");
+        } else if (Objects.equals(passwordRequest.getCurrentPassword(), passwordRequest.getNewPassword())) {
+            return ResponseObject.APIRepsonse(404, "New password must be different from the current password", HttpStatus.BAD_REQUEST, "");
+        } else {
+            return ResponseObject.APIRepsonse(404, "Your current password is incorrect", HttpStatus.BAD_REQUEST, "");
+        }
+    }
+
     @PutMapping("/update")
     public ResponseEntity<ResponseObject> update(@RequestBody UpdateUserRequest updateUserRequest){
         boolean isUpdated = userService.updateUser(updateUserRequest);
@@ -56,31 +85,5 @@ public class UserController {
         }else {
             return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, null);
         }
-    }
-    @GetMapping("/get")
-    public ResponseEntity<ResponseObject> getUserByRole(@RequestParam String role){
-        List<UserResponse> userList = userService.getListUserByRole(role);
-        return ResponseObject.APIRepsonse(200, "List", HttpStatus.OK, userList);
-    }
-    @DeleteMapping("")
-    public ResponseEntity<ResponseObject> deleteUser(@RequestParam String userId){
-        boolean isDeleted = userService.deleteUser(userId);
-        if(isDeleted){
-            return ResponseObject.APIRepsonse(200, "User deleted successfully!", HttpStatus.OK, null);
-        }else {
-            return ResponseObject.APIRepsonse(404, "User does not exist!", HttpStatus.NOT_FOUND, null);
-        }
-    }
-    @PostMapping("/updatePassword")
-    public ResponseEntity<ResponseObject> updatePassword(@RequestBody UpdatePasswordRequest passwordRequest) {
-        boolean isPasswordUpdated = userService.updatePassword(passwordRequest);
-        if (isPasswordUpdated) {
-            return ResponseObject.APIRepsonse(200, "Password updated successfully", HttpStatus.OK, "");
-        } else if (Objects.equals(passwordRequest.getCurrentPassword(), passwordRequest.getNewPassword())) {
-            return ResponseObject.APIRepsonse(404, "New password must be different from the current password", HttpStatus.BAD_REQUEST, "");
-        } else {
-            return ResponseObject.APIRepsonse( 404, "Your current password is incorrect", HttpStatus.BAD_REQUEST, "");
-        }
-
     }
 }

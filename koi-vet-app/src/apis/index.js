@@ -36,11 +36,6 @@ export const fetchMyInfoAPI = async () => {
     return response.data
 }
 
-export const updateMyInfoAPI = async (userData) => {
-    const response = await api.put('/users/updateMyInfo', userData);
-    return response.data;
-};
-
 //* Vet API */
 export const fetchVetsAPI = async () => {
     const response = await api.get('/veterinarians');
@@ -115,14 +110,14 @@ export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
     return response.data;
 }
 
-export const addKoiToAppointmentAPI = async (appointmentId, koiData,image) => {
-    const saveKoi = await createKoiAPI(koiData,image)
+export const addKoiToAppointmentAPI = async (appointmentId, koiData, image) => {
+    const saveKoi = await createKoiAPI(koiData, image)
 
     const response = await api.post(`/treatments/kois`, { koiId: saveKoi.data.koiId, appointmentId: appointmentId });
     return response.data;
 }
-export const addPondToAppointmentAPI = async (appointmentId, pondData,image) => {
-    const savePond = await createPondAPI(pondData,image)
+export const addPondToAppointmentAPI = async (appointmentId, pondData, image) => {
+    const savePond = await createPondAPI(pondData, image)
 
     const response = await api.post(`/treatments/ponds`, { pondId: savePond.data.pondId, appointmentId: appointmentId });
     return response.data;
@@ -154,20 +149,30 @@ export const fetchPondByPondIdAPI = async (pondId) => {
     const response = await api.get(`/ponds/${pondId}`);
     return response.data;
 }
-export const updatePondInformationAPI = async (pondId, data,image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.put(`/ponds/${pondId}`, {...data,image:imageURL});
+export const updatePondInformationAPI = async (pondId, data, image) => {
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+    const response = await api.put(`/ponds/${pondId}`, { ...data, image: imageURL });
     return response.data;
 }
-export const createPondAPI = async (data,image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.post('/ponds', {...data,image:imageURL});
+export const createPondAPI = async (data, image) => {
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+    const response = await api.post('/ponds', { ...data, image: imageURL });
     return response.data;
 }
 
 
 export const fetchPondsByAppointmentIdAPI = async (appointmentId) => {
     const response = await api.get(`/appointments/${appointmentId}/ponds/`);
+    return response.data;
+}
+export const deletePondAPI = async (pondId) => {
+    const response = await api.delete(`/ponds/${pondId}`);
     return response.data;
 }
 
@@ -183,14 +188,20 @@ export const fetchKoisByCustomerIdAPI = async (customerId) => {
     return response.data;
 }
 
-export const updateKoiInformationAPI = async (koiId, koiData,image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.put(`/kois/${koiId}`, {...koiData,image:imageURL});
+export const updateKoiInformationAPI = async (koiId, koiData, image) => {
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+    const response = await api.put(`/kois/${koiId}`, { ...koiData, image: imageURL });
     return response.data;
 }
-export const createKoiAPI = async (data,image) => {
-    const imageURL = await fetchUpLoadImageAPI(image);
-    const response = await api.post('/kois', {...data,image:imageURL});
+export const createKoiAPI = async (data, image) => {
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+    const response = await api.post('/kois', { ...data, image: imageURL });
     return response.data;
 }
 
@@ -199,8 +210,10 @@ export const fetchKoisByAppointmentIdAPI = async (appointmentId) => {
     return response.data;
 }
 
-
-
+export const deleteKoiAPI = async (koiId) => {
+    const response = await api.delete(`/kois/${koiId}`);
+    return response.data;
+}
 
 
 
@@ -307,7 +320,7 @@ export const fetchSecondInfoPaymentAPI = async (appointmentId) => {
 }
 
 //Upload Image API
-export const fetchUpLoadImageAPI = async (image) => {
+export const fetchUpLoadImageAPI = async (image) => { // api upload image lên S3
     const response = await api.get(`images/presigned-url?imageName=${image.name}`);
     const presignedUrl = await response.data; // URL file trên S3 (bỏ query params)
     await axios.put(presignedUrl, image, {
@@ -327,6 +340,15 @@ export const fetchAllUsersAPI = async (role) => {
     return response.data;
 }
 
+export const updateCustomerAPI = async (customerData, image) => {
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+
+    const response = await api.put(`/customers`, { ...customerData, image: imageURL });
+    return response.data;
+}
 // Invoice API
 export const updateInvoiceAPI = async (invoiceId, data) => {
     const response = await api.put(`/invoices/update/${invoiceId}`, data);
@@ -378,5 +400,19 @@ export const fetchHomeVisitPriceAPI = async () => {
 //dashboard API
 export const fetchDashboardAPI = async (time) => {
     const response = await api.get(`/invoices/dashboard/${time}`);
+    return response.data;
+}
+
+//Schedual API
+export const updateSchedualAPI = async (schedualId, data) => {
+    const response = await api.put(`/vetSchedules/${schedualId}/update?schedualId=${schedualId}`, data);
+    return response.data;
+}
+export const fetchSchedualByVetIdAPI = async (vetId) => {
+    const response = await api.get(`/vetSchedules/${vetId}/scheduals`);
+    return response.data;
+}
+export const fetchSchedualByDateAndVetIdAPI = async (date, vetId) => {
+    const response = await api.get(`/vetSchedules/${vetId}/scheduals/by-date?date=${date}`);
     return response.data;
 }

@@ -32,12 +32,12 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
             {truncateDescription(description, 100)}
           </p>
           <div className="text-start mb-2">
-            <div>Service Price: ${(basePrice * 1000).toLocaleString()}</div>
+            <div>Service Price: {basePrice?.toLocaleString()}</div>
             {serviceFor === "POND" ?
 
-              <div>Pond Price: ${(pondPrice * 1000).toLocaleString()} / Pond</div>
+              <div>Pond Price: {pondPrice?.toLocaleString()} / Pond</div>
               :
-              <div>Koi Price: ${(koiPrice * 1000).toLocaleString()} / Koi</div>
+              <div>Koi Price: {koiPrice?.toLocaleString()} / Koi</div>
 
             }
           </div>

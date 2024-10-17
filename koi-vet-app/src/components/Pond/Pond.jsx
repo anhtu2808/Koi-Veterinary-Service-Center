@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Pond.css';
-import { fetchPondsByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescriptionByAppointmentIdAPI, updatePondTreatmentAPI } from '../../apis';
+import { fetchPondsByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescriptionByAppointmentIdAPI, updatePondTreatmentAPI, deletePondAPI } from '../../apis';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import pond_default from '../../assets/img/pond_default.jpg'
 
 import Treatment from '../Treatment/Treatment';
 import Modal from '../Modal/Modal';
+import Select from 'react-select';
 
 const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId }) => {
     const navigate = useNavigate();
@@ -18,6 +19,12 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({})
     //open modal for when click add treatment
+    const [deleteTrigger, setDeleteTrigger] = useState(0);
+    const handleDeletePond = async (pondId) => {
+        const response = await deletePondAPI(pondId)
+        toast.success(response.message);
+        setDeleteTrigger(prev => prev + 1);
+    }
     const handleSubmitTreatment = () => {
         onUpdateTreatment();
         setIsModalOpen(false);
@@ -66,7 +73,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
         }
         fetchPonds();
         fetchPrescriptions();
-    }, [customerId, isAppointment, appointmentId, updateTrigger]);
+    }, [customerId, isAppointment, appointmentId, updateTrigger, deleteTrigger]);
 
     // lưu lại đơn thuốc
     const handleChangePrescription = (treatmentId, prescriptionId, pondId) => {
@@ -112,7 +119,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
 
                                         <div key={treatment.pond?.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
                                             <div className="col-md-5 mt-2">
-                                                <h4>{"Đây là hồ cá pond của anh tú"}</h4>
+                                                {/* <h4>{"Đây là hồ cá pond của anh tú"}</h4> */}
                                                 <p><strong>Depth:</strong> {treatment?.pond?.depth} m</p>
                                                 <p><strong>Perimeter:</strong> {treatment?.pond?.perimeter} m</p>
                                                 <p><strong>Filter System:</strong> {treatment?.pond?.filterSystem}</p>
@@ -131,6 +138,13 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                                             <button className="btn btn-sm btn-primary " onClick={() => handleViewDetail(treatment.pond.pondId, treatment?.pondTreatmentId)}>
                                                                 View <br />Details
                                                             </button>
+                                                            {
+                                                                role === "CUSTOMER" && !isAppointment && (
+                                                                    <button className="btn btn-sm btn-danger" onClick={() => handleDeletePond(treatment.pond.pondId)}>
+                                                                        Delete
+                                                                    </button>
+                                                                )
+                                                            }
                                                             {isBooking && (
                                                                 <button
                                                                     className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
@@ -141,20 +155,24 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                                             )}
                                                         </div>
                                                         {isAppointment &&
-                                                            <select
-                                                                className="form-select w-120"
-                                                                aria-label="Default select example"
-                                                                onChange={(e) => handleChangePrescription(treatment?.pondTreatmentId, e.target.value, treatment?.pond?.pondId)}
-                                                                value={treatment?.prescription_id || "None"}
-                                                                disabled={role !== "VETERINARIAN"}
-                                                            >
-                                                                <option value="None">None</option>
-                                                                {prescriptions.map(prescription => (
-                                                                    <option key={prescription?.id} value={prescription?.id}>
-                                                                        {prescription?.name}
-                                                                    </option>
-                                                                ))}
-                                                            </select>}
+                                                            <Select
+                                                                className="basic-single w-120"
+                                                                classNamePrefix="select"
+                                                                isDisabled={role !== "VETERINARIAN"}
+                                                                isSearchable={true} // Kích hoạt tìm kiếm
+                                                                placeholder="Select prescription"
+                                                                value={prescriptions.find(prescription => prescription.id === treatment?.prescription_id) || { value: "None", label: "None" }}
+                                                                onChange={(selectedOption) =>
+                                                                    handleChangePrescription(treatment?.pondTreatmentId, selectedOption.value, treatment?.pond?.pondId)
+                                                                }
+                                                                options={[
+                                                                    { value: "None", label: "None" },
+                                                                    ...prescriptions.map((prescription) => ({
+                                                                        value: prescription?.id,
+                                                                        label: prescription?.name
+                                                                    })),
+                                                                ]}
+                                                            />}
                                                     </div>
                                                 </div>
                                             </div>

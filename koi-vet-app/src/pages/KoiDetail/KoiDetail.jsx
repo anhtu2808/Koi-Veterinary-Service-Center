@@ -101,21 +101,15 @@ function KoiDetail({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isAppointment) {
-      if (isCreate) {
-        //bác sĩ thêm cá koi vào cuộc hẹn
-        const response = await addKoiToAppointmentAPI(
-          appointmentId,
-          { ...koiData, customerId: cusId },
-          image
-        );
+      if (isCreate) {//bác sĩ thêm cá koi vào cuộc hẹn
+        const response = await addKoiToAppointmentAPI(appointmentId, { ...koiData, customerId: cusId }, image)
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Koi
         onClose();
       }
-      if (isUpdate) {
-        // bác sĩ cập nhật thông tin cá koi
+      if (isUpdate) {   // bác sĩ cập nhật thông tin cá koi
         await updateKoiInformationAPI(koiData.koiId, koiData, image);
-        const updateTreatment = await updateKoiTreatmentAPI(treatmentData);
+        const updateTreatment = await updateKoiTreatmentAPI(treatmentData)
         toast.success(updateTreatment.data.message);
         setIsEditing(false);
       }
@@ -127,14 +121,11 @@ function KoiDetail({
         onClose();
       }
       if (isUpdate) {
+        // bác sĩ cập nhật thông tin cá koi
+        await updateKoiInformationAPI(koiData.koiId, koiData, image);
+        const updateTreatment = await updateKoiTreatmentAPI(treatmentData);
+        toast.success(updateTreatment.data.message);
         setIsEditing(false);
-        const response = await updateKoiInformationAPI(
-          koiData.koiId,
-          koiData,
-          image
-        );
-        console.log("koiData", koiData);
-        toast.success(response.data.message);
       }
     }
   };
@@ -314,22 +305,8 @@ function KoiDetail({
               </select>
             </div>
             <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
-              {role !== "CUSTOMER" ? (
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleOpenMedicineModal}
-                >
-                  Add Prescription
-                </button>
-              ) : null}
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleOpenListPrescription}
-              >
-                View Prescriptions
-              </button>
+              {role === "VETERINARIAN" && <button type="button" className="btn btn-primary" onClick={handleOpenMedicineModal}>Add Prescription</button>}
+              <button type="button" className="btn btn-primary"  onClick={handleOpenListPrescription}>View Prescriptions</button>
             </div>
           </div>
         ) : null}

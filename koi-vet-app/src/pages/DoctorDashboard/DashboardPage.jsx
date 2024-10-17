@@ -3,6 +3,7 @@ import { Chart as ChartJS, defaults } from "chart.js/auto";
 import { Bar, Doughnut, Line, Radar } from "react-chartjs-2";
 import "./DashboardPage.css";
 import { fetchDashboardAPI } from "../../apis";
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
@@ -114,10 +115,10 @@ function DashboardPage() {
 
   return (
     <div
-      className="container appointment-dashboard"
-      style={{ backgroundColor: "#F1F3F4" }}
+      className="container"
+      
     >
-      <h1>Dashboard</h1>
+      <AdminHeader title="Dashboard" />
       <nav className="w-100" style={{ marginBottom: "20px" }}>
         <div className="nav nav-tabs" id="nav-tab" role="tablist">
           <button

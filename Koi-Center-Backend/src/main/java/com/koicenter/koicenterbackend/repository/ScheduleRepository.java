@@ -33,5 +33,5 @@ public interface ScheduleRepository extends JpaRepository<VetSchedule,String> {
             @Param("serviceId") String serviceId);
     List<VetSchedule> findVetScheduleByDate ( LocalDate date);
 
-
+    List<VetSchedule> findByVeterinarianVetIdAndDate(String veterinarianId, LocalDate date);
 }

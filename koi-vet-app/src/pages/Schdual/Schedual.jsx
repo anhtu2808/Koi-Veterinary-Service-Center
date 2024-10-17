@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import "./Schedual.css"
 import { createScheduleAPI, fetchVetsAPI } from '../../apis'
 import { toast } from 'react-toastify'
+import AdminHeader from '../../components/AdminHeader/AdminHeader'
+import Select from 'react-select';
 const Schedual = () => {
     const [selectedVetId, setSelectedVetId] = useState([])
     const [veterinarians, setVeterinarians] = useState([])
@@ -14,8 +16,8 @@ const Schedual = () => {
         }
         console.log(selectedDate)
     }
-    const handleChangeSelectedVet = (e) => {
-        setSelectedVetId(e.target.value)
+    const handleChangeSelectedVet = (value) => {
+        setSelectedVetId(value)
     }
     const getVeterinarian = async () => {
         const response = await fetchVetsAPI()
@@ -65,25 +67,31 @@ const Schedual = () => {
     }
     return (
         <div className="container">
-            <h1>Veterinarian Schedual</h1>
+            <AdminHeader title={"Veterinarian Schedual"} />
             <label htmlFor="select-veterinarian">Select Veterinarian</label>
-            <select className="form-select w-50" id="select-veterinarian" onChange={handleChangeSelectedVet}>
-                <option>Select Veterinarian</option>
-                {veterinarians.map((vet) => (
-                    <option key={vet.vetId} value={vet.vetId}>{vet.user.fullName}</option>
-                ))}
-            </select>
+            <Select
+                className="w-50"
+                options={
+                    veterinarians.map((vet) => ({
+                        value: vet.vetId,
+                        label: `Name: ${vet.user.fullName} | username: ${vet.user.username}`
+                    }))
+                }
+                placeholder="Select Veterinarian"
+                isSearchable={true} // Kích hoạt tính năng search
+                onChange={(selectedOption) => handleChangeSelectedVet(selectedOption.value)}
+            />
             <div>
-      <div className="calendar-container mt-5">
-        {/* Header với nút điều hướng tháng */}
+                <div className="calendar-container mt-5">
+                    {/* Header với nút điều hướng tháng */}
 
-        {/* Lưới các ngày trong tháng */}
-        <div className="days-grid">
-          {renderDate()}
-        </div>
-        <button className='btn btn-primary' onClick={handleSubmit}>Submit</button>
-      </div>
-    </div>
+                    {/* Lưới các ngày trong tháng */}
+                    <div className="days-grid">
+                        {renderDate()}
+                    </div>
+                    <button className='btn btn-primary' onClick={handleSubmit}>Submit</button>
+                </div>
+            </div>
 
         </div>
     )

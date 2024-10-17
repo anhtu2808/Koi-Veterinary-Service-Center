@@ -17,14 +17,9 @@ import Modal from "../../components/Modal/Modal";
 import MedicineListPage from "../MedicineListPage/MedicineListPage";
 import PrescriptionDetail from "../PrescriptionDetail/PrescriptionDetail";
 
-const PondDetail = ({
-  isCreate,
-  isUpdate,
-  onClose,
-  onUpdate,
-  isAppointment,
-  cusId,
-}) => {
+
+
+const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusId }) => {
   const [pondData, setPondData] = useState({
     pondId: "",
     status: "",
@@ -131,21 +126,15 @@ const PondDetail = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isAppointment) {
-      if (isCreate) {
-        //bác sĩ thêm cá pond vào cuộc hẹn
-        const response = await addPondToAppointmentAPI(
-          appointmentId,
-          { ...pondData, customerId: cusId },
-          image
-        );
+      if (isCreate) {//bác sĩ thêm cá pond vào cuộc hẹn
+        const response = await addPondToAppointmentAPI(appointmentId, { ...pondData, customerId: cusId }, image)
         toast.success(response.data.message);
         onUpdate(); // Call the callback function reload list Pond
         onClose();
       }
-      if (isUpdate) {
-        // bác sĩ cập nhật thông tin cá pond
+      if (isUpdate) {   // bác sĩ cập nhật thông tin cá pond
         await updatePondInformationAPI(pondData.pondId, pondData, image);
-        const updateTreatment = await updatePondTreatmentAPI(treatmentData);
+        const updateTreatment = await updatePondTreatmentAPI(treatmentData)
         toast.success(updateTreatment.data.message);
         setIsEditing(false);
       }
@@ -157,12 +146,8 @@ const PondDetail = ({
         onClose();
       }
       if (isUpdate) {
-        setIsEditing(false);
-        const response = await updatePondInformationAPI(
-          pondData.pondId,
-          pondData,
-          image
-        );
+        setIsEditing(false)
+        const response = await updatePondInformationAPI(pondData.pondId, pondData, image);
         toast.success(response.data.message);
       }
     }
@@ -197,136 +182,116 @@ const PondDetail = ({
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <div className="col-md-9 mx-auto row">
-          <h1 className="mb-4 text-center">Pond Detail</h1>
-          <div className="col-md-4 ">
-            {renderField("Depth (m)", pondData.depth, "depth")}
-            {renderField("Perimeter (m)", pondData.perimeter, "perimeter")}
-            <div className="col-md-12">
-              <label htmlFor="notes" className="form-label">
-                Notes
+    <form onSubmit={handleSubmit}>
+      <div className="col-md-9 mx-auto row">
+        <h1 className="mb-4 text-center">Pond Detail</h1>
+        <div className="col-md-4 ">
+          {renderField("Depth (m)", pondData.depth, "depth")}
+          {renderField("Perimeter (m)", pondData.perimeter, "perimeter")}
+          <div className="col-md-12">
+            <label htmlFor="notes" className="form-label">Notes</label>
+            <textarea className=" form-control pb-3" id="notes" name="notes" value={pondData.notes} onChange={handleInputChange} disabled={!isEditing && !isCreate}></textarea>
+          </div>
+        </div>
+        <div className="col-md-1"> </div>
+        <div className="col-md-7 text-center">
+          <label className="form-label text-start">Pond Image</label>
+          <img src={image ? URL.createObjectURL(image) : pondData.image || pond_default} alt="Pond" className=" w-100 koi-profile-image rounded-3" />
+          {(isEditing || isCreate) && ( // Only show the upload input if isEditing is true
+            <div className="form-group mt-3 text-center">
+              <label className="custom-file-upload">
+                <input
+                  type="file"
+                  onChange={handleUploadImage}
+                  disabled={!isEditing && !isCreate} // cho phép upload khi trong chế độ create hoặc edit
+                />
+                Upload Image <i className="fa-solid fa-image"></i>
               </label>
-              <textarea
-                className=" form-control pb-3"
-                id="notes"
-                name="notes"
-                value={pondData.notes}
-                onChange={handleInputChange}
-                disabled={!isEditing && !isCreate}
-              ></textarea>
             </div>
-          </div>
-          <div className="col-md-1"> </div>
-          <div className="col-md-7 text-center">
-            <label className="form-label text-start">Pond Image</label>
-            <img
-              src={
-                image
-                  ? URL.createObjectURL(image)
-                  : pondData.image || pond_default
-              }
-              alt="Pond"
-              className=" w-100 koi-profile-image rounded-3"
-            />
-            {(isEditing || isCreate) && ( // Only show the upload input if isEditing is true
-              <div className="form-group mt-3 text-center">
-                <label className="custom-file-upload">
-                  <input
-                    type="file"
-                    onChange={handleUploadImage}
-                    disabled={!isEditing && !isCreate} // cho phép upload khi trong chế độ create hoặc edit
-                  />
-                  Upload Image <i className="fa-solid fa-image"></i>
-                </label>
-              </div>
-            )}
-          </div>
-          <div className="col-md-6 mt-4">
-            {renderField(
-              "Filter System",
-              pondData.filterSystem,
-              "filterSystem"
-            )}
-          </div>
-          <div className="col-md-3 mt-4">
-            {renderField(
-              "Temperature (°C)",
-              pondData.temperature,
-              "temperature"
-            )}
-          </div>
-          <div className="col-md-3 mt-4">
-            {renderField(
-              "Water Quality",
-              pondData.waterQuality,
-              "waterQuality"
-            )}
-          </div>
-          {isAppointment ? (
-            <>
-              <div className="form-group col-md-6">
-                <label>Health Issue</label>
-                <textarea
-                  name="healthIssue"
-                  value={treatmentData.healthIssue}
-                  onChange={(e) =>
-                    handleChangeTreatmentData(e.target.name, e.target.value)
-                  }
-                  placeholder="Enter treatment"
-                  disabled={!isEditing && !isCreate}
-                />
-              </div>
-              <div className="form-group col-md-6">
-                <label>Treatment</label>
-                <textarea
-                  value={pondData.treatment}
-                  name="treatment"
-                  onChange={(e) =>
-                    handleChangeTreatmentData(e.target.name, e.target.value)
-                  }
-                  placeholder="Enter treatment"
-                  disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
-                />
-              </div>
-              <div className="form-group col-md-6">
-                <label>Prescription</label>
-                <select
-                  className="form-select"
-                  value={treatmentData.prescription_id || "None"}
-                  name="prescription_id"
-                  onChange={(e) =>
-                    handleChangeTreatmentData(e.target.name, e.target.value)
-                  }
-                  disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
-                >
-                  <option value="None">None</option>
-                  {prescriptions.map((prescription) => (
-                    <option key={prescription.id} value={prescription.id}>
-                      {prescription.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
-                {role !== "CUSTOMER" ? (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={handleOpenMedicineModal}
-                  >
-                    Add Prescription
-                  </button>
-                ) : null}
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleOpenListPrescription}
-                >
-                  View Prescriptions
-                </button>
-              </div>
-            </>
+          )}
+        </div>
+        <div className="col-md-6 mt-4">
+          {renderField("Filter System", pondData.filterSystem, "filterSystem")}
+        </div>
+        <div className="col-md-3 mt-4">
+          {renderField("Temperature (°C)", pondData.temperature, "temperature")}
+        </div>
+        <div className="col-md-3 mt-4">
+          {renderField("Water Quality", pondData.waterQuality, "waterQuality")}
+        </div>
+        {isAppointment ?
+          < >
+            <div className="form-group col-md-6">
+              <label>Health Issue</label>
+              <textarea
+                name="healthIssue"
+                value={treatmentData.healthIssue}
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                placeholder="Enter treatment"
+                disabled={!isEditing && !isCreate}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label>Treatment</label>
+              <textarea
+                value={pondData.treatment}
+                name="treatment"
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                placeholder="Enter treatment"
+                disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label>Prescription</label>
+              <select
+                className="form-select"
+                value={treatmentData.prescription_id || "None"}
+                name="prescription_id"
+                onChange={(e) => handleChangeTreatmentData(e.target.name, e.target.value)}
+                disabled={(!isEditing && !isCreate) || role === "CUSTOMER"}
+              >
+                <option value="None">None</option>
+                {prescriptions.map(prescription => (
+                  <option key={prescription.id} value={prescription.id}>
+                    {prescription.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
+              {role === "VETERINARIAN" && <button type="button" className="btn btn-primary" onClick={handleOpenMedicineModal}>Add Prescription</button>}
+              <button type="button" className="btn btn-primary" onClick={handleOpenListPrescription}>View Prescriptions</button>
+            </div>
+          </>
+          : null}
+
+        <div className="button-group mt-4">
+          {isCreate && isAppointment ?
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Back
+            </button>
+            :
+            <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
+              Back
+            </button>
+          }
+
+
+          {isEditing && isUpdate && !isCreate ? (
+            <div className=" d-flex gap-2">
+              <button type="button" className="btn btn-secondary" onClick={handleUpdateButton}>Cancel</button>
+              <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+                Save
+              </button>
+
+            </div>
+          ) : isCreate ? <button type="submit" className="btn btn-primary">
+            Create
+          </button> : null}
+          {!isEditing && isUpdate ? (
+            <button type="button" className="btn btn-primary" onClick={handleUpdateButton}>
+              Update
+            </button>
           ) : null}
 
           <div className="button-group mt-4">
@@ -380,6 +345,7 @@ const PondDetail = ({
               </button>
             ) : null}
           </div>
+        </div>
         </div>
       </form>
       <Modal isOpen={isMedicineModalOpen} onClose={handleCloseMedicineModal}>

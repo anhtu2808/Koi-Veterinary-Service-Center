@@ -1,24 +1,33 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateMyInfoAPI } from "../../apis";
+import { updateCustomerAPI } from "../../apis";
 import { updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
 import "./MyProfile.css";
+import default_profile from "../../assets/img/profile_default.png"
 import { useNavigate } from "react-router-dom";
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
   const dispatch = useDispatch();
+  const [image, setImage] = useState(null);
   const myInfo = useSelector(state => state?.user);
   const customer = useSelector(state => state?.user?.customer);
   const navigate = useNavigate();
-  const handleEdit = () => {
+  const handleUploadImage = (event) => {
+    setImage(event.target.files[0]);
+  }
+  const handleEdit = () => { 
+    setEditedInfo(
+      {
+        "userId": myInfo?.user_id,
+        "fullName": myInfo?.fullName,
+        "email": myInfo?.email,
+        "phoneNumber": customer?.phone,
+        "address": customer?.address,
+        "image": myInfo?.image
+      }
+    );
     setIsEditing(true);
-    setEditedInfo({
-      fullName: myInfo.fullName,
-      email: myInfo.email,
-      phone: customer.phone,
-      address: customer.address,
-    });
   };
   const handleAllAppointment = () => {
     navigate("/profile/appointment");
@@ -32,10 +41,10 @@ const MyProfile = () => {
   const handleSave = async () => {
     setIsEditing(false);
     try {
-      const updatedInfo = await updateMyInfoAPI(editedInfo);
-    
-      dispatch(updateUserInfo(updatedInfo));
-    
+      const response = await updateCustomerAPI(editedInfo,image);
+      if(response.status === 200){
+        dispatch(updateUserInfo(response.data));
+      }
     } catch (error) {
       console.error("Error updating user info:", error);
     }
@@ -54,14 +63,27 @@ const MyProfile = () => {
         <div className="card-body">
           <div className="row">
             <div className="col-md-4 text-center mb-4">
+           
               <img
-                src="https://via.placeholder.com/150"
+                src={image ? URL.createObjectURL(image) : myInfo?.image || default_profile}
                 alt="User Avatar"
                 className="img-fluid rounded-circle mb-3"
                 style={{ width: "150px", height: "150px" }}
               />
-              <h4>{myInfo.fullName}</h4>
-              <p className="text-muted">{myInfo.email}</p>
+               {(isEditing) && ( // Only show the upload input if isEditing is true
+              <div className="form-group mt-3 text-center">
+                <label className="custom-file-upload">
+                  <input
+                    type="file"
+                    onChange={handleUploadImage}
+                    disabled={!isEditing} // cho phép upload khi trong chế độ create hoặc edit
+                  />
+                  Upload Image <i className="fa-solid fa-image"></i>
+                </label>
+              </div>
+            )}
+              {/* <h4>{myInfo.fullName}</h4>
+              <p className="text-muted">{myInfo.email}</p> */}
             </div>
             <div className="col-md-8">
               <form>
@@ -99,14 +121,14 @@ const MyProfile = () => {
                 </div>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label htmlFor="phone" className="form-label">Phone</label>
+                    <label htmlFor="phoneNumber" className="form-label">Phone</label>
                     {isEditing ? (
                       <input
                         type="tel"
                         className="form-control"
-                        id="phone"
-                        name="phone"
-                        value={editedInfo.phone}
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        value={editedInfo.phoneNumber}
                         onChange={handleChange}
                       />
                     ) : (

@@ -28,7 +28,7 @@ function Payment() {
         "result": null,  // Kết quả
         "createdAt": new Date(),  // Định dạng cho ZonedDateTime
         "type": bookingData.type,  // Enum AppointmentType
-        "depositedMoney": serviceInfo.basePrice * 100,  // Số tiền đã đặt cọc
+        "depositedMoney": serviceInfo?.basePrice,  // Số tiền đã đặt cọc
         "customerId": customerInfo.customerId,  // ID khách hàng
         "vetId": bookingData.vetId,  // ID bác sĩ thú y
         "serviceId": bookingData.serviceId,// ID dịch vụ
@@ -38,7 +38,7 @@ function Payment() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerInfo, vetInfo, serviceInfo, bookingData])
   const handlePayment = async (appointmentCreateRequest) => {
-    const response = await fetchRedirectPaymentAPI(serviceInfo.basePrice * 1000, "NCB", appointmentCreateRequest)
+    const response = await fetchRedirectPaymentAPI(serviceInfo?.basePrice, "NCB", appointmentCreateRequest)
     console.log(response)
     if (response.status === 200) {
       window.location.href = response.data
@@ -224,7 +224,7 @@ function Payment() {
                 <h5 className="mb-3">Payment Summary</h5>
                 <div className="row">
                   <div className="col-6">Service Fee:</div>
-                  <div className="col-6 text-end">{(serviceInfo.basePrice * 1000).toLocaleString()} VND</div>
+                  <div className="col-6 text-end">{serviceInfo?.basePrice?.toLocaleString()} VND</div>
                 </div>
                 <div className="row">
                   <div className="col-6">Subtotal:</div>
@@ -234,7 +234,7 @@ function Payment() {
                 <hr />
                 <div className="row total">
                   <div className="col-6">Total (incl. tax):</div>
-                  <div className="col-6 text-end">{(serviceInfo.basePrice * 1000).toLocaleString()} VND</div>
+                  <div className="col-6 text-end">{serviceInfo?.basePrice?.toLocaleString()} VND</div>
                 </div>
               </div>
 

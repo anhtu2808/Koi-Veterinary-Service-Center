@@ -57,7 +57,7 @@ public class PaymentController {
     TreatmentService treatmentService;
     private static TreamentRequest treamentRequestTemp;
     private static Float amountTemp;
-    private static String appointmentIdTemp = "";
+    private static final String urlRating = "http://localhost:3000/rating";
     @Autowired
     AppointmentService  appointmentService;
     @Autowired
@@ -146,6 +146,7 @@ public class PaymentController {
         String appointmentDate = appointmentResponse.getAppointmentDate() != null ? appointmentResponse.getAppointmentDate().toString() : "N/A";
         String amountPaid = amount != null ? String.format("%.2f", amount) : "N/A";
 
+
         return "Dear " + customerName + ",\n\n" +
                 "We are pleased to inform you that your payment for the koi center service has been SUCCESSFULLY processed. Below are the details of your recent booking:\n\n" +
                 "Service Details:\n" +
@@ -155,10 +156,12 @@ public class PaymentController {
                 "We truly appreciate your trust in our services and are committed to ensuring the best care for your koi. Our team will be ready to assist you at the scheduled time to provide a smooth and professional experience.\n\n" +
                 "Should you have any questions or need to modify your appointment, please do not hesitate to contact us at 0345999999 or via email at koicenter.swp@gmail.com.\n\n" +
                 "Once again, thank you for choosing KOI MED CENTER. We look forward to serving you and ensuring the health and happiness of your koi.\n\n" +
+                "We would love to hear your feedback on our services. Please take a moment to rate us and share your experience by visiting the following link:"+ urlRating +"Your feedback helps us improve and continue providing the best care for your koi.\n\n" +
                 "Warm regards,\n" +
                 "KOI MED CENTER\n" +
                 "0345999999\n" +
                 "koicenter.swp@gmail.com";
+
     }
 
 
