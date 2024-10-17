@@ -277,8 +277,10 @@ function AppointmentDetail() {
             <label htmlFor="vetId" className="form-label">
               Veterinarian <i className="fa-solid fa-user-doctor" ></i>
             </label>
-            <select
-              className="form-select"
+
+            {appointment.status === APPOINTMENT_STATUS.CREATED ?
+              <select
+                className="form-select"
               id="vetId"
               name="vetId"
               value={appointment.vetId}
@@ -292,6 +294,16 @@ function AppointmentDetail() {
                 </option>
               ))}
             </select>
+            : 
+            <input
+              type="text"
+              className="form-control"
+              id="vetId"
+              name="vetId"
+              value={appointment.vetName}
+              disabled
+            />
+            }
           </div>
           <div className="col-md-6">
             <label htmlFor="serviceId" className="form-label">

@@ -43,7 +43,7 @@ const MyProfile = () => {
     try {
       const response = await updateCustomerAPI(editedInfo,image);
       if(response.status === 200){
-        dispatch(updateUserInfo(response.data));
+        dispatch(updateUserInfo(editedInfo));
       }
     } catch (error) {
       console.error("Error updating user info:", error);
