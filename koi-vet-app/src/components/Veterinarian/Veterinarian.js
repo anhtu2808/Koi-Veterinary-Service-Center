@@ -24,7 +24,7 @@ const Veterinarian = ({image,vetId,name,isBooking}) => {
     {/* <!-- Doctor Card 1 --> */}
     <div className="col-md-4 mb-4">
             <div className="doctor-card">
-              <img src={tempt_img} alt="Doctor 1" />
+              <img src={image || tempt_img } alt="Doctor 1" />
               <div className="p-3">
                 <h5>{name}</h5>
                 <p>CVIS & VFDS</p>

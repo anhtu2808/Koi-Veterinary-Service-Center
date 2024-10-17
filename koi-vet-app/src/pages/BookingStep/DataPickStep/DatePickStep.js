@@ -136,7 +136,9 @@ const DatePickStep = () => {
             {slot.startTime.slice(0, 5)} - {slot.endTime.slice(0, 5)}
           </div>
         ))}
-        <p>Please select a time slot to continue booking</p>
+        {bookingData.startAt === null && bookingData.endAt === null && 
+          <p>Please select a time slot to continue booking</p>
+        }
       </div>
     );
   }
