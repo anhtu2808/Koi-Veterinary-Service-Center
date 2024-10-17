@@ -147,7 +147,7 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusI
       }
       if (isUpdate) {
         setIsEditing(false)
-        const response = await updatePondInformationAPI(pondData.pondId, pondData, image);
+        const response = await updatePondInformationAPI(pondData.pondId, pondData, image); // khách hàng cập nhật thông tin hồ cá
         toast.success(response.data.message);
       }
     }

@@ -121,7 +121,7 @@ function KoiDetail({
         onClose();
       }
       if (isUpdate) {
-        // bác sĩ cập nhật thông tin cá koi
+        // khách hàng cập nhật thông tin cá koi
         await updateKoiInformationAPI(koiData.koiId, koiData, image);
         setIsEditing(false);
       }
