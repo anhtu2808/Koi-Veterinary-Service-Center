@@ -42,11 +42,6 @@ public class VetScheduleController {
             return ResponseObject.APIRepsonse(404, "Not Found this Type in Appointment_Type", HttpStatus.NOT_FOUND, " ");
         }
     }
-    @GetMapping("/{vetSchedule}")
-    public ResponseEntity<ResponseObject> getScheduleForBooking(@RequestBody VetScheduleRequest vetSchedule) {
-        return ResponseObject.APIRepsonse(200, "Get Schedule ID Successfully", HttpStatus.OK, vetSchedule);
-    }
-
     @GetMapping("/getVeterinariansByDateTime")
     public ResponseEntity<ResponseObject> getVeterinariansByDateTime(@RequestParam String type , @RequestParam LocalTime startTime, @RequestParam LocalTime endTime, @RequestParam LocalDate date , @RequestParam String serviceId) {
         VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
@@ -83,6 +78,15 @@ public class VetScheduleController {
             return ResponseObject.APIRepsonse(400, "Can't create Veterinarians Schedule Create ", HttpStatus.BAD_REQUEST,"");
         }
     }
+    @PostMapping("")
+    public ResponseEntity<ResponseObject> createSlot(@RequestBody VetScheduleRequest vetScheduleRequest) {
+       VetScheduleResponse list = vetScheduleService.createSlot(vetScheduleRequest);
+        if( list != null ){
+            return ResponseObject.APIRepsonse(200, "Veterinarians schedule CREATE successfully ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(400, "Can't create Veterinarians Schedule Create ", HttpStatus.BAD_REQUEST,"");
+        }
+    }
     @PutMapping("/update")
     public ResponseEntity<ResponseObject> updateVetScheduleOfVeterinarian(@RequestBody VetScheduleRequest vetScheduleRequest) {
         vetScheduleRequest.setAppointmentType(AppointmentType.ONLINE);
@@ -93,6 +97,35 @@ public class VetScheduleController {
             return ResponseObject.APIRepsonse(400, "Can't UPDATE Veterinarians Schedule Create ", HttpStatus.BAD_REQUEST,"");
         }
     }
+    @PutMapping("/{scheduleId}/schedules/update")
+    public ResponseEntity<ResponseObject> updateDateTime(@PathVariable String scheduleId, @RequestParam int count) {
+        if(scheduleId!=null && count!=0 ){
+            vetScheduleService.updateDateTime(scheduleId, count);
+            return ResponseObject.APIRepsonse(200, "Veterinarians schedule found successfully ", HttpStatus.OK, null);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Veterinarians schedule not found By VetID and Date ", HttpStatus.NOT_FOUND,"");
+        }
+    }
+    @GetMapping("/{vetId}/schedules/by-date")
+    public ResponseEntity<ResponseObject> getScheduleByVetIDandDate(@PathVariable String vetId, @RequestParam LocalDate date) {
+        List<VetScheduleResponse> list = vetScheduleService.getScheduleByVetIDandDate(vetId, date);
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(200, "Veterinarians schedule found successfully ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Veterinarians schedule not found By VetID and Date ", HttpStatus.NOT_FOUND,"");
+        }
+    }
+
+    @GetMapping("/{vetId}/schedules")
+    public ResponseEntity<ResponseObject> getScheduleByVetId(@PathVariable String vetId) {
+        List<VetScheduleResponse> list = vetScheduleService.getScheduleByVetId(vetId);
+        if(!list.isEmpty()){
+            return ResponseObject.APIRepsonse(200, "Veterinarians schedule found successfully ", HttpStatus.OK, list);
+        }else{
+            return ResponseObject.APIRepsonse(404, "Veterinarians schedule not found By VetID and Date ", HttpStatus.NOT_FOUND,"");
+        }
+    }
+
 
 
 }

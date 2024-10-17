@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -45,6 +46,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
     @Query(value = "SELECT * FROM appointment WHERE Date(created_at) = :date", nativeQuery = true)
     List<Appointment> findByCreatedAtDate(@Param("date") int date);
 
+    List<Appointment> findByVeterinarian_VetIdAndAppointmentDate(String vetId, LocalDate date);
 
 
 }
