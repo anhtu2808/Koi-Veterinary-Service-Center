@@ -35,7 +35,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
             if (role === "CUSTOMER") {
                 navigate(`/profile/koidetail/${appointmentId}?treatmentId=${treatmentId}`)
             } else {
-                navigate(`/admin/koidetail/${appointmentId}?treatmentId=${treatmentId}}`)
+                navigate(`/admin/koidetail/${appointmentId}?treatmentId=${treatmentId}`)
             }
         } else {
             navigate(`/profile/koi/${koiId}`) // eq navigate(`/profile/koi/${koiId}`)
