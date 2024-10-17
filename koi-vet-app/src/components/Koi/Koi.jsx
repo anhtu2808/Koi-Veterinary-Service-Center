@@ -6,7 +6,7 @@ import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI, updateKoiTreatme
 import { toast } from 'react-toastify';
 import Modal from '../Modal/Modal';
 import Treatment from '../Treatment/Treatment';
-
+import koi_default from '../../assets/img/koi_default.jpg'
 const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois }) => {
     const navigate = useNavigate();
     const [koiTreatmentList, setKoiTreatmentList] = useState([]);
@@ -165,7 +165,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
 
                                         <td>
                                             <div className="koi-image">
-                                                <img src={treatment?.koi?.image} alt="hình cá" />
+                                                <img src={treatment?.koi?.image || koi_default} alt="hình cá" />
                                             </div>
                                         </td>
 
