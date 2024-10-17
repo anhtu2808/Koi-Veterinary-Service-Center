@@ -114,10 +114,7 @@ function DashboardPage() {
   );
 
   return (
-    <div
-      className="container"
-      
-    >
+    <div className="container">
       <AdminHeader title="Dashboard" />
       <nav className="w-100" style={{ marginBottom: "20px" }}>
         <div className="nav nav-tabs" id="nav-tab" role="tablist">
