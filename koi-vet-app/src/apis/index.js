@@ -62,6 +62,10 @@ export const fetchVetForAssignAPI = async (appointmentData) => {
     return response.data;
 }
 
+export const createVetAPI = async (data) => {
+    const response = await api.post('/veterinarians', data);
+    return response.data;
+}
 
 
 

@@ -69,7 +69,6 @@ function KoiInformation() {
             )}
           </div>
 
-
           <div className="form-group">
             <label>Height</label>
             <input
