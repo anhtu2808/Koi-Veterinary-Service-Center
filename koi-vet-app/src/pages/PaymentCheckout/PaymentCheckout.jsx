@@ -98,9 +98,11 @@ const PaymentCheckout = () => {
                   </tbody>
                 </table>
 
-                <div className="summary">
+                <div className="summary text-end d-flex justify-content-between">
+                  <div className="text-start">
                   <p><strong>Deposited Money:</strong> {appointmentDetail.depositedMoney.toLocaleString()} VND</p>
                   <p><strong>Balance Due:</strong> {appointmentDetail.balanceDue.toLocaleString()} VND</p>
+                  </div>
                 </div>
               </div>
             </>

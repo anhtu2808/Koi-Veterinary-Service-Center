@@ -283,6 +283,7 @@ public class AppointmentService {
             if(appointmentRequest.getCreatedAt()!=null){
                 appointment.setCreatedAt(appointmentRequest.getCreatedAt());
             }
+            appointment.setDepositedMoney(appointmentRequest.getDepositedMoney());
             appointment.setCustomer(customer);
             appointment.setService(service);
 
