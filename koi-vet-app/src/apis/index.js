@@ -150,7 +150,7 @@ export const fetchPondByPondIdAPI = async (pondId) => {
     return response.data;
 }
 export const updatePondInformationAPI = async (pondId, data, image) => {
-    let imageURL = null;
+    let imageURL = data.image;
     if (image) {
         imageURL = await fetchUpLoadImageAPI(image);
     }
@@ -189,7 +189,7 @@ export const fetchKoisByCustomerIdAPI = async (customerId) => {
 }
 
 export const updateKoiInformationAPI = async (koiId, koiData, image) => {
-    let imageURL = null;
+    let imageURL = koiData.image;
     if (image) {
         imageURL = await fetchUpLoadImageAPI(image);
     }

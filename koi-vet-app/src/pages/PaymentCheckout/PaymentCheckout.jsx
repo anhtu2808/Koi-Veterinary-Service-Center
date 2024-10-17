@@ -20,15 +20,15 @@ const PaymentCheckout = () => {
     } else {
       const invoiceResponse = await updateInvoiceAPI(appointmentDetail.invoiceId, appointment)
       if (invoiceResponse.status === 200) {
-       const res=  await updateAppointmentAPI(
+        const res = await updateAppointmentAPI(
           {
             ...appointment,
             status: APPOINTMENT_STATUS.FINISH
           }, appointmentId)
-          if(res.status === 200){
-            toast.success("Checkout success");
-            navigate(-1)
-          }
+        if (res.status === 200) {
+          toast.success("Checkout success");
+          navigate(-1)
+        }
       } else {
         toast.error("Checkout failed");
       }
@@ -51,10 +51,11 @@ const PaymentCheckout = () => {
   }, [appointmentDetail]);
 
   return (
-    <div className="row">
-      <div className="bill-details col-md-4">
+    <div className="row justify-content-center">
+
+      {appointment?.type === "HOME" && <div className="bill-details col-md-4">
         <HomeVisitPriceTable />
-      </div>
+      </div>}
       <div className="bill-details col-md-8">
         {
           appointmentDetail && serviceDetail && (
@@ -84,22 +85,22 @@ const PaymentCheckout = () => {
                       <td>{serviceDetail.serviceName}</td>
                       <td>{appointmentDetail.quantity}</td>
                       <td>{serviceDetail.serviceFor === "FISH" ? "Koi" : "Pond"}</td>
-                      <td>{serviceDetail.serviceFor === "FISH" ? serviceDetail.koiPrice : serviceDetail.pondPrice} VND</td>
-                      <td>{appointmentDetail.totalKoiPondFee} VND</td>
+                      <td>{serviceDetail.serviceFor === "FISH" ? serviceDetail.koiPrice.toLocaleString() : serviceDetail.pondPrice.toLocaleString()} VND</td>
+                      <td>{appointmentDetail.totalKoiPondFee.toLocaleString()} VND</td>
                     </tr>
                     <tr>
                       <td>Home visit fee</td>
                       <td>{appointmentDetail.distance}</td>
                       <td>Km</td>
-                      <td>{appointmentDetail.homeVisitPrice} VND/Km</td>
-                      <td>{appointmentDetail.totalHomeVisitFee} VND</td>
+                      <td>{appointmentDetail.homeVisitPrice.toLocaleString()} VND/Km</td>
+                      <td>{appointmentDetail.totalHomeVisitFee.toLocaleString()} VND</td>
                     </tr>
                   </tbody>
                 </table>
 
                 <div className="summary">
-                  <p><strong>Deposited Money:</strong> {appointmentDetail.depositedMoney} VND</p>
-                  <p><strong>Balance Due:</strong> {appointmentDetail.balanceDue} VND</p>
+                  <p><strong>Deposited Money:</strong> {appointmentDetail.depositedMoney.toLocaleString()} VND</p>
+                  <p><strong>Balance Due:</strong> {appointmentDetail.balanceDue.toLocaleString()} VND</p>
                 </div>
               </div>
             </>

@@ -160,7 +160,7 @@ function AllAppointment() {
                           case APPOINTMENT_STATUS.CREATED:
                             return <button className="btn btn-sm btn-warning"> <i className="fa-solid fa-hourglass-start me-2"></i>Waiting Confirm</button>;
                           case APPOINTMENT_STATUS.BOOKING_COMPLETE:
-                            return <button className="btn btn-sm btn-success"> <i className="fas fa-user-md me-2"></i>Veterinarian Assigned</button>;
+                            return <button className="btn btn-sm btn-info "> <i className="fas fa-user-md me-2"></i>Veterinarian Assigned</button>;
                           case APPOINTMENT_STATUS.PROCESS:
                             return <button className="btn btn-sm btn-primary"> <i className="fas fa-spinner me-2"></i>Process</button>;
                           case APPOINTMENT_STATUS.READY_FOR_PAYMENT:

@@ -3,6 +3,7 @@ import "./GGM.css";
 import GGMeet from "../../assets/img/GGMeet.jpg";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchAppointmentByIdAPI, fetchVetByVetIdAPI } from "../../apis";
+import Loading from "../../components/Loading/Loading";
 
 function GGM() {
   const { appointmentId } = useParams();
@@ -28,7 +29,11 @@ function GGM() {
     };
     fetchVeterinarian();
   }, [appointment]);
-
+  {
+    if(veterinarian === null){
+        return <Loading/>
+    }
+  }
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card shadow-lg p-4">
@@ -38,7 +43,7 @@ function GGM() {
           </div>
           <div className="col-lg-6 d-flex justify-content-center mb-4 flex-column">
             
-            <Link to={veterinarian?.googleMeet} target="_blank" className="mb-4">
+            <Link to={veterinarian?.googleMeet} target="_blank" className="mb-4\">
 
               <img
                 src={GGMeet}

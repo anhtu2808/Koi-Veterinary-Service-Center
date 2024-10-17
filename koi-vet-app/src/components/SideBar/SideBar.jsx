@@ -37,11 +37,14 @@ function SideBar() {
             <i className="fas fa-tachometer-alt"></i> Dashboard
           </Link>
         </li>
+
+        {(role === ROLE.ADMIN || role === ROLE.STAFF) && (
         <li className="nav-item">
           <Link to="/admin/usermanagement" className={`nav-link ${location.pathname === '/admin/usermanagement' ? 'active' : ''}`}>
             <i className="fas fa-users"></i> Users
           </Link>
         </li>
+        )}
         {(role === ROLE.VETERINARIAN || role === ROLE.STAFF) && (
           <li className="nav-item">
             <Link to="/admin/appointment" className={`nav-link ${location.pathname === '/admin/appointment' ? 'active' : ''}`}>

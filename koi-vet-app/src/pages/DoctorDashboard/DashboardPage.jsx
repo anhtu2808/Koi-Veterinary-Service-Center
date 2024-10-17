@@ -226,7 +226,7 @@ function DashboardPage() {
             }}
           >
             Total Revenue
-            <p>{totalRevenuecard} VND</p>
+            <p>{totalRevenuecard.toLocaleString()} VND</p>
           </div>
         </div>
       </div>

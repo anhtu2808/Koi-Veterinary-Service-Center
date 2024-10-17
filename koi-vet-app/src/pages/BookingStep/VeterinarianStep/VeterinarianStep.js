@@ -4,16 +4,16 @@ import { fetchVetByServiceIdAPI } from '../../../apis';
 import { useSelector } from 'react-redux';
 
 const VeterinarianStep = () => {
-    const [veterinarians, setVeterinarians] =useState([]);
-    const serviceId = useSelector(state => state.booking.bookingData.serviceId);
-  useEffect(()=>{
-    const fetchVeterinarians =  async () =>{
+  const [veterinarians, setVeterinarians] = useState([]);
+  const serviceId = useSelector(state => state.booking.bookingData.serviceId);
+  useEffect(() => {
+    const fetchVeterinarians = async () => {
       const response = await fetchVetByServiceIdAPI(serviceId); // thay bằng fetchVetByVetByServiceIdAPI
-      console.log({response});
+      console.log({ response });
       setVeterinarians(response?.data);
     }
     fetchVeterinarians();
-  },[serviceId])
+  }, [serviceId])
 
   return (
     <div className="container text-center my-5">
@@ -26,13 +26,13 @@ const VeterinarianStep = () => {
         <div className="row">
           {/* <!-- Doctor Card 1 --> */}
           {
-           veterinarians?.map((vet) => {
-            console.log({vet});
-            return <Veterinarian image={vet.image} vetId={vet.vetId} name={vet?.user?.fullName} isBooking={true} />
-           })
+            veterinarians?.map((vet) => {
+              console.log({ vet });
+              return <Veterinarian image={vet.imageVeterinarian} vetId={vet.vetId} name={vet?.user?.fullName} isBooking={true} services={vet?.serviceNames} />
+            })
           }
         </div>
-    
+
       </div>
     </div>
   );
