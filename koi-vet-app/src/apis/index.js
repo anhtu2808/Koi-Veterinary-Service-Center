@@ -409,7 +409,7 @@ export const updateSchedualAPI = async (schedualId, data) => {
     return response.data;
 }
 export const fetchSchedualByVetIdAPI = async (vetId) => {
-    const response = await api.get(`/vetSchedules/${vetId}/scheduals`);
+    const response = await api.get(`vetSchedules/${vetId}/schedules`);
     return response.data;
 }
 export const fetchSchedualByDateAndVetIdAPI = async (date, vetId) => {

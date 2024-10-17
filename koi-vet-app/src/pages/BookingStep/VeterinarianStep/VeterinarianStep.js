@@ -28,7 +28,7 @@ const VeterinarianStep = () => {
           {
            veterinarians?.map((vet) => {
             console.log({vet});
-            return <Veterinarian image={vet.imageVeterinarian} vetId={vet.vetId} name={vet?.user?.fullName} isBooking={true} />
+            return <Veterinarian image={vet.image} vetId={vet.vetId} name={vet?.user?.fullName} isBooking={true} />
            })
           }
         </div>

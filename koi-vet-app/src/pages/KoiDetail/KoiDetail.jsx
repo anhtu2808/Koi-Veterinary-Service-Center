@@ -123,8 +123,6 @@ function KoiDetail({
       if (isUpdate) {
         // bác sĩ cập nhật thông tin cá koi
         await updateKoiInformationAPI(koiData.koiId, koiData, image);
-        const updateTreatment = await updateKoiTreatmentAPI(treatmentData);
-        toast.success(updateTreatment.data.message);
         setIsEditing(false);
       }
     }

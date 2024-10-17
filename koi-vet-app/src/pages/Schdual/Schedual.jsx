@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import "./Schedual.css"
-import { createScheduleAPI, fetchVetsAPI } from '../../apis'
+import { createScheduleAPI, fetchSchedualByVetIdAPI, fetchVetsAPI } from '../../apis'
 import { toast } from 'react-toastify'
 import AdminHeader from '../../components/AdminHeader/AdminHeader'
 import Select from 'react-select';
+import Loading from '../../components/Loading/Loading'
 const Schedual = () => {
     const [selectedVetId, setSelectedVetId] = useState([])
     const [veterinarians, setVeterinarians] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [selectedDate, setSelectedDate] = useState([])
+    const [schedules, setSchedules] = useState([])
+    const [selectDateTrigger, setSelectDateTrigger] = useState(0)
     const handleDateClick = (date) => {
         if (selectedDate.includes(date)) {
             setSelectedDate(selectedDate.filter(item => item !== date)) // xóa ngày đã chọn
@@ -16,9 +20,22 @@ const Schedual = () => {
         }
         console.log(selectedDate)
     }
-    const handleChangeSelectedVet = (value) => {
-        setSelectedVetId(value)
+    const fetchSchedual = async () => {
+        await setSelectedDate([])
+        await setSchedules([])
+        const response = await fetchSchedualByVetIdAPI(selectedVetId)
+        response.data.forEach(item => {
+            setSchedules(prev => [...prev, item.date])
+        });
+        console.log(schedules)
     }
+   
+    const handleChangeSelectedVet =  (value) => {
+      setSelectedVetId(value)
+    }
+    useEffect(() => {
+        fetchSchedual()
+    }, [selectedVetId,selectDateTrigger])
     const getVeterinarian = async () => {
         const response = await fetchVetsAPI()
         setVeterinarians(response.data)
@@ -30,11 +47,15 @@ const Schedual = () => {
                 dates: selectedDate
             }
         )
+        setSelectDateTrigger(selectDateTrigger + 1)
         toast(response.message)
     }
     useEffect(() => {
         getVeterinarian()
     }, [])
+    useEffect(() => {
+      
+    }, [selectedVetId])
     const renderDate = () => {
         const year = new Date().getFullYear()
         const month = new Date().getMonth()
@@ -50,9 +71,13 @@ const Schedual = () => {
             days.push(<div key={`empty-${i}`} className="disabled"></div>);
         }
         for (let day = 1; day <= daysInMonth; day++) {
+            if(day<10){
+                day = `0${day}`
+            }
             const date = `${year}-${month + 1}-${day}`;
-            const isToday = date === new Date().toDateString();
-            const isSelected = selectedDate.includes(date);
+            const isSelected = selectedDate.includes(date); // check xem ngày đó đã đc select chưa
+            const isToday = schedules.includes(date); // check xem ngày đó đã có lịch chưa
+          
             days.push(
                 <div
                     key={day}
@@ -87,7 +112,7 @@ const Schedual = () => {
 
                     {/* Lưới các ngày trong tháng */}
                     <div className="days-grid">
-                        {renderDate()}
+                        {isLoading ? <Loading/>: renderDate()}
                     </div>
                     <button className='btn btn-primary' onClick={handleSubmit}>Submit</button>
                 </div>

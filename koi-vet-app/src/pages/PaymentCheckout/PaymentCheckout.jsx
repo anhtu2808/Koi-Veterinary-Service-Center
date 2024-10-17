@@ -20,12 +20,15 @@ const PaymentCheckout = () => {
     } else {
       const invoiceResponse = await updateInvoiceAPI(appointmentDetail.invoiceId, appointment)
       if (invoiceResponse.status === 200) {
-        await updateAppointmentAPI(
+       const res=  await updateAppointmentAPI(
           {
             ...appointment,
             status: APPOINTMENT_STATUS.FINISH
           }, appointmentId)
-
+          if(res.status === 200){
+            toast.success("Checkout success");
+            navigate(-1)
+          }
       } else {
         toast.error("Checkout failed");
       }
