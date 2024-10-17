@@ -293,58 +293,6 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusI
               Update
             </button>
           ) : null}
-
-          <div className="button-group mt-4">
-            {isCreate && isAppointment ? (
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={onClose}
-              >
-                Back
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => navigate(-1)}
-              >
-                Back
-              </button>
-            )}
-
-            {isEditing && isUpdate && !isCreate ? (
-              <div className=" d-flex gap-2">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleUpdateButton}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  onClick={handleSubmit}
-                >
-                  Save
-                </button>
-              </div>
-            ) : isCreate ? (
-              <button type="submit" className="btn btn-primary">
-                Create
-              </button>
-            ) : null}
-            {!isEditing && isUpdate ? (
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleUpdateButton}
-              >
-                Update
-              </button>
-            ) : null}
-          </div>
         </div>
         </div>
       </form>
