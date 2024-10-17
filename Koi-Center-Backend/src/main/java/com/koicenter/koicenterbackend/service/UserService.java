@@ -128,6 +128,7 @@ public class UserService {
                 .fullName(user.getFullName())
                 .role(user.getRole())
                 .status(user.isStatus())
+                .image(user.getImage())
                 .email(user.getEmail());
 
         if (user.getRole() == Role.CUSTOMER) {

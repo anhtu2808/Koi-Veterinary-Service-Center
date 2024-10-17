@@ -19,8 +19,8 @@ public class DashboardResponse {
     DayOfWeek day ;
     Month month ;
     Year year ;
-    ZonedDateTime date ;
-
+//    ZonedDateTime date ;
+    LocalDate date ;
 
 
 }

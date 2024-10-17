@@ -92,7 +92,7 @@ public class InvoiceService {
                 int countKoi = 0 ;
                 int countPond = 0 ;
                 int totalPrice = 0 ;
-                ZonedDateTime specificDate = createdAt.plusDays(i);
+                ZonedDateTime specificDate = createdAt.minusDays(i);
                 ZonedDateTime startOfDay = specificDate.toLocalDate().atStartOfDay(specificDate.getZone());
                 ZonedDateTime endOfDay = startOfDay.plusDays(1); // Thêm 1 ngày để có được ngày kết thúc
                 log.info("StarOfDay :" + startOfDay.getDayOfWeek());
@@ -100,7 +100,7 @@ public class InvoiceService {
                 List<Appointment> appointment1 = appointmentRepository.findByCreatedAtBetween(startOfDay,endOfDay);
                 DashboardResponse dashboardResponse1 = new DashboardResponse();
                 dashboardResponse1.setDay(startOfDay.getDayOfWeek());
-                dashboardResponse1.setDate(startOfDay);
+                dashboardResponse1.setDate(startOfDay.toLocalDate());
                 for (Appointment appointment2 : appointment1){
                     countAppointment ++ ; // bao nhieu appointment trong 1 ngay
                     List<KoiTreatment> koiTreatments = koiTreatmentRepository.findKoiTreatmentsByAppointment_AppointmentId(appointment2.getAppointmentId());
@@ -192,6 +192,7 @@ public class InvoiceService {
                 log.info("Year :" + year);
                 dashboardResponse1.setYear(year);
                 dashboardResponse1.setTime(createdAt.toString());
+                dashboardResponse1.setDate(createdAt.toLocalDate());
                 List<Appointment> appointmentsListYear = appointmentRepository.findByCreatedAtYear(createdAt.getYear());
                 for (Appointment appointment1 : appointmentsListYear){
                     countAppointment ++ ; // bao nhieu appointment trong 1 ngay
