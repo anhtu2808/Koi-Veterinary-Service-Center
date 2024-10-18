@@ -6,7 +6,7 @@ import AdminHeader from '../../components/AdminHeader/AdminHeader'
 import Select from 'react-select';
 import Loading from '../../components/Loading/Loading'
 const Schedual = () => {
-    const [selectedVetId, setSelectedVetId] = useState([])
+    const [selectedVetId, setSelectedVetId] = useState(null)
     const [veterinarians, setVeterinarians] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [selectedDate, setSelectedDate] = useState([])
@@ -87,7 +87,7 @@ const Schedual = () => {
             const date = `${year}-${month + 1}-${day}`;
             const isSelected = selectedDate.includes(date); // check xem ngày đó đã đc select chưa
             const isToday = schedules.includes(date); // check xem ngày đó đã có lịch chưa
-            const isAvailable = new Date(date) > new Date(new Date().toDateString());
+            const isAvailable = selectedVetId && new Date(date) >= new Date(new Date().toDateString());
             days.push(
                 <div
                     key={day}

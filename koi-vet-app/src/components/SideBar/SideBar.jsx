@@ -59,7 +59,7 @@ function SideBar() {
         </li>
         {(role === ROLE.ADMIN || role === ROLE.STAFF) && (
         <li className="nav-item">
-          <Link to="/admin/schedual" className="nav-link">
+          <Link to="/admin/schedual" className={`nav-link ${location.pathname === '/admin/schedual' ? 'active' : ''}`}>
             <i className="fas fa-calendar-alt"></i> Veterinarian Schedual
             </Link>
           </li>
