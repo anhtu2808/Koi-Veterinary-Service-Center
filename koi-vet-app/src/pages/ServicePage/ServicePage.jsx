@@ -18,8 +18,8 @@ function ServicePage() {
     <div className="container text-center my-5">
         <div className="container mt-5">
             <div className="text-center mb-5">
-                <img src="process-image.png" alt="Process Step"/>
-                <h3>Choose Service</h3>
+                {/* <img src="process-image.png" alt="Process Step"/> */}
+                <h3>Our Services</h3>
             </div>
 
         <div className="row">

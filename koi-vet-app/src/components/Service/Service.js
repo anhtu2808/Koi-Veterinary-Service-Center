@@ -32,12 +32,12 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
             {truncateDescription(description, 100)}
           </p>
           <div className="text-start mb-2">
-            <div>Service Price: {basePrice?.toLocaleString()}</div>
+            <div>Service Price: {basePrice?.toLocaleString()} VND</div>
             {serviceFor === "POND" ?
 
-              <div>Pond Price: {pondPrice?.toLocaleString()} / Pond</div>
+              <div>Pond Price: {pondPrice?.toLocaleString()} VND / Pond</div>
               :
-              <div>Koi Price: {koiPrice?.toLocaleString()} / Koi</div>
+              <div>Koi Price: {koiPrice?.toLocaleString()} VND / Koi</div>
 
             }
           </div>
@@ -50,4 +50,4 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
   )
 }
 
-export default Service
+export default Service  
