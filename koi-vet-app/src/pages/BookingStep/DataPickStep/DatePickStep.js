@@ -49,7 +49,8 @@ const DatePickStep = () => {
       const date = new Date(year, month, day);
       const isToday = date.toDateString() === new Date().toDateString();
       const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
-      const isAvailable = schedule.some(item => item.day === getLocalDateString(date));
+      const isAvailable = new Date(date) > new Date(new Date().toDateString()) &&
+        schedule.some(item => item.day === getLocalDateString(date));
 
       days.push(
         <div
@@ -113,7 +114,7 @@ const DatePickStep = () => {
     }));
   };
 
-  
+
   const renderTimeSlots = () => {
     if (!selectedDate) return null;
 
@@ -136,7 +137,7 @@ const DatePickStep = () => {
             {slot.startTime.slice(0, 5)} - {slot.endTime.slice(0, 5)}
           </div>
         ))}
-        {bookingData.startAt === null && bookingData.endAt === null && 
+        {bookingData.startAt === null && bookingData.endAt === null &&
           <p>Please select a time slot to continue booking</p>
         }
       </div>
