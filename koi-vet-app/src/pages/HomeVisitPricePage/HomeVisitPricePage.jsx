@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import AdminHeader from '../../components/AdminHeader/AdminHeader'
-import HomeVisitPriceTable from '../../components/HomeVisitPriceTable/HomeVisitPriceTable'
-import { fetchHomeVisitPriceAPI } from '../../apis'
-import { Modal, Button } from 'antd'
+import { fetchHomeVisitPriceAPI, updateHomeVisitPriceAPI } from '../../apis'
+import { Modal } from 'antd'
+import { toast } from 'react-toastify'
 
 const HomeVisitPricePage = () => {
     const [homeVisitPrice, setHomeVisitPrice] = useState([])
-    const [isModalVisible, setIsModalVisible] = useState(false)
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false)
+    const [isAddModalVisible, setIsAddModalVisible] = useState(false)
     const [selectedDelivery, setSelectedDelivery] = useState(null)  
-
     useEffect(() => {
         fetchHomeVisitPrice()
     }, [])
@@ -17,19 +17,46 @@ const HomeVisitPricePage = () => {
         setHomeVisitPrice(res.data)
     }
 
-    const showModal = (delivery) => {
+    const showEditModal = (delivery) => {
         setSelectedDelivery(delivery)
-        setIsModalVisible(true)
+        setIsEditModalVisible(true)
     }
 
-    const handleOk = () => {
-        // Handle the save logic here
-
-        setIsModalVisible(false)
+    const showAddModal = async () => {
+        await setSelectedDelivery(null)
+        await setIsAddModalVisible(true)
+    }
+    const closeAddModal = () => {
+        setIsAddModalVisible(false)
     }
 
-    const handleCancel = () => {
-        setIsModalVisible(false)
+    const handleOkEdit = async () => {
+        // Handle the edit logic here
+        console.log(selectedDelivery)
+        const res = await updateHomeVisitPriceAPI(selectedDelivery.deliveryId, selectedDelivery)
+        if (res.status === 200) {
+            toast.success('Update success')
+            setHomeVisitPrice(prev => {
+                const updatedHomeVisitPrice = prev.map(item =>
+                    item.deliveryId === selectedDelivery.deliveryId ? selectedDelivery : item
+                );
+                return updatedHomeVisitPrice;
+            });
+        } else {
+            toast.error(res.message)
+        }
+
+        setIsEditModalVisible(false)
+    }
+
+    const handleOkAdd = () => {
+        // Handle the create logic here
+
+        setIsAddModalVisible(false)
+    }
+
+    const handleCancelEdit = () => {
+        setIsEditModalVisible(false)
     }
 
     const handleDelete = (delivery) => {
@@ -66,7 +93,7 @@ const HomeVisitPricePage = () => {
                                         <td>{delivery.toPlace}</td>
                                         <td>{delivery.price.toLocaleString()}</td>
                                         <td className='d-flex gap-2'>
-                                            <button className="btn btn-primary" onClick={() => showModal(delivery)}>Edit</button>
+                                            <button className="btn btn-primary" onClick={() => showEditModal(delivery)}>Edit</button>
                                             <button className="btn btn-danger" onClick={() => handleDelete(delivery)}>Delete</button>
                                         </td>
                                     </tr>
@@ -74,10 +101,22 @@ const HomeVisitPricePage = () => {
                             </tbody>
                         </table>
                     </div>
+                    <div className='col-md-12 mt-3'>
+                        <button className="btn btn-primary" onClick={() => showAddModal()}><i className="fa-solid fa-plus"></i> Add </button>
+                    </div>
                 </div>
             </div>
-            <Modal title="Edit Delivery Price" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="Edit Delivery Price" open={isEditModalVisible} onOk={handleOkEdit} onCancel={handleCancelEdit}>
                 {/* Add form fields here to edit the selected delivery */}
+                <label>From (km)</label>
+                <input type="number" value={selectedDelivery?.fromPlace} onChange={(e) => setSelectedDelivery({ ...selectedDelivery, fromPlace: e.target.value })} />
+                <label>To (km)</label>
+                <input type="number" value={selectedDelivery?.toPlace} onChange={(e) => setSelectedDelivery({ ...selectedDelivery, toPlace: e.target.value })} />
+                <label>Price (VND/km)</label>
+                <input type="number" value={selectedDelivery?.price} onChange={(e) => setSelectedDelivery({ ...selectedDelivery, price: e.target.value })} />
+            </Modal>
+            {/* Modal add new */}
+            <Modal title="Add Delivery Price" open={isAddModalVisible} onOk={handleOkAdd} onCancel={closeAddModal}>
                 <label>From (km)</label>
                 <input type="number" value={selectedDelivery?.fromPlace} onChange={(e) => setSelectedDelivery({ ...selectedDelivery, fromPlace: e.target.value })} />
                 <label>To (km)</label>

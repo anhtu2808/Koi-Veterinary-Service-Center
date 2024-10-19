@@ -395,6 +395,11 @@ export const fetchHomeVisitPriceAPI = async () => {
     return response.data;
 }
 
+export const updateHomeVisitPriceAPI = async (deliveryId, data) => {
+    const response = await api.put(`/deliveries/${deliveryId}`, data);
+    return response.data;
+}
+
 
 
 //dashboard API
