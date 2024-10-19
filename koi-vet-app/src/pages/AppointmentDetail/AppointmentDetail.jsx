@@ -6,6 +6,7 @@ import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import { APPOINTMENT_STATUS, BOOKING_TYPE, ROLE, SERVICE_FOR } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import Loading from "../../components/Loading/Loading";
+import { Modal } from "antd";
 
 const updateAppointment = async (appointmentData, appointmentId) => {
   try {
@@ -152,26 +153,35 @@ function AppointmentDetail() {
   const handleStartFinish = () => {
 
     if (appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE) {
-      const confirmAction = window.confirm("Are you sure to start?");
-      if (!confirmAction) {
-        return;
-      } else {
-        setAppointment({ ...appointment, status: APPOINTMENT_STATUS.PROCESS })
-        updateAppointment({ ...appointment, status: APPOINTMENT_STATUS.PROCESS }, appointmentId)
-      }
+      Modal.confirm({
+        title: 'Start Appointment',
+        content: (
+          <div>
+            <p>Are you sure to start?</p>
+          </div>
+        ),
+        onOk: () => {
+          setAppointment({ ...appointment, status: APPOINTMENT_STATUS.PROCESS })
+          updateAppointment({ ...appointment, status: APPOINTMENT_STATUS.PROCESS }, appointmentId)
+        }
+      });
     } else if (appointment.status === APPOINTMENT_STATUS.PROCESS) {
-      const confirmAction = window.confirm("Are you sure to finish?");
-      if (!confirmAction) {
-        return;
-      } else {
-        setAppointment({ ...appointment, status: APPOINTMENT_STATUS.READY_FOR_PAYMENT });
-        console.log({ ...appointment, status: APPOINTMENT_STATUS.READY_FOR_PAYMENT });
-        updateAppointment({ ...appointment, status: APPOINTMENT_STATUS.READY_FOR_PAYMENT }, appointmentId)
-      }
+      Modal.confirm({
+        title: 'Finish Appointment',
+        content: (
+          <div>
+            <p>Are you sure to finish?</p>
+          </div>
+        ),
+        onOk: () => {
+          setAppointment({ ...appointment, status: APPOINTMENT_STATUS.READY_FOR_PAYMENT });
+          updateAppointment({ ...appointment, status: APPOINTMENT_STATUS.READY_FOR_PAYMENT }, appointmentId);
+        }
+      });
     }
     setIsEditing(false);
-
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -258,7 +268,7 @@ function AppointmentDetail() {
                 value={statusDisplayMap[appointment.status] || appointment.status}
                 disabled={true}
               />
-              {role !== ROLE.CUSTOMER &&( appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE || appointment.status === APPOINTMENT_STATUS.PROCESS) ?
+              {role !== ROLE.CUSTOMER && (appointment.status === APPOINTMENT_STATUS.BOOKING_COMPLETE || appointment.status === APPOINTMENT_STATUS.PROCESS) ?
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -283,28 +293,28 @@ function AppointmentDetail() {
             {appointment.status === APPOINTMENT_STATUS.CREATED ?
               <select
                 className="form-select"
-              id="vetId"
-              name="vetId"
-              value={appointment.vetId}
-              onChange={(e) => handleAssignVet(e)}
-              disabled={role === ROLE.VETERINARIAN || !isEditing || (appointment.status !== APPOINTMENT_STATUS.CREATED && appointment.status !== APPOINTMENT_STATUS.BOOKING_COMPLETE)}
-            >
-              <option value={"SKIP"}>Not assigned</option>
-              {vetList.map((vet) => (
-                <option key={vet.vetId} value={vet.vetId}>
-                  {vet.user.fullName}
-                </option>
-              ))}
-            </select>
-            : 
-            <input
-              type="text"
-              className="form-control"
-              id="vetId"
-              name="vetId"
-              value={appointment.vetName}
-              disabled
-            />
+                id="vetId"
+                name="vetId"
+                value={appointment.vetId}
+                onChange={(e) => handleAssignVet(e)}
+                disabled={role === ROLE.VETERINARIAN || !isEditing || (appointment.status !== APPOINTMENT_STATUS.CREATED && appointment.status !== APPOINTMENT_STATUS.BOOKING_COMPLETE)}
+              >
+                <option value={"SKIP"}>Not assigned</option>
+                {vetList.map((vet) => (
+                  <option key={vet.vetId} value={vet.vetId}>
+                    {vet.user.fullName}
+                  </option>
+                ))}
+              </select>
+              :
+              <input
+                type="text"
+                className="form-control"
+                id="vetId"
+                name="vetId"
+                value={appointment.vetName}
+                disabled
+              />
             }
           </div>
           <div className="col-md-6">
@@ -453,7 +463,7 @@ function AppointmentDetail() {
               disabled={!isEditing}
             />
           </div>
-          
+
         </div>
 
         <div className="d-flex justify-content-between align-items-center mb-3">
@@ -482,7 +492,7 @@ function AppointmentDetail() {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={() => navigate(`/admin/paymentcheckout/${appointmentId}`,{ state: { appointment } })}
+                  onClick={() => navigate(`/admin/paymentcheckout/${appointmentId}`, { state: { appointment } })}
                 >
                   Invoice
                 </button> : null}
@@ -505,7 +515,7 @@ function AppointmentDetail() {
         >
           Back to All Appointments
         </button>
-        {navigateLink.link && (appointment.status !== "FINISH"|| appointment.type !== "ONLINE")?
+        {navigateLink.link && (appointment.status !== "FINISH" || appointment.type !== "ONLINE") ?
           <button
             onClick={() => navigate(navigateLink.link)}
             type="button"

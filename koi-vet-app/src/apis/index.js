@@ -65,7 +65,7 @@ export const createVetAPI = async (data) => {
 
 
 
-// Vet API for Service
+// Service API
 export const fecthAllServicesAPI = async () => {
     const response = await api.get('/services');
     return response.data;
@@ -80,6 +80,20 @@ export const fetchServiceByTypeAPI = async (type) => {
     return response.data;
 }
 
+export const createServiceAPI = async (data) => {
+    const response = await api.post('/services/create', data);
+    return response.data;
+}
+
+export const updateServiceAPI = async (serviceId, data) => {
+    const response = await api.put(`/services/${serviceId}/update`, data);
+    return response.data;
+}
+
+export const deleteServiceAPI = async (serviceId) => {
+    const response = await api.delete(`/services/delete?serviceId=${serviceId}`);
+    return response.data;
+}
 
 // Appointment API
 export const createAppointmentAPI = async (appointmentCreateRequest) => {
