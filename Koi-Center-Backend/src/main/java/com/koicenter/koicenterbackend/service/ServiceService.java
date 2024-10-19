@@ -67,60 +67,72 @@ public class ServiceService {
             List<com.koicenter.koicenterbackend.model.entity.Service> servicesForPond = servicesRepository.findByServiceFor(ServiceType.POND);
 
             for (com.koicenter.koicenterbackend.model.entity.Service service : serviceForFish) {
-                ServiceResponse response = ServiceResponse.builder()
-                        .serviceId(service.getServiceId())
-                        .serviceName(service.getServiceName())
-                        .description(service.getDescription())
-                        .basePrice(service.getBasePrice())
-                        .pondPrice(service.getPondPrice())
-                        .koiPrice(service.getKoiPrice())
-                        .serviceFor(service.getServiceFor())
-                        .image(service.getImage())
-                        .build();
-                services.add(response);
+                if (service.isStatus()) {
+                    ServiceResponse response = ServiceResponse.builder()
+                            .serviceId(service.getServiceId())
+                            .serviceName(service.getServiceName())
+                            .description(service.getDescription())
+                            .basePrice(service.getBasePrice())
+                            .pondPrice(service.getPondPrice())
+                            .koiPrice(service.getKoiPrice())
+                            .serviceFor(service.getServiceFor())
+                            .image(service.getImage())
+                            .status(service.isStatus())
+                            .build();
+                    services.add(response);
+                }
             }
             for (com.koicenter.koicenterbackend.model.entity.Service service : servicesForPond) {
-                ServiceResponse response = ServiceResponse.builder()
-                        .serviceId(service.getServiceId())
-                        .serviceName(service.getServiceName())
-                        .description(service.getDescription())
-                        .basePrice(service.getBasePrice())
-                        .pondPrice(service.getPondPrice())
-                        .koiPrice(service.getKoiPrice())
-                        .serviceFor(service.getServiceFor())
-                        .image(service.getImage())
-                        .build();
-                services.add(response);
+                if (service.isStatus()) {
+                    ServiceResponse response = ServiceResponse.builder()
+                            .serviceId(service.getServiceId())
+                            .serviceName(service.getServiceName())
+                            .description(service.getDescription())
+                            .basePrice(service.getBasePrice())
+                            .pondPrice(service.getPondPrice())
+                            .koiPrice(service.getKoiPrice())
+                            .serviceFor(service.getServiceFor())
+                            .image(service.getImage())
+                            .status(service.isStatus())
+                            .build();
+                    services.add(response);
+                }
             }
         } else if (servicefor.toLowerCase().equals("CENTER".toLowerCase())) {
             List<com.koicenter.koicenterbackend.model.entity.Service> serviceForFish = servicesRepository.findByServiceFor(ServiceType.FISH);
             for (com.koicenter.koicenterbackend.model.entity.Service service : serviceForFish) {
-                ServiceResponse response = ServiceResponse.builder()
-                        .serviceId(service.getServiceId())
-                        .serviceName(service.getServiceName())
-                        .description(service.getDescription())
-                        .basePrice(service.getBasePrice())
-                        .pondPrice(service.getPondPrice())
-                        .koiPrice(service.getKoiPrice())
-                        .serviceFor(service.getServiceFor())
-                        .image(service.getImage())
-                        .build();
-                services.add(response);
+                if (service.isStatus()) {
+                    ServiceResponse response = ServiceResponse.builder()
+                            .serviceId(service.getServiceId())
+                            .serviceName(service.getServiceName())
+                            .description(service.getDescription())
+                            .basePrice(service.getBasePrice())
+                            .pondPrice(service.getPondPrice())
+                            .koiPrice(service.getKoiPrice())
+                            .serviceFor(service.getServiceFor())
+                            .image(service.getImage())
+                            .status(service.isStatus())
+                            .build();
+                    services.add(response);
+                }
             }
         } else {
             List<com.koicenter.koicenterbackend.model.entity.Service> serviceForOnline = servicesRepository.findByServiceFor(ServiceType.ONLINE);
             for (com.koicenter.koicenterbackend.model.entity.Service service : serviceForOnline) {
-                ServiceResponse response = ServiceResponse.builder()
-                        .serviceId(service.getServiceId())
-                        .serviceName(service.getServiceName())
-                        .description(service.getDescription())
-                        .basePrice(service.getBasePrice())
-                        .pondPrice(service.getPondPrice())
-                        .koiPrice(service.getKoiPrice())
-                        .serviceFor(service.getServiceFor())
-                        .image(service.getImage())
-                        .build();
-                services.add(response);
+                if (service.isStatus()) {
+                    ServiceResponse response = ServiceResponse.builder()
+                            .serviceId(service.getServiceId())
+                            .serviceName(service.getServiceName())
+                            .description(service.getDescription())
+                            .basePrice(service.getBasePrice())
+                            .pondPrice(service.getPondPrice())
+                            .koiPrice(service.getKoiPrice())
+                            .serviceFor(service.getServiceFor())
+                            .image(service.getImage())
+                            .status(service.isStatus())
+                            .build();
+                    services.add(response);
+                }
             }
         }
         return services;
