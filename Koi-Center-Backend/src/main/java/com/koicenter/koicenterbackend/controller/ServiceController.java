@@ -54,9 +54,9 @@ public class ServiceController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ResponseObject> updateService(@RequestBody ServiceRequest serviceRequest) {
-        boolean isUpdated = serviceService.updateService(serviceRequest);
+    @PutMapping("/{serviceId}")
+    public ResponseEntity<ResponseObject> updateService(@RequestBody ServiceRequest serviceRequest, @PathVariable("serviceId") String serviceId) {
+        boolean isUpdated = serviceService.updateService(serviceRequest, serviceId);
         if (isUpdated) {
             return ResponseObject.APIRepsonse(200, "Update service successfully", HttpStatus.OK, null);
         } else {
