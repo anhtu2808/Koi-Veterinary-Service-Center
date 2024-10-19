@@ -145,10 +145,9 @@ public class ServiceService {
         }
     }
 
-    public boolean updateService(ServiceRequest serviceRequest) {
+    public boolean updateService(ServiceRequest serviceRequest, String serviceId) {
         try {
-            com.koicenter.koicenterbackend.model.entity.Service existingService = servicesRepository.findByserviceName(serviceRequest.getServiceName())
-                    .orElse(null);
+            com.koicenter.koicenterbackend.model.entity.Service existingService = servicesRepository.findByServiceId(serviceId);
             if (existingService == null) {
                 return false;
             }
