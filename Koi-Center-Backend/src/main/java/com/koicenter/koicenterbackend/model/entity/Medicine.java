@@ -22,6 +22,8 @@ public class Medicine {
     @Column(name = "medicine_id")
     String medicineId;
     String name;
+    @Lob
+    @Column(name = "description", columnDefinition = "TEXT")
     String description;
     @Enumerated(EnumType.STRING)
     MedUnit medUnit;

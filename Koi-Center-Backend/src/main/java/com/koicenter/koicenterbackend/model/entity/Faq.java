@@ -18,7 +18,11 @@ public class Faq {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "faq_id")
     String faqId;
+    @Lob
+    @Column(name = "question", columnDefinition = "TEXT")
     String question;
+    @Lob  // Sử dụng @Lob để lưu trữ kiểu TEXT
+    @Column(name = "answer", columnDefinition = "TEXT")
     String answer;
     @Column(name = "created_at")
     LocalDate createdAt;

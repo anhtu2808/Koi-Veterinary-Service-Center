@@ -24,7 +24,8 @@ public class Koi {
     float weight;
     @Column(columnDefinition = "BIT")
     boolean status;
-    @Lob        // dùng đẻ chưa các văn  bản dài
+    @Lob
+    @Column(name = "notes", columnDefinition = "TEXT")
     String notes;
     String image;
 

@@ -15,6 +15,8 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.UUID)
     String feedbackId;
     int star;
+    @Lob
+    @Column(name = "description", columnDefinition = "TEXT")
     String description;
     @OneToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "appointment_id")
