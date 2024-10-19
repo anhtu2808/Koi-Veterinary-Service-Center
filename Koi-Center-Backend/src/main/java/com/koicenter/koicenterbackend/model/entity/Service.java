@@ -21,6 +21,7 @@ public class Service {
     String serviceId;
     @Column(name = "service_name")
     String serviceName;
+    @Lob
     String description;
     @Column(name = "base_price")
     float basePrice;
