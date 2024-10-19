@@ -86,7 +86,7 @@ export const createServiceAPI = async (data) => {
 }
 
 export const updateServiceAPI = async (serviceId, data) => {
-    const response = await api.put(`/services/${serviceId}/update`, data);
+    const response = await api.put(`/services/${serviceId}`, data);
     return response.data;
 }
 

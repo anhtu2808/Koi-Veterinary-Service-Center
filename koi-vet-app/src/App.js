@@ -163,7 +163,7 @@ function App() {
                 <Route path="/servicemanagement" element={<ServiceManagementPage />} />
                 <Route path="/homevisitprice" element={<HomeVisitPricePage />} />
               </Route>
-
+            
               {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
               {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
               Add more admin routes as needed
