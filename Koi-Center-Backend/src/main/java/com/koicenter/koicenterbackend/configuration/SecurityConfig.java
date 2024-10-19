@@ -158,6 +158,8 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.PUT, "/api/v1/deliveries/{deliveryId}").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/deliveries/{deliveryId}").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/deliveries").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/v1/deliveries").permitAll()
+                            .requestMatchers(HttpMethod.DELETE, "/api/v1/deliveries/{deliveryId}").permitAll()
 
                             .requestMatchers(HttpMethod.GET, "/api/v1/vetSchedules/vetschedules").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/v1/vetSchedules").permitAll()

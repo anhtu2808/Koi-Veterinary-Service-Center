@@ -60,4 +60,20 @@ public class DeliveryService {
         deliveryResponse.setPrice(delivery.getPrice());
         return deliveryResponse;
     }
+
+    public DeliveryResponse createDelivery(DeliveryRequest deliveryRequest) {
+        Delivery deli = new Delivery();
+        deli.setFromPlace(deliveryRequest.getFromPlace());
+        deli.setToPlace(deliveryRequest.getToPlace());
+        deli.setPrice(deliveryRequest.getPrice());
+        deliveryRepository.save(deli);
+        return new DeliveryResponse(deli.getDeliveryId(), deli.getFromPlace(), deli.getToPlace(), deli.getPrice());
+    }
+
+    public void deleteDelivery(String id) {
+        Delivery deli = deliveryRepository.findById(id).orElseThrow(()->
+                new AppException(ErrorCode.DELIVERY_ID_NOT_EXITS.getCode(),
+                        ErrorCode.DELIVERY_ID_NOT_EXITS.getMessage(), HttpStatus.NOT_FOUND));
+        deliveryRepository.delete(deli);
+    }
 }
