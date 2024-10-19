@@ -405,6 +405,11 @@ export const deleteHomeVisitPriceAPI = async (deliveryId) => {
     return response.data;
 }
 
+export const createHomeVisitPriceAPI = async (data) => {
+    const response = await api.post('/deliveries', data);
+    return response.data;
+}
+
 
 //dashboard API
 export const fetchDashboardAPI = async (time) => {

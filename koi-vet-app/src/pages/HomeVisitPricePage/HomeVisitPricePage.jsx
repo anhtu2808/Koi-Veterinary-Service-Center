@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AdminHeader from '../../components/AdminHeader/AdminHeader'
-import { deleteHomeVisitPriceAPI, fetchHomeVisitPriceAPI, updateHomeVisitPriceAPI } from '../../apis'
+import { createHomeVisitPriceAPI, deleteHomeVisitPriceAPI, fetchHomeVisitPriceAPI, updateHomeVisitPriceAPI } from '../../apis'
 import { Modal } from 'antd'
 import { toast } from 'react-toastify'
 
@@ -43,9 +43,15 @@ const HomeVisitPricePage = () => {
         setIsEditModalVisible(false)
     }
 
-    const handleOkAdd = () => {
+    const handleOkAdd = async () => {
         // Handle the create logic here
-
+        const res = await createHomeVisitPriceAPI(selectedDelivery)
+        if (res.status === 200) {
+            fetchHomeVisitPrice()
+            toast.success('Add success')
+        } else {
+            toast.error(res.message)
+        }
         setIsAddModalVisible(false)
     }
 
