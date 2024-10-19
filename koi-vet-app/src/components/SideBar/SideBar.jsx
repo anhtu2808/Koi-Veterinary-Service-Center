@@ -65,8 +65,8 @@ function SideBar() {
           </li>
         )}
         <li className="nav-item">
-          <Link to="#" className="nav-link">
-            <i className="far fa-question-circle"></i> Help
+          <Link to="/admin/homevisitprice" className={`nav-link ${location.pathname === '/admin/homevisitprice' ? 'active' : ''}`}>
+            <i className="fas fa-home"></i> Home Visit Price
           </Link>
         </li>
         <li className="nav-item">
