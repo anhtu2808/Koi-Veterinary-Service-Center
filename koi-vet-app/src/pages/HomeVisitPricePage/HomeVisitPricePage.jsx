@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AdminHeader from '../../components/AdminHeader/AdminHeader'
-import { fetchHomeVisitPriceAPI, updateHomeVisitPriceAPI } from '../../apis'
+import { deleteHomeVisitPriceAPI, fetchHomeVisitPriceAPI, updateHomeVisitPriceAPI } from '../../apis'
 import { Modal } from 'antd'
 import { toast } from 'react-toastify'
 
@@ -35,13 +35,7 @@ const HomeVisitPricePage = () => {
         console.log(selectedDelivery)
         const res = await updateHomeVisitPriceAPI(selectedDelivery.deliveryId, selectedDelivery)
         if (res.status === 200) {
-            toast.success('Update success')
-            setHomeVisitPrice(prev => {
-                const updatedHomeVisitPrice = prev.map(item =>
-                    item.deliveryId === selectedDelivery.deliveryId ? selectedDelivery : item
-                );
-                return updatedHomeVisitPrice;
-            });
+            fetchHomeVisitPrice()
         } else {
             toast.error(res.message)
         }
@@ -62,9 +56,13 @@ const HomeVisitPricePage = () => {
     const handleDelete = (delivery) => {
         Modal.confirm({
             title: 'Are you sure you want to delete this delivery?',
-            onOk: () => {
-                // Handle the delete logic here
-                console.log('Deleted:', delivery);
+            onOk: async () => {
+                const res = await deleteHomeVisitPriceAPI(delivery.deliveryId)
+                if (res.status === 200) {
+                    fetchHomeVisitPrice()
+                } else {
+                    toast.error(res.message)
+                }
             },
         });
     }
@@ -107,7 +105,6 @@ const HomeVisitPricePage = () => {
                 </div>
             </div>
             <Modal title="Edit Delivery Price" open={isEditModalVisible} onOk={handleOkEdit} onCancel={handleCancelEdit}>
-                {/* Add form fields here to edit the selected delivery */}
                 <label>From (km)</label>
                 <input type="number" value={selectedDelivery?.fromPlace} onChange={(e) => setSelectedDelivery({ ...selectedDelivery, fromPlace: e.target.value })} />
                 <label>To (km)</label>

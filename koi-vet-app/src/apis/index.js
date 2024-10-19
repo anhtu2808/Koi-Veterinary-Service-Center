@@ -400,6 +400,10 @@ export const updateHomeVisitPriceAPI = async (deliveryId, data) => {
     return response.data;
 }
 
+export const deleteHomeVisitPriceAPI = async (deliveryId) => {
+    const response = await api.delete(`/deliveries/${deliveryId}`);
+    return response.data;
+}
 
 
 //dashboard API
