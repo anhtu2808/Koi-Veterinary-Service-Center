@@ -21,16 +21,19 @@ public class ServiceService {
         List<com.koicenter.koicenterbackend.model.entity.Service> services = servicesRepository.findAll();
         List<ServiceResponse> responseList = new ArrayList<>();
         for (com.koicenter.koicenterbackend.model.entity.Service service : services) {
-            ServiceResponse response = new ServiceResponse();
-            response.setServiceId(service.getServiceId());
-            response.setServiceName(service.getServiceName());
-            response.setDescription(service.getDescription());
-            response.setBasePrice(service.getBasePrice());
-            response.setPondPrice(service.getPondPrice());
-            response.setKoiPrice(service.getKoiPrice());
-            response.setServiceFor(service.getServiceFor());
-            response.setImage(service.getImage());
-            responseList.add(response);
+            if (service.isStatus()) {
+                ServiceResponse response = new ServiceResponse();
+                response.setServiceId(service.getServiceId());
+                response.setServiceName(service.getServiceName());
+                response.setDescription(service.getDescription());
+                response.setBasePrice(service.getBasePrice());
+                response.setPondPrice(service.getPondPrice());
+                response.setKoiPrice(service.getKoiPrice());
+                response.setServiceFor(service.getServiceFor());
+                response.setImage(service.getImage());
+                response.setStatus(service.isStatus());
+                responseList.add(response);
+            }
         }
         return responseList;
     }
