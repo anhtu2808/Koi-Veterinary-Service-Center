@@ -30,6 +30,10 @@ const Login = () => {
     }
   };
 
+  const handleLoginWithGoogle = async () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
+
   return (
     <div className="row">
 
@@ -51,6 +55,7 @@ const Login = () => {
             <button
               className=" login-google-btn rounded-pill btn btn-primary py-3"
               type="button"
+              onClick={handleLoginWithGoogle}
             >
               <img
                 src={google_logo}
