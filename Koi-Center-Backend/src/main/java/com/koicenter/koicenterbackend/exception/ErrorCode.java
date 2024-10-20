@@ -36,7 +36,8 @@ public enum ErrorCode {
     POND_ID_NOT_FOUND(404,"Pond ID not found"),
         KOI_ID_NOT_FOUND(404,"Koi ID not found"),
     VETSCHEDULE_NOT_FOUND(404,"Vetschedule not found"),
-    VETSCHEDULE_EXISTED(401," VETSCHEDULE already existed")
+    VETSCHEDULE_EXISTED(401," VETSCHEDULE already existed"),
+    FAQ_ID_NOT_FOUND(404,"Faq ID not found"),
 
     ;
     private int code;
