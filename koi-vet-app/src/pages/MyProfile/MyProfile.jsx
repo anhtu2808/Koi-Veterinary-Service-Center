@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateCustomerAPI } from "../../apis";
-import { updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
+import { fetchMyInfoAPI, updateCustomerAPI } from "../../apis";
+import { fetchUserProfile, setCustomer, setUser, setVeterinarian, updateUserInfo } from "../../store/userSlice"; // Assuming you have this action in your userSlice
 import "./MyProfile.css";
 import default_profile from "../../assets/img/profile_default.png"
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Preloader from "../../components/Preloader/Preloader";
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const [image, setImage] = useState(null);
   const myInfo = useSelector(state => state?.user);
@@ -41,9 +44,21 @@ const MyProfile = () => {
   const handleSave = async () => {
     setIsEditing(false);
     try {
+      setIsLoading(true);
       const response = await updateCustomerAPI(editedInfo,image);
       if(response.status === 200){
-        dispatch(updateUserInfo(editedInfo  ));
+        const fetchMyInfo = async () => {
+          const response = await fetchMyInfoAPI();
+          setIsLoading(false);
+          console.log(response);
+          if (response.status === 200) {
+            dispatch(setUser(response.data))
+            dispatch(setCustomer(response.data.customer))
+            dispatch(setVeterinarian(response.data.veterinarian))
+          }
+        }
+        fetchMyInfo();
+       
       }
     } catch (error) {
       console.error("Error updating user info:", error);
@@ -54,6 +69,9 @@ const MyProfile = () => {
     setEditedInfo({ ...editedInfo, [e.target.name]: e.target.value });
   };
 
+  if(isLoading){
+    return <Preloader />
+  }
   return (
     <div className="container my-profile-container my-5">
       <div className="card shadow ">
