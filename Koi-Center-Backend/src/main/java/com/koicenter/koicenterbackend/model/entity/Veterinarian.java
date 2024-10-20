@@ -23,6 +23,7 @@ public class Veterinarian {
     VeterinarianStatus veterinarianStatus;
 
     @Lob
+    @Column(name = "description", columnDefinition = "TEXT")
     String description;
     @Column(name = "google_meet")
     String googleMeet;

@@ -23,6 +23,8 @@ public class Prescription {
     String name;
     ZonedDateTime createdDate;
     String appointmentId;
+    @Lob
+    @Column(name = "note", columnDefinition = "TEXT")
     String note;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
