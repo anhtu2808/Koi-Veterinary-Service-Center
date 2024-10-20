@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.controller;
 
+import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.model.entity.Service;
 import com.koicenter.koicenterbackend.model.request.service.ServiceRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
@@ -26,8 +27,12 @@ public class ServiceController {
 
     @GetMapping("/{serviceId}")
     public ResponseEntity<ResponseObject> getServiceById(@PathVariable("serviceId") String serviceId) {
-        ServiceResponse service = serviceService.getServiceById(serviceId);
-        return ResponseObject.APIRepsonse(200, "Get service success", HttpStatus.OK, service);
+        try{
+            ServiceResponse service = serviceService.getServiceById(serviceId);
+            return ResponseObject.APIRepsonse(200, "Get service success", HttpStatus.OK, service);
+        } catch (AppException e) {
+            return ResponseObject.APIRepsonse(404, e.getMessage(), HttpStatus.NOT_FOUND, null);
+        }
     }
 
 

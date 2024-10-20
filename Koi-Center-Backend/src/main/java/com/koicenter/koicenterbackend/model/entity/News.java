@@ -15,8 +15,14 @@ public class News {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "new_id")
     String newId;
+    @Lob
+    @Column(name = "title", columnDefinition = "TEXT")
     String title;
+    @Lob
+    @Column(name = "preview", columnDefinition = "TEXT")
     String preview;
+    @Lob
+    @Column(name = "content", columnDefinition = "TEXT")
     String content;
     String img;
 }

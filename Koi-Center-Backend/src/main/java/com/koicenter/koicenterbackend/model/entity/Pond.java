@@ -24,6 +24,7 @@ public class Pond {
     float perimeter;
     float temperature;
     @Lob
+    @Column(name = "notes", columnDefinition = "TEXT")
     String notes;
     String image;
     String waterQuality; // Chất lượng nước

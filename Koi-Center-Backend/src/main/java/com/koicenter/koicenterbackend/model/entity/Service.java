@@ -22,6 +22,7 @@ public class Service {
     @Column(name = "service_name")
     String serviceName;
     @Lob
+    @Column(name = "description", columnDefinition = "TEXT")
     String description;
     @Column(name = "base_price")
     float basePrice;
