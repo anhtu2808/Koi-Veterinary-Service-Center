@@ -3,6 +3,7 @@ import './datepicker.css'
 import { fetchScheduleByAppimentTypeAPI } from '../../../apis';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBookingData } from '../../../store/bookingSlice';
+import PreLoader from '../../../components/Preloader/Preloader';
 
 const DatePickStep = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -12,11 +13,21 @@ const DatePickStep = () => {
   const vetId = useSelector(state => state.booking.bookingData.vetId)
   const dispatch = useDispatch();
   const bookingData = useSelector(state => state.booking.bookingData);
+  const [isLoading, setIsLoading] = useState(true);
   // Lấy dữ liệu schedul theo appointmentType và vetId
   useEffect(() => {
+
     const fetchSchedule = async (type, vetId) => {
-      const response = await fetchScheduleByAppimentTypeAPI(type, vetId);
-      setSchedule(response.data);
+      try {
+        setIsLoading(true);
+        const response = await fetchScheduleByAppimentTypeAPI(type, vetId);
+        setSchedule(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchSchedule(type, vetId);
   }, [type, vetId])
@@ -145,31 +156,34 @@ const DatePickStep = () => {
 
 
   return (
-    <div>
-      <div className="calendar-container">
+    <div style={{ minHeight: '500px' }}>
+      <div className="calendar-container ">
         {/* Header với nút điều hướng tháng */}
-        <div className="calendar-header">
-          <button onClick={handlePreviousMonth}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-left-square-fill previous-month-btn" viewBox="0 0 16 16">
-              <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1" />
-            </svg>
-          </button>
-          <h2>{formatMonth(currentDate)}</h2>
-          <button onClick={handleNextMonth}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-right-square-fill next-month-btn" viewBox="0 0 16 16">
-              <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Lưới các ngày trong tháng */}
-        <div className="days-grid">
-          {renderDays()}
-        </div>
-
-        <hr />
-        {renderTimeSlots()}
-      </div>
+        {!isLoading && schedule.length > 0 && (
+          <>
+            <div className="calendar-header">
+              <button onClick={handlePreviousMonth}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-left-square-fill previous-month-btn" viewBox="0 0 16 16">
+                  <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1" />
+                </svg>
+              </button>
+              <h2>{formatMonth(currentDate)}</h2>
+              <button onClick={handleNextMonth}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-right-square-fill next-month-btn" viewBox="0 0 16 16">
+                  <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1" />
+                </svg>
+              </button>
+            </div>
+            <div className="days-grid">
+              {renderDays()}
+            </div>
+            <hr />
+            {renderTimeSlots()}
+          </>
+        )}
+        {isLoading ? <PreLoader /> : null}
+        {!isLoading && schedule.length === 0 && <h3>We are sorry ! Your chosen veterinarian is not available.</h3>}
+      </div >
     </div>
   )
 }

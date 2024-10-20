@@ -2,15 +2,24 @@ import React, { useEffect, useState } from 'react'
 import Veterinarian from '../../../components/Veterinarian/Veterinarian';
 import { fetchVetByServiceIdAPI } from '../../../apis';
 import { useSelector } from 'react-redux';
+import PreLoader from '../../../components/Preloader/Preloader';
 
 const VeterinarianStep = () => {
   const [veterinarians, setVeterinarians] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const serviceId = useSelector(state => state.booking.bookingData.serviceId);
   useEffect(() => {
     const fetchVeterinarians = async () => {
-      const response = await fetchVetByServiceIdAPI(serviceId); // thay bằng fetchVetByVetByServiceIdAPI
-      console.log({ response });
-      setVeterinarians(response?.data);
+      setIsLoading(true);
+      try {
+        const response = await fetchVetByServiceIdAPI(serviceId);
+        setIsLoading(false);
+        setVeterinarians(response?.data);
+      } catch (error) {
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchVeterinarians();
   }, [serviceId])
@@ -24,13 +33,13 @@ const VeterinarianStep = () => {
         </div>
 
         <div className="row">
-          {/* <!-- Doctor Card 1 --> */}
-          {
+          {isLoading && <PreLoader />}
+          {!isLoading && veterinarians.length > 0 ?
             veterinarians?.map((vet) => {
               console.log({ vet });
               return <Veterinarian image={vet.imageVeterinarian} vetId={vet.vetId} name={vet?.user?.fullName} isBooking={true} services={vet?.serviceNames} />
             })
-          }
+            : <h3>We are sorry ! No veterinarians found for this service.</h3>}
         </div>
 
       </div>
