@@ -6,7 +6,7 @@ import { setBookingData } from '../../../store/bookingSlice';
 
 const DatePickStep = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState(null)
+  const selectedDate = useSelector(state => state.booking.bookingData.date) // ngày đc chọn
   const [schedule, setSchedule] = useState([])
   const type = useSelector(state => state.booking.bookingData.type)
   const vetId = useSelector(state => state.booking.bookingData.vetId)
@@ -21,11 +21,12 @@ const DatePickStep = () => {
     fetchSchedule(type, vetId);
   }, [type, vetId])
 
+
   // Lấy ngày tháng theo định dạng yyyy-MM-dd
   const getLocalDateString = (date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adjust for zero-based month
-    const day = date.getDate().toString().padStart(2, '0');
+    const year = new Date(date).getFullYear();
+    const month = (new Date(date).getMonth() + 1).toString().padStart(2, '0'); // Adjust for zero-based month
+    const day = new Date(date).getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
   const renderDays = () => {
@@ -46,12 +47,11 @@ const DatePickStep = () => {
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month, day);
-      const isToday = date.toDateString() === new Date().toDateString();
-      const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
+      const date = `${year}-${month + 1}-${day < 10 ? '0' + day : day}`;
+      const isToday = date === getLocalDateString(new Date());
+      const isSelected = bookingData && date === bookingData.date;
       const isAvailable = new Date(date) > new Date(new Date().toDateString()) &&
         schedule.some(item => item.day === getLocalDateString(date));
-
       days.push(
         <div
           key={day}
@@ -71,8 +71,10 @@ const DatePickStep = () => {
   }
 
   const handleDateClick = (date) => {
-    setSelectedDate(date);
-    console.log(date);
+    // thêm ngày vào bookingData
+    dispatch(setBookingData({
+      date: date,
+    }));
     resetTime();
   }
 
@@ -89,8 +91,8 @@ const DatePickStep = () => {
   }
 
   const resetDate = () => {
-    setSelectedDate(null);
     dispatch(setBookingData({
+      selectedDate: null,
       date: null,
     }));
   }
@@ -117,18 +119,15 @@ const DatePickStep = () => {
 
   const renderTimeSlots = () => {
     if (!selectedDate) return null;
+    console.log(selectedDate)
+    const selectedDayData = schedule.find(item => item.day === selectedDate);
 
-    const selectedDateString = getLocalDateString(selectedDate);
-
-    console.log(selectedDateString);
-    const selectedDayData = schedule.find(item => item.day === selectedDateString);
-
-    if (!selectedDayData) return <p>No available slots for this date.</p>;
+    // if (!selectedDayData) return <p>No available slots for this date.</p>;
 
     return (
       <div className="slots text-start">
-        <h3>Available time slots for {selectedDate.toLocaleDateString('vi-VN')}:</h3>
-        {selectedDayData.slots.map((slot, index) => (
+        {/* <h3>Available time slots for {selectedDate.toLocaleDateString('vi-VN')}:</h3> */}
+        {selectedDayData?.slots?.map((slot, index) => (
           <div
             key={index}
             className={`slot ${bookingData.startAt === slot.startTime && bookingData.endAt === slot.endTime ? 'slot-picked' : ''}`}
@@ -144,9 +143,6 @@ const DatePickStep = () => {
     );
   }
 
-  useEffect(() => {
-    setSelectedDate(bookingData.selectedDate);
-  }, [bookingData.selectedDate])
 
   return (
     <div>

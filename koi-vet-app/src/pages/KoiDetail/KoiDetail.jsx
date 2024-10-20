@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import koi_default from "../../assets/img/koi_default.jpg";
-import {
-  addKoiToAppointmentAPI,
-  createKoiAPI,
-  fetchKoiByKoiIdAPI,
-  fetchPrescriptionByAppointmentIdAPI,
-  fetchTreatmentByIdAPI,
-  updateKoiInformationAPI,
-  updateKoiTreatmentAPI,
-} from "../../apis";
+import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, fetchPrescriptionByAppointmentIdAPI, fetchTreatmentByIdAPI, updateKoiInformationAPI, updateKoiTreatmentAPI} from "../../apis";
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
 import { fishSpecies } from "../../utils/constants";

@@ -6,16 +6,17 @@ import {
   fetchAllAppointmentByVetIdAPI,
   fetchAppointmentByCustomerIdAPI,
 } from "../../apis";
-import { ROLE, APPOINTMENT_STATUS, ROW_PER_PAGE } from "../../utils/constants";
+import { ROLE, APPOINTMENT_STATUS } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import Loading from "../../components/Loading/Loading";
-import { Pagination, PaginationItem, Typography } from "@mui/material";
+import { Pagination } from "@mui/material";
+import PreLoader from "../../components/Preloader/Preloader";
 
 function AllAppointment() {
   const [appointments, setAppointments] = useState([]);
   const [status, setStatus] = useState("ALL");
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const customerId = useSelector((state) => state?.user?.customer?.customerId);
   const [title, setTitle] = useState("All Appointments");
   const vetId = useSelector((state) => state?.user?.veterinarian?.vetId);
@@ -23,10 +24,11 @@ function AllAppointment() {
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
 
-  const handleChangePage = (event, value) => {
+  const handleChangePage = (value) => {
     setPage(value);
   };
   useEffect(() => {
+    setIsLoading(true);
     const fetchAppointmentForVet = async (vetId, status) => {
       const response = await fetchAllAppointmentByVetIdAPI(vetId, status);
       setAppointments(response?.data);
@@ -35,7 +37,7 @@ function AllAppointment() {
     };
 
     const fetchAppointmentForStaff = async () => {
-      const response = await fetchAllAppointmentAPI(status, page-1, pageSize);
+      const response = await fetchAllAppointmentAPI(status, page - 1, pageSize);
       setAppointments(response?.data);
       setIsLoading(false);
     };
@@ -57,7 +59,7 @@ function AllAppointment() {
       setTitle("My Appointments");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role, customerId, status, pageSize,page]);
+  }, [role, customerId, status, pageSize, page]);
 
   const handleChangeStatus = (status) => {
     setStatus(status);
@@ -78,9 +80,10 @@ function AllAppointment() {
     const [hours, minutes] = timeString.split(':');
     return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
   };
+
   return (
     <>
-
+      {isLoading && <PreLoader />}
       <AdminHeader title={title} />
 
       <div className="row mb-3 justify-content-center">
@@ -133,13 +136,14 @@ function AllAppointment() {
 
 
 
-            {isLoading ?
+            {/* {isLoading ?
 
               <td colSpan="7" className="text-center">
                 <Loading />
               </td>
 
-              :
+              : */}
+            {
               appointments.length === 0 ?
                 <tr>
                   <td colSpan="9" className="text-center">No appointments found</td>
@@ -204,7 +208,7 @@ function AllAppointment() {
           </tbody>
         </table>
         <div className="d-flex justify-content-center mt-3">
-        <Pagination count={10} page={page} onChange={handleChangePage} />
+          <Pagination count={10} page={page} onChange={handleChangePage} />
         </div>
 
       </div>
@@ -212,5 +216,6 @@ function AllAppointment() {
 
   );
 }
+
 
 export default AllAppointment;

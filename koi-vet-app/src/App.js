@@ -58,10 +58,9 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => { // fetch my info when authorized
-    if (isAuthorized && !user.user_id) {
+    if (isAuthorized) {
       const fetchMyInfo = async () => {
         const response = await fetchMyInfoAPI();
-        console.log(response);
         if (response.status === 200) {
           dispatch(setUser(response.data))
           dispatch(setCustomer(response.data.customer))
@@ -69,127 +68,126 @@ function App() {
         }
       }
       fetchMyInfo();
-
     }
   }, [isAuthorized, dispatch])
   return (
     <PersistGate loading={null} persistor={persistor}>
-    <Router>
-      <Routes>
-        <Route path="/medpage" element={<MedicineListPage />} />
-        <Route path="/image" element={<ImageUpload />} />
-        <Route path="/ggm" element={<GGM />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/unauthorized" element={<UnauthorizedPage />} />
-        <Route path="/*" element={
-          <UserLayout>
-            <Routes>
-              <Route path="/services/:serviceId" element={<ServicePageDetail />} />
-              <Route path="/faq" element={<FAQ />} /> {/* Trang chủ User */}
-              <Route path="/" element={<HomePage />} />
-              {/* Thêm các route khác của User ở đây */}
-              <Route path='/veterinarians' element={<VeterinarianPage />} />
-              <Route path='/services' element={<ServicePage />} />
-              <Route path='/vetprofile/:vetId' element={<VetProfile />} />
-              <Route path='/booking/paymentsuccess' element={<PaymentSuccessPage />} />
-              <Route path='/booking/paymentfail' element={<PaymentFailPage />} />
-              {/* Protected routes */}
-              <Route element={<UserProtectedRoute />}>
-                <Route path='/booking' element={<BookingPage />} />
-                <Route path="/createkoi" element={<KoiDetail isCreate={true} />} />
-                <Route path="/createpond" element={<PondDetail isCreate={true} />} />
-                <Route path="/profile/*" element={
-                  <ProfileLayout>
-                    <Routes>
-                      <Route path="/" element={<MyProfile />} />
-                      <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />} />
-                      <Route path='/pond' element={<Pond isAppointment={false} title="All My Pond" />} />
-                      <Route path='/koi/:koiId' element={
-                        <KoiDetail
-                          isCreate={false}
-                          isUpdate={true}
-                          isAppointment={false} />
-                      } />
-                      <Route path='/pond/:pondId' element={
-                        <PondDetail
-                          isCreate={false}
-                          isUpdate={true}
-                          isAppointment={false} />
-                      } />
+      <Router>
+        <Routes>
+          <Route path="/medpage" element={<MedicineListPage />} />
+          <Route path="/image" element={<ImageUpload />} />
+          <Route path="/ggm" element={<GGM />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          <Route path="/*" element={
+            <UserLayout>
+              <Routes>
+                <Route path="/services/:serviceId" element={<ServicePageDetail />} />
+                <Route path="/faq" element={<FAQ />} /> {/* Trang chủ User */}
+                <Route path="/" element={<HomePage />} />
+                {/* Thêm các route khác của User ở đây */}
+                <Route path='/veterinarians' element={<VeterinarianPage />} />
+                <Route path='/services' element={<ServicePage />} />
+                <Route path='/vetprofile/:vetId' element={<VetProfile />} />
+                <Route path='/booking/paymentsuccess' element={<PaymentSuccessPage />} />
+                <Route path='/booking/paymentfail' element={<PaymentFailPage />} />
+                {/* Protected routes */}
+                <Route element={<UserProtectedRoute />}>
+                  <Route path='/booking' element={<BookingPage />} />
+                  <Route path="/createkoi" element={<KoiDetail isCreate={true} />} />
+                  <Route path="/createpond" element={<PondDetail isCreate={true} />} />
+                  <Route path="/profile/*" element={
+                    <ProfileLayout>
+                      <Routes>
+                        <Route path="/" element={<MyProfile />} />
+                        <Route path='/koi' element={<Koi isAppointment={false} title="All My Koi" />} />
+                        <Route path='/pond' element={<Pond isAppointment={false} title="All My Pond" />} />
+                        <Route path='/koi/:koiId' element={
+                          <KoiDetail
+                            isCreate={false}
+                            isUpdate={true}
+                            isAppointment={false} />
+                        } />
+                        <Route path='/pond/:pondId' element={
+                          <PondDetail
+                            isCreate={false}
+                            isUpdate={true}
+                            isAppointment={false} />
+                        } />
 
-                      <Route path='/appointment' element={<AllAppointment />} />
-                      <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
-                      <Route path="/google-meet/:appointmentId" element={<GGM />} />
-                      <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
-                      <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
-                      <Route path="/koidetail/:appointmentId" element={<KoiDetail isUpdate={false} isCreate={false} isAppointment={true} />} />
-                      <Route path="/ponddetail/:appointmentId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} isAppointment={true} />} />
-                    </Routes>
-                  </ProfileLayout>
-
-
-                } >
+                        <Route path='/appointment' element={<AllAppointment />} />
+                        <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
+                        <Route path="/google-meet/:appointmentId" element={<GGM />} />
+                        <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
+                        <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
+                        <Route path="/koidetail/:appointmentId" element={<KoiDetail isUpdate={false} isCreate={false} isAppointment={true} />} />
+                        <Route path="/ponddetail/:appointmentId" element={<PondDetail isUpdate={false} isVeterinarian={false} isCreate={false} isAppointment={true} />} />
+                      </Routes>
+                    </ProfileLayout>
 
 
+                  } >
+
+
+                  </Route>
                 </Route>
-              </Route>
-            </Routes>
-          </UserLayout>
-        } />
-        <Route path="/admin/*" element={
-          <AdminLayout>
-            <Routes>
-              {/* Protected routes */}
-              <Route element={<AdminProtectedRoute />}>
-                <Route path="/" element={<DashboardPage />} />
-                <Route path="/usermanagement" element={<UserManagementPage />} />
-                <Route path="/appointment" element={<AllAppointment />} />
-                <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
-                <Route path="/pondinformation" element={<PondInformation />} />
-                <Route path="/inputkoipage" element={<InputKoiPage />} />
-                <Route path="/inputpondpage" element={<InputPondPage />} />
-                <Route path="/pondinformation" element={<PondInformation />} />
-                <Route path="/koiinformation" element={<KoiInformation />} />
-                <Route path="/ponddetail" element={<PondDetail />} />
-                <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
-                <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
-                <Route path="/google-meet/:appointmentId" element={<GGM />} />
-                <Route path="/koidetail/:appointmentId" element={<KoiDetail isUpdate={true} isCreate={false} isAppointment={true} />} />
-                <Route path="/ponddetail/:appointmentId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false} isAppointment={true} />} />
-                <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true} isAppointment={false} />} />
-                <Route path="/invoice" element={<InvoiceListPage />} />
-                <Route path="/medicine" element={<Medicine />} />
-                <Route path="/medpage" element={< MedicineListPage />} />
-                <Route path="/paymentcheckout/:appointmentId" element={<PaymentCheckout />} />
-                <Route path="/usermanagement" element={<UserManagementPage />} />
-                <Route path="/schedual" element={<Schedual />} />
-                <Route path="/servicemanagement" element={<ServiceManagementPage />} />
-                <Route path="/homevisitprice" element={<HomeVisitPricePage />} />
-              </Route>
-            
-              {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
-              {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
-              Add more admin routes as needed
-            </Routes>
-          </AdminLayout>
-        } />
-      </Routes>
+              </Routes>
+            </UserLayout>
+          } />
+          <Route path="/admin/*" element={
+            <AdminLayout>
+              <Routes>
+                {/* Protected routes */}
+                <Route element={<AdminProtectedRoute />}>
+                  <Route path="/" element={<DashboardPage />} />
+                  <Route path="/usermanagement" element={<UserManagementPage />} />
+                  <Route path="/appointment" element={<AllAppointment />} />
+                  <Route path="/appointment/:appointmentId" element={<AppointmentDetail />} />
+                  <Route path="/pondinformation" element={<PondInformation />} />
+                  <Route path="/inputkoipage" element={<InputKoiPage />} />
+                  <Route path="/inputpondpage" element={<InputPondPage />} />
+                  <Route path="/pondinformation" element={<PondInformation />} />
+                  <Route path="/koiinformation" element={<KoiInformation />} />
+                  <Route path="/ponddetail" element={<PondDetail />} />
+                  <Route path="/koi-treatment/:appointmentId" element={<KoiTreatmentPage />} />
+                  <Route path="/pond-treatment/:appointmentId" element={<PondTreatmentPage />} />
+                  <Route path="/google-meet/:appointmentId" element={<GGM />} />
+                  <Route path="/koidetail/:appointmentId" element={<KoiDetail isUpdate={true} isCreate={false} isAppointment={true} />} />
+                  <Route path="/ponddetail/:appointmentId" element={<PondDetail isUpdate={true} isVeterinarian={true} isCreate={false} isAppointment={true} />} />
+                  <Route path="/koidetail" element={<KoiDetail isUpdate={false} isCreate={true} isAppointment={false} />} />
+                  <Route path="/invoice" element={<InvoiceListPage />} />
+                  <Route path="/medicine" element={<Medicine />} />
+                  <Route path="/medpage" element={< MedicineListPage />} />
+                  <Route path="/paymentcheckout/:appointmentId" element={<PaymentCheckout />} />
+                  <Route path="/usermanagement" element={<UserManagementPage />} />
+                  <Route path="/schedual" element={<Schedual />} />
+                  <Route path="/servicemanagement" element={<ServiceManagementPage />} />
+                  <Route path="/homevisitprice" element={<HomeVisitPricePage />} />
+                </Route>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-        theme="light"
-      />
-    </Router>
-     </PersistGate>
+                {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}
+                {/* <Route path="/pondinformation/:pondId" element={<PondInformation />} /> */}
+                Add more admin routes as needed
+              </Routes>
+            </AdminLayout>
+          } />
+        </Routes>
+
+        <ToastContainer
+          position="top-right"
+          autoClose={1500}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover
+          theme="light"
+        />
+      </Router>
+    </PersistGate>
   );
 }
 

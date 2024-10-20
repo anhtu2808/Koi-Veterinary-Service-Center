@@ -362,8 +362,9 @@ export const fetchAllUsersAPI = async (role) => {
     return response.data;
 }
 
+// Customer API
 export const updateCustomerAPI = async (customerData, image) => {
-    let imageURL = null;
+    let imageURL = customerData.image;
     if (image) {
         imageURL = await fetchUpLoadImageAPI(image);
     }

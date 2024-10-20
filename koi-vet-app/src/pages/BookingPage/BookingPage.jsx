@@ -116,7 +116,6 @@ function BookingPage() {
     }
   }, [selected])
 
-  console.log(step);
   const renderStepComponent = () => {
     switch (step) {
       case 1:

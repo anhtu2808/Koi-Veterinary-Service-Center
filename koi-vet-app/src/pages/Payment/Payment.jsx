@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Payment.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createAppointmentAPI, fecthServiceByServiceIdAPI, fetchRedirectPaymentAPI, fetchVetByVetIdAPI } from "../../apis";
 import { toast } from "react-toastify";
 import { APPOINTMENT_STATUS } from "../../utils/constants";
+import { updateUser, updateUserInfo } from "../../store/userSlice";
 
 function Payment() {
   const userInfo = useSelector(state => state.user)
@@ -12,6 +13,7 @@ function Payment() {
   const [serviceInfo, setServiceInfo] = useState({})
   const [vetInfo, setVetInfo] = useState({})
   const [paymentOption, setPaymentOption] = useState(null)
+  const dispatch = useDispatch()
   const [appointmentCreateRequest, setAppointmentCreateRequest] = useState({
 
   });
@@ -46,12 +48,13 @@ function Payment() {
       toast.error(response.data.message)
     }
   }
-  // const handleChangeInfo = (name, value) => {
-  //   setAppointmentCreateRequest({
-  //     ...appointmentCreateRequest,
-  //       [name]: value
-  //   })
-  // };
+  const handleChangeInfo = (event) => {
+    const { name, value } = event.target;
+    dispatch(updateUserInfo({ [name]: value }))
+  };
+  const handleChangeFullname = (newName) => {
+    dispatch(updateUser({fullName: newName}))
+  }
   const handleChangePaymentOption = (option) => {
     setPaymentOption(option)
   }
@@ -99,7 +102,7 @@ function Payment() {
                     className="form-control payment-form-control"
                     id="fullName"
                     value={userInfo.fullName}
-                    disabled
+                    onChange={(event) => handleChangeFullname(event.target.value)}
                   />
                 </div>
               </div>
@@ -115,13 +118,15 @@ function Payment() {
                     type="tel"
                     className="form-control payment-form-control"
                     id="phoneNumber"
+                    name="phone"
                     placeholder="Enter your phone number"
                     value={customerInfo?.phone}
+                    onChange={(event) => handleChangeInfo(event)}
                   />
                 </div>
               </div>
               <div className="mb-3">
-                <label htmlFor="address" className="payment-form-label">
+                <label htmlFor="address" className="payment-form-label" name="address">
                   Address
                 </label>
                 <div className="input-group">
@@ -133,6 +138,8 @@ function Payment() {
                     id="address"
                     rows="3"
                     placeholder="Enter your address"
+                    name="address"
+                    onChange={(event) => handleChangeInfo(event)}
                     value={customerInfo?.address}
                   ></textarea>
                 </div>

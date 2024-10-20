@@ -58,7 +58,6 @@ const MyProfile = () => {
           }
         }
         fetchMyInfo();
-       
       }
     } catch (error) {
       console.error("Error updating user info:", error);
@@ -133,7 +132,7 @@ const MyProfile = () => {
                         onChange={handleChange}
                       />
                     ) : (
-                      <p className="form-control-plaintext">{myInfo.email}</p>
+                      <p classN ame="form-control-plaintext">{myInfo.email}</p>
                     )}
                   </div>
                 </div>
@@ -156,7 +155,7 @@ const MyProfile = () => {
                   <div className="col-md-6 mb-3">
                     <label htmlFor="address" className="form-label">Address</label>
                     {isEditing ? (
-                      <input
+                      <textarea
                         type="text"
                         className="form-control"
                         id="address"

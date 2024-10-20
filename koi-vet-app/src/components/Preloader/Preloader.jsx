@@ -1,5 +1,5 @@
 import React from 'react';
-import './PreLoader.css'; // Đảm bảo bạn đã tạo file CSS này
+import './PreLoader.css';
 
 const PreLoader = () => {
     return (

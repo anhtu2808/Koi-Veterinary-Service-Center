@@ -13,7 +13,7 @@
 
 .loader {
     border: 8px solid #f3f3f3; /* Màu nền của vòng tròn */
-    border-top: 8px solid #3498db; /* Màu của vòng tròn quay */
+    border-top: 8px solid var(--color-primary); /* Màu của vòng tròn quay */
     border-radius: 50%;
     width: 60px; /* Đường kính vòng tròn */
     height: 60px; /* Đường kính vòng tròn */

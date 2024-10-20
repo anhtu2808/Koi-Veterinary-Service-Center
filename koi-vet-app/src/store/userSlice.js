@@ -28,8 +28,7 @@ const userSlice = createSlice({
     },
     
     updateUser: (state, action) => { // Cập nhật thông tin user
-      const { key, value } = action.payload;
-      state[key] = value;
+     state.customer = { ...state.customer, ...action.payload };
     },
 
     setCustomer: (state, action) => {

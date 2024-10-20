@@ -191,7 +191,7 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
                                                     </button>
                                                 )}
                                                 {
-                                                    role === "CUSTOMER" && !isAppointment && (
+                                                    role === "CUSTOMER" && !isAppointment && !isSelected && (
                                                         <button className="btn btn-sm btn-danger" onClick={() => handleDeleteKoi(treatment.koi.koiId)}>
                                                             Delete
                                                         </button>
