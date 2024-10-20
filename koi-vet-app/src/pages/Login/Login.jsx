@@ -8,6 +8,7 @@ import { fetchLoginAPI, fetchLoginWithGoogleAPI } from "../../apis";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setIsAuthorized } from "../../store/userSlice";
+import axios from "axios";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -31,8 +32,7 @@ const Login = () => {
   };
 
   const handleLoginWithGoogle = async () => {
-    const response = await fetchLoginWithGoogleAPI();
-    console.log(response);
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
   };
 
   return (
