@@ -452,3 +452,9 @@ export const fetchSchedualByDateAndVetIdAPI = async (date, vetId) => {
     const response = await api.get(`/vetSchedules/${vetId}/scheduals/by-date?date=${date}`);
     return response.data;
 }
+
+//Login with Google API
+export const fetchLoginWithGoogleAPI = async () => {
+    const response = await api.get('/oauth2/authorization/google');
+    return response.data;
+}

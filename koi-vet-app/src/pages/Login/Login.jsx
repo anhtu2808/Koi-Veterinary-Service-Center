@@ -4,7 +4,7 @@ import google_logo from "../../assets/img/google.png";
 import logo from "../../assets/img/logo.png";
 import logim_side from "../../assets/img/login_side.png";
 import { toast } from "react-toastify";
-import { fetchLoginAPI } from "../../apis";
+import { fetchLoginAPI, fetchLoginWithGoogleAPI } from "../../apis";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setIsAuthorized } from "../../store/userSlice";
@@ -31,7 +31,8 @@ const Login = () => {
   };
 
   const handleLoginWithGoogle = async () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    const response = await fetchLoginWithGoogleAPI();
+    console.log(response);
   };
 
   return (
