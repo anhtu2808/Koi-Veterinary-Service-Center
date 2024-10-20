@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -48,12 +49,13 @@ public class AuthenticateController {
     }
 
 //    // http://localhost:8080/oauth2/authorization/google
-//    @GetMapping("/loginGoogle")
-//    public ResponseEntity<ResponseObject> loginWithGoogle(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-//        Map<String, Object> credential = oAuth2AuthenticationToken.getPrincipal().getAttributes();
-//        String token = "";
-//        token =  authenticateService.loginGoogleToken(credential);
-//        return ResponseObject.APIRepsonse(200, "Login Successfully", HttpStatus.OK, token);
-//    }
+    @GetMapping("/loginGoogle")
+    public ResponseEntity<ResponseObject> loginWithGoogle(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        Map<String, Object> credential = oAuth2AuthenticationToken.getPrincipal().getAttributes();
+        System.out.println("Credential: " + credential);
+        String token = "";
+        token =  authenticateService.loginGoogleToken(credential);
+        return ResponseObject.APIRepsonse(200, "Login Successfully", HttpStatus.OK, token);
+    }
 }
 
