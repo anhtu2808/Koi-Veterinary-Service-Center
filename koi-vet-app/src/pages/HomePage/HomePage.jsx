@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import "../HomePage/HomePage.css"
+import banner_home from "../../assets/img/banner_home.jpg";
 import { useDispatch } from 'react-redux';
 import { nextStep, resetBoking, setBookingData } from '../../store/bookingSlice';
 import { BOOKING_TYPE } from '../../utils/constants';
@@ -23,7 +24,7 @@ function HomePage() {
         <>
             <section className="position-relative banner-section " >
                 <div className="img-container">
-                <img src="https://media.istockphoto.com/id/1044789320/vi/anh/c%C3%A1-ch%C3%A9p-b%C6%A1i-trong-%C4%91%C3%A0i-phun-n%C6%B0%E1%BB%9Bc.jpg?b=1&s=612x612&w=0&k=20&c=Afo7ZEPrztXetoXKgq5PxEc78HGxFYNKJcPP4FRrRDc="
+                <img src={banner_home}
                     alt="Hero" className="banner w-100 banner-i img-crop max-vh-30" />
                 </div>
                 <div className="container h-30">
