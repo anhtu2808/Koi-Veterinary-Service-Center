@@ -18,8 +18,8 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
   }
 
   const truncateDescription = (text, maxLength) => {
-    if (text.length <= maxLength) return text;
-    return text.slice(0, maxLength) + '...';
+    if (text?.length <= maxLength) return text;
+    return text?.slice(0, maxLength) + '...';
   }
 
   return (

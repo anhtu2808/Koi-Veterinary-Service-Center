@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import AdminHeader from '../../components/AdminHeader/AdminHeader'
-import { fecthAllServicesAPI, updateServiceAPI } from '../../apis';
+import { createServiceAPI, deleteServiceAPI, fecthAllServicesAPI, updateServiceAPI } from '../../apis';
 import ServiceForm from '../../components/ServiceForm/ServiceForm';
 import { Modal } from 'antd';
 import { toast } from 'react-toastify';
 
 const ServiceManagementPage = () => {
   const [services, setServices] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(''); // Thêm state cho ô tìm kiếm
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const fetchServices = async () => {
     const response = await fecthAllServicesAPI();
     setServices(response.data);
   }
-  const updateService = async (serviceId, data) => {
-    const response = await updateServiceAPI(serviceId, data);
-    setServices(response.data);
-  }
   const handleOkEdit = async () => {
     console.log(selectedService)
-    const res = await updateServiceAPI(selectedService?.serviceId, selectedService);
+    const res = await updateServiceAPI(selectedService?.serviceId, selectedService, selectedImage);
     if (res.status === 200) {
       fetchServices()
+      toast.success(res.message)
     } else {
       toast.error(res.message)
     }
@@ -32,8 +31,41 @@ const ServiceManagementPage = () => {
     setSelectedService(service);
     setShowUpdateModal(true);
   }
+  const handleAdd = async () => {
+    await setSelectedService(null);
+    setShowAddModal(true);
+  }
   const handleCancelEdit = () => {
     setShowUpdateModal(false);
+  }
+  const handleCancelAdd = () => {
+    setShowAddModal(false);
+  }
+  const handleDelete = async (serviceId, serviceName) => {
+    Modal.confirm({
+      title: `Are you sure you want to delete this service: ${serviceName}?`,
+      onOk: async () => {
+        const res = await deleteServiceAPI(serviceId);
+        if (res.status === 200) {
+          fetchServices()
+          toast.success(res.message)
+        } else {
+          toast.error(res.message)
+        }
+      },
+      onCancel: () => {
+        toast.info('Canceled')
+      }
+    })
+  }
+  const handleOkAdd = async () => {
+    const res = await createServiceAPI(selectedService, selectedImage);
+    if (res.status === 200) {
+      fetchServices()
+      toast.success(res.message)
+    } else {
+      toast.error(res.message)
+    }
   }
   useEffect(() => {
     fetchServices();
@@ -45,6 +77,15 @@ const ServiceManagementPage = () => {
       <AdminHeader title="Service Management" />
       <div className='container'>
         <div className='row'>
+          <div className='col-md-12'>
+            <input 
+              type="text" 
+              placeholder="Search services..." 
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật giá trị tìm kiếm
+              className="form-control mb-3" // Thêm class cho ô input
+            />
+          </div>
           <div className='col-md-12'>
             <table className='table table-bordered'>
               <thead>
@@ -59,22 +100,24 @@ const ServiceManagementPage = () => {
               </thead>
               <tbody>
                 {
-                  services.map((service) => (
-                    <tr key={service?.serviceId}>
-                      <td>{service?.serviceName}</td>
-                      <td>{service?.serviceFor}</td>
-                      <td>{service?.basePrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                      <td>{service?.koiPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                      <td>{service?.pondPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                      <td className='d-flex gap-2'>
-                        <button className='btn btn-primary'>View</button>
-                        <button className='btn btn-primary' onClick={() => handleEdit(service)}>Edit</button>
-                        <button className='btn btn-danger'>Delete</button>
-                      </td>
-                    </tr>
-                  ))
+                  services
+                    .filter(service => service.serviceName.toLowerCase().includes(searchTerm.toLowerCase())) // Lọc dịch vụ theo giá trị tìm kiếm
+                    .map((service) => (
+                      <tr key={service?.serviceId}>
+                        <td><strong>{service?.serviceName}</strong></td>
+                        <td>{service?.serviceFor}</td>
+                        <td>{service?.basePrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                        <td>{service?.koiPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                        <td>{service?.pondPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                        <td className='d-flex gap-2'>
+                          <button className='btn btn-primary' onClick={() => handleEdit(service)}>Edit</button>
+                          <button className='btn btn-danger' onClick={() => handleDelete(service?.serviceId, service?.serviceName)}>Delete</button>
+                        </td>
+                      </tr>
+                    ))
                 }
               </tbody>
+              <button className='btn btn-primary mt-3' onClick={handleAdd}>Create Service</button>
             </table>
             <Modal 
               open={showUpdateModal} 
@@ -83,7 +126,16 @@ const ServiceManagementPage = () => {
               title="Edit Service" 
               width={1000} // Adjust the width as needed
             >
-              <ServiceForm selectedService={selectedService} setSelectedService={setSelectedService} />
+              <ServiceForm selectedService={selectedService} setSelectedService={setSelectedService} setSelectedImage={setSelectedImage} selectedImage={selectedImage} />
+            </Modal>
+            <Modal
+              open={showAddModal}
+              onCancel={handleCancelAdd}
+              onOk={handleOkAdd}
+              title="Add Service"
+              width={1000} // Adjust the width as needed
+            >
+              <ServiceForm selectedService={selectedService} setSelectedService={setSelectedService} setSelectedImage={setSelectedImage} selectedImage={selectedImage} />
             </Modal>
           </div>
         </div>

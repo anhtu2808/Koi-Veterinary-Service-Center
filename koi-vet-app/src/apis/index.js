@@ -80,13 +80,21 @@ export const fetchServiceByTypeAPI = async (type) => {
     return response.data;
 }
 
-export const createServiceAPI = async (data) => {
-    const response = await api.post('/services/create', data);
+export const createServiceAPI = async (data, image) => {
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+    const response = await api.post('/services/create', { ...data, image: imageURL });
     return response.data;
 }
 
-export const updateServiceAPI = async (serviceId, data) => {
-    const response = await api.put(`/services/${serviceId}`, data);
+export const updateServiceAPI = async (serviceId, data, image) => {
+    let imageURL = data.image;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+    const response = await api.put(`/services/${serviceId}`, { ...data, image: imageURL });
     return response.data;
 }
 

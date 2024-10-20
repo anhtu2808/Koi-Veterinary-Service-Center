@@ -34,16 +34,16 @@ function SideBar() {
       <ul className="nav flex-column">
         <li className="nav-item">
           <Link to="/admin" className={`nav-link ${location.pathname === '/admin' ? 'active' : ''}`}>
-            <i className="fas fa-tachometer-alt"></i> Dashboard
+            <i className="fas fa-chart-line"></i> Dashboard
           </Link>
         </li>
 
         {(role === ROLE.ADMIN || role === ROLE.STAFF) && (
-        <li className="nav-item">
-          <Link to="/admin/usermanagement" className={`nav-link ${location.pathname === '/admin/usermanagement' ? 'active' : ''}`}>
-            <i className="fas fa-users"></i> Users
-          </Link>
-        </li>
+          <li className="nav-item">
+            <Link to="/admin/usermanagement" className={`nav-link ${location.pathname === '/admin/usermanagement' ? 'active' : ''}`}>
+              <i className="fas fa-users"></i> Users
+            </Link>
+          </li>
         )}
         {(role === ROLE.VETERINARIAN || role === ROLE.STAFF) && (
           <li className="nav-item">
@@ -58,17 +58,25 @@ function SideBar() {
           </Link>
         </li>
         {(role === ROLE.ADMIN || role === ROLE.STAFF) && (
-        <li className="nav-item">
-          <Link to="/admin/schedual" className={`nav-link ${location.pathname === '/admin/schedual' ? 'active' : ''}`}>
-            <i className="fas fa-calendar-alt"></i> Veterinarian Schedual
-            </Link>
-          </li>
+          <>
+            <li className="nav-item">
+              <Link to="/admin/schedual" className={`nav-link ${location.pathname === '/admin/schedual' ? 'active' : ''}`}>
+                <i className="fas fa-calendar-alt"></i> Veterinarian Schedual
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/admin/faq" className={`nav-link ${location.pathname === '/admin/faq' ? 'active' : ''}`}>
+                <i className="fas fa-question-circle"></i> FAQ
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/admin/homevisitprice" className={`nav-link ${location.pathname === '/admin/homevisitprice' ? 'active' : ''}`}>
+                <i className="fas fa-home"></i> Home Visit Price
+              </Link>
+            </li>
+          </>
         )}
-        <li className="nav-item">
-          <Link to="/admin/homevisitprice" className={`nav-link ${location.pathname === '/admin/homevisitprice' ? 'active' : ''}`}>
-            <i className="fas fa-home"></i> Home Visit Price
-          </Link>
-        </li>
+
         <li className="nav-item">
           <Link to="#" className="nav-link">
             <i className="fas fa-cog"></i> Setting
