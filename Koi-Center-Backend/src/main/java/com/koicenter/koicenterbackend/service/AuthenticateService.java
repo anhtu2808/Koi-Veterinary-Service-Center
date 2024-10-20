@@ -3,10 +3,12 @@ package com.koicenter.koicenterbackend.service;
 
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
+import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.LoggedOutToken;
 import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.model.request.authentication.LoginRequest;
+import com.koicenter.koicenterbackend.repository.CustomerRepository;
 import com.koicenter.koicenterbackend.repository.LoggedOutTokenRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
 import com.koicenter.koicenterbackend.util.JWTUtilHelper;
@@ -31,6 +33,8 @@ public class AuthenticateService {
     UserRepository userRepository;
     @Autowired
     JWTUtilHelper jWTUtilHelper;
+    @Autowired
+    CustomerRepository customerRepository;
 
 
     public boolean checkLogin(LoginRequest loginRequest) {
@@ -82,9 +86,11 @@ public class AuthenticateService {
         user.setStatus(true);
         user.setRole(Role.CUSTOMER);
         userRepository.save(user);
-
+        if (user.getRole() == Role.CUSTOMER) {
+            Customer customer = new Customer();
+            customer.setUser(user);
+            customerRepository.save(customer);
+        }
         return jWTUtilHelper.generateTokenGmail(user);
     }
-
-
 }
