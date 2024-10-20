@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchKoisByCustomerIdAPI, fetchKoisByAppointmentIdAPI, updateKoiTreatmentAPI, fetchPrescriptionByAppointmentIdAPI, deleteKoiAPI } from '../../apis';
 import { toast } from 'react-toastify';
 import Modal from '../Modal/Modal';
+import { Modal as AntdModal } from 'antd';
 import Treatment from '../Treatment/Treatment';
 import koi_default from '../../assets/img/koi_default.jpg'
 const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger, appointmentId, handleAddKoiToBooking, selectedKois }) => {
@@ -25,9 +26,15 @@ const Koi = ({ isAppointment, isBooking, title, onUpdateTreatment, updateTrigger
         setIsModalOpen(false);
     };
     const handleDeleteKoi = async (koiId) => {
-        const response = await deleteKoiAPI(koiId)
-        toast.success(response.message);
-        setDeleteTrigger(prev => prev + 1);
+        AntdModal.confirm({
+            title: 'Confirm Delete',
+            content: 'Are you sure you want to delete this koi?',
+            onOk: async () => {
+                const response = await deleteKoiAPI(koiId)
+                toast.success(response.message);
+                setDeleteTrigger(prev => prev + 1); 
+            }
+        });
     }
 
     const handleViewDetail = (koiId, treatmentId) => {

@@ -7,8 +7,8 @@
   }
   
   .custom-img-fluid {
-    width: 100%;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     display: block !important; /* Ensures the image is treated as a block element */
     object-fit: cover !important; /* Ensures the image covers the container without stretching */
   }
@@ -16,4 +16,20 @@
   .custom-price-info {
     font-size: 0.9rem;
     color: #555;
+  }
+
+  .description-preview p {
+    margin: 0;
+  }
+
+  .description-preview {
+    height: 100px;
+    overflow: hidden;
+  }
+
+  .service-name{
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 1.5rem;
+    text-align: start;
   }

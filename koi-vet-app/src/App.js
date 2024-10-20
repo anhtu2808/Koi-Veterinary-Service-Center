@@ -48,13 +48,17 @@ import DashboardPage from './pages/DoctorDashboard/DashboardPage';
 import Schedual from './pages/Schdual/Schedual';
 import ServiceManagementPage from './pages/ServiceManagementPage/ServiceManagementPage';
 import HomeVisitPricePage from './pages/HomeVisitPricePage/HomeVisitPricePage';
+import 'react-quill/dist/quill.snow.css';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from './store/store';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
+  const user = useSelector(state => state?.user)
   const dispatch = useDispatch()
 
   useEffect(() => { // fetch my info when authorized
-    if (isAuthorized) {
+    if (isAuthorized && !user.user_id) {
       const fetchMyInfo = async () => {
         const response = await fetchMyInfoAPI();
         console.log(response);
@@ -69,7 +73,7 @@ function App() {
     }
   }, [isAuthorized, dispatch])
   return (
-
+    <PersistGate loading={null} persistor={persistor}>
     <Router>
       <Routes>
         <Route path="/medpage" element={<MedicineListPage />} />
@@ -185,6 +189,7 @@ function App() {
         theme="light"
       />
     </Router>
+     </PersistGate>
   );
 }
 

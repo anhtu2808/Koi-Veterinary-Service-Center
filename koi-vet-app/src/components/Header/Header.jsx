@@ -4,7 +4,7 @@ import "../../pages/Home/Home.css";
 import { Link, NavLink, useNavigate } from "react-router-dom"; // Sử dụng NavLink để kiểm soát trạng thái "active"
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLogoutAPI } from "../../apis";
-import { clearUser } from "../../store/userSlice";
+import { clearUser, setIsAuthorized } from "../../store/userSlice";
 import { ROLE } from "../../utils/constants";
 
 function Header() {
@@ -17,17 +17,18 @@ function Header() {
   const handleLogout = async () => {
     const response = await fetchLogoutAPI();
     console.log("response", response.message)
-    localStorage.removeItem("accessToken");
-    dispatch(clearUser());
+    await localStorage.removeItem("accessToken");
+    await dispatch(clearUser());
+    await dispatch(setIsAuthorized(false));
     navigate("/login");
-    
+
   };
 
   const handleButtonLogin = () => {
     navigate("/login");
   };
   useEffect(() => {
-     setUser(userData);
+    setUser(userData);
   }, [userData]);
 
   return (
@@ -130,14 +131,14 @@ function Header() {
                 </button>
               )}
               {user?.role === ROLE.CUSTOMER &&
-              <Link to="/profile" className="btn btn-outline-light">
-              <i className="fas fa-user"></i>
-            </Link>}
-            {[ ROLE.VETERINARIAN, ROLE.STAFF].includes(user?.role) &&
-            <Link to="/admin" className="btn btn-outline-light">
-            <i className="fas fa-user"></i>
-            </Link>}
-              
+                <Link to="/profile" className="btn btn-outline-light">
+                  <i className="fas fa-user"></i>
+                </Link>}
+              {[ROLE.VETERINARIAN, ROLE.STAFF].includes(user?.role) &&
+                <Link to="/admin" className="btn btn-outline-light">
+                  <i className="fas fa-user"></i>
+                </Link>}
+
             </div>
           </div>
         </div>

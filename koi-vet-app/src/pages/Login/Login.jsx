@@ -23,7 +23,7 @@ const Login = () => {
 
     console.log(response);
     if (response?.status === 200) {
-      dispatch(setIsAuthorized(true));
+      await dispatch(setIsAuthorized(true));
       toast.success("Login successfully");
       localStorage.setItem("accessToken", response.data);
       navigate("/");

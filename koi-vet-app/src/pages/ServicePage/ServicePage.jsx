@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./ServicePage.css"
 import { fecthAllServicesAPI } from '../../apis'
 import Service from "../../components/Service/Service"
+import BannerTop from '../../components/BannerTop/BannerTop';
 
 function ServicePage() {
     const [services, setServices] = useState([]);
@@ -15,11 +16,12 @@ function ServicePage() {
     }, [])
   return (
     <>
+    <BannerTop title="Our Services" subTitle="Home / Services" />
     <div className="container text-center my-5">
         <div className="container mt-5">
             <div className="text-center mb-5">
                 {/* <img src="process-image.png" alt="Process Step"/> */}
-                <h3>Our Services</h3>
+              
             </div>
 
         <div className="row">

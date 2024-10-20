@@ -17,9 +17,16 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
     }
   }
 
-  const truncateDescription = (text, maxLength) => {
-    if (text?.length <= maxLength) return text;
-    return text?.slice(0, maxLength) + '...';
+  const truncateDescription = (text) => {
+
+
+    return <div className='description-preview text-start'
+      dangerouslySetInnerHTML={{
+        __html: text?.length > 300
+          ? `${text.substring(0, 300)}...`
+          : text
+      }}
+    />
   }
 
   return (
@@ -27,10 +34,8 @@ const Service = ({ image, serviceId, serviceName, description, isBooking, servic
       <div className="custom-service-card">
         <img className="w-100 custom-img-fluid" src={image || "https://cafishvet.com/wp-content/uploads/2024/09/Ultrasound-Jessie-Sanders-Fish-Vetranarian-2048x1366.jpg"} alt={serviceName} />
         <div className="p-3 d-flex flex-column description-container"  >
-          <h5>{serviceName}</h5>
-          <p className="description flex-grow-1 m-0 text-start" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {truncateDescription(description, 100)}
-          </p>
+          <h5 className='service-name'>{serviceName}</h5>
+          {truncateDescription(description, 100)}
           <div className="text-start mb-2">
             <div>Service Price: {basePrice?.toLocaleString()} VND</div>
             {serviceFor === "POND" ?

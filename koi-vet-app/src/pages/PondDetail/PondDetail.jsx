@@ -19,7 +19,7 @@ import PrescriptionDetail from "../PrescriptionDetail/PrescriptionDetail";
 
 
 
-const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusId }) => {
+const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusId, isBooking }) => {
   const [pondData, setPondData] = useState({
     pondId: "",
     status: "",
@@ -184,7 +184,7 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusI
     <div>
     <form onSubmit={handleSubmit}>
       <div className="col-md-9 mx-auto row">
-        <h1 className="mb-4 text-center">Pond Detail</h1>
+        <h1 className="mb-4 text-center">{isCreate ? "Add new pond" : "Pond Detail"}</h1>
         <div className="col-md-4 ">
           {renderField("Depth (m)", pondData.depth, "depth")}
           {renderField("Perimeter (m)", pondData.perimeter, "perimeter")}
@@ -266,7 +266,7 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusI
           : null}
 
         <div className="button-group mt-4">
-          {isCreate && isAppointment ?
+          {isCreate && (isAppointment || isBooking) ?
             <button type="button" className="btn btn-secondary" onClick={onClose}>
               Back
             </button>

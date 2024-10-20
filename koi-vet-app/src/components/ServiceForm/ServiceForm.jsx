@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+
 
 const ServiceForm = ({ selectedService, setSelectedService, setSelectedImage, selectedImage }) => {
     const handleChange = (e) => {
@@ -49,10 +49,15 @@ const ServiceForm = ({ selectedService, setSelectedService, setSelectedImage, se
                     <label htmlFor='description' className='form-label'>Description</label>
                     <ReactQuill
                         name='description'
-
                         id='description'
                         value={selectedService?.description}
                         onChange={(value) => setSelectedService({ ...selectedService, description: value })}
+                    />
+                    {/* Render nội dung đã nhập, chỉ hiển thị 70 ký tự */}
+                    <div className='description-preview' 
+                         dangerouslySetInnerHTML={{ __html: selectedService?.description?.length > 300 
+                            ? `${selectedService.description.substring(0, 300)}...` 
+                            : selectedService.description }} 
                     />
                 </div>
             </form>

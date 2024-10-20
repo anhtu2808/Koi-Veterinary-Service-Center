@@ -5,7 +5,7 @@ import { fetchPondsByCustomerIdAPI, fetchPondsByAppointmentIdAPI, fetchPrescript
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import pond_default from '../../assets/img/pond_default.jpg'
-
+import { Modal as AntdModal } from 'antd';
 import Treatment from '../Treatment/Treatment';
 import Modal from '../Modal/Modal';
 import Select from 'react-select';
@@ -21,9 +21,15 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
     //open modal for when click add treatment
     const [deleteTrigger, setDeleteTrigger] = useState(0);
     const handleDeletePond = async (pondId) => {
-        const response = await deletePondAPI(pondId)
-        toast.success(response.message);
-        setDeleteTrigger(prev => prev + 1);
+        AntdModal.confirm({
+            title: 'Confirm Delete',
+            content: 'Are you sure you want to delete this pond?',
+            onOk: async () => {
+                const response = await deletePondAPI(pondId)
+                toast.success(response.message);
+                setDeleteTrigger(prev => prev + 1);
+            }
+        });
     }
     const handleSubmitTreatment = () => {
         onUpdateTreatment();
@@ -118,7 +124,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                     <>
 
                                         <div key={treatment.pond?.pondId} className="d-flexmb-4 pb-3 border-bottom row align-items-center">
-                                            <div className="col-md-5 mt-2">
+                                            <div className={`col-md-5 mt-2 ${isSelected ? 'table-primary' : ''}`}>
                                                 {/* <h4>{"Đây là hồ cá pond của anh tú"}</h4> */}
                                                 <p><strong>Depth:</strong> {treatment?.pond?.depth} m</p>
                                                 <p><strong>Perimeter:</strong> {treatment?.pond?.perimeter} m</p>
@@ -128,7 +134,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                                 <p><strong>Treatment:</strong> {treatment?.treatment}</p>
                                             </div>
                                             <div className="col-md-4">
-                                                <img src={treatment?.pond?.image || pond_default} alt={treatment.pond?.name} className="img-fluid mt-3" style={{ maxWidth: '300px' }} />
+                                                <img src={treatment?.pond?.image || pond_default} alt={treatment.pond?.name} className="img-fluid mt-3" style={{ width: '300px', height: '200px', objectFit: 'cover' }} />
                                             </div>
                                             <div className="col-md-3">
                                                 <div className='row gap-3 d-flex justify-content-center'>
@@ -139,7 +145,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                                                 View <br />Details
                                                             </button>
                                                             {
-                                                                role === "CUSTOMER" && !isAppointment && (
+                                                                role === "CUSTOMER" && !isAppointment && !isSelected && (
                                                                     <button className="btn btn-sm btn-danger" onClick={() => handleDeletePond(treatment.pond.pondId)}>
                                                                         Delete
                                                                     </button>
@@ -150,7 +156,7 @@ const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger
                                                                     className={`btn btn-sm ${isSelected ? 'btn-danger' : 'btn-success'}`}
                                                                     onClick={() => handleAddPondToBooking(treatment.pond.pondId)}
                                                                 >
-                                                                    {isSelected ? 'Remove' : 'Add'}
+                                                                    {isSelected ? 'Remove from Appointment' : 'Add to Appointment'}
                                                                 </button>
                                                             )}
                                                         </div>

@@ -64,7 +64,9 @@ function ServicePageDetail() {
             <Card>
               <Card.Body>
                 <Card.Title>Service Description</Card.Title>
-                <Card.Text>{serviceDetail.description}</Card.Text>
+                <Card.Text>
+                  <div className="description-preview flex-grow-1 m-0 text-start" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }} dangerouslySetInnerHTML={{ __html: serviceDetail.description }} />
+                </Card.Text>
               </Card.Body>
             </Card>
           </Col>

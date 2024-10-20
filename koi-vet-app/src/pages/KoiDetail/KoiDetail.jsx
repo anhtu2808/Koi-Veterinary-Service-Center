@@ -19,15 +19,7 @@ import MedicineListPage from "../MedicineListPage/MedicineListPage";
 import PrescriptionDetail from "../PrescriptionDetail/PrescriptionDetail";
 // import PrescriptionDetail from "../PrescriptionDetail/PrescriptionDetail";
 
-function KoiDetail({
-  isCreate,
-  cusId,
-  isUpdate,
-  onClose,
-  onUpdate,
-  isAppointment,
-  customerId,
-}) {
+function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment, customerId, isBooking }) {
   const [koiData, setKoiData] = useState({
     breed: "",
     age: "",
@@ -304,44 +296,28 @@ function KoiDetail({
             </div>
             <div className="form-group col-md-6 d-flex align-items-end gap-3 justify-content-end">
               {role === "VETERINARIAN" && <button type="button" className="btn btn-primary" onClick={handleOpenMedicineModal}>Add Prescription</button>}
-              <button type="button" className="btn btn-primary"  onClick={handleOpenListPrescription}>View Prescriptions</button>
+              <button type="button" className="btn btn-primary" onClick={handleOpenListPrescription}>View Prescriptions</button>
             </div>
           </div>
         ) : null}
 
         <div className="button-group">
-          {isCreate && isAppointment ? (
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={onClose}
-            >
+          {isCreate && (isAppointment || isBooking) ? (
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
               Back
             </button>
           ) : (
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => navigate(-1)}
-            >
+            <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
               Back
             </button>
           )}
 
           {isEditing && isUpdate && !isCreate ? (
             <div className=" d-flex gap-2">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleUpdateButton}
-              >
+              <button type="button" className="btn btn-secondary" onClick={handleUpdateButton}>
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                onClick={handleSubmit}
-              >
+              <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                 Save
               </button>
             </div>
@@ -351,11 +327,7 @@ function KoiDetail({
             </button>
           ) : null}
           {!isEditing && isUpdate ? (
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleUpdateButton}
-            >
+            <button type="button" className="btn btn-primary" onClick={handleUpdateButton}>
               Update
             </button>
           ) : null}
