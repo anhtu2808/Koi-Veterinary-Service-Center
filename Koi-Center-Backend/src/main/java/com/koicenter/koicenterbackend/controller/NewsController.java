@@ -25,8 +25,8 @@ public class NewsController {
         }
         return ResponseObject.APIRepsonse(200, "Fetched all news successfully", HttpStatus.OK, newsList);
     }
-    @GetMapping("/id")
-    public ResponseEntity<ResponseObject> getNewsById(@RequestParam String id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> getNewsById(@PathVariable String id) {
         News news = newsService.getNewsById(id);
         if (news != null) {
             return ResponseObject.APIRepsonse(200, "Fetched news successfully", HttpStatus.OK, news);
@@ -34,7 +34,7 @@ public class NewsController {
             return ResponseObject.APIRepsonse(404, "News not found", HttpStatus.NOT_FOUND, null);
         }
     }
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<ResponseObject> createNews(@RequestBody News news) {
         boolean isCreated = newsService.createNews(news);
         if (isCreated) {
@@ -43,7 +43,7 @@ public class NewsController {
             return ResponseObject.APIRepsonse(409, "News title already exists", HttpStatus.CONFLICT, null);
         }
     }
-    @PutMapping("/update")
+    @PutMapping("")
     public ResponseEntity<ResponseObject> updateNews(@RequestParam String newId,@RequestBody NewsRequest newsDetails) {
         boolean isUpdated = newsService.updateNews(newId, newsDetails);
         if (isUpdated) {
