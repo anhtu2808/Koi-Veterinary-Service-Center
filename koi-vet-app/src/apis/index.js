@@ -473,3 +473,21 @@ export const fetchLoginWithGoogleAPI = async () => {
     const response = await api.get('/oauth2/authorization/google');
     return response.data;
 }
+
+//FAQ API
+export const fetchAllFAQAPI = async () => {
+    const response = await api.get('/faqs');
+    return response.data;
+}
+export const updateFAQAPI = async (faqId, data) => {
+    const response = await api.put(`/faqs/${faqId}`, data);
+    return response.data;
+}
+export const deleteFAQAPI = async (faqId) => {
+    const response = await api.delete(`/faqs/${faqId}`);
+    return response.data;
+}
+export const createFAQAPI = async (data) => {
+    const response = await api.post('/faqs', data);
+    return response.data;
+}

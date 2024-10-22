@@ -5,12 +5,13 @@ import { toast } from 'react-toastify'
 import { Switch } from 'antd'
 import AdminHeader from '../../components/AdminHeader/AdminHeader'
 import Select from 'react-select';
-import Loading from '../../components/Loading/Loading'
 import { useNavigate } from 'react-router-dom'
+import PreLoader from '../../components/Preloader/Preloader'
+import Loading from '../../components/Loading/Loading'
 const Schedual = () => {
     const [selectedVetId, setSelectedVetId] = useState(null)
     const [veterinarians, setVeterinarians] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [appointments, setAppointments] = useState([])
     const [pickedDay, setPickedDay] = useState(null)
     const [isEditMode, setIsEditMode] = useState(false)
@@ -57,7 +58,8 @@ const Schedual = () => {
     const formatMonth = (date) => {
         return date.toLocaleString('vi-VN', { month: 'long', year: 'numeric' });
     }
-    const handleChangeSelectedVet = (value) => {
+    const handleChangeSelectedVet = async (value) => {
+        setPickedDay(null)
         setSelectedVetId(value)
     }
     const handlePreviousMonth = () => {
@@ -72,6 +74,7 @@ const Schedual = () => {
     }, [selectedVetId, selectDateTrigger])
     const getVeterinarian = async () => {
         const response = await fetchVetsAPI()
+        setIsLoading(false)
         setVeterinarians(response.data)
     }
     const handleSubmit = async () => {
@@ -88,11 +91,16 @@ const Schedual = () => {
         getVeterinarian()
     }, [])
     const fetchAppointments = async () => {
-        const response = await fetchAppointmentByVetIdAndDateAPI(selectedVetId, pickedDay)
-        if (response.status === 200) {
-            setAppointments(response.data)
+        try {
+            await setAppointments([])
+            const response = await fetchAppointmentByVetIdAndDateAPI(selectedVetId, pickedDay)
+            if (response.status === 200) {
+                setAppointments(response.data)
         } else if (response.status === 404) {
-            toast.dark(response.message)
+                toast.error(response.message)
+            }
+        } catch (error) {
+            toast.error("Something went wrong")
         }
     }
     useEffect(() => {
@@ -135,6 +143,7 @@ const Schedual = () => {
         }
         return days
     }
+    if (isLoading) return <PreLoader />
     return (
         <div className="container text-start">
             <AdminHeader title={"Veterinarian Schedual"} />
@@ -176,7 +185,7 @@ const Schedual = () => {
                         </div>
                         {/* Lưới các ngày trong tháng */}
                         <div className="days-grid">
-                            {isLoading ? <Loading /> : renderDate()}
+                            {renderDate()}
                         </div>
                         <button className='btn btn-primary' onClick={handleSubmit}>Submit</button>
                     </div>

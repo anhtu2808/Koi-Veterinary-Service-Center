@@ -72,7 +72,7 @@ function SideBar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/admin/faq" className={`nav-link ${location.pathname === '/admin/faq' ? 'active' : ''}`}>
+              <Link to="/admin/faqmanagement" className={`nav-link ${location.pathname === '/admin/faqmanagement' ? 'active' : ''}`}>
                 <i className="fas fa-question-circle"></i> FAQ
               </Link>
             </li>
