@@ -9,6 +9,7 @@ import {
 import { ROLE } from "../../utils/constants";
 import { Form, Input, message, Modal, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { Col, Row } from "react-bootstrap";
 
 function UserManagementPage() {
   const [users, setUsers] = useState([]);
@@ -79,6 +80,7 @@ function UserManagementPage() {
     fetchAllUsersByRole();
   }, [role]);
 
+
   return (
     <>
       <AdminHeader title="User Management" />
@@ -91,7 +93,7 @@ function UserManagementPage() {
               type="button"
               onClick={handleOpenModal}
             >
-              Add user +
+              Add Vet +
             </button>
           </div>
         </div>
@@ -208,8 +210,10 @@ function UserManagementPage() {
           </tbody>
         </table>
 
-        <Modal open={visible} onOk={handleOk} onCancel={handleCloseModal}>
-          <Form labelCol={{ span: 24 }} form={form} onFinish={handleSubmit}>
+        <Modal open={visible} onOk={handleOk} onCancel={handleCloseModal} width={1000}>
+          <Form labelCol={{ span: 24 }} form={form} onFinish={handleSubmit} layout="vertical">
+            <Row>
+              <Col span={6}>
             <Form.Item
               label="Full Name"
               name="fullname"
@@ -222,30 +226,9 @@ function UserManagementPage() {
             >
               <Input />
             </Form.Item>
-            <Form.Item
-              label="Username"
-              name="userName"
-              rules={[
-                {
-                  required: true,
-                  message: "pls enter",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "pls enter",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+            </Col>
+            
+            <Col span={6}>
             <Form.Item
               label="Email"
               name="email"
@@ -258,7 +241,28 @@ function UserManagementPage() {
             >
               <Input />
             </Form.Item>
+              </Col>
+            </Row>
+
+
+            <Row>
+            <Col span={6}>
             <Form.Item
+              label="Username"
+              name="userName"
+              rules={[
+                {
+                  required: true,
+                  message: "pls enter",
+                },
+              ]}
+            >
+                  <Input />
+                </Form.Item>
+              </Col>
+
+              <Col span={6}>
+              <Form.Item
               label="Phone"
               name="phone"
               rules={[
@@ -270,9 +274,14 @@ function UserManagementPage() {
             >
               <Input />
             </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+            <Col span={6}>
             <Form.Item
-              label="Address"
-              name="address"
+              label="Password"
+              name="password"
               rules={[
                 {
                   required: true,
@@ -282,7 +291,10 @@ function UserManagementPage() {
             >
               <Input />
             </Form.Item>
-            <Form.Item
+              </Col>
+
+              <Col span={6}>
+              <Form.Item
               label="Google meet"
               name="google_meet"
               rules={[
@@ -294,6 +306,11 @@ function UserManagementPage() {
             >
               <Input />
             </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+            <Col span={6}>
             <Form.Item
               label="Status"
               name="status"
@@ -309,7 +326,10 @@ function UserManagementPage() {
                 <Select.Option value="Inactive">Inactive</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item
+              </Col>
+              
+              <Col span={6}>
+              <Form.Item
               label="Service"
               name="service"
               rules={[
@@ -330,6 +350,27 @@ function UserManagementPage() {
                 ))}
               </Select>
             </Form.Item>
+              </Col>
+            </Row>
+
+
+
+
+            <Form.Item
+              label="Address"
+              name="address"
+              rules={[
+                {
+                  required: true,
+                  message: "pls enter",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            
+            
+            
             <Form.Item
               label="Description"
               name="description"
@@ -342,6 +383,7 @@ function UserManagementPage() {
             >
               <TextArea />
             </Form.Item>
+
             <Form.Item
               label="Image"
               name="image"

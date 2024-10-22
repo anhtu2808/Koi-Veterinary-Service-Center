@@ -102,3 +102,21 @@ th {
     color: #5f6368;
     cursor: pointer;
 }
+
+.custom-file-upload input[type="file"] {
+    display: none; /* Ẩn input mặc định */
+  }
+  
+  .custom-file-upload {
+    display: inline-block; /* Hiển thị label */
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.custom-file-upload:hover {
+    background-color: #0056b3;
+}
