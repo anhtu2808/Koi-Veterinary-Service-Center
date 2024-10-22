@@ -112,8 +112,8 @@ const ServiceManagementPage = () => {
                         <td><strong>{service?.serviceName}</strong></td>
                         <td>{service?.serviceFor}</td>
                         <td>{service?.basePrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                        <td>{service?.koiPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
-                        <td>{service?.pondPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                        <td>{service?.serviceFor === 'FISH' ? service?.koiPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) : 'N/A'}</td>
+                        <td>{service?.serviceFor === 'POND' ? service?.pondPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) : 'N/A'}</td>
                         <td className='d-flex gap-2'>
                           <button className='btn btn-primary' onClick={() => handleEdit(service)}>Edit</button>
                           <button className='btn btn-danger' onClick={() => handleDelete(service?.serviceId, service?.serviceName)}>Delete</button>
