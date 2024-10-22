@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fecthServiceByServiceIdAPI } from "../../apis";
 import "./ServicePageDetail.css";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import Loading from "../../components/Loading/Loading";
 
 function ServicePageDetail() {
@@ -18,7 +18,6 @@ function ServicePageDetail() {
 
   useEffect(() => {
     fectchServiceDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serviceId]);
 
   if (!serviceDetail) {
@@ -27,73 +26,52 @@ function ServicePageDetail() {
 
   const getPrice = () => {
     if (serviceDetail.serviceFor === "FISH") {
-      return (
-        <p>
-          Price: <span>{(serviceDetail.koiPrice * 1000).toLocaleString()}$ </span>
-        </p>
-      );
+      return `Price per fish: ${(serviceDetail.koiPrice * 1000).toLocaleString()} VND`;
     } else if (serviceDetail.serviceFor === "POND") {
-      return <p>Price: {(serviceDetail.pondPrice * 1000).toLocaleString()}$ </p>;
+      return `Price per pond: ${(serviceDetail.pondPrice * 1000).toLocaleString()} VND`;
     } else {
-      return <p>Price: {(serviceDetail.basePrice * 1000).toLocaleString()}$ </p>;
+      return `Price for online: ${(serviceDetail.basePrice * 1000).toLocaleString()} VND`;
     }
   };
 
+  const getServiceType = () => {
+    if(serviceDetail.serviceFor !== "ONLINE"){
+      return `Service Price: ${(serviceDetail.basePrice * 1000).toLocaleString()} VND`;
+    }
+  }
+
   return (
     <Container fluid className="service-detail">
-      <Row className="service-hero">
-        <Col>
-          <Card className="bg-dark text-white">
+      <Row className="align-items-center service-row">
+        {/* Left Side - Image */}
+        <Col md={6} className="p-0">
+          <Card className="border-0">
             <Card.Img
-              src="https://cafishvet.com/wp-content/uploads/2024/09/Ultrasound-Jessie-Sanders-Fish-Vetranarian-2048x1366.jpg"
+              src={serviceDetail.image}
               alt="Service"
               className="service-image"
             />
-            <Card.ImgOverlay className="d-flex flex-column justify-content-end">
-              <Card.Title className="service-title display-4">
-                {serviceDetail.serviceName}
-              </Card.Title>
-            </Card.ImgOverlay>
           </Card>
         </Col>
+
+        {/* Right Side - Details */}
+        <Col md={6} className="service-info" style={{backgroundColor: "#f8f9fa"}}>
+          <div className="p-4">
+            <h1 className="service-title mb-4">{serviceDetail.serviceName}</h1>
+            <h4>Service Description</h4>
+            <div 
+              className="service-description" 
+              dangerouslySetInnerHTML={{ __html: serviceDetail.description }}
+            />
+            <p className="service-price">{getPrice()}</p>
+            <p className="service-type">{getServiceType()}</p>
+            <p>
+              <strong>Service Type:</strong>{" "}
+              <span><strong>{serviceDetail.serviceFor}</strong></span>
+            </p>
+          </div>
+        </Col>
       </Row>
-
-      <Container className="service-content py-5">
-        <Row>
-          <Col md={8} className="mb-4">
-            <Card>
-              <Card.Body>
-                <Card.Title>Service Description</Card.Title>
-                <Card.Text>
-                  <div className="description-preview flex-grow-1 m-0 text-start" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }} dangerouslySetInnerHTML={{ __html: serviceDetail.description }} />
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={4}>
-            <Card className="text-center">
-              <Card.Header className="bg-primary text-white">
-                Price Information
-              </Card.Header>
-              <Card.Body>
-                {getPrice()}
-                <p>
-                  Service Type:{" "}
-                  <span className="font-weight-bold">
-                    {serviceDetail.serviceFor}
-                  </span>
-                </p>
-              </Card.Body>
-              <Card.Footer>
-                <Button variant="success" className="w-100">
-                  Booking Now
-                </Button>
-              </Card.Footer>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
     </Container>
   );
 }
