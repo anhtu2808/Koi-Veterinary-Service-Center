@@ -30,10 +30,16 @@ function AllAppointment() {
   useEffect(() => {
     setIsLoading(true);
     const fetchAppointmentForVet = async (vetId, status) => {
-      const response = await fetchAllAppointmentByVetIdAPI(vetId, status);
-      setAppointments(response?.data);
-      setIsLoading(false);
-      console.log(response?.data)
+      try {
+        const response = await fetchAllAppointmentByVetIdAPI(vetId, status);
+        setAppointments(response?.data);
+        setIsLoading(false);
+        console.log(response?.data)
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     const fetchAppointmentForStaff = async () => {
@@ -43,10 +49,16 @@ function AllAppointment() {
     };
 
     const fetchAppointmentForCustomer = async (customerId) => {
-      const response = await fetchAppointmentByCustomerIdAPI(customerId, status);
-      setAppointments(response?.data);
-      setIsLoading(false);
-      setTitle("My Appointments");
+      try {
+        const response = await fetchAppointmentByCustomerIdAPI(customerId, status);
+        setAppointments(response?.data);
+        setIsLoading(false);
+        setTitle("My Appointments");
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     if (role === ROLE.VETERINARIAN) {
       fetchAppointmentForVet(vetId, status);

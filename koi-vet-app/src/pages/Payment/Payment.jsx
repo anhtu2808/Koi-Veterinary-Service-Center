@@ -12,7 +12,7 @@ function Payment() {
   const bookingData = useSelector(state => state?.booking?.bookingData)
   const [serviceInfo, setServiceInfo] = useState({})
   const [vetInfo, setVetInfo] = useState({})
-  const [ setPaymentOption] = useState(null)
+  const [, setPaymentOption] = useState(null)
   const dispatch = useDispatch()
   const [appointmentCreateRequest, setAppointmentCreateRequest] = useState({
 
@@ -91,7 +91,7 @@ function Payment() {
             <div className="payment-card-body">
               <div className="mb-3">
                 <label htmlFor="fullName" className="payment-form-label">
-                  Full Name
+                  Full Name <span className="text-danger">*</span>
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
@@ -101,14 +101,14 @@ function Payment() {
                     type="text"
                     className="form-control payment-form-control"
                     id="fullName"
-                    value={userInfo.fullName}
+                    value={userInfo.fullName} 
                     onChange={(event) => handleChangeFullname(event.target.value)}
                   />
                 </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="phoneNumber" className="payment-form-label">
-                  Phone Number
+                  Phone Number <span className="text-danger">*</span> 
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
@@ -127,7 +127,7 @@ function Payment() {
               </div>
               <div className="mb-3">
                 <label htmlFor="address" className="payment-form-label" name="address">
-                  Address
+                  Address <span className="text-danger">*</span>
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
@@ -277,7 +277,7 @@ function Payment() {
                 onClick={() => handlePayment(appointmentCreateRequest)}
                 disabled={!customerInfo.address || !customerInfo.phone}
               >
-                <i className="fas fa-lock me-2"></i> Proceed to Secure Checkout
+                <i className="fas fa-lock me-2"></i> Proceed to Secure Checkout 
               </button>
             </div>
           </div>

@@ -83,7 +83,7 @@ const MyProfile = () => {
            
               <img
                 src={image ? URL.createObjectURL(image) : myInfo?.image || default_profile}
-                alt="User Avatar"
+                alt="default_profile"
                 className="img-fluid rounded-circle mb-3"
                 style={{ width: "150px", height: "150px" }}
               />
