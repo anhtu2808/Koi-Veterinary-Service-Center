@@ -29,23 +29,27 @@ const Login = () => {
       toast.success("Login successfully");
       localStorage.setItem("accessToken", response.data);
       navigate("/");
-     
+
     }
   };
 
 
   const handleLoginSuccess = async (response) => {
-    const res = await axios.post('http://localhost:8080/api/v1/auth/login-success', {
-      token: response.credential,
-    });
-   
-    // Lưu JWT vào localStorage
-    if (res?.data?.status === 200) {
-      await dispatch(setIsAuthorized(true));
-      toast.success("Login successfully");
-      localStorage.setItem("accessToken", res.data.data);
-      navigate("/");
-      window.location.reload();
+    try {
+      const res = await axios.post('http://localhost:8080/api/v1/auth/login-success', {
+        token: response.credential,
+      });
+
+      // Lưu JWT vào localStorage
+      if (res?.data?.status === 200) {
+        await dispatch(setIsAuthorized(true));
+        toast.success("Login successfully");
+        localStorage.setItem("accessToken", res.data.data);
+        navigate("/");
+
+      }
+    } catch (error) {
+      toast.error("Login failed");
     }
   };
 
@@ -67,11 +71,13 @@ const Login = () => {
           </Link>
           <h6 className=" text-start mt-5">WELCOME BACK</h6>
           <h3 className="fw-bold">Continue to your Account.</h3>
-          <div className="d-grid gap-2 text-center  mx-auto">
+          <div className="d-flex justify-content-center mx-auto">
             <GoogleOAuthProvider clientId="675554674661-qaklq95eac0uhmjjh9bikdc2i1d6bcg6.apps.googleusercontent.com">
               <GoogleLogin
                 onSuccess={handleLoginSuccess}
                 onError={() => console.log('Login Failed')}
+              // Adjust the height as needed
+
               />
             </GoogleOAuthProvider>
           </div>

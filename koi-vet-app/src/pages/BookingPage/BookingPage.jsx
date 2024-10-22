@@ -170,12 +170,19 @@ function BookingPage() {
   }, [step]);
 
   const steps = [
-    'Chọn dịch vụ',
-    'Chọn bác sĩ',
-    'Chọn ngày',
-    serviceFor === SERVICE_FOR.KOI ? 'Nhập thông tin Koi' : serviceFor === SERVICE_FOR.POND ? 'Nhập thông tin Hồ' : 'Nhập thông tin Koi',
-    'Thanh toán'
+    'Select service',
+    'Select veterinarian',
+    'Select date',
+    serviceFor === SERVICE_FOR.KOI ? 'Enter Koi information' : serviceFor === SERVICE_FOR.POND ? 'Enter Pond information' : 'Enter Koi/Pond information',
+    'Payment'
   ];
+  
+  const stepsOnline = [
+    'Select service',
+    'Select veterinarian',
+    'Select date',
+    'Payment'
+  ]
 
   // Các bước
 
@@ -183,7 +190,11 @@ function BookingPage() {
     <div className="container booking-container">
       <h2 className="text-center booking-title mb-3">Appoinment Booking</h2>
       <Stepper activeStep={step -1} alternativeLabel>
-        {steps.map((label, index) => (
+        {type === "ONLINE" ? stepsOnline.map((label, index) => (
+          <Step key={index} > {/* Màu nền và màu chữ tùy chỉnh */}
+            <StepLabel >{label}</StepLabel> {/* Màu chữ tùy chỉnh */}
+          </Step>
+        )) : steps.map((label, index) => (
           <Step key={index} > {/* Màu nền và màu chữ tùy chỉnh */}
             <StepLabel >{label}</StepLabel> {/* Màu chữ tùy chỉnh */}
           </Step>

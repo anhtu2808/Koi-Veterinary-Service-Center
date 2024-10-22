@@ -104,6 +104,10 @@ export const deleteServiceAPI = async (serviceId) => {
 }
 
 // Appointment API
+export const fetchAppointmentInDayVetIdAPI = async (date, vetId) => {
+    const response = await api.get(`/vetSchedules/${vetId}/?date=${date}`);
+    return response.data;
+}
 export const createAppointmentAPI = async (appointmentCreateRequest) => {
     const response = await api.post('/appointments', appointmentCreateRequest);
     return response.data;
@@ -368,8 +372,15 @@ export const updateCustomerAPI = async (customerData, image) => {
     if (image) {
         imageURL = await fetchUpLoadImageAPI(image);
     }
-
     const response = await api.put(`/customers`, { ...customerData, image: imageURL });
+    return response.data;
+}
+export const updateUserInfoAPI = async (userData, image) => {
+    let imageURL = userData.image;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+    const response = await api.put(`/users/update`, { ...userData, image: imageURL });
     return response.data;
 }
 // Invoice API

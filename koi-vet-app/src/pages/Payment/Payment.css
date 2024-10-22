@@ -37,10 +37,10 @@
     transition: all 0.3s ease;
 }
 
-.payment-card:hover {
+/* .payment-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(31, 43, 108, 0.2);
-}
+} */
 
 .payment-card-header {
     background-color: var(--color-primary);
@@ -131,4 +131,5 @@
 .payment-btn:hover{
     background-color: var(--color-secondary) !important;
     color: var(--color-primary) !important;
+  
 }

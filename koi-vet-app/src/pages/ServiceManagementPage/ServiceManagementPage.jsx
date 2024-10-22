@@ -24,6 +24,8 @@ const ServiceManagementPage = () => {
     const res = await updateServiceAPI(selectedService?.serviceId, selectedService, selectedImage);
     if (res.status === 200) {
       fetchServices()
+      setSelectedService(null)
+      setSelectedImage(null)
       toast.success(res.message)
     } else {
       toast.error(res.message)

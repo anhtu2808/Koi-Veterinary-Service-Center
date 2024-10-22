@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import koi_default from "../../assets/img/koi_default.jpg";
-import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, fetchPrescriptionByAppointmentIdAPI, fetchTreatmentByIdAPI, updateKoiInformationAPI, updateKoiTreatmentAPI} from "../../apis";
+import { addKoiToAppointmentAPI, createKoiAPI, fetchKoiByKoiIdAPI, fetchPrescriptionByAppointmentIdAPI, fetchTreatmentByIdAPI, updateKoiInformationAPI, updateKoiTreatmentAPI } from "../../apis";
 import { toast } from "react-toastify";
 import "./KoiDetail.css";
 import { fishSpecies } from "../../utils/constants";
 import { useSelector } from "react-redux";
+import { Image, Upload } from "antd";
 import Modal from "../../components/Modal/Modal";
 import MedicineListPage from "../MedicineListPage/MedicineListPage";
 import PrescriptionDetail from "../PrescriptionDetail/PrescriptionDetail";
+import ImgCrop from "antd-img-crop";
 // import PrescriptionDetail from "../PrescriptionDetail/PrescriptionDetail";
 
 function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment, customerId, isBooking }) {
@@ -78,8 +80,7 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
       [name]: value === "None" ? null : value,
     });
   };
-  const handleUploadImage = (event) => {
-    const file = event.target.files[0];
+  const handleUploadImage = (file) => {
     setImage(file);
   };
   const handleSubmit = async (e) => {
@@ -178,24 +179,25 @@ function KoiDetail({ isCreate, cusId, isUpdate, onClose, onUpdate, isAppointment
           </div>
           <div className="col-md-1"></div>
           <div className="col-md-4">
-            <img
-              className="w-100 koi-profile-image rounded-3"
-              src={
-                (image ? URL.createObjectURL(image) : koiData.image) ||
-                koi_default
-              }
-              alt="Koi"
-            />
+            <Image width={250} className="w-100 koi-profile-image rounded-3" src={(image ? URL.createObjectURL(image) : koiData.image) ||
+              koi_default} alt="Koi" />
             {(isEditing || isCreate) && ( // Only show the upload input if isEditing is true
               <div className="form-group mt-3 text-center">
-                <label className="custom-file-upload">
-                  <input
-                    type="file"
-                    onChange={handleUploadImage}
-                    disabled={!isEditing && !isCreate} // cho phép upload khi trong chế độ create hoặc edit
-                  />
-                  Upload Image <i className="fa-solid fa-image"></i>
-                </label>
+                <button className="custom-file-upload" type="button">
+                  <ImgCrop rotationSlider>
+                    <Upload
+                      listType="picture" // Giữ nguyên để chỉ tải lên một bức ảnh
+                      beforeUpload={(file) => {
+                        handleUploadImage(file); // Gọi handleImageChange với tệp
+                        return false; // Ngăn không cho gửi yêu cầu tải lên
+                      }}
+                      disabled={!isEditing && !isCreate}
+                      showUploadList={false} // Ẩn danh sách tải lên
+                    >
+                      <div className="custom-file-upload p-0"> <i className="fa-solid fa-upload"></i> Upload</div>
+                    </Upload>
+                  </ImgCrop>
+                </button>
               </div>
             )}
           </div>

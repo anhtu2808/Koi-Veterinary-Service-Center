@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useDispatch, useSelector } from "react-redux";
-import {  fecthServiceByServiceIdAPI, fetchRedirectPaymentAPI, fetchVetByVetIdAPI } from "../../apis";
+import { fecthServiceByServiceIdAPI, fetchRedirectPaymentAPI, fetchVetByVetIdAPI, updateUserInfoAPI } from "../../apis";
 import { toast } from "react-toastify";
 import { APPOINTMENT_STATUS } from "../../utils/constants";
-import { updateUser, updateUserInfo } from "../../store/userSlice";
+import { setUser, updateUser, updateUserInfo } from "../../store/userSlice";
+import HomeVisitPriceTable from "../../components/HomeVisitPriceTable/HomeVisitPriceTable";
 
 function Payment() {
   const userInfo = useSelector(state => state.user)
@@ -13,6 +14,7 @@ function Payment() {
   const [serviceInfo, setServiceInfo] = useState({})
   const [vetInfo, setVetInfo] = useState({})
   const [, setPaymentOption] = useState(null)
+  const [error, setError] = useState(false)
   const dispatch = useDispatch()
   const [appointmentCreateRequest, setAppointmentCreateRequest] = useState({
 
@@ -39,21 +41,40 @@ function Payment() {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerInfo, vetInfo, serviceInfo, bookingData])
+
+
   const handlePayment = async (appointmentCreateRequest) => {
-    const response = await fetchRedirectPaymentAPI(serviceInfo?.basePrice, "NCB", appointmentCreateRequest)
-    console.log(response)
-    if (response.status === 200) {
-      window.location.href = response.data
+    if (!customerInfo.phone || !customerInfo.address) {
+      toast.error("Please fill in your address and phone number to continue.")
+      return
     } else {
-      toast.error(response.data.message)
+      await updateUserInfoAPI({
+        userId: userInfo.user_id,
+        fullName: userInfo.fullName,
+        email: userInfo.email,
+        phoneNumber: customerInfo.phone,
+        address: customerInfo.address,
+        image: userInfo.image
+      }, null)
+      const response = await fetchRedirectPaymentAPI(serviceInfo?.basePrice, "NCB", appointmentCreateRequest)
+      console.log(response)
+      if (response.status === 200) {
+        window.location.href = response.data
+      } else {
+        toast.error(response.data.message)
+      }
     }
+
+
+
+
   }
   const handleChangeInfo = (event) => {
     const { name, value } = event.target;
     dispatch(updateUserInfo({ [name]: value }))
   };
   const handleChangeFullname = (newName) => {
-    dispatch(updateUser({fullName: newName}))
+    dispatch(setUser({ fullName: newName }))
   }
   const handleChangePaymentOption = (option) => {
     setPaymentOption(option)
@@ -101,14 +122,14 @@ function Payment() {
                     type="text"
                     className="form-control payment-form-control"
                     id="fullName"
-                    value={userInfo.fullName} 
+                    value={userInfo.fullName}
                     onChange={(event) => handleChangeFullname(event.target.value)}
                   />
                 </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="phoneNumber" className="payment-form-label">
-                  Phone Number <span className="text-danger">*</span> 
+                  Phone Number <span className="text-danger">*</span>
                 </label>
                 <div className="input-group">
                   <span className="input-group-text payment-input-icon">
@@ -147,21 +168,14 @@ function Payment() {
             </div>
           </div>
 
+
           <div className="payment-card">
             <div className="payment-card-header">
-              <i className="fas fa-fish me-2"></i> Koi/Pond Health Status
+              <i className="fas fa-money-bill-alt me-2"></i> Another Fee will be charged later
             </div>
             <div className="payment-card-body">
               <div className="mb-3">
-                <label htmlFor="koiHealth" className="payment-form-label">
-                  Health Description
-                </label>
-                <textarea
-                  className="form-control payment-form-control"
-                  id="koiHealth"
-                  rows="5"
-                  placeholder="Please enter describe about health status of your Koi/Pond"
-                ></textarea>
+                <HomeVisitPriceTable/>
               </div>
             </div>
           </div>
@@ -259,25 +273,24 @@ function Payment() {
                     <i className="fas fa-mobile-alt me-2"></i> Momo
                   </label>
                 </div>
-                <div className="form-check">
+                <div className="form-check d-flex align-items-center gap-2 align-items-center ">
                   <input
-                    className="form-check-input payment-form-check-input"
+                    className="form-check-input payment-form-check-input "
                     type="radio"
                     name="paymentOption"
                     id="vnpay"
                     value="vnpay"
                   />
-                  <label className="form-check-label payment-form-check-label" htmlFor="vnpay">
-                    <i className="fas fa-credit-card me-2"></i> VNPay
+                  <label className="form-check-label payment-form-check-label d-flex align-items-center align-items-center gap-2" htmlFor="vnpay">
+                    <i className="fas fa-credit-card me-2 ml-1"></i> VNPay
                   </label>
                 </div>
               </div>
 
               <button className="btn payment-btn w-100" id="checkoutBtn"
                 onClick={() => handlePayment(appointmentCreateRequest)}
-                disabled={!customerInfo.address || !customerInfo.phone}
               >
-                <i className="fas fa-lock me-2"></i> Proceed to Secure Checkout 
+                <i className="fas fa-lock me-2"></i> Proceed to Secure Checkout
               </button>
             </div>
           </div>

@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 import Modal from "../../components/Modal/Modal";
 import MedicineListPage from "../MedicineListPage/MedicineListPage";
 import PrescriptionDetail from "../PrescriptionDetail/PrescriptionDetail";
+import ImgCrop from "antd-img-crop";
+import { Upload } from "antd";
 
 
 
@@ -80,8 +82,7 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusI
     setSelectedPrescriptionId(null);
   };
 
-  const handleUploadImage = (event) => {
-    const file = event.target.files[0];
+  const handleUploadImage = (file) => {
     setImage(file);
   };
   const fetchPrescriptions = async () => {
@@ -198,17 +199,24 @@ const PondDetail = ({ isCreate, isUpdate, onClose, onUpdate, isAppointment, cusI
           <label className="form-label text-start">Pond Image</label>
           <img src={image ? URL.createObjectURL(image) : pondData.image || pond_default} alt="Pond" className=" w-100 koi-profile-image rounded-3" />
           {(isEditing || isCreate) && ( // Only show the upload input if isEditing is true
-            <div className="form-group mt-3 text-center">
-              <label className="custom-file-upload">
-                <input
-                  type="file"
-                  onChange={handleUploadImage}
-                  disabled={!isEditing && !isCreate} // cho phép upload khi trong chế độ create hoặc edit
-                />
-                Upload Image <i className="fa-solid fa-image"></i>
-              </label>
-            </div>
-          )}
+              <div className="form-group mt-3 text-center">
+                <button className="custom-file-upload" type="button">
+                  <ImgCrop rotationSlider aspect={16 / 9}>
+                    <Upload
+                      listType="picture" // Giữ nguyên để chỉ tải lên một bức ảnh
+                      beforeUpload={(file) => {
+                        handleUploadImage(file); // Gọi handleImageChange với tệp
+                        return false; // Ngăn không cho gửi yêu cầu tải lên
+                      }}
+                      disabled={!isEditing && !isCreate}
+                      showUploadList={false} // Ẩn danh sách tải lên
+                    >
+                      <div className="custom-file-upload p-0"> <i className="fa-solid fa-upload"></i> Upload</div>
+                    </Upload>
+                  </ImgCrop>
+                </button>
+              </div>
+            )}
         </div>
         <div className="col-md-6 mt-4">
           {renderField("Filter System", pondData.filterSystem, "filterSystem")}
