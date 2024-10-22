@@ -135,7 +135,10 @@ export const fetchAllAppointmentByVetIdAPI = async (vetId, status) => {
     const response = await api.get(`/veterinarians/${vetId}/appointments?status=${status}`);
     return response.data;
 }
-
+export const fetchAppointmentByVetIdAndDateAPI = async (vetId, date) => {
+    const response = await api.get(`/appointments/by-vetId/${vetId}?date=${date}`);
+    return response.data;
+}
 export const addKoiToAppointmentAPI = async (appointmentId, koiData, image) => {
     const saveKoi = await createKoiAPI(koiData, image)
 

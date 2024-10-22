@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import "./Schedual.css"
-import { createScheduleAPI, fetchSchedualByVetIdAPI, fetchVetsAPI } from '../../apis'
+import { createScheduleAPI, fetchAppointmentByVetIdAndDateAPI, fetchSchedualByVetIdAPI, fetchVetsAPI } from '../../apis'
 import { toast } from 'react-toastify'
 import { Switch } from 'antd'
 import AdminHeader from '../../components/AdminHeader/AdminHeader'
 import Select from 'react-select';
 import Loading from '../../components/Loading/Loading'
+import { useNavigate } from 'react-router-dom'
 const Schedual = () => {
     const [selectedVetId, setSelectedVetId] = useState(null)
     const [veterinarians, setVeterinarians] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [appointments, setAppointments] = useState([])
+    const [pickedDay, setPickedDay] = useState(null)
     const [isEditMode, setIsEditMode] = useState(false)
     const [selectedDate, setSelectedDate] = useState([])
     const [currentDate, setCurrentDate] = useState(new Date())
+    const navigate = useNavigate()
     const [schedules, setSchedules] = useState([])
     const [selectDateTrigger, setSelectDateTrigger] = useState(0)
+    const handleViewAppointment = (appointmentId) => {
+        navigate(`/admin/appointment/${appointmentId}`)
+    }
+    const handleChangeMode = () => {
+        setPickedDay(null)
+        setSelectedDate([])
+        setAppointments([])
+        setIsEditMode(!isEditMode)
+    }
     const handleDateClick = (date) => {
         if (isEditMode) {
             if (selectedDate.includes(date)) {
@@ -25,13 +37,14 @@ const Schedual = () => {
             }
             console.log(selectedDate)
         } else {
-            console.log("View mode")
+            setPickedDay(date)
         }
     }
-    // const fetchAppointments = async () => {
-    //     const response = await fetchAppointmentsInDayVetIdAPI(selectedVetId, selectedDate)
-    //     setAppointments(response.data)
-    // }
+    useEffect(() => {
+        if (pickedDay) {
+            setSelectedDate([pickedDay])
+        }
+    }, [pickedDay])
     const fetchSchedual = async () => {
         await setSelectedDate([])
         await setSchedules([])
@@ -74,9 +87,19 @@ const Schedual = () => {
     useEffect(() => {
         getVeterinarian()
     }, [])
+    const fetchAppointments = async () => {
+        const response = await fetchAppointmentByVetIdAndDateAPI(selectedVetId, pickedDay)
+        if (response.status === 200) {
+            setAppointments(response.data)
+        } else if (response.status === 404) {
+            toast.dark(response.message)
+        }
+    }
     useEffect(() => {
-
-    }, [selectedVetId])
+        if (selectedVetId && pickedDay) {
+            fetchAppointments()
+        }
+    }, [selectedVetId, pickedDay])
     const renderDate = () => {
         const year = currentDate.getFullYear()
         const month = currentDate.getMonth()
@@ -84,7 +107,7 @@ const Schedual = () => {
         let firstDayOfMonth = new Date(year, month, 1).getDay();
         firstDayOfMonth = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
         const days = []
-        const weekDays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+        const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         weekDays.forEach(day => {
             days.push(<div key={`weekday-${day}`} className="weekday">{day}</div>);
         });
@@ -132,7 +155,7 @@ const Schedual = () => {
                     onChange={(selectedOption) => handleChangeSelectedVet(selectedOption.value)}
                 />
                 <label htmlFor="select-veterinarian">Edit mode:</label>
-                <Switch checkedChildren="Edit" unCheckedChildren="View" />
+                <Switch checkedChildren="Edit" unCheckedChildren="View" checked={isEditMode} onChange={handleChangeMode} />
             </div>
             <div className='d-flex flex-row gap-5'>
                 <div className="calendar-container mt-5 mx-0 d-flex flex-row gap-5 justify-content-center">
@@ -163,6 +186,7 @@ const Schedual = () => {
                     <table className='table table-bordered'>
                         <thead>
                             <tr>
+                                <th>Code</th>
                                 <th>Date</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
@@ -170,14 +194,17 @@ const Schedual = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td className='text-center'>
-                                    <button className='btn btn-primary'>View</button>
-                                </td>
-                            </tr>
+                            {appointments.map((appointment) => (
+                                <tr>
+                                    <td>{appointment.code}</td>
+                                    <td>{appointment.appointmentDate}</td>
+                                    <td>{appointment.startTime}</td>
+                                    <td>{appointment.endTime}</td>
+                                    <td className='text-center'>
+                                        <button className='btn btn-primary' onClick={() => handleViewAppointment(appointment.appointmentId)}>View</button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
