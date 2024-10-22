@@ -2,26 +2,26 @@ import { Form, Input, message, Select, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { createMedicineAPI, fetchMedicinesAPI } from '../../apis';
-
 import './CreateMedicinePage.css';
-
+import TextArea from 'antd/es/input/TextArea';
 
 function CreateMedicinePage() {
-    const { TextArea } = Input;
     const [newMedicineData, setNewMedicineData] = useState({
         name: "",
         description: "",
         medUnit: "",
       });
       const [availableMedicines, setAvailableMedicines] = useState([]);
-    //   const [isCreating, setIsCreating] = useState(false);
+      const [isCreating, setIsCreating] = useState(false);
 
-    //   const handleOpenCreateMedicineForm = () => {
-    //     setIsCreating(true);
-    //   };
+
+  // Mở form tạo thuốc
+  const handleOpenCreateMedicineForm = () => {
+    setIsCreating(true);
+  };
     
       const handleCloseCreateMedicineForm = () => {
-        // setIsCreating(false);
+        setIsCreating(false);
         setNewMedicineData({ name: "", description: "", medUnit: "" });
       };
 
@@ -66,38 +66,78 @@ function CreateMedicinePage() {
       title: "Medicine ID",
       dataIndex: "medicineId",
       key: "medicineId",
+      width: '150',
     },
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      width: '200',
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      width: '300',
+      ellipsis: true,
     },
     {
       title: "Unit",
       dataIndex: "medUnit",
       key: "medUnit",
+      width: '100',
     },
     
   ];
   return (
     <>
-    <div style={{ overflow: 'hidden' }}>
-
+    <Container className='mt-4'>
+    <h1 >Medicine List</h1>
+    <div className="row">
+        <div className="col">
+          <div className="card border-0 shadow-sm">
+            <div className="card-body">
+              <div className="table-responsive">
     <Table dataSource={availableMedicines} columns={columns} 
         pagination={{
-        pageSize: 4, // 10 thuốc trên mỗi trang
+        pageSize: 7,
         showSizeChanger: false, // Ẩn tùy chọn thay đổi số lượng trên mỗi trang
       }} />
       </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<Container className="card p-4" style={{borderRadius: '10px', width: '70%'}}>
+<div className="card p-4" style={{borderRadius: '10px', width: '70%'}}> 
+<div className="row mb-4">
+        <div className="col">
+          <div className="card bg-light border-0 shadow-sm">
+            <div className="card-body d-flex justify-content-between align-items-center">
+              <div>
+                
+                <p className="text-muted mb-0">Create new medicine to add to the list</p>
+              </div>
+              <button 
+                className="btn btn-primary d-flex align-items-center gap-2"
+                onClick={() => setIsCreating(true)}
+                style={{ display: isCreating ? 'none' : 'flex' }}
+              >
+                <i className="bi bi-plus-circle"></i>
+                Add Medicine
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+        {isCreating && (
         <Row className="mt-4">
           <Col md={12}>
+          <div className="card border-0 shadow-sm">
+              <div className="card-body">
+          <h5 className="card-title mb-4">Create New Medicine</h5>
             <Form>
               <Form.Item label="Medicine Name" required>
                 <Input
@@ -109,14 +149,15 @@ function CreateMedicinePage() {
                 />
               </Form.Item>
 
-              <Form.Item label="Description" required style={{marginBottom: '30px'}}>
-                <TextArea
-                  style={{height: '100px', overflow: 'auto'}}
-                  placeholder="Enter description"
-                  value={newMedicineData.description}
-                  onChange={(e) =>
-                    handleNewMedicineInputChange("description", e.target.value)
-                  }
+              <Form.Item label="Description" required>
+              <TextArea
+                    className="custom-textarea"
+                    placeholder="Enter description"
+                    value={newMedicineData.description}
+                    onChange={(e) =>
+                        handleNewMedicineInputChange("description", e.target.value)
+                    }
+                    autoSize={{ minRows: 3, maxRows: 6 }} 
                 />
               </Form.Item>
 
@@ -139,11 +180,16 @@ function CreateMedicinePage() {
                 <Button onClick={handleCreateMedicine} type="primary">
                   Create Medicine
                 </Button>
+                <Button onClick={handleCloseCreateMedicineForm}>Cancel</Button>
                 
               </div>
             </Form>
+            </div>
+            </div>
             </Col>
             </Row>
+        )}
+        </div>
        </Container>
     </>
   )

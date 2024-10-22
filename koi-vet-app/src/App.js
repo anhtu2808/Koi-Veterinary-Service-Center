@@ -52,6 +52,7 @@ import 'react-quill/dist/quill.snow.css';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/store';
 import FAQManagement from './pages/FAQManagement/FAQManagement';
+import CreateMedicinePage from './pages/CreateMedicinePage/CreateMedicinePage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -175,6 +176,7 @@ function App() {
                   <Route path="/servicemanagement" element={<ServiceManagementPage />} />
                   <Route path="/homevisitprice" element={<HomeVisitPricePage />} />
                   <Route path="/faqmanagement" element={<FAQManagement />} />
+                  <Route path="/medicinelist" element={<CreateMedicinePage />} />
                 </Route>
 
                 {/* <Route path="/koiinformation" element={<KoiInformation />} /> */}

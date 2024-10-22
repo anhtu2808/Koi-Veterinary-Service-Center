@@ -81,6 +81,11 @@ function SideBar() {
                 <i className="fas fa-home"></i> Home Visit Price
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to="/admin/medicinelist" className={`nav-link ${location.pathname === '/admin/medicinelist' ? 'active' : ''}`}>
+                <i className="fas fa-pills"></i> Medicine List
+              </Link>
+            </li>
           </>
         )}
 
