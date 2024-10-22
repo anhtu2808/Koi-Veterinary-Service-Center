@@ -5,13 +5,13 @@ import {
   Popconfirm,
   Table,
   AutoComplete,
-  Select,
+//  Select,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import {
   fetchMedicinesAPI,
-  createMedicineAPI,
+//  createMedicineAPI,
   updateMedicineByIdAPI,
   deleteMedicineByIdAPI,
   createPrescriptionAPI,
@@ -39,51 +39,51 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
   });
   const [editingMedicines, setEditingMedicines] = useState({});
   const [isEditing, setIsEditing] = useState({}); // Trạng thái cho từng thuốc
-  const [isCreating, setIsCreating] = useState(false); // Trạng thái mở/đóng form tạo thuốc
-  const [newMedicineData, setNewMedicineData] = useState({
-    name: "",
-    description: "",
-    medUnit: "",
-  });
+  // const [isCreating, setIsCreating] = useState(false); // Trạng thái mở/đóng form tạo thuốc
+  // const [newMedicineData, setNewMedicineData] = useState({
+  //   name: "",
+  //   description: "",
+  //   medUnit: "",
+  // });
 
-  // Mở form tạo thuốc
-  const handleOpenCreateMedicineForm = () => {
-    setIsCreating(true);
-  };
+  // // Mở form tạo thuốc
+  // const handleOpenCreateMedicineForm = () => {
+  //   setIsCreating(true);
+  // };
 
-  // Đóng form tạo thuốc và reset dữ liệu
-  const handleCloseCreateMedicineForm = () => {
-    setIsCreating(false);
-    setNewMedicineData({ name: "", description: "", medUnit: "" });
-  };
+  // // Đóng form tạo thuốc và reset dữ liệu
+  // const handleCloseCreateMedicineForm = () => {
+  //   setIsCreating(false);
+  //   setNewMedicineData({ name: "", description: "", medUnit: "" });
+  // };
 
-  // Xử lý thay đổi dữ liệu trong form
-  const handleNewMedicineInputChange = (field, value) => {
-    setNewMedicineData((prev) => ({ ...prev, [field]: value }));
-  };
+  // // Xử lý thay đổi dữ liệu trong form
+  // const handleNewMedicineInputChange = (field, value) => {
+  //   setNewMedicineData((prev) => ({ ...prev, [field]: value }));
+  // };
 
-  // Gọi API để tạo thuốc mới
-  const handleCreateMedicine = async () => {
-    const { name, description, medUnit } = newMedicineData;
+  // // Gọi API để tạo thuốc mới
+  // const handleCreateMedicine = async () => {  
+  //   const { name, description, medUnit } = newMedicineData;
 
-    if (!name || !description || !medUnit) {
-      message.error("Please fill in all fields.");
-      return;
-    }
+  //   if (!name || !description || !medUnit) {
+  //     message.error("Please fill in all fields.");
+  //     return;
+  //   }
 
-    try {
-      await createMedicineAPI(newMedicineData); // Gọi API để tạo thuốc
-      message.success("Medicine created successfully.");
+  //   try {
+  //     await createMedicineAPI(newMedicineData); // Gọi API để tạo thuốc
+  //     message.success("Medicine created successfully.");
 
-      // Cập nhật lại danh sách thuốc
-      const updatedMedicines = await fetchMedicinesAPI();
-      setAvailableMedicines(updatedMedicines.data || []);
+  //     // Cập nhật lại danh sách thuốc
+  //     const updatedMedicines = await fetchMedicinesAPI();
+  //     setAvailableMedicines(updatedMedicines.data || []);
 
-      handleCloseCreateMedicineForm(); // Đóng form sau khi tạo thành công
-    } catch (error) {
-      message.error("Failed to create medicine.");
-    }
-  };
+  //     handleCloseCreateMedicineForm(); // Đóng form sau khi tạo thành công
+  //   } catch (error) {
+  //     message.error("Failed to create medicine.");
+  //   }
+  // };
 
   useEffect(() => {
     // Fetch all medicines for search suggestion
@@ -377,55 +377,9 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
         </Col>
       </Row>
 
-      {/* Add new medicine button */}
-      <Button onClick={handleAddNewMedicine} disabled={isAdding}>
-        +
-      </Button>
+      
 
-      {/* If adding a new medicine */}
-      {isAdding && (
-        <Row className="mt-4">
-          <Col md={12}>
-            <AutoComplete
-              options={filteredMedicines.map((med) => ({
-                value: med.medicineId, // Use medicineId as the value to select (this is for internal tracking)
-                label: med.name, // Display medicine name in the dropdown
-              }))}
-              onSearch={handleSearchMedicine}
-              onSelect={handleSelectMedicine}
-              placeholder="Search and select medicine"
-              value={newMedicine.name} // Set the selected name as the value to display in the input
-              onChange={(value) => {
-                // Cập nhật trạng thái khi người dùng nhập hoặc xóa
-                setNewMedicine((prev) => ({ ...prev, name: value }));
-              }}
-              allowClear // Thêm thuộc tính để cho phép xóa nhanh bằng nút xóa
-              style={{ width: "100%", marginBottom: "16px" }}
-            />
-            <Form>
-              <Form.Item label="Dosage" required>
-                <Input
-                  placeholder="Dosage"
-                  value={newMedicine.dosage}
-                  onChange={(e) => handleInputChange("dosage", e.target.value)}
-                  style={{ marginBottom: "16px" }}
-                />
-              </Form.Item>
-              <Form.Item label="Quantity" required>
-                <Input
-                  placeholder="Quantity"
-                  value={newMedicine.quantity}
-                  onChange={(e) =>
-                    handleInputChange("quantity", e.target.value)
-                  }
-                />
-              </Form.Item>
-            </Form>
-
-            <Button onClick={handleDone}>Done</Button>
-          </Col>
-        </Row>
-      )}
+      
 
       {/* Medicines table */}
       <Table
@@ -443,7 +397,7 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
       >
         Create Prescription
       </Button>
-      {isCreating ? (
+      {/* {isCreating ? (
         <Row className="mt-4">
           <Col md={12}>
             <Form>
@@ -495,7 +449,59 @@ function MedicineListPage({ appointmentId, onPrescriptionCreated }) {
         <Button onClick={handleOpenCreateMedicineForm} className="mt-4">
           Create Medicine
         </Button>
+      )} */}
+
+      {/* Add new medicine button */}
+      <Button onClick={handleAddNewMedicine} disabled={isAdding} style={{margin: '24px 10px 0 0', float: 'right'}}>
+        + Medicine
+      </Button>
+
+      {/* If adding a new medicine */}
+      {isAdding && (
+        <Row className="mt-4">
+          <Col md={12}>
+            <AutoComplete
+              options={filteredMedicines.map((med) => ({
+                value: med.medicineId, // Use medicineId as the value to select (this is for internal tracking)
+                label: med.name, // Display medicine name in the dropdown
+              }))}
+              onSearch={handleSearchMedicine}
+              onSelect={handleSelectMedicine}
+              placeholder="Search and select medicine"
+              value={newMedicine.name} // Set the selected name as the value to display in the input
+              onChange={(value) => {
+                // Cập nhật trạng thái khi người dùng nhập hoặc xóa
+                setNewMedicine((prev) => ({ ...prev, name: value }));
+              }}
+              allowClear // Thêm thuộc tính để cho phép xóa nhanh bằng nút xóa
+              style={{ width: "100%", marginBottom: "16px" }}
+            />
+            <Form>
+              <Form.Item label="Dosage" required>
+                <Input
+                  placeholder="Dosage"
+                  value={newMedicine.dosage}
+                  onChange={(e) => handleInputChange("dosage", e.target.value)}
+                  style={{ marginBottom: "16px" }}
+                />
+              </Form.Item>
+              <Form.Item label="Quantity" required>
+                <Input
+                  placeholder="Quantity"
+                  value={newMedicine.quantity}
+                  onChange={(e) =>
+                    handleInputChange("quantity", e.target.value)
+                  }
+                />
+              </Form.Item>
+            </Form>
+
+            <Button onClick={handleDone}>Done</Button>
+          </Col>
+        </Row>
       )}
+
+      
     </Container>
   );
 }
