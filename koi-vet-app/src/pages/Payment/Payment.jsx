@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Payment.css";
 import { useDispatch, useSelector } from "react-redux";
-import { createAppointmentAPI, fecthServiceByServiceIdAPI, fetchRedirectPaymentAPI, fetchVetByVetIdAPI } from "../../apis";
+import {  fecthServiceByServiceIdAPI, fetchRedirectPaymentAPI, fetchVetByVetIdAPI } from "../../apis";
 import { toast } from "react-toastify";
 import { APPOINTMENT_STATUS } from "../../utils/constants";
 import { updateUser, updateUserInfo } from "../../store/userSlice";
@@ -12,7 +12,7 @@ function Payment() {
   const bookingData = useSelector(state => state?.booking?.bookingData)
   const [serviceInfo, setServiceInfo] = useState({})
   const [vetInfo, setVetInfo] = useState({})
-  const [paymentOption, setPaymentOption] = useState(null)
+  const [ setPaymentOption] = useState(null)
   const dispatch = useDispatch()
   const [appointmentCreateRequest, setAppointmentCreateRequest] = useState({
 

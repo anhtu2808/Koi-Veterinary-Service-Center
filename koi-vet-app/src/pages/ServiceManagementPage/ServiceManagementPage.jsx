@@ -4,17 +4,20 @@ import { createServiceAPI, deleteServiceAPI, fecthAllServicesAPI, updateServiceA
 import ServiceForm from '../../components/ServiceForm/ServiceForm';
 import { Modal } from 'antd';
 import { toast } from 'react-toastify';
+import PreLoader from '../../components/Preloader/Preloader';
 
 const ServiceManagementPage = () => {
   const [services, setServices] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); // Thêm state cho ô tìm kiếm
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedService, setSelectedService] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const fetchServices = async () => {
     const response = await fecthAllServicesAPI();
     setServices(response.data);
+    setIsLoading(false);
   }
   const handleOkEdit = async () => {
     console.log(selectedService)
@@ -71,7 +74,7 @@ const ServiceManagementPage = () => {
     fetchServices();
   }, []);
 
-
+  if (isLoading) return <PreLoader />
   return (
     <div>
       <AdminHeader title="Service Management" />

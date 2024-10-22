@@ -3,7 +3,6 @@ import "./ServicePage.css"
 import { fecthAllServicesAPI } from '../../apis'
 import Service from "../../components/Service/Service"
 import BannerTop from '../../components/BannerTop/BannerTop';
-import { useSelector } from 'react-redux';
 import PreLoader from '../../components/Preloader/Preloader';
 
 function ServicePage() {
