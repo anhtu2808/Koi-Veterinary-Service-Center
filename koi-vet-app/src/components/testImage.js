@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import api from '../utils/authorizedAxious';
 import { fetchUpLoadImageAPI } from '../apis';
 
 const ImageUpload = () => {

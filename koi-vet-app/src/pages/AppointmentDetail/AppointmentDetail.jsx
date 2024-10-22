@@ -5,8 +5,8 @@ import "./AppointmentDetail.css";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import { APPOINTMENT_STATUS, BOOKING_TYPE, ROLE, SERVICE_FOR } from "../../utils/constants";
 import { useSelector } from "react-redux";
-import Loading from "../../components/Loading/Loading";
 import { Modal } from "antd";
+import PreLoader from "../../components/Preloader/Preloader";
 
 const updateAppointment = async (appointmentData, appointmentId) => {
   try {
@@ -205,7 +205,7 @@ function AppointmentDetail() {
     [APPOINTMENT_STATUS.CANCEL]: "Cancelled"
   };
 
-  if (isLoading) return <Loading />
+  if (isLoading) return <PreLoader />
 
   return (
     <>

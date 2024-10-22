@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import google_logo from "../../assets/img/google.png";
 import logo from "../../assets/img/logo.png";
@@ -8,7 +8,9 @@ import { fetchLoginAPI, fetchLoginWithGoogleAPI } from "../../apis";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setIsAuthorized } from "../../store/userSlice";
+import Cookies from "js-cookie";
 import axios from "axios";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -27,13 +29,26 @@ const Login = () => {
       toast.success("Login successfully");
       localStorage.setItem("accessToken", response.data);
       navigate("/");
-       window.location.reload();
+      window.location.reload();
     }
   };
 
-  const handleLoginWithGoogle = async () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+
+  const handleLoginSuccess = async (response) => {
+    const res = await axios.post('http://localhost:8080/api/v1/auth/login-success', {
+      token: response.credential,
+    });
+   
+    // Lưu JWT vào localStorage
+    if (res?.data?.status === 200) {
+      await dispatch(setIsAuthorized(true));
+      toast.success("Login successfully");
+      localStorage.setItem("accessToken", res.data.data);
+      navigate("/");
+      window.location.reload();
+    }
   };
+
 
   return (
     <div className="row">
@@ -52,19 +67,13 @@ const Login = () => {
           </Link>
           <h6 className=" text-start mt-5">WELCOME BACK</h6>
           <h3 className="fw-bold">Continue to your Account.</h3>
-          <div className="d-grid gap-2  mx-auto">
-            <button
-              className=" login-google-btn rounded-pill btn btn-primary py-3"
-              type="button"
-              onClick={handleLoginWithGoogle}
-            >
-              <img
-                src={google_logo}
-                alt="google"
-                className="img-fluid google-logo"
+          <div className="d-grid gap-2 text-center  mx-auto">
+            <GoogleOAuthProvider clientId="675554674661-qaklq95eac0uhmjjh9bikdc2i1d6bcg6.apps.googleusercontent.com">
+              <GoogleLogin
+                onSuccess={handleLoginSuccess}
+                onError={() => console.log('Login Failed')}
               />
-              Log In with Google
-            </button>
+            </GoogleOAuthProvider>
           </div>
         </div>
         <div className="col-md-12 my-2 row justify-content-center align-items-center ">

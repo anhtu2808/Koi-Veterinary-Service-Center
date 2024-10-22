@@ -3,19 +3,21 @@ import './BookingPage.css'
 import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../../components/Loading/Loading'
 import { ServiceStep } from '../BookingStep/ServiceStep/ServiceStep'
-import { nextStep, prevStep, resetBoking, setBookingData, setStep } from '../../store/bookingSlice'
+import {  resetBoking, setBookingData, setStep } from '../../store/bookingSlice'
 import { useNavigate } from 'react-router-dom'
 import VeterinarianStep from '../BookingStep/VeterinarianStep/VeterinarianStep'
 import DatePickStep from '../BookingStep/DataPickStep/DatePickStep'
 import Payment from '../Payment/Payment'
 import InputKoiStep from '../BookingStep/InputKoiStep/InputKoiStep'
 import InputPondStep from '../BookingStep/InputPontStep/InputPondStep'
-
 import { SERVICE_FOR } from '../../utils/constants'
+import { Stepper, Step, StepLabel } from '@mui/material'; // Thêm import cho Stepper
+
 function BookingPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const step = useSelector(state => state.booking.step)
+  const totalSteps = 5;
   const [nextTitle, setNextTitle] = useState('Next')
   const [isNextButton, setIsNextButton] = useState(true)
   const date = useSelector(state => state.booking.bookingData.date)
@@ -167,10 +169,29 @@ function BookingPage() {
     }
   }, [step]);
 
+  const steps = [
+    'Chọn dịch vụ',
+    'Chọn bác sĩ',
+    'Chọn ngày',
+    serviceFor === SERVICE_FOR.KOI ? 'Nhập thông tin Koi' : serviceFor === SERVICE_FOR.POND ? 'Nhập thông tin Hồ' : 'Nhập thông tin Koi',
+    'Thanh toán'
+  ];
+
+  // Các bước
+
   return (
     <div className="container booking-container">
-      <h2 className="text-center booking-title">Appoinment Booking</h2>
-      {renderStepComponent()}
+      <h2 className="text-center booking-title mb-3">Appoinment Booking</h2>
+      <Stepper activeStep={step -1} alternativeLabel>
+        {steps.map((label, index) => (
+          <Step key={index} > {/* Màu nền và màu chữ tùy chỉnh */}
+            <StepLabel >{label}</StepLabel> {/* Màu chữ tùy chỉnh */}
+          </Step>
+        ))}
+      </Stepper>
+      <div className="mt-5">
+        {renderStepComponent()}
+      </div>
       <div className="row">
         <div className="row d-flex justify-content-between">
           <div className="col-md-1">

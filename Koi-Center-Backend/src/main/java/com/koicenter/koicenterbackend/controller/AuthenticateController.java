@@ -1,6 +1,7 @@
 package com.koicenter.koicenterbackend.controller;
 
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.koicenter.koicenterbackend.model.request.authentication.LoginRequest;
 import com.koicenter.koicenterbackend.model.request.authentication.LogoutRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
@@ -9,6 +10,7 @@ import com.koicenter.koicenterbackend.util.JWTUtilHelper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Map;
-
+@Slf4j
 @RestController
-    @RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthenticateController {
 
 
@@ -51,22 +53,16 @@ public class AuthenticateController {
       }
     }
 
-//    // http://localhost:8080/oauth2/authorization/google
-    @GetMapping("/loginGoogle")
-    public ResponseEntity<ResponseObject> loginWithGoogle(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpServletResponse response) {
-        Map<String, Object> credential = oAuth2AuthenticationToken.getPrincipal().getAttributes();
-        String token = authenticateService.loginGoogleToken(credential);
 
-        // Đặt token vào cookie
-        Cookie tokenCookie = new Cookie("authToken", token);
-        tokenCookie.setHttpOnly(true); // Chỉ có thể truy cập từ phía server (không thể đọc từ JavaScript)
-        tokenCookie.setSecure(true);   // Chỉ gửi cookie qua HTTPS (khi bạn sử dụng HTTPS)
-        tokenCookie.setPath("/");      // Cookie sẽ có sẵn trên tất cả các URL của trang
-        tokenCookie.setMaxAge(7 * 24 * 60 * 60); // Cookie có hiệu lực trong 7 ngày
-        response.addCookie(tokenCookie);
-
-        // Chuyển hướng đến frontend
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000")).build();
+    @PostMapping("/login-success")
+    public ResponseEntity<ResponseObject> logicGoogleSuccess(@RequestBody Map<String, String> request) {
+        String googleToken = request.get("token");
+        // Xác thực token từ Google
+        GoogleIdToken idToken = authenticateService.verifyGoogleToken(googleToken);
+        GoogleIdToken.Payload payload = idToken.getPayload();
+        String token = authenticateService.loginGoogleReturnToken(payload);
+        log.info(payload.toString());
+        return ResponseObject.APIRepsonse(200, "Login Successfully", HttpStatus.OK, token);
     }
 
 }

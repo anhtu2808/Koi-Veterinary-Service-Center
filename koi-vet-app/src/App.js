@@ -70,6 +70,15 @@ function App() {
       fetchMyInfo();
     }
   }, [isAuthorized, dispatch])
+  const getCookie = (name) => {
+    let cookieArr = document.cookie.split(";");
+
+    return cookieArr
+  }
+  useEffect(() => {
+    let authToken = getCookie("authToken");
+    console.log(authToken);
+  }, [])
   return (
     <PersistGate loading={null} persistor={persistor}>
       <Router>

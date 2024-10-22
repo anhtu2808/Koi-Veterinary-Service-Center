@@ -5,6 +5,7 @@ import com.koicenter.koicenterbackend.model.entity.User;
 import com.koicenter.koicenterbackend.model.enums.Role;
 import com.koicenter.koicenterbackend.repository.LoggedOutTokenRepository;
 import com.koicenter.koicenterbackend.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -72,7 +73,7 @@ public class JWTUtilHelper {
     public String generateTokenGmail(User data) {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));
 
-        String jws = Jwts.builder().subject(data.getEmail())
+        String jws = Jwts.builder().subject(data.getUsername())
                 .claim("user_id", data.getUserId())
                 .claim("role", Role.CUSTOMER)
                 .issuer("KoiCenter.com")
@@ -84,6 +85,7 @@ public class JWTUtilHelper {
                 .signWith(key).compact();
         return jws;
     }
+
 
 
 }

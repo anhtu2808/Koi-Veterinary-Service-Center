@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { fetchLogoutAPI } from "../../apis";
 import logo_admin from "../../assets/img/admin_logo.png";
-import { clearUser } from "../../store/userSlice";
+import { clearUser, setIsAuthorized } from "../../store/userSlice";
 import { ROLE } from "../../utils/constants";
 import "./SideBar.css";
+import { toast } from "react-toastify";
 
 function SideBar() {
   const isAuthorized = useSelector((state) => state?.user?.isAuthorized);
@@ -15,13 +16,19 @@ function SideBar() {
   const role = useSelector((state) => state.user.role);
 
   const handleLogout = async () => {
-    const response = await fetchLogoutAPI();
-    localStorage.removeItem("accessToken");
-    if (response.status === 200) {
-      dispatch(clearUser());
-      navigate("/");
-      window.location.reload();
+    try {
+      const response = await fetchLogoutAPI();
+      toast.success(response.data.message);
+    } catch (error) {
+      console.log("error", error)
+    } finally {
+      localStorage.removeItem("accessToken");
+      await localStorage.removeItem("accessToken");
+      await dispatch(clearUser());
+      await dispatch(setIsAuthorized(false));
+      navigate("/login");
     }
+
   };
 
   return (

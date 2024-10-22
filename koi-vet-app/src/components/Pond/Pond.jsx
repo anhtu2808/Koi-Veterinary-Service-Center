@@ -10,14 +10,14 @@ import Treatment from '../Treatment/Treatment';
 import Modal from '../Modal/Modal';
 import Select from 'react-select';
 
-const Pond = ({ title, selectedPonds, onUpdate, onUpdateTreatment, updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId }) => {
+const Pond = ({ title, selectedPonds, onUpdateTreatment, updateTrigger, isBooking, handleAddPondToBooking, isAppointment, appointmentId }) => {
     const navigate = useNavigate();
     const [pondTreatmentList, setPondTreatmentList] = useState([])
     const customerId = useSelector(state => state?.user?.customer?.customerId)
     const role = useSelector(state => state?.user?.role);
     const [prescriptions, setPrescriptions] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalData, setModalData] = useState({})
+    const [modalData] = useState({})
     //open modal for when click add treatment
     const [deleteTrigger, setDeleteTrigger] = useState(0);
     const handleDeletePond = async (pondId) => {

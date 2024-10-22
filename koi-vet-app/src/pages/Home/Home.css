@@ -17,6 +17,12 @@ body {
     padding-top: 2vh;
     padding-bottom: 2vh;
 }
+
+/* Header */
+.navbar-dark{
+    padding : 0!important;
+    line-height: 1.8;
+}
 .header-info {
     padding: 0.75rem 0;
 }
@@ -103,10 +109,11 @@ button.btn-submit i {
 
 .navbar .nav-link.active,
 .navbar .nav-link:hover {
-  background: linear-gradient(135deg ,var(--color-secondary),#1F2B6C); /* Gradient từ xanh đậm đến cam nhạt */
-  color: white !important; /* Màu cam nhạt cho chữ */
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 4px;
+  /* background: linear-gradient(135deg ,var(--color-secondary),#1F2B6C);  */
+  background-color: #b1bede;
+  color: rgb(2, 23, 98) !important; /* Màu cam nhạt cho chữ */
+  font-weight: 500;
+  /* padding: 5px 10px; */
+  /* border-radius: 4px; */
   transition: all 0.3s ease;
 }

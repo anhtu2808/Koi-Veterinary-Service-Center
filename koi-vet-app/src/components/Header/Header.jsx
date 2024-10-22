@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLogoutAPI } from "../../apis";
 import { clearUser, setIsAuthorized } from "../../store/userSlice";
 import { ROLE } from "../../utils/constants";
+import { toast } from "react-toastify";
 
 function Header() {
   const isAuthorized = useSelector((state) => state.user.isAuthorized);
@@ -15,12 +16,18 @@ function Header() {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    const response = await fetchLogoutAPI();
-    console.log("response", response.message)
-    await localStorage.removeItem("accessToken");
-    await dispatch(clearUser());
-    await dispatch(setIsAuthorized(false));
-    navigate("/login");
+    try {
+      const response = await fetchLogoutAPI();
+      toast.success(response.data.message);
+    } catch (error) {
+      console.log("error", error)
+    } finally {
+      localStorage.removeItem("accessToken");
+      await localStorage.removeItem("accessToken");
+      await dispatch(clearUser());
+      await dispatch(setIsAuthorized(false));
+      navigate("/login");
+    }
 
   };
 
