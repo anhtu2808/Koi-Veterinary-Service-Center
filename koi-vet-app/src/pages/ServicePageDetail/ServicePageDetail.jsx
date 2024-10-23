@@ -26,17 +26,17 @@ function ServicePageDetail() {
 
   const getPrice = () => {
     if (serviceDetail.serviceFor === "FISH") {
-      return `Price per fish: ${(serviceDetail.koiPrice * 1000).toLocaleString()} VND`;
+      return `Price per fish: ${(serviceDetail.koiPrice).toLocaleString()} VND`;
     } else if (serviceDetail.serviceFor === "POND") {
-      return `Price per pond: ${(serviceDetail.pondPrice * 1000).toLocaleString()} VND`;
+      return `Price per pond: ${(serviceDetail.pondPrice).toLocaleString()} VND`;
     } else {
-      return `Price for online: ${(serviceDetail.basePrice * 1000).toLocaleString()} VND`;
+      return `Price for online: ${(serviceDetail.basePrice).toLocaleString()} VND`;
     }
   };
 
   const getServiceType = () => {
     if(serviceDetail.serviceFor !== "ONLINE"){
-      return `Service Price: ${(serviceDetail.basePrice * 1000).toLocaleString()} VND`;
+      return `Service Price: ${(serviceDetail.basePrice).toLocaleString()} VND`;
     }
   }
 
