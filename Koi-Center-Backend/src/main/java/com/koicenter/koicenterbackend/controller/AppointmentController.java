@@ -108,4 +108,13 @@ public class AppointmentController {
             return ResponseObject.APIRepsonse(404, "Appoitment  not found", HttpStatus.NOT_FOUND,"");
         }
     }
+    @PutMapping("/cancel/{appointmentId}")
+    public ResponseEntity<ResponseObject> updateAppointmentBecomeCannel(@PathVariable String appointmentId) {
+        AppointmentResponse appointmentResponse = appointmentService.updateAppointmentBecomeCannel(appointmentId);
+        if (appointmentResponse != null) {
+            return ResponseObject.APIRepsonse(200, "UPDATE APPOINTMENT SUCCESSFULLY", HttpStatus.OK, appointmentResponse);
+        } else {
+            return ResponseObject.APIRepsonse(404, "Bad Request: Invalid data", HttpStatus.BAD_REQUEST, "");
+        }
+    }
 }

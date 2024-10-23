@@ -15,4 +15,5 @@ public interface KoiTreatmentRepository extends JpaRepository<KoiTreatment, Stri
     @Query(value = "")
     List<KoiTreatment> findKoiTreatmentsByAppointment_AppointmentId(String appointmentId);
     KoiTreatment findKoiTreatmentByKoiTreatmentId(String koiTreatmentId);
+    int countKoiTreatmentByAppointment_AppointmentId(String appointmentId);
 }

@@ -3,12 +3,11 @@ package com.koicenter.koicenterbackend.service;
 import com.koicenter.koicenterbackend.exception.AppException;
 import com.koicenter.koicenterbackend.exception.ErrorCode;
 import com.koicenter.koicenterbackend.mapper.appointment.AppointmentMapper;
-import com.koicenter.koicenterbackend.model.entity.Appointment;
-import com.koicenter.koicenterbackend.model.entity.Customer;
-import com.koicenter.koicenterbackend.model.entity.User;
-import com.koicenter.koicenterbackend.model.entity.Veterinarian;
+import com.koicenter.koicenterbackend.model.entity.*;
 import com.koicenter.koicenterbackend.model.enums.AppointmentStatus;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
+import com.koicenter.koicenterbackend.model.enums.InvoiceType;
+import com.koicenter.koicenterbackend.model.enums.PaymentStatus;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.veterinarian.VetScheduleRequest;
 import com.koicenter.koicenterbackend.model.response.appointment.AppointmentResponse;
@@ -49,6 +48,7 @@ public class AppointmentService {
     AppointmentMapper appointmentMapper;
     VetScheduleService vetScheduleService;
     UserRepository userRepository ;
+    InvoiceRepository invoiceRepository ;
 
     public List<AppointmentResponse> getAllAppointmentsByCustomerId(String customerId, String status) {
         List<Appointment> appointments = appointmentRepository.findByCustomer_CustomerIdOrderByCreatedAtDesc(customerId);
@@ -394,7 +394,33 @@ public class AppointmentService {
         }
         return appointmentResponses ;
     }
-
+    public AppointmentResponse updateAppointmentBecomeCannel(String appointmentId){
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow((() -> new AppException(
+                ErrorCode.APPOINTMENT_ID_NOT_FOUND.getCode(),
+                ErrorCode.APPOINTMENT_ID_NOT_FOUND.getMessage(),
+                HttpStatus.NOT_FOUND)));
+        appointment.setStatus(AppointmentStatus.CANCEL);
+        Veterinarian veterinarian = veterinarianRepository.findById(appointment.getVeterinarian().getVetId()).orElseThrow((() -> new AppException(
+                ErrorCode.VETSCHEDULE_NOT_FOUND.getCode(),
+                ErrorCode.VETSCHEDULE_NOT_FOUND.getMessage(),
+                HttpStatus.NOT_FOUND
+        )));
+        if (veterinarian!= null){
+            VetScheduleRequest vetScheduleRequest1 = VetScheduleRequest.builder()
+                    .vet_id(appointment.getVeterinarian().getVetId())
+                    .startTime(appointment.getStartTime())
+                    .endTime(appointment.getEndTime())
+                    .date(appointment.getAppointmentDate())
+                    .appointmentType(appointment.getType())
+                    .build();
+            vetScheduleService.slotDateTime(vetScheduleRequest1,"less");
+        }
+        Invoice invoice = invoiceRepository.findByAppointment_AppointmentIdAndAndType(appointmentId, InvoiceType.First);
+        invoice.setStatus(PaymentStatus.Refund);
+        invoiceRepository.save(invoice);
+        AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
+        return appointmentResponse ;
+    }
 
 }
 

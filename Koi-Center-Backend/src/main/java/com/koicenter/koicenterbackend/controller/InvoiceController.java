@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -35,14 +37,14 @@ public class InvoiceController {
         }
         return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
     }
-//    @GetMapping("/dashboard/{time}")
-//    public ResponseEntity<ResponseObject> getInvoiceDashboard(@PathVariable String time) {
-//        List<DashboardResponse> invoiceResponse = invoiceService.getDashBoardByTime(time);
-//        if (invoiceResponse == null) {
-//            return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " + time , HttpStatus.NOT_FOUND, null);
-//        }
-//        return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
-//    }
+    @GetMapping("/dashboard")
+    public ResponseEntity<ResponseObject> getInvoiceDashboard(@RequestParam LocalDate starTime , @RequestParam LocalDate endTime ,@RequestParam String time) {
+        List<DashboardResponse> invoiceResponse = invoiceService.getDashBoard(starTime,endTime,time);
+        if (invoiceResponse == null) {
+            return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " , HttpStatus.NOT_FOUND, null);
+        }
+        return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
+    }
     @PostMapping("")
     public ResponseEntity<ResponseObject> createInvoiceV2(@RequestBody InvoiceRequest invoiceRequest) {
         InvoiceResponse invoiceResponse = invoiceService.createInvoiceV2(invoiceRequest);
@@ -53,7 +55,6 @@ public class InvoiceController {
 
         }
     }
-
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAppointmentIdAndType(@RequestParam String appointmentId , @RequestParam InvoiceType type) {
         InvoiceResponse invoiceResponse = invoiceService.getAppointmentIdAndType(appointmentId,type);
