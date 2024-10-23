@@ -3,8 +3,10 @@ import "./UserManagementPage.css";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import {
   createVetAPI,
+  deleteUserAPI,
   fecthAllServicesAPI,
   fetchAllUsersAPI,
+  updateUserAPI,
 } from "../../apis";
 import { ROLE } from "../../utils/constants";
 import { Form, Input, message, Modal, Select } from "antd";
@@ -19,24 +21,28 @@ function UserManagementPage() {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const [image, setImage] = useState(null);
+  const [editUser, setEditUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   console.log(services);
+
+
 
   const handleUploadImage = (event) => {
     const file = event.target.files[0];
     setImage(file);
   };
 
-  function handleOpenModal() {
+  const handleOpenModal = () => {
     setVisible(true);
   }
 
-  function handleCloseModal() {
+  const handleCloseModal = () => {
     setVisible(false);
     form.resetFields();
   }
 
-  function handleOk() {
+  const handleOk = () => {
     form.submit();
   }
 
@@ -75,11 +81,59 @@ function UserManagementPage() {
   useEffect(() => {
     const fetchAllUsersByRole = async () => {
       const response = await fetchAllUsersAPI(role);
+      console.log(role)
+      console.log("response", response)
       setUsers(response.data || []);
     };
     fetchAllUsersByRole();
   }, [role]);
 
+
+  // async function handleSubmitEdit(values) {
+  //   try {
+  //     const requestData = {
+  //       userId: editUser.userId, // Lấy userId từ thông tin người dùng đã chọn
+  //       fullName: values.fullname,
+  //       email: values.email,
+  //       phoneNumber: values.phone, // Chuyển đổi tên trường thành phoneNumber
+  //       address: values.address,
+  //       image: values.image, // Nếu bạn có xử lý ảnh
+  //     };
+  
+  //     // Cập nhật thông tin người dùng
+  //     const response = await updateUserAPI(requestData);
+  //     message.success("User updated successfully!");
+  
+  //     // Cập nhật lại danh sách người dùng trong state
+  //     setUsers((prevUsers) =>
+  //       prevUsers.map((user) => (user.userId === editUser.userId ? response : user))
+  //     );
+  
+  //     handleCloseModal();
+  //   } catch (error) {
+  //     message.error("Failed to update user. Please try again.");
+  //   }
+  // }
+
+  const handleEditUser = (user) => {
+    setSelectedUser(user);
+    form.setFieldsValue({
+      fullname: user.fullName,
+      email: user.email,
+      userName: user.username,
+      phone: role === ROLE.CUSTOMER ? user.customer?.phone : user.veterinarian?.phone,
+      address: role === ROLE.CUSTOMER ? user.customer?.address : user.staff?.address,
+      // Thêm các trường khác nếu cần
+    });
+    setVisible(true); // Mở modal
+  };
+
+
+  const handleDeleteUser = async (userId) => {
+    await deleteUserAPI(userId);
+    message.success("User deleted successfully!");
+    setUsers(users.filter((user) => user.user_id !== userId));
+  }
 
   return (
     <>
@@ -170,7 +224,7 @@ function UserManagementPage() {
           <tbody>
             {users.length > 0 ? (
               users.map((user) => (
-                <tr key={user.userId}>
+                <tr key={user.user_id}>
                   <td>
                     <img src={user.image} alt="User" className="img-fluid" />
                   </td>
@@ -188,10 +242,10 @@ function UserManagementPage() {
                     <td>{user.customer?.address || user.staff?.address}</td>
                   )}
                   <td>
-                    <button className="btn btn-sm btn-outline-secondary">
+                    <button className="btn btn-sm btn-outline-secondary" onClick={() => handleEditUser(user)}>
                       <i className="fas fa-edit"></i>
                     </button>
-                    <button className="btn btn-sm btn-outline-secondary">
+                    <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeleteUser(user.user_id)}>
                       <i className="fas fa-trash"></i>
                     </button>
                     <button className="btn btn-sm btn-outline-secondary">
