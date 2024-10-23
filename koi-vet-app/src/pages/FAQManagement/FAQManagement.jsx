@@ -23,8 +23,10 @@ function FAQManagement() {
                 const response = await deleteFAQAPI(selectedFAQ.faqId)
                 if (response.status === 200) {
                     toast.success("FAQ deleted successfully")
+                    fetchAllFAQ()
                 }
             }
+            
         })
     }
     const fetchAllFAQ = async () => {

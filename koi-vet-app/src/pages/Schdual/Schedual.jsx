@@ -191,7 +191,7 @@ const Schedual = () => {
                     </div>
                 </div>
                 <div className='d-flex flex-column gap-5 mt-5 calendar-container'>
-                    <h3>Appointment List</h3>
+                    <h3>Appointment List  {pickedDay? `for ${pickedDay}`: null}</h3>
                     <table className='table table-bordered'>
                         <thead>
                             <tr>

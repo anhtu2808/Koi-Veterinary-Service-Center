@@ -141,7 +141,7 @@ function Header() {
                 <Link to="/profile" className="btn btn-outline-light">
                   <i className="fas fa-user"></i>
                 </Link>}
-              {[ROLE.VETERINARIAN, ROLE.STAFF].includes(user?.role) &&
+              {[ROLE.VETERINARIAN, ROLE.STAFF,ROLE.MANAGER].includes(user?.role) &&
                 <Link to="/admin" className="btn btn-outline-light">
                   <i className="fas fa-user"></i>
                 </Link>}

@@ -45,7 +45,7 @@ function SideBar() {
           </Link>
         </li>
 
-        {(role === ROLE.ADMIN || role === ROLE.STAFF) && (
+        {(role === ROLE.MANAGER || role === ROLE.STAFF) && (
           <li className="nav-item">
             <Link to="/admin/usermanagement" className={`nav-link ${location.pathname === '/admin/usermanagement' ? 'active' : ''}`}>
               <i className="fas fa-users"></i> Users
@@ -64,7 +64,7 @@ function SideBar() {
             <i className="fas fa-cogs"></ i> Services Management
           </Link>
         </li>
-        {(role === ROLE.ADMIN || role === ROLE.STAFF) && (
+        {(role === ROLE.MANAGER || role === ROLE.STAFF) && (
           <>
             <li className="nav-item">
               <Link to="/admin/schedual" className={`nav-link ${location.pathname === '/admin/schedual' ? 'active' : ''}`}>
