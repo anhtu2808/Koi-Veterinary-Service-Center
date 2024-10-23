@@ -53,6 +53,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/store';
 import FAQManagement from './pages/FAQManagement/FAQManagement';
 import CreateMedicinePage from './pages/CreateMedicinePage/CreateMedicinePage';
+import AboutUsPage from './pages/AboutUsPage/AboutUsPage';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -94,6 +95,7 @@ function App() {
           <Route path="/*" element={
             <UserLayout>
               <Routes>
+                <Route path="/aboutus" element={<AboutUsPage />} />
                 <Route path="/services/:serviceId" element={<ServicePageDetail />} />
                 <Route path="/faq" element={<FAQ />} /> {/* Trang chủ User */}
                 <Route path="/" element={<HomePage />} />
