@@ -1,0 +1,4 @@
+.custom-blue-dot {
+    color: var(--color-secondary);
+    font-size: 20px;
+}

@@ -9,7 +9,7 @@ import {
   updateUserAPI,
 } from "../../apis";
 import { ROLE } from "../../utils/constants";
-import { Form, Input, message, Modal, Select } from "antd";
+import { Form, Input, message, Modal, Select, Table } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Col, Row } from "react-bootstrap";
 
@@ -21,12 +21,8 @@ function UserManagementPage() {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const [image, setImage] = useState(null);
-  const [editUser, setEditUser] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
-
-  console.log(services);
-
-
+  const [editingUser, setEditingUser] = useState({});
+  const [editingUserId, setEditingUserId] = useState(null);
 
   const handleUploadImage = (event) => {
     const file = event.target.files[0];
@@ -40,11 +36,11 @@ function UserManagementPage() {
   const handleCloseModal = () => {
     setVisible(false);
     form.resetFields();
-  }
+  };
 
   const handleOk = () => {
-    form.submit();
-  }
+      form.submit(); 
+  };
 
   async function handleSubmit(values) {
     try {
@@ -58,7 +54,7 @@ function UserManagementPage() {
           fullname: values.fullname,
           address: values.address,
           phone: values.phone,
-          status: values.status === "true", // Convert string to boolean
+          status: values.status === "true", 
           image: values.image,
         },
       };
@@ -70,6 +66,7 @@ function UserManagementPage() {
       message.error("Failed to create user. Please try again.");
     }
   }
+
   useEffect(() => {
     const fetchAllServices = async () => {
       const response = await fecthAllServicesAPI();
@@ -89,51 +86,180 @@ function UserManagementPage() {
   }, [role]);
 
 
-  // async function handleSubmitEdit(values) {
-  //   try {
-  //     const requestData = {
-  //       userId: editUser.userId, // Lấy userId từ thông tin người dùng đã chọn
-  //       fullName: values.fullname,
-  //       email: values.email,
-  //       phoneNumber: values.phone, // Chuyển đổi tên trường thành phoneNumber
-  //       address: values.address,
-  //       image: values.image, // Nếu bạn có xử lý ảnh
-  //     };
-  
-  //     // Cập nhật thông tin người dùng
-  //     const response = await updateUserAPI(requestData);
-  //     message.success("User updated successfully!");
-  
-  //     // Cập nhật lại danh sách người dùng trong state
-  //     setUsers((prevUsers) =>
-  //       prevUsers.map((user) => (user.userId === editUser.userId ? response : user))
-  //     );
-  
-  //     handleCloseModal();
-  //   } catch (error) {
-  //     message.error("Failed to update user. Please try again.");
-  //   }
-  // }
-
-  const handleEditUser = (user) => {
-    setSelectedUser(user);
-    form.setFieldsValue({
-      fullname: user.fullName,
-      email: user.email,
-      userName: user.username,
-      phone: role === ROLE.CUSTOMER ? user.customer?.phone : user.veterinarian?.phone,
-      address: role === ROLE.CUSTOMER ? user.customer?.address : user.staff?.address,
-      // Thêm các trường khác nếu cần
-    });
-    setVisible(true); // Mở modal
-  };
-
-
   const handleDeleteUser = async (userId) => {
     await deleteUserAPI(userId);
     message.success("User deleted successfully!");
     setUsers(users.filter((user) => user.user_id !== userId));
   }
+
+  const handleSave = async (userId) => {
+    console.log("Saving user data:", { userId, ...editingUser });
+    try {
+      // Prepare the data in the format expected by the API
+      const userData = {
+        userId: userId,
+        fullName: editingUser.fullName,
+        email: editingUser.email,
+        phoneNumber: editingUser.phone, // Note the change from 'phone' to 'phoneNumber'
+        address: editingUser.address,
+        image: editingUser.image
+      };
+
+      await updateUserAPI(userData);
+      message.success("User updated successfully!");
+      
+      // Update the local state to reflect the changes
+      setUsers(users.map(user => 
+        user.user_id === userId ? { ...user, ...userData } : user
+      ));
+      
+      setEditingUserId(null);
+    } catch (error) {
+      console.error("Error updating user:", error);
+      message.error("Failed to update user. Please try again.");
+    }
+  };
+  
+
+  // const handleEditUser = (userId) => {
+  //   const userToEdit = users.find(user => user.user_id === userId);
+  //   setEditingUserId(userId);
+  //   setEditingUser({ ...userToEdit }); // Set initial editing state
+  // };
+
+  const handleEditUser = (userId) => {
+    const userToEdit = users.find(user => user.user_id === userId);
+    
+    // Extract role-based phone and address
+    const phone =
+      userToEdit.role === ROLE.CUSTOMER
+        ? userToEdit.customer?.phone
+        : userToEdit.role === ROLE.VETERINARIAN
+        ? userToEdit.veterinarian?.phone
+        : userToEdit.staff?.phone || "";
+  
+    const address =
+      userToEdit.role === ROLE.CUSTOMER
+        ? userToEdit.customer?.address
+        : userToEdit.staff?.address || "";
+  
+    setEditingUserId(userId);
+    setEditingUser({
+      ...userToEdit,
+      phone,
+      address,
+    });
+  };
+
+  const columns = [
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      width: 100,
+      render: (image) => (
+        <img src={image} alt="user" style={{ width: "100px", height: "100px" }} />
+      ),
+    },
+    {
+      title: "Username",
+      dataIndex: "username",
+      key: "username",
+      width: 100,
+      render: (text, user) => (
+        editingUserId === user.user_id ? (
+          <Input 
+            defaultValue={text} 
+            onChange={(e) => setEditingUser({ ...editingUser, username: e.target.value })} 
+          />
+        ) : text
+      ),
+    },
+    {
+      title: "Full Name",
+      dataIndex: "fullName",
+      key: "fullName",
+      width: 100,
+      render: (text, user) => (
+        editingUserId === user.user_id ? (
+          <Input 
+            defaultValue={text} 
+            onChange={(e) => setEditingUser({ ...editingUser, fullName: e.target.value })} 
+          />
+        ) : text
+      ),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      width: 100,
+      render: (text, user) => (
+        editingUserId === user.user_id ? (
+          <Input 
+            defaultValue={text} 
+            onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })} 
+          />
+        ) : text
+      ),
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+      key: "phone",
+      width: 100,
+      render: (text, user) => (
+        editingUserId === user.user_id ? (
+          <Input
+            value={editingUser.phone}
+            onChange={(e) => setEditingUser({ ...editingUser, phone: e.target.value })}
+          />
+        ) : user.role === ROLE.CUSTOMER
+          ? user.customer?.phone
+          : user.role === ROLE.VETERINARIAN
+          ? user.veterinarian?.phone
+          : user.staff?.phone || '-'
+      ),
+    },
+    // Conditionally render the Address column
+  ...(role !== ROLE.VETERINARIAN
+    ? [{
+        title: "Address",
+        dataIndex: "address",
+        key: "address",
+        width: 100,
+        render: (text, user) => (
+          editingUserId === user.user_id ? (
+            <Input
+              value={editingUser.address}
+              onChange={(e) => setEditingUser({ ...editingUser, address: e.target.value })}
+            />
+          ) : user.role === ROLE.CUSTOMER
+            ? user.customer?.address
+            : user.staff?.address || '-'
+        ),
+      }]
+    : []), // If the role is VETERINARIAN, do not include this column
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      width: 100,
+      render: (text, user) => (
+        <>
+          {editingUserId === user.user_id ? (
+            <>
+              <button className="btn btn-sm btn-outline-success" onClick={() => handleSave(user.user_id)}>Save</button>
+              <button className="btn btn-sm btn-outline-secondary" onClick={() => setEditingUserId(null)}>Cancel</button>
+            </>
+          ) : (
+            <button className="btn btn-sm btn-outline-secondary" onClick={() => handleEditUser(user.user_id)}>Edit</button>
+          )}
+          <button className="btn btn-sm btn-outline-danger" onClick={() => handleDeleteUser(user.user_id)}>Delete</button>
+        </>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -196,73 +322,10 @@ function UserManagementPage() {
         </div>
       </nav>
       <div className="table-responsive">
-        <table className="table table-striped table-sm tableleft">
-          <colgroup>
-            <col style={{ width: "10%" }} /> {/* Image */}
-            <col style={{ width: "15%" }} /> {/* Username */}
-            <col style={{ width: "15%" }} /> {/* Fullname */}
-            <col style={{ width: "20%" }} /> {/* Email */}
-            <col style={{ width: "10%" }} /> {/* Phone */}
-            {(role === ROLE.CUSTOMER || role === ROLE.STAFF) && (
-              <col style={{ width: "20%" }} />
-            )}
-            <col style={{ width: "10%" }} /> {/* Action */}
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Username</th>
-              <th>Fullname</th>
-              <th>Email</th>
-              <th>Phone</th>
-              {(role === ROLE.CUSTOMER || role === ROLE.STAFF) && (
-                <th>Address</th>
-              )}
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.length > 0 ? (
-              users.map((user) => (
-                <tr key={user.user_id}>
-                  <td>
-                    <img src={user.image} alt="User" className="img-fluid" />
-                  </td>
-                  <td>{user.username}</td>
-                  <td>{user.fullName}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    {role === ROLE.CUSTOMER
-                      ? user.customer?.phone
-                      : role === ROLE.VETERINARIAN
-                      ? user.veterinarian?.phone
-                      : user.staff?.phone}
-                  </td>
-                  {(role === ROLE.CUSTOMER || role === ROLE.STAFF) && (
-                    <td>{user.customer?.address || user.staff?.address}</td>
-                  )}
-                  <td>
-                    <button className="btn btn-sm btn-outline-secondary" onClick={() => handleEditUser(user)}>
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeleteUser(user.user_id)}>
-                      <i className="fas fa-trash"></i>
-                    </button>
-                    <button className="btn btn-sm btn-outline-secondary">
-                      <i className="fas fa-ellipsis-v"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="text-center">
-                  No users found for the selected role.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+       
+
+        <Table dataSource={users} columns={columns} />
+
 
         <Modal open={visible} onOk={handleOk} onCancel={handleCloseModal} width={1000}>
           <Form labelCol={{ span: 24 }} form={form} onFinish={handleSubmit} layout="vertical">
