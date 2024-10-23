@@ -7,6 +7,8 @@ import com.koicenter.koicenterbackend.model.entity.Appointment;
 import com.koicenter.koicenterbackend.model.entity.Customer;
 import com.koicenter.koicenterbackend.model.entity.Invoice;
 import com.koicenter.koicenterbackend.model.entity.User;
+import com.koicenter.koicenterbackend.model.enums.InvoiceType;
+import com.koicenter.koicenterbackend.model.enums.PaymentStatus;
 import com.koicenter.koicenterbackend.model.momo.PaymentResponse;
 import com.koicenter.koicenterbackend.model.momo.RequestType;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
@@ -167,10 +169,14 @@ public class PaymentController {
 
     private void insertToInvoice(String appointmentId, Float ammout) {
         Invoice newInvoice = Invoice.builder()
-                .paymentStatus(true)
+                .status(PaymentStatus.Completed)
                 .totalPrice(ammout)
                 .createAt(LocalDateTime.now())
                 .appointment(appointmentRepository.findAppointmentById(appointmentId))
+                .type(InvoiceType.First)
+                .quantity(1)
+                .status(PaymentStatus.Completed)
+                .unitPrice(ammout)
                 .build();
         invoiceRepository.save(newInvoice);
     }

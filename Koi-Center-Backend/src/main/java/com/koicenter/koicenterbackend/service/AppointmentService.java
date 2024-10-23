@@ -64,7 +64,6 @@ public class AppointmentService {
                         .status(appointment.getStatus())
                         .location(String.valueOf(appointment.getLocation()))
                         .createdAt(appointment.getCreatedAt())
-                        .depositedMoney(appointment.getDepositedMoney())
                         .location(String.valueOf(appointment.getLocation()))
                         .result(String.valueOf(appointment.getResult()))
                         .startTime(appointment.getStartTime())
@@ -99,7 +98,6 @@ public class AppointmentService {
                 .status(appointment.getStatus())
                 .location(String.valueOf(appointment.getLocation()))
                 .createdAt(appointment.getCreatedAt())
-                .depositedMoney(appointment.getDepositedMoney())
                 .location(String.valueOf(appointment.getLocation()))
                 .result(String.valueOf(appointment.getResult()))
                 .startTime(appointment.getStartTime())
@@ -111,7 +109,6 @@ public class AppointmentService {
                 .serviceId(appointment.getService().getServiceId())
                 .distance(appointment.getDistance())
                 .code(appointment.getCode())
-                .depositedMoney(appointment.getDepositedMoney())
                 .build();
         if(appointment.getVeterinarian()!=null){
 
@@ -143,7 +140,6 @@ public class AppointmentService {
                         .status(appointment.getStatus())
                         .location(String.valueOf(appointment.getLocation()))
                         .createdAt(appointment.getCreatedAt())
-                        .depositedMoney(appointment.getDepositedMoney())
                         .location(String.valueOf(appointment.getLocation()))
                         .result(String.valueOf(appointment.getResult()))
                         .startTime(appointment.getStartTime())
@@ -168,8 +164,6 @@ public class AppointmentService {
         Veterinarian veterinarian = null;
         if (!appointmentRequest.getVetId().equalsIgnoreCase("SKIP")) {
             veterinarian = veterinarianRepository.findByVetId(appointmentRequest.getVetId());
-//            log.info("Veterian ID " + veterinarian.getVetId());
-
             VetScheduleRequest vetScheduleRequest = VetScheduleRequest.builder()
                     .vet_id(appointmentRequest.getVetId())
                     .endTime(appointmentRequest.getEndTime())
@@ -191,12 +185,10 @@ public class AppointmentService {
         appointment.setCustomer(customer);
         appointment.setVeterinarian(veterinarian);
         appointment.setService(service);
-        appointment.setDepositedMoney(service.getBasePrice());
         appointment.setCode(getCode(appointmentRequest.getType()));
         appointmentRepository.save(appointment);
         AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
         appointmentResponse.setCustomerId(appointment.getCustomer().getCustomerId());
-//        appointmentResponse.setVetId(appointment.getVeterinarian().getVetId());
         appointmentResponse.setServiceId(appointment.getService().getServiceId());
         log.info("appoimtID" + appointmentResponse.getAppointmentId());
         if (appointment.getVeterinarian() != null) {
@@ -283,7 +275,6 @@ public class AppointmentService {
             if(appointmentRequest.getCreatedAt()!=null){
                 appointment.setCreatedAt(appointmentRequest.getCreatedAt());
             }
-            appointment.setDepositedMoney(appointmentRequest.getDepositedMoney());
             appointment.setCustomer(customer);
             appointment.setService(service);
 
@@ -326,7 +317,6 @@ public class AppointmentService {
                     .status(appointment.getStatus())
                     .location(String.valueOf(appointment.getLocation()))
                     .createdAt(appointment.getCreatedAt())
-                    .depositedMoney(appointment.getDepositedMoney())
                     .location(String.valueOf(appointment.getLocation()))
                     .result(appointment.getResult())
                     .startTime(appointment.getStartTime())

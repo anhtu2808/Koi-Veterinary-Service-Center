@@ -40,9 +40,6 @@ public class Appointment {
     ZonedDateTime createdAt;
     @Enumerated(EnumType.STRING)
     AppointmentType type;
-    @Column(name = "deposited_money")
-    float depositedMoney;
-
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     Customer customer;
@@ -51,8 +48,8 @@ public class Appointment {
     @JoinColumn(name = "vet_id", referencedColumnName = "vet_id")
     Veterinarian veterinarian;
 
-    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
-    Invoice invoice;
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
+    List<Invoice> invoice;
 
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
     Feedback feedback;

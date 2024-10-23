@@ -10,6 +10,7 @@ import com.koicenter.koicenterbackend.mapper.koi.KoiTreatmentMapper;
 import com.koicenter.koicenterbackend.model.entity.*;
 import com.koicenter.koicenterbackend.model.enums.AppointmentStatus;
 import com.koicenter.koicenterbackend.model.enums.AppointmentType;
+import com.koicenter.koicenterbackend.model.enums.InvoiceType;
 import com.koicenter.koicenterbackend.model.request.appointment.AppointmentRequest;
 import com.koicenter.koicenterbackend.model.request.koi.KoiTreatmentRequest;
 import com.koicenter.koicenterbackend.model.request.pond.PondTreatmentRequest;
@@ -178,7 +179,7 @@ public class TreatmentService {
         List<KoiTreatment> koiTreatments = koiTreatmentRepository.findKoiTreatmentsByAppointment_AppointmentId(appointment.getAppointmentId());
         List<PondTreatment> pondTreatments = pondTreatmentRepository.findPondTreatmentsByAppointment_AppointmentId(appointment.getAppointmentId());
         List<Delivery> deliverys= deliveryRepository.findAll() ;
-        Invoice invoice = invoiceRepository.findByAppointment_AppointmentId(appointmentId);
+        Invoice invoice = invoiceRepository.findByAppointment_AppointmentIdAndAndType(appointmentId, InvoiceType.First);
         float locationPrice = 0 ; // km
         int quantity  = 0 ;
         float price = 0 ;
@@ -202,7 +203,6 @@ public class TreatmentService {
             appointmentResponse.setHomeVisitPrice(price); // gia tien theo khoang cach
             appointmentResponse.setTotalKoiPondFee(totalQuantity); // tien ca tien pond * quantity
             appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
-            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney()); // tien da lay
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
             return(T)appointmentResponse;
         }else if (!pondTreatments.isEmpty()){
@@ -218,7 +218,6 @@ public class TreatmentService {
             appointmentResponse.setHomeVisitPrice(price); // gia tien theo khoang cach
             appointmentResponse.setTotalKoiPondFee(totalQuantity); // tien ca tien pond * quantity
             appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
-            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney()); // tien da lay
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
 
 
@@ -229,10 +228,7 @@ public class TreatmentService {
             AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointment);
             appointmentResponse.setQuantity(quantity); // so luong ca pond
             appointmentResponse.setTotalHomeVisitFee(locationPrice); // tong (gia phi di chuyen )
-//            appointmentResponse.setHomeVisitPrice(price); // gia tien theo khoang cach
-//            appointmentResponse.setTotalKoiPondFee(totalQuantity); // tien ca tien pond * quantity
-            appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
-            appointmentResponse.setDepositedMoney(appointment.getDepositedMoney()); // tien da lay
+           appointmentResponse.setBalanceDue(totalQuantity+locationPrice); // tien con lai
             appointmentResponse.setInvoiceId(invoice.getInvoiceId());
 
 

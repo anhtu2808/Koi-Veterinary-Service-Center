@@ -1,6 +1,8 @@
 package com.koicenter.koicenterbackend.model.request.invoice;
 
 import com.koicenter.koicenterbackend.model.entity.Appointment;
+import com.koicenter.koicenterbackend.model.enums.InvoiceType;
+import com.koicenter.koicenterbackend.model.enums.PaymentStatus;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -11,10 +13,11 @@ import java.time.LocalDateTime;
 @Data
 public class InvoiceRequest {
     String invoiceId;
-    LocalDateTime updateDate;
+    float unitPrice;
     float totalPrice;
-    boolean paymentStatus;
     LocalDateTime createAt;
     String  appointmentId;
-
+    int quantity ;
+    PaymentStatus status;
+    InvoiceType type ;
 }

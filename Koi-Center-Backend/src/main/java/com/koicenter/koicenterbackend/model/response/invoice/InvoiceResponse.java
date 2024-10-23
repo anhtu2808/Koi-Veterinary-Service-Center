@@ -1,5 +1,7 @@
 package com.koicenter.koicenterbackend.model.response.invoice;
 
+import com.koicenter.koicenterbackend.model.enums.InvoiceType;
+import com.koicenter.koicenterbackend.model.enums.PaymentStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +15,14 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class InvoiceResponse {
      double totalPrice;
-     boolean paymentStatus;
+     PaymentStatus status;
     LocalDateTime createAt;
-    LocalDateTime updateDate;
+    float unitPrice;
     String invoiceId;
+    InvoiceType type ;
+    int quantity ;
+    int code ;
+
 
 
 }
