@@ -48,5 +48,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
 
     List<Appointment> findByVeterinarian_VetIdAndAppointmentDate(String vetId, LocalDate date);
 
-
+    @Query(value = "SELECT * FROM appointment WHERE Date(created_at) >= startTime and  Date(created_at) <= startTime",nativeQuery = true)
+    List<Appointment>findByStartTimeAndEndTimeByDate(@Param("starTime") String starTime,@Param("endTime") String endTime);
 }

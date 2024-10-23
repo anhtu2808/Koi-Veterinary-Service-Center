@@ -1,5 +1,8 @@
 package com.koicenter.koicenterbackend.model.entity;
 
+import com.koicenter.koicenterbackend.model.enums.AppointmentType;
+import com.koicenter.koicenterbackend.model.enums.InvoiceType;
+import com.koicenter.koicenterbackend.model.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,17 +19,22 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "invoice_id")
+
     String invoiceId;
-    @Column(name = "update_date")
-    LocalDateTime updatDate;
     @Column(name = "total_price")
     float totalPrice;
-    @Column(name = "payment_status")
-    boolean paymentStatus;
+    @Enumerated(EnumType.STRING)
+    PaymentStatus status;
+    @Enumerated(EnumType.STRING)
+    InvoiceType type;
     @Column(name = "create_at")
     LocalDateTime createAt;
+    @Column(name = "unit_price")
+    float unitPrice;
+    int quantity ;
 
-    @OneToOne
+    int code ;
+    @ManyToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "appointment_id")
     Appointment appointment;
 }
