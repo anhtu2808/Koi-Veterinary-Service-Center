@@ -402,6 +402,20 @@ export const updateInvoiceAPI = async (invoiceId, data) => {
     return response.data;
 }
 
+export const fetchInvoicesByAppointmentIdAPI = async (appointmentId) => {
+    const response = await api.get(`/invoices/appointmentId?appointmentId=${appointmentId}`);
+    return response.data;
+}
+export const fetchInvoiceByAppointmentIdAndTypeAPI = async (appointmentId, type) => {
+    const response = await api.get(`/invoices/appointmentId?appointmentId=${appointmentId}&type=${type}`);
+    return response.data;
+}
+
+export const createInvoiceV2API = async (data) => {
+    const response = await api.post(`/invoices`, data);
+    return response.data;
+}
+
 //Rating
 export const fetchAllRatingByServiceIdAPI = async (serviceId) => {
     const response = await api.get(`/feedbacks/${serviceId}`);

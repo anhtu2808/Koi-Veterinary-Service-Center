@@ -19,8 +19,8 @@ public class InvoiceController {
     @Autowired
     InvoiceService invoiceService;
 
-    @GetMapping("/{appointmentId}")
-    public ResponseEntity<ResponseObject> getInvoiceByAppointmentId(@PathVariable String appointmentId) {
+    @GetMapping("/appointmentId")
+    public ResponseEntity<ResponseObject> getInvoiceByAppointmentId(@RequestParam String appointmentId) {
         List<InvoiceResponse> invoiceResponse = invoiceService.getInvoiceByAppointmentId(appointmentId);
         if (invoiceResponse == null) {
             return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " + appointmentId, HttpStatus.NOT_FOUND, null);

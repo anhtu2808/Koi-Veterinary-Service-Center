@@ -82,7 +82,7 @@ const HomeVisitPricePage = () => {
                         <table className="delivery-pricing-table-content">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>No</th>
                                     <th>From (km)</th>
                                     <th>To (km)</th>
                                     <th>Price (VND/km)</th>

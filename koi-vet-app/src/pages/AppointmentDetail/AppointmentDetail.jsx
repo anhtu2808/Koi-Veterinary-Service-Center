@@ -7,7 +7,7 @@ import { APPOINTMENT_STATUS, BOOKING_TYPE, ROLE, SERVICE_FOR } from "../../utils
 import { useSelector } from "react-redux";
 import { Modal } from "antd";
 import PreLoader from "../../components/Preloader/Preloader";
-
+import InvoiceList from "../../components/InvoiceList/InvoiceList";
 const updateAppointment = async (appointmentData, appointmentId) => {
   try {
     await updateAppointmentAPI(appointmentData, appointmentId);
@@ -22,6 +22,7 @@ function AppointmentDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [assignVetTrigger, setAssignVetTrigger] = useState(0);
   const [service, setService] = useState({});
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [navigateLink, setNavigateLink] = useState({
     link: null,
     title: null
@@ -467,7 +468,7 @@ function AppointmentDetail() {
         </div>
 
         <div className="d-flex justify-content-between align-items-center mb-3">
-          {role !== ROLE.CUSTOMER && appointment.status !== APPOINTMENT_STATUS.FINISH && (
+          {/* {role === ROLE.CUSTOMER && appointment.status !== APPOINTMENT_STATUS.FINISH && ( */}
             <>
               <div className="col-md-6">
                 <button
@@ -487,17 +488,17 @@ function AppointmentDetail() {
                   </button>
                 )}
               </div>
-              {appointment.status === APPOINTMENT_STATUS.READY_FOR_PAYMENT && !isEditing ?
 
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => navigate(`/admin/paymentcheckout/${appointmentId}`, { state: { appointment } })}
-                >
-                  Invoice
-                </button> : null}
+
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setIsInvoiceModalOpen(true)}
+              >
+                Invoices
+              </button>
             </>
-          )}
+          
           {isEditing && (
             <button type="submit" className="btn btn-primary">
               Save Changes
@@ -507,14 +508,13 @@ function AppointmentDetail() {
       </form>
 
       <div className="d-flex justify-content-between align-items-center">
-
-
         <button
           className="btn btn-secondary"
           onClick={() => navigate(-1)}
         >
           Back to All Appointments
         </button>
+
         {navigateLink.link && (appointment.status !== "FINISH" || appointment.type !== "ONLINE") ?
           <button
             onClick={() => navigate(navigateLink.link)}
@@ -526,6 +526,13 @@ function AppointmentDetail() {
 
       </div>
 
+
+    <Modal
+      open={isInvoiceModalOpen}
+      onCancel={() => setIsInvoiceModalOpen(false)}
+    >
+     <InvoiceList/>
+    </Modal>
     </>
 
   );
