@@ -56,6 +56,8 @@ public class PaymentController {
     @Autowired
     InvoiceRepository invoiceRepository;
     @Autowired
+    InvoiceService invoiceService;
+    @Autowired
     TreatmentService treatmentService;
     private static TreamentRequest treamentRequestTemp;
     private static Float amountTemp;
@@ -175,7 +177,7 @@ public class PaymentController {
                 .appointment(appointmentRepository.findAppointmentById(appointmentId))
                 .type(InvoiceType.First)
                 .quantity(1)
-                .status(PaymentStatus.Completed)
+                .code(invoiceService.getCode())
                 .unitPrice(ammout)
                 .build();
         invoiceRepository.save(newInvoice);

@@ -90,13 +90,15 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET,"api/v1/veterinarians/getByServiceId").permitAll()
                             .requestMatchers(HttpMethod.POST, "api/v1/appointments").permitAll()
                             .requestMatchers(HttpMethod.PUT, "api/v1/appointments/update").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "api/v1/appointments/cancel/{appointmentId}").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/appointments/userName/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/appointments/by-vetId/{vetId}").permitAll()
 
 
+
                             .requestMatchers(HttpMethod.POST, "api/v1/invoices").permitAll()
                             .requestMatchers(HttpMethod.PUT, "api/v1/invoices/update/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "api/v1/invoices/dashboard/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "api/v1/invoices/dashboard/day").permitAll()
                             .requestMatchers(HttpMethod.GET, "api/v1/invoices").permitAll()
                             .requestMatchers(HttpMethod.GET, "api/v1/invoices/**").permitAll()
 

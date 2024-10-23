@@ -33,21 +33,57 @@ public interface AppointmentRepository extends JpaRepository<Appointment,String>
     Page<Appointment> findByStatusOrderByCreatedAtDesc(AppointmentStatus status, Pageable pageable);
 
     List<Appointment> findAllByService_ServiceId(String serviceId);
-
-
     List<Appointment> findAllByOrderByCreatedAtDesc();
-    List<Appointment> findByCreatedAtBetween( ZonedDateTime starDate , ZonedDateTime endDate);
-
-
-    @Query(value = "SELECT * FROM appointment WHERE MONTH(created_at) = :month", nativeQuery = true)
-    List<Appointment> findByCreatedAtMonth(@Param("month") int month);
-    @Query(value = "SELECT * FROM appointment WHERE YEAR(created_at) = :year", nativeQuery = true)
-    List<Appointment> findByCreatedAtYear(@Param("year") int year);
-    @Query(value = "SELECT * FROM appointment WHERE Date(created_at) = :date", nativeQuery = true)
-    List<Appointment> findByCreatedAtDate(@Param("date") int date);
-
     List<Appointment> findByVeterinarian_VetIdAndAppointmentDate(String vetId, LocalDate date);
+    //Date
+    @Query(value = "SELECT COUNT(kt.koi_treatment_id) FROM appointment a JOIN koi_treatment kt ON a.appointment_id = kt.appointment_id " +
+            "WHERE appointment_date = :appointmentDate", nativeQuery = true)
+    int countKoiTreatmentByDate(@Param("appointmentDate") String appointmentDate);
 
-    @Query(value = "SELECT * FROM appointment WHERE Date(created_at) >= startTime and  Date(created_at) <= startTime",nativeQuery = true)
-    List<Appointment>findByStartTimeAndEndTimeByDate(@Param("starTime") String starTime,@Param("endTime") String endTime);
-}
+    @Query(value = "SELECT COUNT(pt.pond_treatment_id) FROM appointment a JOIN pond_treatment pt ON a.appointment_id = pt.appointment_id " +
+            "WHERE appointment_date = :appointmentDate", nativeQuery = true)
+    int countPondTreatmentByDate(@Param("appointmentDate") String appointmentDate);
+
+    @Query(value = "SELECT COUNT(a.appointment_id) FROM appointment a " +
+            "WHERE appointment_date = :appointmentDate", nativeQuery = true)
+    int countAppointmentsByDate(@Param("appointmentDate") String appointmentDate);
+
+    @Query(value = "SELECT SUM(i.total_price) FROM appointment a JOIN invoice i ON a.appointment_id = i.appointment_id " +
+            "WHERE appointment_date = :appointmentDate", nativeQuery = true)
+    Double sumTotalPriceByDate(@Param("appointmentDate") String appointmentDate);
+
+    //YEAR
+    @Query(value = "SELECT COUNT(kt.koi_treatment_id) FROM appointment a JOIN koi_treatment kt ON a.appointment_id = kt.appointment_id " +
+            "WHERE YEAR(appointment_date) = :year", nativeQuery = true)
+    int countKoiTreatmentByYear(@Param("year") int year);
+
+    @Query(value = "SELECT COUNT(pt.pond_treatment_id) FROM appointment a JOIN pond_treatment pt ON a.appointment_id = pt.appointment_id " +
+            "WHERE  YEAR(appointment_date) = :year", nativeQuery = true)
+    int countPondTreatmentByYear(@Param("year") int year);
+
+    @Query(value = "SELECT COUNT(a.appointment_id) FROM appointment a " +
+            "WHERE YEAR(appointment_date) = :year", nativeQuery = true)
+    int countAppointmentsByYear(@Param("year") int year);
+
+    @Query(value = "SELECT SUM(i.total_price) FROM appointment a JOIN invoice i ON a.appointment_id = i.appointment_id " +
+            "WHERE YEAR(appointment_date) = :year", nativeQuery = true)
+    Double sumTotalPriceByYear(@Param("year") int year);
+
+    //Month
+    @Query(value = "SELECT COUNT(kt.koi_treatment_id) FROM appointment a JOIN koi_treatment kt ON a.appointment_id = kt.appointment_id " +
+            "WHERE YEAR(appointment_date) = :year and MONTH(appointment_date) = :month", nativeQuery = true)
+    int countKoiTreatmentByMonth(@Param("month") int month, @Param("year") int year);
+
+    @Query(value = "SELECT COUNT(pt.pond_treatment_id) FROM appointment a JOIN pond_treatment pt ON a.appointment_id = pt.appointment_id " +
+            "WHERE YEAR(appointment_date) = :year and MONTH(appointment_date) = :month", nativeQuery = true)
+    int countPondTreatmentByMonth(@Param("month") int month,@Param("year") int year  );
+
+    @Query(value = "SELECT COUNT(a.appointment_id) FROM appointment a " +
+            "WHERE YEAR(appointment_date) = :year and MONTH(appointment_date) = :month", nativeQuery = true)
+    int countAppointmentsByMonth(@Param("month") int month, @Param("year") int year);
+
+    @Query(value = "SELECT SUM(i.total_price) FROM appointment a JOIN invoice i ON a.appointment_id = i.appointment_id " +
+            "WHERE YEAR(appointment_date) = :year and MONTH(appointment_date) = :month", nativeQuery = true)
+    Double sumTotalPriceByMonth(@Param("month") int month, @Param("year") int year);
+
+    }
