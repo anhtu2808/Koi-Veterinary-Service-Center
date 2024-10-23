@@ -95,6 +95,7 @@ public class PaymentController {
             String status = request.getParameter("vnp_ResponseCode");
             if ("00".equals(status)) {
                 TreamentRequest treatmentRequest = treamentRequestTemp;
+
                 if (treatmentRequest == null) {
                     return ResponseObject.APIRepsonse(400, "Treatment request not found", HttpStatus.BAD_REQUEST, null);
                 }
