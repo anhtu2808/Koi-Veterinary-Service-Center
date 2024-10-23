@@ -1,5 +1,6 @@
 package com.koicenter.koicenterbackend.controller;
 
+import com.koicenter.koicenterbackend.model.enums.InvoiceType;
 import com.koicenter.koicenterbackend.model.request.invoice.InvoiceRequest;
 import com.koicenter.koicenterbackend.model.response.ResponseObject;
 import com.koicenter.koicenterbackend.model.response.invoice.DashboardResponse;
@@ -18,9 +19,9 @@ public class InvoiceController {
     @Autowired
     InvoiceService invoiceService;
 
-    @PostMapping("/get")
-    public ResponseEntity<ResponseObject> getInvoice(@RequestParam String appointmentId) {
-        InvoiceResponse invoiceResponse = invoiceService.getInvoiceByAppointmentId(appointmentId);
+    @GetMapping("/{appointmentId}")
+    public ResponseEntity<ResponseObject> getInvoiceByAppointmentId(@PathVariable String appointmentId) {
+        List<InvoiceResponse> invoiceResponse = invoiceService.getInvoiceByAppointmentId(appointmentId);
         if (invoiceResponse == null) {
             return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " + appointmentId, HttpStatus.NOT_FOUND, null);
         }
@@ -34,13 +35,31 @@ public class InvoiceController {
         }
         return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
     }
-    @GetMapping("/dashboard/{time}")
-    public ResponseEntity<ResponseObject> getInvoiceDashboard(@PathVariable String time) {
-        List<DashboardResponse> invoiceResponse = invoiceService.getDashBoardByTime(time);
-        if (invoiceResponse == null) {
-            return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " + time , HttpStatus.NOT_FOUND, null);
+//    @GetMapping("/dashboard/{time}")
+//    public ResponseEntity<ResponseObject> getInvoiceDashboard(@PathVariable String time) {
+//        List<DashboardResponse> invoiceResponse = invoiceService.getDashBoardByTime(time);
+//        if (invoiceResponse == null) {
+//            return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " + time , HttpStatus.NOT_FOUND, null);
+//        }
+//        return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
+//    }
+    @PostMapping("")
+    public ResponseEntity<ResponseObject> createInvoiceV2(@RequestBody InvoiceRequest invoiceRequest) {
+        InvoiceResponse invoiceResponse = invoiceService.createInvoiceV2(invoiceRequest);
+        if (invoiceResponse != null) {
+            return ResponseObject.APIRepsonse(201, "Create Invoice Successfully", HttpStatus.CREATED, invoiceResponse);
+        }else {
+            return ResponseObject.APIRepsonse(404, "Invoice Creation failed " + invoiceRequest, HttpStatus.NOT_FOUND, null);
+
         }
-        return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
     }
 
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> getAppointmentIdAndType(@RequestParam String appointmentId , @RequestParam InvoiceType type) {
+        InvoiceResponse invoiceResponse = invoiceService.getAppointmentIdAndType(appointmentId,type);
+        if (invoiceResponse != null) {
+            return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
+        }else
+            return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " , HttpStatus.NOT_FOUND, null);
+    }
 }
