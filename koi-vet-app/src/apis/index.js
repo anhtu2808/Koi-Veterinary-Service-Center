@@ -36,8 +36,8 @@ export const fetchMyInfoAPI = async () => {
     return response.data
 }
 
-export const updateUserAPI = async (data) => {
-    const response = await api.put('/users/update', data); 
+export const updateUserAPI = async (userData) => {
+    const response = await api.put('/users/update', userData); 
     return response.data;
 }
 
