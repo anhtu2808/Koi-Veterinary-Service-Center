@@ -1,29 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { fetchInvoicesByAppointmentIdAPI } from "../../apis";
+import { useNavigate } from "react-router-dom";
 
-const InvoiceList = ({appointmentId}) => {
+const InvoiceList = ({appointment}) => {
+    const [invoices,setInvoices] = useState(null)
+
+    const fetchInvoicesAppointmentId = async () => {
+        const response = await fetchInvoicesByAppointmentIdAPI(appointment?.appointmentId);
+        setInvoices(response.data);
+    }
+    const navigate = useNavigate();
+    const handleViewDetail = (appointmentId,invoiceId) => {
+        navigate(`/admin/invoice-detail/${appointmentId}?invoiceId=${invoiceId}`);
+    }
+    useEffect(() => {
+        fetchInvoicesAppointmentId();
+    }, [appointment]);
+
+    const formatDate = (dateString) => {
+        return new Intl.DateTimeFormat('en-US', { 
+            year: 'numeric', 
+            month: '2-digit', 
+            day: '2-digit', 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit', 
+            hour12: false 
+        }).format(new Date(dateString));
+    };
+
     return (
-        <div className=" d-flex flex-column gap-3 align-items-center">
+        <div className="d-flex align-items-center justify-content-between flex-column">
             <h3>Invoice List</h3>
 
             <table>
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Date</th>
-                        <th>Customer</th>
-                        <th>Total</th>
+                        <th>Create Date</th>
+                        <th>Quantity</th>
                         <th>Status</th>
+                        <th>Total</th>
+                        <th className="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody> 
-                    <tr>
-                        <td>1</td>
-                        <td>2024-01-01</td>
-                        <td>John Doe</td>
-                        <td>100</td>
-                        <td>Paid</td>
-                    </tr>
-                </tbody>
+                    {
+                        invoices?.map((invoice,index) => (
+                                <tr key={invoice?.id}>
+                                    <td>{index + 1}</td>
+                                    <td>{formatDate(invoice?.createAt)}</td>
+                                    <td>{invoice?.quantity}</td>
+                                    <td>{invoice?.status}</td>
+                                    <td>{invoice?.totalPrice}</td>
+                                    <td>
+                                        <button 
+                                        className="btn btn-primary"
+                                        onClick={() => handleViewDetail(appointment?.appointmentId,invoice.invoiceId)}
+                                        >View</button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
             </table>
         </div>
     );
