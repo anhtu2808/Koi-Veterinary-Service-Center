@@ -22,7 +22,6 @@ public class InvoiceResponse {
     InvoiceType type ;
     int quantity ;
     int code ;
-
-
-
+    float distance ;
+    float deliveryPrice ;
 }
