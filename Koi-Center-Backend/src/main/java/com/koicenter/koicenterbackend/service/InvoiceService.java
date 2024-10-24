@@ -207,4 +207,13 @@ public class InvoiceService {
         List<Invoice> invoices = invoiceRepository.findAll();
         return invoices.size();
     }
+    public InvoiceResponse getInvoiceById(String invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(() -> new AppException(
+                ErrorCode.INVOICE_ID_NOT_FOUND.getCode(),
+                ErrorCode.INVOICE_ID_NOT_FOUND.getMessage(),
+                HttpStatus.NOT_FOUND));
+        InvoiceResponse invoiceResponse = invoiceMapper.toInvoiceResponse(invoice);
+        return invoiceResponse;
+    }
+
 }

@@ -63,4 +63,12 @@ public class InvoiceController {
         }else
             return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " , HttpStatus.NOT_FOUND, null);
     }
+    @GetMapping("/{invoiceId}")
+    public ResponseEntity<ResponseObject> getInvoiceById(@PathVariable String invoiceId ) {
+        InvoiceResponse invoiceResponse = invoiceService.getInvoiceById(invoiceId);
+        if (invoiceResponse != null) {
+            return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
+        }else
+            return ResponseObject.APIRepsonse(404, "Invoice not found By Invoice ID: " , HttpStatus.NOT_FOUND, null);
+    }
 }
