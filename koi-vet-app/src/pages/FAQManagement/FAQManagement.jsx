@@ -75,7 +75,7 @@ function FAQManagement() {
                     </table>
                 </div>
             </div>
-            <Modal open={isModalOpen} onCancel={() => setIsModalOpen(false)} onOk={handleUpdateFAQ}>
+            {/* <Modal open={isModalOpen} onCancel={() => setIsModalOpen(false)} onOk={handleUpdateFAQ}>
 
                 <div className='mb-3'>
                     <label htmlFor='question'>Question</label>
@@ -96,7 +96,7 @@ function FAQManagement() {
                     />
                 </div>
 
-            </Modal>
+            </Modal> */}
         </div>
     )
 }
