@@ -177,6 +177,7 @@ public class SecurityConfig {
 
                             .requestMatchers(HttpMethod.POST, "api/v1/forgotPassword/sendMail").permitAll()
                             .requestMatchers(HttpMethod.POST, "api/v1/forgotPassword/verifyOtp").permitAll()
+                            .requestMatchers(HttpMethod.POST, "api/v1/forgotPassword/reset-password").permitAll()
 
                             .requestMatchers(HttpMethod.POST, "/api/v1/faqs").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/faqs").permitAll()
