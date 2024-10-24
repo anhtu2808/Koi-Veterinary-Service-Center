@@ -10,6 +10,7 @@ import com.koicenter.koicenterbackend.model.entity.PondTreatment;
 import com.koicenter.koicenterbackend.model.enums.InvoiceType;
 import com.koicenter.koicenterbackend.model.enums.PaymentStatus;
 import com.koicenter.koicenterbackend.model.request.invoice.InvoiceRequest;
+import com.koicenter.koicenterbackend.model.response.invoice.CheckOutResponse;
 import com.koicenter.koicenterbackend.model.response.invoice.DashboardResponse;
 import com.koicenter.koicenterbackend.model.response.invoice.InvoiceResponse;
 import com.koicenter.koicenterbackend.repository.AppointmentRepository;
@@ -215,5 +216,26 @@ public class InvoiceService {
         InvoiceResponse invoiceResponse = invoiceMapper.toInvoiceResponse(invoice);
         return invoiceResponse;
     }
+    public CheckOutResponse checkOutAppointment(String appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new AppException(
+                ErrorCode.APPOINTMENT_ID_NOT_FOUND.getCode(),
+                ErrorCode.APPOINTMENT_ID_NOT_FOUND.getMessage(),
+                HttpStatus.NOT_FOUND));
+        int quantityKoi = koiTreatmentRepository.countKoiTreatmentByAppointment_AppointmentId(appointment.getAppointmentId());
+        int quantityPond = pondTreatmentRepository.countPondTreatmentByAppointment_AppointmentId(appointment.getAppointmentId());
 
+        Invoice invoices = Invoice.builder()
+                .appointment(appointment)
+                .type(InvoiceType.Second)
+                .quantity(quantityKoi+quantityPond)
+                .code(getCode() + 1)
+                .build();
+        InvoiceResponse invoiceResponse = invoiceMapper.toInvoiceResponse(invoices);
+        Invoice invoice = invoiceRepository.findByAppointment_AppointmentIdAndAndType(appointmentId, InvoiceType.First);
+        CheckOutResponse checkOutResponse = CheckOutResponse.builder()
+                .depositeMoney(invoice.getTotalPrice())
+                .invoice(invoiceResponse)
+                .build();
+        return checkOutResponse;
+    }
 }
