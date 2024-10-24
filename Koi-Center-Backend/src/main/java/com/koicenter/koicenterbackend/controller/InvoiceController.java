@@ -21,14 +21,14 @@ public class InvoiceController {
     @Autowired
     InvoiceService invoiceService;
 
-    @GetMapping("/{appointmentId}")
-    public ResponseEntity<ResponseObject> getInvoiceByAppointmentId(@PathVariable String appointmentId) {
-        List<InvoiceResponse> invoiceResponse = invoiceService.getInvoiceByAppointmentId(appointmentId);
-        if (invoiceResponse == null) {
-            return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " + appointmentId, HttpStatus.NOT_FOUND, null);
-        }
-        return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
-    }
+//    @GetMapping("/{appointmentId}")
+//    public ResponseEntity<ResponseObject> getInvoiceByAppointmentId(@PathVariable String appointmentId) {
+//        List<InvoiceResponse> invoiceResponse = invoiceService.getInvoiceByAppointmentId(appointmentId);
+//        if (invoiceResponse == null) {
+//            return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " + appointmentId, HttpStatus.NOT_FOUND, null);
+//        }
+//        return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
+//    }
     @PutMapping("/update/{invoiceId}")
     public ResponseEntity<ResponseObject> updateInvoice (@PathVariable String invoiceId,@RequestBody InvoiceRequest invoiceRequest) {
         InvoiceResponse invoiceResponse = invoiceService.updateInvoice(invoiceId, invoiceRequest);
@@ -62,5 +62,13 @@ public class InvoiceController {
             return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
         }else
             return ResponseObject.APIRepsonse(404, "Invoice not found for appointment ID: " , HttpStatus.NOT_FOUND, null);
+    }
+    @GetMapping("/{invoiceId}")
+    public ResponseEntity<ResponseObject> getInvoiceById(@PathVariable String invoiceId ) {
+        InvoiceResponse invoiceResponse = invoiceService.getInvoiceById(invoiceId);
+        if (invoiceResponse != null) {
+            return ResponseObject.APIRepsonse(200, "Invoice retrieved successfully", HttpStatus.OK, invoiceResponse);
+        }else
+            return ResponseObject.APIRepsonse(404, "Invoice not found By Invoice ID: " , HttpStatus.NOT_FOUND, null);
     }
 }
