@@ -183,6 +183,10 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.PUT, "/api/v1/faqs/{faqId}").permitAll()
                             .requestMatchers(HttpMethod.DELETE, "/api/v1/faqs/{faqId}").permitAll()
 
+                            .requestMatchers(HttpMethod.POST, "/api/v1/contacts").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/contacts").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/contacts/{contactId}").permitAll()
+
                             .requestMatchers(HttpMethod.GET,"api/v1/images")
 
                             .permitAll()
