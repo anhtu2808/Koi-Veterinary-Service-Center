@@ -54,6 +54,7 @@ import { persistor } from './store/store';
 import FAQManagement from './pages/FAQManagement/FAQManagement';
 import CreateMedicinePage from './pages/CreateMedicinePage/CreateMedicinePage';
 import AboutUsPage from './pages/AboutUsPage/AboutUsPage';
+import Contact from './pages/Contact/Contact';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -96,6 +97,7 @@ function App() {
             <UserLayout>
               <Routes>
                 <Route path="/aboutus" element={<AboutUsPage />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/services/:serviceId" element={<ServicePageDetail />} />
                 <Route path="/faq" element={<FAQ />} /> {/* Trang chủ User */}
                 <Route path="/" element={<HomePage />} />

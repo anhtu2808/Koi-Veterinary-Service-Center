@@ -67,8 +67,12 @@ export const fetchVetForAssignAPI = async (appointmentData) => {
     return response.data;
 }
 
-export const createVetAPI = async (data) => {
-    const response = await api.post('/veterinarians', data);
+export const createVetAPI = async (data, image) => {
+    let imageURL = null;
+    if (image) {
+        imageURL = await fetchUpLoadImageAPI(image);
+    }
+    const response = await api.post('/veterinarians', { ...data, image: imageURL });
     return response.data;
 }
 
