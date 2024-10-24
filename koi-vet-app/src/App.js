@@ -43,7 +43,6 @@ import GGM from './pages/GoogleMeet/GGM';
 import PaymentSuccessPage from './pages/PaymentSuccessPage/PaymentSuccessPage';
 import Rating from './pages/Rating/Rating';
 import ImageUpload from './components/testImage';
-import PaymentCheckout from './pages/PaymentCheckout/PaymentCheckout';
 import DashboardPage from './pages/DoctorDashboard/DashboardPage';
 import Schedual from './pages/Schdual/Schedual';
 import ServiceManagementPage from './pages/ServiceManagementPage/ServiceManagementPage';
@@ -54,6 +53,7 @@ import { persistor } from './store/store';
 import FAQManagement from './pages/FAQManagement/FAQManagement';
 import CreateMedicinePage from './pages/CreateMedicinePage/CreateMedicinePage';
 import AboutUsPage from './pages/AboutUsPage/AboutUsPage';
+import InvoiceDetail from './pages/PaymentCheckout/InvoiceDetail';
 
 function App() {
   const isAuthorized = useSelector(state => state?.user?.isAuthorized)
@@ -172,7 +172,7 @@ function App() {
                   <Route path="/invoice" element={<InvoiceListPage />} />
                   <Route path="/medicine" element={<Medicine />} />
                   <Route path="/medpage" element={< MedicineListPage />} />
-                  <Route path="/paymentcheckout/:appointmentId" element={<PaymentCheckout />} />
+                  <Route path="/invoice-detail/:appointmentId" element={<InvoiceDetail />} />
                   <Route path="/usermanagement" element={<UserManagementPage />} />
                   <Route path="/schedual" element={<Schedual />} />
                   <Route path="/servicemanagement" element={<ServiceManagementPage />} />

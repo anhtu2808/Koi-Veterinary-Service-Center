@@ -410,6 +410,10 @@ export const fetchInvoiceByAppointmentIdAndTypeAPI = async (appointmentId, type)
     const response = await api.get(`/invoices/appointmentId?appointmentId=${appointmentId}&type=${type}`);
     return response.data;
 }
+export const fetchInvoiceByInvoiceId = async (invoiceId) =>{
+    const response = await api.get(`/invoices/${invoiceId}`);
+    return response.data;
+}
 
 export const createInvoiceV2API = async (data) => {
     const response = await api.post(`/invoices`, data);
