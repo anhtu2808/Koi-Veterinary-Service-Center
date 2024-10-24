@@ -64,7 +64,7 @@ const InvoiceDetail = () => {
   return (
     <div className="row justify-content-center">
 
-      {/* {appointmentDetail?.type === "HOME" && <div className="bill-details col-md-4">
+      {appointmentDetail?.type === "HOME" && <div className="bill-details col-md-4">
         <HomeVisitPriceTable />
       </div>}
       <div className="bill-details col-md-8">
@@ -94,7 +94,7 @@ const InvoiceDetail = () => {
                   </thead>
                   <tbody>
                     {
-                      type === "First" ?
+                      invoiceDetail.type === "First" ?
                         <tr >
                           <td>Initial Service Fee</td>
                           <td>1</td>
@@ -139,7 +139,7 @@ const InvoiceDetail = () => {
       <div className='button-container d-flex justify-content-between mt-3'>
         <button className='btn btn-primary' onClick={() => navigate(-1)}>Back</button>
         <button className='btn btn-primary' onClick={() => handleCheckout()}>Confirm Checkout</button>
-      </div> */}
+      </div>
     </div>
 
   )
