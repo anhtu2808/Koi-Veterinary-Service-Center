@@ -2,6 +2,8 @@
 
 ## Introduction
 The Koi Veterinary Service Center is designed to provide professional veterinary care specifically for Koi fish. This software streamlines the management of various services offered by the center, including online consultations, in-home visits for Koi pond assessments, disease treatment, and medication prescriptions. The system facilitates scheduling, tracking, and reporting of services, as well as managing customer data, feedback, and staff operations.
+### Live Demo: [https://koimed.anhtudev.works](https://koimed.anhtudev.works)  
+### Video Demo: [https://demo.anhtudev.works/koimed](https://demo.anhtudev.works/koimed)
 Group02 KoiMed
 5 Members:
 - Đặng Mai Anh Tú (SE182951) 👨‍💻
@@ -9,8 +11,9 @@ Group02 KoiMed
 - Nguyễn Sĩ Vạn Hào (SE172181) 👨‍💻
 - Trịnh Thị Thuỳ Nhân (SE180345) 👩‍💻
 - Lê Huy Vũ (SE182602) 👨‍💻
-Live Demo: https://koimed.anhtudev.works
-Video Demo: https://demo.anhtudev.works/koimed
+
+
+
 
 ## 1. Requirements 📋
 **System Name:** Koi Med
